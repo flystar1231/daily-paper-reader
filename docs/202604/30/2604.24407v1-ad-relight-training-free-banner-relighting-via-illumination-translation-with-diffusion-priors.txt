@@ -1,0 +1,247 @@
+Title: AD-Relight: Training-Free Banner Relighting via Illumination Translation with Diffusion Priors
+
+URL Source: https://arxiv.org/pdf/2604.24407v1
+
+Published Time: Tue, 28 Apr 2026 02:08:42 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# AD-Relight: Training-Free Banner Relighting via Illumination Translation with Diffusion Priors 
+
+Rameshwar Mishra ∗
+
+Indraprastha Institute of Information Technology 
+
+Delhi, India rameshwarm@iiitd.ac.in 
+
+A. V. Subramanyam 
+
+Indraprastha Institute of Information Technology 
+
+Delhi, India subramanyam@iiitd.ac.in 
+
+Abstract —The recent surge in content consumption through streaming services has driven a growing demand for personalized content. Personalized advertisements (ads) play a crucial role in enhancing both user engagement and ad effectiveness. A key aspect of ad personalization involves replacing existing regions in a frame with custom, Photoshop-generated banners. However, existing ad-placement pipelines typically rely on simple geometric warping, ignoring the scene’s underlying lighting conditions. Similarly, state-of-the-art diffusion-based object insertion and relighting models struggle to accurately relight these newly inserted banners, as they are not trained on ad-banner data, and training such a model for ad banners will require millions of images. This highlights the need for an effective relighting framework, which results in a seamless integration of custom banners into the original scene. Motivated by this, we present AD-Relight, a novel, multi-stage training-free framework that adapts a diffusion-based relighting model at test time to relight newly added Photoshop-generated ad banners. Through extensive evaluation, we demonstrate that AD-Relight outperforms both relighting baselines and existing ad-placement methods based on simple warping. User studies further show that participants consistently prefer the outputs of AD-Relight over those of prior approaches. 
+
+Index Terms —Ad-Relighting, Personalization, Training free framework. 
+
+I. I NTRODUCTION 
+
+With the rapid growth of streaming platforms, there has been a significant shift toward delivering personalized content to viewers. Among various personalization strategies, tailored advertisements have emerged as a key factor in boosting both user engagement and ad performance. Several key components contribute to personalized advertising, including the introduc-tion of new ads, the replacement of existing banners, the selection of optimal ad placements, and the integration of photorealism into added advertisements. In the case of placing a Photoshop-generated custom ad banner in a scene, there exists a key challenge of lighting. As shown in Fig. 1(a), we inserted a variety of ad banners using existing relighting methods [1], [2] and a training-free object insertion method [3]. Across all examples, the inserted banners exhibit lighting inconsistent with the scene. For instance, the original region is more strongly illuminated on the left and far right, creating a gradient that these methods fail to reproduce, leading to 
+
+> ∗
+
+This research work was conducted during Rameshwar Mishra’s internship at Dolby Labs, Bangalore under the supervision of Bishshoy Das. (Email: Bishshoy.Das@dolby.com) 
+
+Fig. 1. Visual comparison highlighting the limitations of existing methods for banner relighting. In (a), columns 1, 2, and 3 correspond to results from IC-Light [2], SpotLight [1], and TF-ICON [3], respectively. All methods fail to reproduce the spatial lighting variations of the scene, leading to inconsistent shading and poor integration of the inserted banner. 
+
+unrealistic results. However, as shown in Fig. 1(b), AD-Relight produces outputs with banners exhibiting lighting consistent with the original scene. Several methods have been developed to address ad place-ment in content. The approach in [4] automates banner place-ment in video frames using a machine learning model that detects banners in the original frames and then inpaints the new ad using a homography matrix. Meanwhile, [5], [6] present end-to-end frameworks for inserting ads into videos. Notably, [5] introduces a cloud-based approach that places ads based on prior analytics, optimizing system design for faster inference. Although the previously mentioned methods address ad placement and are closely related to our work, they primarily focus on region estimation and the design of the overall server-side framework. These methods assume that the input ad is already in its final form and only needs to be placed within the scene. However, we found that when banners are placed on the floor, lighting becomes a critical factor in maintaining the realism of the newly introduced ad banners. With advancements in generative models, such as diffusion models, it is now possible to generate photorealistic content. Several methods have been developed to introduce new objects into images using diffusion models [3], [7]. While these diffusion-based methods enhance photorealism, they often struggle to preserve the identity of the added object, a crucial factor for ad banners. Additionally, methods such as [7] and [8] require extensive training on millions of images, making 
+
+> arXiv:2604.24407v1 [cs.CV] 27 Apr 2026
+
+them computationally expensive. [2], [9], and [10] propose diffusion-based object relighting frameworks. These models require extensive training on approximately 3 to 5 million images paired with their corresponding light environment maps. While they achieve impressive results in relighting portrait images, they often struggle with banners placed on the floor, as such cases fall outside their training distribution. Fig. 1 illustrates how direct use of diffusion-based relighting and object insertion methods can lead to inconsistent and unrealistic outputs. Training these models specifically for ad banners would require collecting millions of relevant images, a labor-intensive, challenging, and time-consuming task. The following are our observations based on our analysis of current methods. All the previously mentioned ad placement methods focus on region estimation, cloud-based solutions, and server-side frameworks. Diffusion-based object insertion methods suffer from identity loss and distortion. Diffusion-based relighting models often struggle with banner relighting, particularly for floor-level placements outside their training distribution. 
+
+To the best of our knowledge, no prior work explicitly tackles the relighting of Photoshop-generated ad banners. We formulate banner relighting as a conditional image-to-image illumination translation problem, where the goal is to transfer the lighting characteristics of the target region onto the inserted banner. In this work, we propose AD-Relight, a framework to relight newly added ad banners in a scene, ensuring they appear consistent with the original scene. Our main contributions are as follows.  
+
+> •
+
+We identify a key limitation in existing ad-placement, diffusion-based relighting, and object-insertion methods: their inability to maintain lighting consistency for inserted ad banners.  
+
+> •
+
+We introduce AD-Relight, a novel three-stage, training-free framework for relighting Photoshop-generated ad banners. Our method first aligns the banner’s shading with the target region, then employs a differential prob-ing strategy to extract region-specific illumination priors from a pre-trained lighting-aware diffusion model, and finally uses this prior to relight the banner. We provide a principled formulation and analysis of this differential illumination feature.  
+
+> •
+
+We perform an extensive evaluation across diverse indoor lighting conditions and banners to ensure robustness. We conduct a user study to capture human perception of AD-Relight’s outputs. II. R ELATED WORK 
+
+A. End-to-End Ad Placement Methods 
+
+[5] proposes a server-side dynamic ad insertion platform tailored for live streaming. [4] presents a technique for replac-ing advertisements in videos using scene recognition and pat-tern matching. [11] introduces an automatic editing framework for sports videos. The framework leverages computer vision techniques to detect key game events and camera transitions. [12] proposes an emotion-aware ad placement method using multi-modal analysis. End-to-end methods effectively predict the optimal regions and timestamps for ad placement to maximize user attention. However, they primarily focus on vertically aligned, portrait-style ads and often overlook the lighting information in the original scene. The original region exhibits shading and light gradients influenced by multiple light sources in the scene, whereas a newly inserted ad banner lacks these details. Ensur-ing seamless integration therefore requires a framework that relights the new banner to match the original lighting. 
+
+B. Diffusion-based Object Insertion in Natural Scenes 
+
+Several works extend diffusion models for photorealistic object insertion into user-specified regions. ObjectStitch [7] trains an adapter to generate CLIP-aligned embeddings for insertion, while TF-ICON [3] and [13] introduce training-free approaches that modify the reverse diffusion process to ensure spatial alignment and appearance consistency. AnyDoor [14] provides zero-shot object customization using a CLIP-based latent encoder to preserve object identity. Although diffusion-based insertion methods produce realistic, well-blended re-sults, they often struggle to strictly preserve the identity and structure of inserted objects, an essential requirement for ad-banner placement. 
+
+C. Object Relighting 
+
+Several existing works use diffusion models or deep learn-ing architectures, often combined with environment maps, to relight foreground objects based on background illumination. [10] proposes a diffusion-based relighting model for indoor and outdoor scenes, integrating a physically based illumination model with a denoising network trained on a large set of relit examples. SwitchLight [15] co-designs a physics-driven architecture with a dedicated pretraining framework for hu-man relighting. [9] explores neural rendering with volumetric representations, and IC-Light [2] uses diffusion for large-scale illumination harmonization. While these models achieve strong results for relighting single objects via text or background conditioning, they face several limitations in banner relighting : (i) some are not publicly available [10], [15]; (ii) most are trained specifically for portrait-style, single-object relighting [1], [2], [9], making floor-level ad banners far outside their training distribution; (iii) as shown in Fig. 1, when applied to such banners, they fail to maintain lighting consistency with the original scene. III. P ROPOSED METHOD 
+
+In this section, we introduce a framework for relighting a custom Photoshop-generated ad banner to ensure it reflects lighting behavior consistent with the original scene. Diffusion-based object relighting models effectively relight portrait-style objects conditioned on background lighting. However, they fail when applied to banners. To address this, we propose a framework that leverages the lighting understanding of a re-lighting model without requiring additional training. AD-Relight uses a publicly available model, IC-Light [2], as it’s re-lighting backbone. It is trained on over 10 million images with diverse lighting conditions, making it a suitable choice. Our framework consists of three main stages, which we describe in detail in the subsequent subsections. 
+
+A. Stage 1: Shade Alignment 
+
+We provide an overview of Stage 1 in Fig. 2. Our method begins by extracting the input region using the Segment Anything Model (SAM) [16], denoted as IO . We pre-process the Photoshop-generated custom logo IL to match the lighting shade of the input region IO . Additionally, we observe that ad banners in real-world scenes are typically printed on textured materials. To simulate this, we utilize a pre-trained diffusion model [17] to generate a texture map T , which is alpha-blended with IL as follows: IL = (1 − α)IL + αT , where 
+
+0 ≤ α ≤ 1. In our experiments, we set α = 0 .3.Next, to estimate the shading map SO of the original region, we draw inspiration from Retinex theory [18], [19], which decomposes an image into illuminance and reflectance components. We approximate this decomposition by assuming that shading varies smoothly and can be captured by low-frequency components. Specifically, we factorize the illumi-nance channel of IO (IO 
+
+> ill
+
+) into SOt and SO . To obtain the structural information of the custom ad banner, we apply the same factorization to the illuminance channel of the ad banner (IL 
+
+> ill
+
+) as follows: 
+
+SO = GaussianF ilter K (IOill ), SOt = IOill 
+
+SO (1) 
+
+SL = GaussianF ilter K (ILill ), SLt = ILill 
+
+SL (2) 
+
+=⇒ IOill = SO SOt , ILill = SLSLt
+
+Here, GaussianF ilter is a smoothing filter of size K that extracts the low-frequency shading component from the illu-minance channel. This approximation is well-suited for planar surfaces where illumination changes are spatially smooth. SOt
+
+and SLt capture the structural information of IO and IL,respectively, while SO and SL represent their corresponding shading components. We then transfer the shading of the original region to the banner by applying SO to the structure of IL as follows: ILill = SO SLt , ensuring that the custom logo inherits the shading characteristics of the original region. 
+
+B. Stage 2: Light Feature Estimation 
+
+Diffusion-based relighting models often fail on inserted ad banners, particularly when placed on horizontal surfaces, where they tend to reproduce floor color instead of scene-consistent illumination. Despite this limitation, we observe that such models encode useful illumination priors due to their training on large-scale relighting datasets. We therefore use IC-Light [2] as a lighting backbone and probe it to extract region-specific illumination cues. IC-Light enforces consistent light transport during training, encouraging approximately linear responses to illumination variations. While the model is not strictly linear, prior work [2] suggests that its outputs exhibit locally linear behavior with respect to illumination changes. We leverage this property in a differential manner. To isolate the illumination contribution of the target region 
+
+IO , we construct two inputs. In the first, the full frame BO
+
+is used as the background. In the second, we remove IO
+
+to obtain a masked background BM . Passing both inputs through the relighting backbone yields outputs Out 1 and 
+
+Out 2, respectively. Let ϕ denote the parameters of the backbone. The model implicitly encodes a light transport operator Tϕ and an illumi-nation representation Lϕ, such that: 
+
+Out 1 ≈ TϕLϕ, Out 2 ≈ TϕLMϕ
+
+Assuming approximate linearity in illumination space, we write: 
+
+LMϕ ≈ Lϕ − LOϕ (3) where LOϕ denotes the illumination contribution of region IO .We define a differential illumination feature: 
+
+ϵ = Out 1 − Out 2 (4) Substituting Eq. 3, we obtain: 
+
+ϵ ≈ TϕLϕ − Tϕ(Lϕ − LOϕ ) ≈ TϕLOϕ
+
+Thus, ϵ ∈ RH×W ×3 can be interpreted as a spatially aligned illumination residual in RGB space that captures the relative lighting contribution of IO under the model prior. While 
+
+ϵ may contain minor appearance leakage due to imperfect disentanglement, it serves as an effective proxy for region-specific illumination. This differential probing allows us to extract reusable lighting priors from a pretrained relighting model without additional training. 
+
+C. Stage 3: Relighting the Custom Logo 
+
+From Stage 2, we obtain the lighting feature ϵ. Our objective is to ensure that our relighting backbone considers only the lighting information corresponding to the original region IO
+
+while relighting the custom logo IL. To achieve this, as shown in Fig. 2, we pass a weighted combination of ϵ and an initial light gradient G as the background input, denoted as Bϵ.The initial light gradient G is obtained by applying a Gaussian filter to the illuminance channel of IO (IO 
+
+> ill
+
+), captur-ing low-frequency illumination structure. Combining ϵ with 
+
+G suppresses high-frequency artifacts in ϵ while preserving global lighting trends: 
+
+G = GaussianF ilter K′
+
+(IO 
+
+> ill
+
+), Bϵ = αϵG + (1 − αϵ)ϵOL = ICLight (Bϵ, I L) (5) Here, K′ < K , and αϵ balances global illumination ( G) and differential lighting ( ϵ). To further enhance realism, we incorporate soft shadow es-timation. We compute an adaptive threshold T hr using Otsu’s Fig. 2. Overview of AD-Relight. In Stage 1, we align the shading characteristics of the input region with the custom banner. In Stage 2, we extract a region-specific lighting prior using a differential probing strategy on a pretrained relighting model. In Stage 3, this prior is used to relight the inserted banner, ensuring consistency with the scene illumination. 
+
+method on IO 
+
+> ill
+
+, enabling robustness to varying illumination conditions. We obtain a shadow map by identifying low-illuminance regions and define a continuous shadow attenu-ation factor: 
+
+df (x, y ) = min 
+
+
+
+1, IO 
+
+> ill
+
+(x, y )
+
+T hr 
+
+
+
+(6) This formulation produces a smooth attenuation that preserves relative intensity differences while avoiding hard transitions. To reduce sensitivity to texture noise, the illuminance map is pre-smoothed via Gaussian filtering. We apply this attenuation to the relit logo and blend it with the original output using αs = 0 .2:
+
+IOL 
+
+> ill
+
+= αsIOL 
+
+> ill
+
++ (1 − αs)IOL 
+
+> ill
+
+· df 
+
+IV. R ESULTS 
+
+A. Qualitative Analysis 
+
+In this work, we investigate single-frame relighting. Fig. 3 presents a qualitative comparison of our method against two baselines: simple warping, commonly used in ad-placement methods, and IC-Light [2]. As shown, simple warping fails to incorporate lighting gradients and uniformly maps the logo to the region, disregarding scene illumination. IC-Light, a state-of-the-art diffusion-based relighting method, performs well in standard settings but struggles in challenging cases where ban-ners are placed on horizontal surfaces with complex lighting. In such scenarios, it tends to bias the logo’s appearance toward surrounding textures rather than accurately reproducing scene-consistent illumination. Our benchmark includes a diverse set of scenes with varying lighting conditions, viewpoints, and materials, including both indoor and outdoor examples. While existing methods perform reasonably well on simpler configurations, we focus on more challenging cases involving floor-pasted banners with strong light gradients, soft shadows, and non-uniform illumination. We select representative examples to highlight these cases. Row 1 presents a scene with a strong light gradient and soft shadows. Row 2 shows a glossy wooden floor under intense lighting. Row 3 illustrates a top-view camera angle. Row 4 uses the same scene as Row 1 with a different colored banner. Additional qualitative results are provided in the supplementary material. 
+
+B. Comparative Analysis 
+
+Quantitative comparison. We evaluate our approach against four baselines: TF-ICON [3], a training-free DDIM inversion-based object insertion method, IC-Light [2], and SpotLight 
+
+[1], both designed for background-conditioned relighting, and 
+
+simple warping , a widely adopted technique in ad-placement pipelines. Our evaluation is conducted on a benchmark constructed following prior protocols [20], [21], consisting of 560 cases generated from 7 logos and 80 frames. The benchmark is designed to include diverse lighting conditions and challeng-ing placements, particularly cases with strong illumination variation, complex surface textures, and horizontal banner placement.                        
+
+> TABLE I QUANTITATIVE COMPARISON . B EST RESULTS ARE SHOWN IN GREEN (AND BOLD ), SECOND -BEST IN RED .
+> Method SSIM ↑LPIPS ↓ILL-SIM ↑
+> Simple Warping 0.89 0.12 0.82 TF-ICON 0.45 0.57 0.62 IC-Light 0.91 0.07 0.77 SpotLight 0.92 0.09 0.79
+> Ours 0.95 0.03 0.92
+
+Following [1], [2], [9], we evaluate our approach using LPIPS and SSIM scores for the relighted region. Table I presents a comparison with existing baselines. We also report the cosine similarity (ILL-SIM) between the illuminance of Fig. 3. Qualitative comparison of AD-Relight with existing methods. Our approach produces lighting that is more consistent with the scene, particularly in challenging cases with strong illumination gradients and floor-pasted banners, resulting in improved visual integration. 
+
+the input region and the relighted banner, which reflects the consistency of illumination transfer. 
+
+LLM evaluation. Following recent generative evaluation pro-tocols [22], we conduct an LLM-based assessment where GPT-
+
+TABLE II LLM EVALUATION . V ALUES INDICATE THE PERCENTAGE OF CASES IN WHICH AD-R ELIGHT IS PREFERRED OVER COMPETING METHODS ACROSS DIFFERENT LIGHTING -RELATED CRITERIA .
+
+GPT-4o Evaluation: % preference of Ad-Relight over: Criteria Simple Warping IC-Light SpotLight Light Gradient 100% 97.6% 95.2% Light Consistency 97.6% 95.2% 92.8% Scene Realism 90.4% 92.8% 85.7% 
+
+4o ranks outputs from IC-Light, simple warping, SpotLight, and our method based on light gradient, light consistency, and realism. Table II shows that GPT consistently prefers our method across all criteria, with particularly strong preference in cases involving complex illumination. Details of prompts and ILL-SIM computation are provided in the supplementary material. 
+
+User study. To further evaluate our method, we conducted a user study to assess human perception of the generated results. Four questionnaire variants were prepared, each containing nine scenarios with two unlabeled relighted options. A total of 25 participants provided 324 responses. The results, shown in 
+
+Fig. 4. Human User Study. The green portion of each bar indicates the percentage of responses in which participants preferred our results over the corresponding baseline. 
+
+Fig. 4, indicate that users consistently preferred our outputs, particularly in challenging lighting scenarios. 
+
+C. Additional analysis 
+
+The key hyperparameters for AD-Relight are K = 99 and 
+
+α = 0 .3 in Stage 1, and αϵ = 0 .4, K′ = 21 , and αs = 0 .2 in Stage 3. In this section, we present ablation studies to justify these choices. We compare results using two variants of hyperparameter settings. In M1 , we use α = 0 .2, αs = 0 .1, αϵ = 0 .2, and TABLE III ABLATION RESULTS .
+
+Method SSIM ↑ LPIPS ↓ ILL-SIM ↑
+
+M1 0.92 0.03 0.85 M2 0.91 0.05 0.87 M3 0.89 0.07 0.83 M4 0.86 0.05 0.80 M5 0.80 0.10 0.85 
+
+Ours 0.95 0.03 0.92 
+
+K′ = 71 . In M2 , we use α = 0 .4, αs = 0 .3, αϵ = 0 .5, and 
+
+K′ = 15 . In both cases, we consider values above and below the final configuration. To further evaluate the contribution of each component, we compare against M3 (without G), M4 
+
+(without shade alignment), and M5 (without ϵ). Results are reported in Table III. 
+
+TABLE IV THE USER STUDY SHOWS THAT PARTICIPANTS CONSISTENTLY PREFER OUR FULL FRAMEWORK OVER ITS VARIANTS .
+
+Preference (%) for Ad-Relight over: Criteria M3 M4 M5 Light Gradient 55.0% 80.5% 63.8% Light Consistency 55.0% 69.4% 87.5% Scene Realism 61.1% 52.0% 72.2% 
+
+Fig. 5. Qualitative ablations 
+
+Limitations. In this work, we focus on single-frame ad banner relighting. Our approach relies on the backbone’s implicit dis-entanglement of illumination, and performance may degrade when this assumption does not hold. In the supplementary, we discuss the extension of our work to temporally coherent video banner relighting, and its limitations along with additional qualitative analysis, and details of user study setup. V. C ONCLUSION 
+
+In this work, we present AD-Relight, a novel training-free framework for relighting custom ad banners to ensure consis-tency with the lighting conditions of the original scene. Our findings reveal that while ad placement methods effectively identify suitable regions for placing ads, they fail to adjust lighting for realistic integration. Object relighting models, though effective for portrait-type objects, produce inconsistent lighting when applied to ad banners. To overcome these limitations, we propose a multi-stage framework that adapts a state-of-the-art publicly available diffusion-based relighting model for banner relighting without additional training. We validate AD-Relight across multiple scenes with diverse light-ing conditions and test it on various ad banners with different structures and colors to support it’s effectiveness. We also identify clear limitations that motivate future work, particularly in temporal coherence. REFERENCES [1] Fr´ ed´ eric Fortier-Chouinard, Zitian Zhang, Louis-Etienne Messier, Math-ieu Garon, Anand Bhattad, and Jean-Franc ¸ois Lalonde, “Spotlight: Shadow-guided object relighting via diffusion,” arXiv:2411.18665 ,2024. [2] Lvmin Zhang, Anyi Rao, and Maneesh Agrawala, “Scaling in-the-wild training for diffusion-based illumination harmonization and editing by imposing consistent light transport,” in ICLR , 2025. [3] Shilin Lu, Yanzhu Liu, and Adams Wai-Kin Kong, “Tf-icon: Diffusion-based training-free cross-domain image composition,” in ICCV , 2023. [4] Valeriia Efimova, Leonid Fedotov, Viacheslav Shalamov, and Andrey Filchenkov, “Advertisement replacement in video,” in ICMV 2021 .SPIE, 2022, vol. 12084, pp. 232–240. [5] Tankut Akgul, Samet Ozcan, and Alihan Iplik, “A cloud-based end-to-end server-side dynamic ad insertion platform for live content,” in 11th ACM MMSys , 2020, pp. 361–364. [6] Yiqun Li, Kong Wah Wan, Xin Yan, and Changsheng Xu, “Real time advertisement insertion in baseball video based on advertisement effect,” in ACM MM , 2005, pp. 343–346. [7] Yizhi Song, Zhifei Zhang, Zhe Lin, Scott Cohen, Brian Price, Jianming Zhang, Soo Ye Kim, and Daniel Aliaga, “Objectstitch: Object composit-ing with diffusion model,” in CVPR , 2023, pp. 18310–18319. [8] Yizhi Song, Zhifei Zhang, Zhe Lin, Scott Cohen, Brian Price, Jian-ming Zhang, Soo Ye Kim, He Zhang, Wei Xiong, and Daniel Aliaga, “Imprint: Generative object compositing by learning identity-preserving representation,” in CVPR , 2024, pp. 8048–8058. [9] Haian Jin, Yuan Li, Fujun Luan, Yuanbo Xiangli, Sai Bi, Kai Zhang, Zexiang Xu, Jin Sun, and Noah Snavely, “Neural gaffer: Relighting any object via diffusion,” in NeurIPS , 2024. [10] Mengwei Ren, Wei Xiong, Jae Shin Yoon, Zhixin Shu, Jianming Zhang, HyunJoon Jung, Guido Gerig, and He Zhang, “Relightful harmonization: Lighting-aware portrait background replacement,” in CVPR , 2024, pp. 6452–6462. [11] Jinjun Wang, Changsheng Xu, Engsiong Chng, Hanqing Lu, and Qi Tian, “Automatic composition of broadcast sports video,” Multimedia Systems , vol. 14, pp. 179–193, 2008. [12] Sumanu Rawat, Aman Chopra, Siddhartha Singh, and Shobhit Sinha, “Mid roll advertisement placement using multi modal emotion analysis,” in ICANN . Springer, 2019, pp. 159–171. [13] Yoad Tewel, Rinon Gal, Dvir Samuel, Yuval Atzmon, Lior Wolf, and Gal Chechik, “Add-it: Training-free object insertion in images with pretrained diffusion models,” arXiv:2411.07232 , 2024. [14] Xi Chen, Lianghua Huang, Yu Liu, Yujun Shen, Deli Zhao, and Heng-shuang Zhao, “Anydoor: Zero-shot object-level image customization,” in CVPR , 2024, pp. 6593–6602. [15] Hoon Kim, Minje Jang, Wonjun Yoon, Jisoo Lee, Donghyun Na, and Sanghyun Woo, “Switchlight: Co-design of physics-driven architecture and pre-training framework for human portrait relighting,” in CVPR ,2024, pp. 25096–25106. [16] Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao, Chloe Rolland, Laura Gustafson, Tete Xiao, Spencer Whitehead, Alexander C Berg, Wan-Yen Lo, et al., “Segment anything,” in ICCV , 2023, pp. 4015–4026. [17] Black Forest Labs, “Flux.1 kontext: Flow matching for in-context image generation and editing in latent space,” 2025. [18] Edwin H Land and John J McCann, “Lightness and retinex theory,” 
+
+JOSA , vol. 61, no. 1, pp. 1–11, 1971. [19] Carsten Rother, Martin Kiefel, Lumin Zhang, Bernhard Sch¨ olkopf, and Peter Gehler, “Recovering intrinsic images with a global sparsity prior on reflectance,” NeurIPS , vol. 24, 2011. [20] Yarden Frenkel, Yael Vinker, Ariel Shamir, and Daniel Cohen-Or, “Implicit style-content separation using b-lora,” in ECCV . Springer, 2024. [21] Chang Liu, Viraj Shah, Aiyu Cui, and Svetlana Lazebnik, “Unziplora: Separating content and style from a single image,” arXiv:2412.04465 ,2024. [22] Ziheng Ouyang, Zhen Li, and Qibin Hou, “K-lora: Unlocking training-free fusion of any subject and style loras,” arXiv:2502.18461 , 2025.
