@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.23579v1/fig-001.webp",
+      "caption": "Fig. 1. Key challenges in automated movie generation. Existing text-to-video models face three fundamental limitations: (Top) Character identity inconsistency across scenes and contexts; (Middle) Scene inconsistency in visual styles and transitions; (Bottom) Cross-modal misalignment between visual elements, dialogue, and audio. Our hierarchical framework addresses these challenges through specialized agent coordination and decoupled processing pipelines.",
+      "page": 2,
+      "index": 1,
+      "width": 914,
+      "height": 389
+    },
+    {
+      "url": "assets/figures/arxiv/2604.23579v1/fig-002.webp",
+      "caption": "Fig. 2. CineAGI framework overview. Given a story concept, our framework proceeds through three modules: (1) Narrative Synthesis: LLM agents collaboratively develop character profiles and production scripts ensuring narrative coherence; (2) Character Generation: creates visual and audio assets with consistent character appearances and voice profiles; (3) Cinematographic Synthesis: orchestrates video generation, character integration, and audio synchronization for complete movie production.",
+      "page": 3,
+      "index": 2,
+      "width": 968,
+      "height": 362
+    },
+    {
+      "url": "assets/figures/arxiv/2604.23579v1/fig-003.webp",
+      "caption": "Fig. 4. Decoupled Character Integration (DCI) pipeline visualization. From top to bottom: original scene video, segmented character regions, face-swapped results with reference portrait, and final talking head output with audio synchronization. This systematic decomposition enables precise character control while maintaining scene context.",
+      "page": 5,
+      "index": 3,
+      "width": 474,
+      "height": 319
+    },
+    {
+      "url": "assets/figures/arxiv/2604.23579v1/fig-004.webp",
+      "caption": "Fig. 3. Qualitative comparisons with state-of-the-art methods. Our approach generates more coherent narratives with consistent character portrayals across varied scenes while maintaining superior visual quality and natural character movements.",
+      "page": 5,
+      "index": 4,
+      "width": 914,
+      "height": 560
+    }
+  ]
+}

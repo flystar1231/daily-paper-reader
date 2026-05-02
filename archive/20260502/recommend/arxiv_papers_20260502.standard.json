@@ -1,0 +1,604 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-02T20:06:02.750298+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 24,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2604.22586v1",
+      "source": "arxiv",
+      "title": "FlowAnchor: Stabilizing the Editing Signal for Inversion-Free Video Editing",
+      "abstract": "We propose FlowAnchor, a training-free framework for stable and efficient inversion-free, flow-based video editing. Inversion-free editing methods have recently shown impressive efficiency and structure preservation in images by directly steering the sampling trajectory with an editing signal. However, extending this paradigm to videos remains challenging, often failing in multi-object scenes or with increased frame counts. We identify the root cause as the instability of the editing signal in high-dimensional video latent spaces, which arises from imprecise spatial localization and length-induced magnitude attenuation. To overcome this challenge, FlowAnchor explicitly anchors both where to edit and how strongly to edit. It introduces Spatial-aware Attention Refinement, which enforces consistent alignment between textual guidance and spatial regions, and Adaptive Magnitude Modulation, which adaptively preserves sufficient editing strength. Together, these mechanisms stabilize the editing signal and guide the flow-based evolution toward the desired target distribution. Extensive experiments demonstrate that FlowAnchor achieves more faithful, temporally coherent, and computationally efficient video editing across challenging multi-object and fast-motion scenarios. The project page is available at https://cuc-mipg.github.io/FlowAnchor.github.io/.",
+      "authors": [
+        "Ze Chen",
+        "Lan Chen",
+        "Yuanhang Li",
+        "Qi Mao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-24T14:17:11+00:00",
+      "link": "https://arxiv.org/pdf/2604.22586v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "training-free framework for stable inversion-free video editing",
+      "llm_evidence_cn": "用于稳定免反转视频编辑的免训练框架",
+      "llm_evidence": "用于稳定免反转视频编辑的免训练框架",
+      "canonical_evidence": "用于稳定免反转视频编辑的免训练框架",
+      "llm_tldr_en": "FlowAnchor is a training-free framework that stabilizes editing signals for efficient video editing.",
+      "llm_tldr_cn": "FlowAnchor是一个免训练框架，通过稳定编辑信号实现高效的视频编辑。",
+      "llm_tldr": "FlowAnchor是一个免训练框架，通过稳定编辑信号实现高效的视频编辑。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.23858v1",
+      "source": "arxiv",
+      "title": "Latent Inter-Frame Pruning: A Training-Free Method Bridging Traditional Video Compression and Modern Diffusion Transformers for Efficient Generation",
+      "abstract": "Video generation, while capable of generating realistic videos, is computationally expensive and slow, prohibiting real-time applications. In this paper, we observe that video latents encoded via an autoencoder under the Latent Diffusion Model (LDM) framework contain redundancy along the temporal axis. Analogous to how traditional video compression algorithms avoid transmitting redundant frame data, we propose the Latent Inter-frame Pruning framework to prune (skip the re-computation of) duplicated latent patches, thereby reducing computational burden and increasing throughput. However, direct pruning results in visual artifacts due to the discrepancy between full-sequence training and pruned inference. To resolve these artifacts, we propose an Attention Recovery mechanism to bridge the train-inference gap. With our proposed method, we increase video editing throughput by 1.44$\\times$, achieving 12.44 FPS on an NVIDIA RTX 6000 while maintaining video quality. We hope our work inspires further research into integrating traditional video compression methods with modern video generation pipelines. This work is a preliminary work on Training-free Latent Inter-Frame Pruning with Attention Recovery.",
+      "authors": [
+        "Dennis Menn",
+        "Chih-Hsien Chou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-26T20:03:11+00:00",
+      "link": "https://arxiv.org/pdf/2604.23858v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "training-free method for efficient video generation via latent pruning",
+      "llm_evidence_cn": "通过潜空间剪枝实现高效视频生成的免训练方法",
+      "llm_evidence": "通过潜空间剪枝实现高效视频生成的免训练方法",
+      "canonical_evidence": "通过潜空间剪枝实现高效视频生成的免训练方法",
+      "llm_tldr_en": "This paper proposes a training-free latent pruning method to speed up video generation by reducing redundancy.",
+      "llm_tldr_cn": "本文提出了一种免训练的潜空间剪枝方法，通过减少冗余来加速视频生成。",
+      "llm_tldr": "本文提出了一种免训练的潜空间剪枝方法，通过减少冗余来加速视频生成。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.23574v1",
+      "source": "arxiv",
+      "title": "PhysLayer: Language-Guided Layered Animation with Depth-Aware Physics",
+      "abstract": "Existing image-to-video generation methods often produce physically implausible motions and lack precise control over object dynamics. While prior approaches have incorporated physics simulators, they remain confined to 2D planar motions and fail to capture depth-aware spatial interactions. We introduce PhysLayer, a novel framework enabling language-guided, depth-aware layered animation of static images. PhysLayer consists of three key components: First, a language-guided scene understanding module that utilizes vision foundation models to decompose scenes into depth-based layers by analyzing object composition, material properties, and physical parameters. Second, a depth-aware layered physics simulation that extends 2D rigid-body dynamics with depth motion and perspective-consistent scaling, enabling more realistic object interactions without requiring full 3D reconstruction. Third, a physics-guided video synthesis module that integrates simulated trajectories with scene-aware relighting for temporally coherent results. Experimental results demonstrate improvements in CLIP-Similarity (+2.2\\%), FID score (+9.3\\%), and Motion-FID (+3\\%), with human evaluation showing enhanced physical plausibility (+24\\%) and text-video alignment (+35\\%). Our approach provides a practical balance between physical realism and computational efficiency for controllable image animation.",
+      "authors": [
+        "Tianyidan Xie",
+        "Zhentao Huang",
+        "Mingjie Wang",
+        "Xin Huang",
+        "Jun Zhou",
+        "Minglun Gong",
+        "Zili Yi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-26T07:29:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.23574v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "decompose scenes into depth-based layers for controllable animation",
+      "llm_evidence_cn": "将场景分解为基于深度的图层以进行可控动画",
+      "llm_evidence": "将场景分解为基于深度的图层以进行可控动画",
+      "canonical_evidence": "将场景分解为基于深度的图层以进行可控动画",
+      "llm_tldr_en": "Enables language-guided, depth-aware layered animation by decomposing scenes into physical layers.",
+      "llm_tldr_cn": "通过将场景分解为物理层，实现语言引导、深度感知的分层动画。",
+      "llm_tldr": "通过将场景分解为物理层，实现语言引导、深度感知的分层动画。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.24238v1",
+      "source": "arxiv",
+      "title": "GeoEdit: Local Frames for Fast, Training-Free On-Manifold Editing in Diffusion Models",
+      "abstract": "Diffusion models are a leading paradigm for data generation, but training-free editing typically re-runs the full denoising trajectory for every edit strength, making iterative refinement expensive. To address this issue, we instead edit near the data manifold, where small local updates can replace repeated re-synthesis. To enable this, we estimate a local manifold tangent space directly from perturbed samples and prove that this sample-based estimator closely approximates the true tangent. Building on this guarantee, we devise a Jacobian-free algorithm that constructs a tangent frame via small perturbations to the initial noise and alternates small tangent moves with diffusion-based projections. Updates within this frame follow principled on-manifold directions while suppressing off-manifold drift, enabling fine-grained edits without full re-diffusion or additional training. Edit strength is controlled by the number of steps for rapid, continuous adjustments that preserve fidelity and plug into existing samplers. Empirically, the resulting tangent directions yield smooth, semantic unsupervised traversals and effective CLIP-guided optimization, demonstrating practical interactive continuous editing.",
+      "authors": [
+        "Yiming Zhang",
+        "Sitong Liu",
+        "Ke Li",
+        "Zhihong Wu",
+        "Alex Cloninger",
+        "Melvin Leok"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-04-27T09:47:02+00:00",
+      "link": "https://arxiv.org/pdf/2604.24238v1",
+      "tags": [
+        "keyword:CV VG CS"
+      ],
+      "llm_score": 7.5,
+      "llm_evidence_en": "training-free editing in diffusion models",
+      "llm_evidence_cn": "扩散模型中的免训练编辑",
+      "llm_evidence": "扩散模型中的免训练编辑",
+      "canonical_evidence": "扩散模型中的免训练编辑",
+      "llm_tldr_en": "GeoEdit enables fast, training-free editing in diffusion models by using local manifold tangent spaces.",
+      "llm_tldr_cn": "GeoEdit通过局部流形切空间实现扩散模型中快速、免训练的编辑。",
+      "llm_tldr": "GeoEdit通过局部流形切空间实现扩散模型中快速、免训练的编辑。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.27918v1",
+      "source": "arxiv",
+      "title": "Generate Your Talking Avatar from Video Reference",
+      "abstract": "Existing talking avatar methods typically adopt an image-to-video pipeline conditioned on a static reference image within the same scene as the target generation. This restricted, single-view perspective lacks sufficient temporal and expression cues, limiting the ability to synthesize high-fidelity talking avatars in customized backgrounds. To this end, we introduce Talking Avatar generation from Video Reference (TAVR), a novel framework that shifts the paradigm by leveraging cross-scene video inputs. To effectively process these extended temporal contexts and bridge cross-scene domain gaps, TAVR integrates a token selection module alongside a comprehensive three-stage training scheme. Specifically, same-scene video pretraining establishes foundational appearance copying, which is subsequently expanded by cross-scene reference fine-tuning for robust cross-scene adaptation. Finally, task-specific reinforcement learning aligns the generated outputs with identity-based rewards to maximize identity similarity. To systematically evaluate cross-scene robustness, we construct a new benchmark comprising 158 carefully curated cross-scene video pairs. Extensive experiments show that TAVR benefits from flexible inference-time video referencing and consistently surpasses existing baselines both quantitatively and qualitatively. This work has been deployed to production. For more related research, please visit \\href{https://www.heygen.com/research}{HeyGen Research} and \\href{https://www.heygen.com/research/avatar-v-model}{HeyGen Avatar-V}.",
+      "authors": [
+        "Zujin Guo",
+        "Zhenhui Ye",
+        "Yi Ren",
+        "Yuanming Li",
+        "Ce Chen",
+        "Zhibin Hong",
+        "Chen Change Loy"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-30T14:22:27+00:00",
+      "link": "https://arxiv.org/pdf/2604.27918v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 6.5,
+      "llm_evidence_en": "controllable video generation for talking avatars",
+      "llm_evidence_cn": "可控的人物说话视频生成",
+      "llm_evidence": "可控的人物说话视频生成",
+      "canonical_evidence": "可控的人物说话视频生成",
+      "llm_tldr_en": "TAVR generates high-fidelity talking avatars from cross-scene video references using a three-stage scheme.",
+      "llm_tldr_cn": "TAVR通过三阶段方案利用跨场景视频参考生成高保真的人物说话头像。",
+      "llm_tldr": "TAVR通过三阶段方案利用跨场景视频参考生成高保真的人物说话头像。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.24407v1",
+      "source": "arxiv",
+      "title": "AD-Relight: Training-Free Banner Relighting via Illumination Translation with Diffusion Priors",
+      "abstract": "The recent surge in content consumption through streaming services has driven a growing demand for personalized content. Personalized advertisements (ads) play a crucial role in enhancing both user engagement and ad effectiveness. A key aspect of ad personalization involves replacing existing regions in a frame with custom, Photoshop-generated banners. However, existing ad-placement pipelines typically rely on simple geometric warping, ignoring the scene's underlying lighting conditions. Similarly, state-of-the-art diffusion-based object insertion and relighting models struggle to accurately relight these newly inserted banners, as they are not trained on ad-banner data, and training such a model for ad banners would require millions of images. This highlights the need for an effective relighting framework that enables seamless integration of custom banners into the original scene. Motivated by this, we present AD-Relight, a novel multi-stage training-free framework that adapts a diffusion-based relighting model at test time to relight newly added Photoshop-generated ad banners. Through extensive evaluation, we demonstrate that AD-Relight outperforms both relighting baselines and existing ad-placement methods based on simple warping. User studies further show that participants consistently prefer the outputs of AD-Relight over those of prior approaches.",
+      "authors": [
+        "Rameshwar Mishra",
+        "A V Subramanyam"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-27T12:30:04+00:00",
+      "link": "https://arxiv.org/pdf/2604.24407v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "training-free banner relighting via diffusion priors",
+      "llm_evidence_cn": "通过扩散先验实现免训练的横幅重打光",
+      "llm_evidence": "通过扩散先验实现免训练的横幅重打光",
+      "canonical_evidence": "通过扩散先验实现免训练的横幅重打光",
+      "llm_tldr_en": "Enables training-free relighting of inserted banners in videos using diffusion-based illumination translation.",
+      "llm_tldr_cn": "利用基于扩散的照明转换，实现视频中插入横幅的免训练重打光。",
+      "llm_tldr": "利用基于扩散的照明转换，实现视频中插入横幅的免训练重打光。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.22554v1",
+      "source": "arxiv",
+      "title": "Video Analysis and Generation via a Semantic Progress Function",
+      "abstract": "Transformations produced by image and video generation models often evolve in a highly non-linear manner: long stretches where the content barely changes are followed by sudden, abrupt semantic jumps. To analyze and correct this behavior, we introduce a Semantic Progress Function, a one-dimensional representation that captures how the meaning of a given sequence evolves over time. For each frame, we compute distances between semantic embeddings and fit a smooth curve that reflects the cumulative semantic shift across the sequence. Departures of this curve from a straight line reveal uneven semantic pacing. Building on this insight, we propose a semantic linearization procedure that reparameterizes (or retimes) the sequence so that semantic change unfolds at a constant rate, yielding smoother and more coherent transitions. Beyond linearization, our framework provides a model-agnostic foundation for identifying temporal irregularities, comparing semantic pacing across different generators, and steering both generated and real-world video sequences toward arbitrary target pacing.",
+      "authors": [
+        "Gal Metzer",
+        "Sagi Polaczek",
+        "Ali Mahdavi-Amiri",
+        "Raja Giryes",
+        "Daniel Cohen-Or"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-24T13:48:51+00:00",
+      "link": "https://arxiv.org/pdf/2604.22554v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantic linearization for video generation pacing",
+      "llm_evidence_cn": "用于视频生成节奏的语义线性化",
+      "llm_evidence": "用于视频生成节奏的语义线性化",
+      "canonical_evidence": "用于视频生成节奏的语义线性化",
+      "llm_tldr_en": "Introduces a Semantic Progress Function to analyze and correct the semantic pacing of video generation.",
+      "llm_tldr_cn": "引入语义进度函数来分析和纠正视频生成的语义节奏。",
+      "llm_tldr": "引入语义进度函数来分析和纠正视频生成的语义节奏。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.24764v1",
+      "source": "arxiv",
+      "title": "World-R1: Reinforcing 3D Constraints for Text-to-Video Generation",
+      "abstract": "Recent video foundation models demonstrate impressive visual synthesis but frequently suffer from geometric inconsistencies. While existing methods attempt to inject 3D priors via architectural modifications, they often incur high computational costs and limit scalability. We propose World-R1, a framework that aligns video generation with 3D constraints through reinforcement learning. To facilitate this alignment, we introduce a specialized pure text dataset tailored for world simulation. Utilizing Flow-GRPO, we optimize the model using feedback from pre-trained 3D foundation models and vision-language models to enforce structural coherence without altering the underlying architecture. We further employ a periodic decoupled training strategy to balance rigid geometric consistency with dynamic scene fluidity. Extensive evaluations reveal that our approach significantly enhances 3D consistency while preserving the original visual quality of the foundation model, effectively bridging the gap between video generation and scalable world simulation.",
+      "authors": [
+        "Weijie Wang",
+        "Xiaoxuan He",
+        "Youping Gu",
+        "Yifan Yang",
+        "Zeyu Zhang",
+        "Yefei He",
+        "Yanbo Ding",
+        "Xirui Hu",
+        "Donny Y. Chen",
+        "Zhiyuan He",
+        "Yuqing Yang",
+        "Bohan Zhuang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-27T17:59:56+00:00",
+      "link": "https://arxiv.org/pdf/2604.24764v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "text-to-video generation with 3D constraints and structural coherence",
+      "llm_evidence_cn": "具有3D约束和结构一致性的文本到视频生成",
+      "llm_evidence": "具有3D约束和结构一致性的文本到视频生成",
+      "canonical_evidence": "具有3D约束和结构一致性的文本到视频生成",
+      "llm_tldr_en": "World-R1 uses reinforcement learning to align video generation with 3D constraints for better structural coherence.",
+      "llm_tldr_cn": "World-R1利用强化学习将视频生成与3D约束对齐，以增强结构一致性。",
+      "llm_tldr": "World-R1利用强化学习将视频生成与3D约束对齐，以增强结构一致性。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.23325v1",
+      "source": "arxiv",
+      "title": "EAD-Net: Emotion-Aware Talking Head Generation with Spatial Refinement and Temporal Coherence",
+      "abstract": "Emotionally talking head video generation aims to generate expressive portrait videos with accurate lip synchronization and emotional facial expressions. Current methods rely on simple emotional labels, leading to insufficient semantic information. While introducing high-level semantics enhances expressiveness, it easily causes lip-sync degradation. Furthermore, mainstream generation methods struggle to balance computational efficiency and global motion awareness in long videos and suffer from poor temporal coherence. Therefore, we propose an \\textbf{E}motion-\\textbf{A}ware \\textbf{D}iffusion model-based \\textbf{Net}work, called \\textbf{EAD-Net}. We introduce SyncNet supervision and Temporal Representation Alignment (TREPA) to mitigate lip-sync degradation caused by multi-modal fusion. To model complex spatio-temporal dependencies in long video sequences, we propose a Spatio-Temporal Directional Attention (STDA) mechanism that captures global motion patterns through strip attention. Additionally, we design a Temporal Frame graph Reasoning Module (TFRM) to explicitly model temporal coherence between video frames through graph structure learning. To enhance emotional semantic control, a large language model is employed to extract textual descriptions from real videos, serving as high-level semantic guidance. Experiments on the HDTF and MEAD datasets demonstrate that our method outperforms existing methods in terms of lip-sync accuracy, temporal consistency, and emotional accuracy.",
+      "authors": [
+        "Yahui Li",
+        "Yinfeng Yu",
+        "Liejun Wang",
+        "Shengjie Shen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "eess.IV"
+      ],
+      "published": "2026-04-25T14:29:58+00:00",
+      "link": "https://arxiv.org/pdf/2604.23325v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "emotion-aware talking head video generation with temporal coherence",
+      "llm_evidence_cn": "具有时间相干性的情感感知说话人视频生成",
+      "llm_evidence": "具有时间相干性的情感感知说话人视频生成",
+      "canonical_evidence": "具有时间相干性的情感感知说话人视频生成",
+      "llm_tldr_en": "EAD-Net generates expressive talking head videos using a diffusion model with spatial and temporal refinement.",
+      "llm_tldr_cn": "EAD-Net利用扩散模型和时空细化技术生成具有表现力的说话人视频。",
+      "llm_tldr": "EAD-Net利用扩散模型和时空细化技术生成具有表现力的说话人视频。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.24842v1",
+      "source": "arxiv",
+      "title": "Co-Director: Agentic Generative Video Storytelling",
+      "abstract": "While diffusion models generate high-fidelity video clips, transforming them into coherent storytelling engines remains challenging. Current agentic pipelines automate this via chained modules but suffer from semantic drift and cascading failures due to independent, handcrafted prompting. We present Co-Director, a hierarchical multi-agent framework formalizing video storytelling as a global optimization problem. To ensure semantic coherence, we introduce hierarchical parameterization: a multi-armed bandit globally identifies promising creative directions, while a local multimodal self-refinement loop mitigates identity drift and ensures sequence-level consistency. This balances the exploration of novel narrative strategies with the exploitation of effective creative configurations. For evaluation, we introduce GenAD-Bench, a 400-scenario dataset of fictional products for personalized advertising. Experiments demonstrate that Co-Director significantly outperforms state-of-the-art baselines, offering a principled approach that seamlessly generalizes to broader cinematic narratives. Project Page: https://co-director-agent.github.io/",
+      "authors": [
+        "Yale Song",
+        "Yiwen Song",
+        "Nick Losier",
+        "Nathan Hodson",
+        "Ye Jin",
+        "Rhyard Zhu",
+        "Yan Xu",
+        "Daniel Vlasic",
+        "Carina Claassen",
+        "Jasmine Leon",
+        "Khanh G. LeViet",
+        "Zack Chomyn",
+        "Joe Timmons",
+        "Brett Slatkin",
+        "Scott Penberthy",
+        "Tomas Pfister"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.MA",
+        "cs.MM"
+      ],
+      "published": "2026-04-27T18:00:00+00:00",
+      "link": "https://arxiv.org/pdf/2604.24842v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "hierarchical multi-agent framework for controllable video storytelling",
+      "llm_evidence_cn": "用于可控视频叙事的层级多智能体框架",
+      "llm_evidence": "用于可控视频叙事的层级多智能体框架",
+      "canonical_evidence": "用于可控视频叙事的层级多智能体框架",
+      "llm_tldr_en": "Co-Director uses a multi-agent framework to ensure semantic coherence and consistency in generative video storytelling.",
+      "llm_tldr_cn": "Co-Director利用多智能体框架确保生成式视频叙事中的语义连贯性和一致性。",
+      "llm_tldr": "Co-Director利用多智能体框架确保生成式视频叙事中的语义连贯性和一致性。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.23579v1",
+      "source": "arxiv",
+      "title": "CineAGI: Character-Consistent Movie Creation through LLM-Orchestrated Multi-Modal Generation and Cross-Scene Integration",
+      "abstract": "Automated movie creation requires coordinating multiple characters, modalities, and narrative elements across extended sequences -- a challenge that existing end-to-end approaches struggle to address effectively. We present \\textbf{CineAGI}, a hierarchical movie generation framework that decomposes this complex task through specialized multi-agent orchestration. Our framework employs three key innovations: (1) a multi-agent narrative synthesis module where specialized LLM agents collaboratively generate comprehensive cinematic blueprints with character profiles, scene descriptions, and cross-modal specifications; (2) a decoupled character-centric pipeline that maintains identity consistency through instance-level tracking and integration while enabling flexible multi-character composition; and (3) a hierarchical audio-visual synchronization mechanism ensuring frame-level alignment of dialogue, expressions, and music. Extensive experiments demonstrate that CineAGI achieves 40\\% improvement in overall consistency, 4.4\\% gain in subject consistency, 5.4\\% enhancement in aesthetic quality, and 28.7\\% higher character consistency compared to baselines. Our work establishes a principled foundation for automated multi-scene video generation that preserves narrative coherence and character authenticity.",
+      "authors": [
+        "Tianyidan Xie",
+        "Zhentao Huang",
+        "Mingjie Wang",
+        "Xin Huang",
+        "Jun Zhou",
+        "Minglun Gong",
+        "Zili Yi"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM"
+      ],
+      "published": "2026-04-26T07:34:41+00:00",
+      "link": "https://arxiv.org/pdf/2604.23579v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hierarchical movie generation framework with cross-modal specifications",
+      "llm_evidence_cn": "具有跨模态规范的分层电影生成框架",
+      "llm_evidence": "具有跨模态规范的分层电影生成框架",
+      "canonical_evidence": "具有跨模态规范的分层电影生成框架",
+      "llm_tldr_en": "CineAGI uses multi-agent orchestration for character-consistent movie creation and narrative synthesis.",
+      "llm_tldr_cn": "CineAGI 通过多智能体协作实现角色一致的电影创作和叙事合成。",
+      "llm_tldr": "CineAGI 通过多智能体协作实现角色一致的电影创作和叙事合成。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.25819v1",
+      "source": "arxiv",
+      "title": "Mutual Forcing: Dual-Mode Self-Evolution for Fast Autoregressive Audio-Video Character Generation",
+      "abstract": "In this work, we propose Mutual Forcing, a framework for fast autoregressive audio-video generation with long-horizon audio-video synchronization. Our approach addresses two key challenges: joint audio-video modeling and fast autoregressive generation. To ease joint audio-video optimization, we adopt a two-stage training strategy: we first train uni-modal generators and then couple them into a unified audio-video model for joint training on paired data. For streaming generation, we ask whether a native fast causal audio-video model can be trained directly, instead of following existing streaming distillation pipelines that typically train a bidirectional model first and then convert it into a causal generator through multiple distillation stages. Our answer is Mutual Forcing, which builds directly on native autoregressive model and integrates few-step and multi-step generation within a single weight-shared model, enabling self-distillation and improved training-inference consistency. The multi-step mode improves the few-step mode via self-distillation, while the few-step mode generates historical context during training to improve training-inference consistency; because the two modes share parameters, these two effects reinforce each other within a single model. Compared with prior approaches such as Self-Forcing, Mutual Forcing removes the need for an additional bidirectional teacher model, supports more flexible training sequence lengths, reduces training overhead, and allows the model to improve directly from real paired data rather than a fixed teacher. Experiments show that Mutual Forcing matches or surpasses strong baselines that require around 50 sampling steps while using only 4 to 8 steps, demonstrating substantial advantages in both efficiency and quality. The project page is available at https://mutualforcing.github.io.",
+      "authors": [
+        "Yupeng Zhou",
+        "Lianghua Huang",
+        "Zhifan Wu",
+        "Jiabao Wang",
+        "Yupeng Shi",
+        "Biao Jiang",
+        "Daquan Zhou",
+        "Yu Liu",
+        "Ming-Ming Cheng",
+        "Qibin Hou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.SD"
+      ],
+      "published": "2026-04-28T16:28:05+00:00",
+      "link": "https://arxiv.org/pdf/2604.25819v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Fast autoregressive audio-video generation with synchronization",
+      "llm_evidence_cn": "具有同步功能的快速自回归音视频生成",
+      "llm_evidence": "具有同步功能的快速自回归音视频生成",
+      "canonical_evidence": "具有同步功能的快速自回归音视频生成",
+      "llm_tldr_en": "Mutual Forcing enables fast autoregressive audio-video generation with long-horizon synchronization.",
+      "llm_tldr_cn": "Mutual Forcing框架实现了具有长时同步功能的快速自回归音视频生成。",
+      "llm_tldr": "Mutual Forcing框架实现了具有长时同步功能的快速自回归音视频生成。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.23586v1",
+      "source": "arxiv",
+      "title": "Talker-T2AV: Joint Talking Audio-Video Generation with Autoregressive Diffusion Modeling",
+      "abstract": "Joint audio-video generation models have shown that unified generation yields stronger cross-modal coherence than cascaded approaches. However, existing models couple modalities throughout denoising via pervasive attention, treating high-level semantics and low-level details in a fully entangled manner. This is suboptimal for talking head synthesis: while audio and facial motion are semantically correlated, their low-level realizations (acoustic signals and visual textures) follow distinct rendering processes. Enforcing joint modeling across all levels causes unnecessary entanglement and reduces efficiency. We propose Talker-T2AV, an autoregressive diffusion framework where high-level cross-modal modeling occurs in a shared backbone, while low-level refinement uses modality-specific decoders. A shared autoregressive language model jointly reasons over audio and video in a unified patch-level token space. Two lightweight diffusion transformer heads decode the hidden states into frame-level audio and video latents. Experiments on talking portrait benchmarks show Talker-T2AV outperforms dual-branch baselines in lip-sync accuracy, video quality, and audio quality, achieving stronger cross-modal consistency than cascaded pipelines.",
+      "authors": [
+        "Zhen Ye",
+        "Xu Tan",
+        "Aoxiong Yin",
+        "Hongzhan Lin",
+        "Guangyan Zhang",
+        "Peiwen Sun",
+        "Yiming Li",
+        "Chi-Min Chan",
+        "Wei Ye",
+        "Shikun Zhang",
+        "Wei Xue"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.CL",
+        "cs.MM",
+        "cs.SD",
+        "eess.AS"
+      ],
+      "published": "2026-04-26T07:48:47+00:00",
+      "link": "https://arxiv.org/pdf/2604.23586v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "joint talking audio-video generation with autoregressive diffusion",
+      "llm_evidence_cn": "基于自回归扩散的联合语音视频生成",
+      "llm_evidence": "基于自回归扩散的联合语音视频生成",
+      "canonical_evidence": "基于自回归扩散的联合语音视频生成",
+      "llm_tldr_en": "Talker-T2AV improves talking head synthesis through joint audio-video modeling in a shared backbone.",
+      "llm_tldr_cn": "Talker-T2AV 通过共享主干网络中的音视频联合建模提升了说话人脸合成效果。",
+      "llm_tldr": "Talker-T2AV 通过共享主干网络中的音视频联合建模提升了说话人脸合成效果。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.26232v1",
+      "source": "arxiv",
+      "title": "DepthPilot: From Controllability to Interpretability in Colonoscopy Video Generation",
+      "abstract": "Controllable medical video generation has achieved remarkable progress, but it still lacks interpretability, which requires the alignment of generated contents with physical priors and faithful clinical manifestations. To push the boundaries from mere controllability to interpretability, we propose DepthPilot, the first interpretable framework for colonoscopy video generation. This work takes a step toward trustworthy generation through two synergistic paradigms. To achieve explicit geometric grounding, DepthPilot devises a prior distribution alignment strategy, injecting depth constraints into the diffusion backbone via parameter-efficient fine-tuning to ensure anatomical fidelity. To enhance intrinsic nonlinear modeling under these geometric constraints, DepthPilot employs an adaptive spline denoising module, replacing fixed linear weights with learnable spline functions to capture complex spatio-temporal dynamics. Extensive evaluations across three public datasets and in-house clinical data confirm DepthPilot's robust ability to produce physically consistent videos. It achieves FID scores below 15 across all benchmarks and ranks first in clinician assessments, bridging the gap between \"visually realistic\" and \"clinically interpretable\". Moreover, DepthPilot-generated videos are expected to enable reliable 3D reconstruction, facilitating surgical navigation and blind region identification, and serve as a foundation toward the colorectal world model.",
+      "authors": [
+        "Junhu Fu",
+        "Ke Chen",
+        "Weidong Guo",
+        "Shuyu Liang",
+        "Jie Xu",
+        "Chen Ma",
+        "Kehao Wang",
+        "Shengli Lin",
+        "Zeju Li",
+        "Yuanyuan Wang",
+        "Yi Guo",
+        "Shuo Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-04-29T02:24:28+00:00",
+      "link": "https://arxiv.org/pdf/2604.26232v1",
+      "tags": [
+        "keyword:CV VG CS"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "controllable video generation with depth constraints and fine-tuning",
+      "llm_evidence_cn": "具有深度约束和微调的可控视频生成",
+      "llm_evidence": "具有深度约束和微调的可控视频生成",
+      "canonical_evidence": "具有深度约束和微调的可控视频生成",
+      "llm_tldr_en": "DepthPilot introduces an interpretable framework for controllable colonoscopy video generation using depth priors.",
+      "llm_tldr_cn": "DepthPilot通过深度先验为可控结肠镜视频生成引入了一个可解释的框架。",
+      "llm_tldr": "DepthPilot通过深度先验为可控结肠镜视频生成引入了一个可解释的框架。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

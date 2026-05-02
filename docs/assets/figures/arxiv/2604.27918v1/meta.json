@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.27918v1/fig-001.webp",
+      "caption": "Figure 6 Qualitative results of ablated training stages. We present visualizations for different training stages. Stage 1 denotes same-scene pretraining, Stage 2 applies cross-scene fine-tuning, and Stage 3 integrates task-specific reinforcement learning. Details are provided in Sec. 3.2.",
+      "page": 11,
+      "index": 1,
+      "width": 982,
+      "height": 473
+    },
+    {
+      "url": "assets/figures/arxiv/2604.27918v1/fig-002.webp",
+      "caption": "Figure 5 Qualitative comparisons with the State-of-The-Art methods.",
+      "page": 10,
+      "index": 2,
+      "width": 898,
+      "height": 1300
+    },
+    {
+      "url": "assets/figures/arxiv/2604.27918v1/fig-003.webp",
+      "caption": "Figure 1 Talking avatar generation from video reference. (a) Visual comparisons demonstrate that our video reference framework yields significantly better identity preservation compared to the single-image baseline in cross-scene generation. To illustrate this mechanism, we visualize the attention distribution of a specific generated frame across all reference frames, obtained by extracting the attention weights directly from the model’s attention layers. The heatmaps reveal that our method selectively aggregates salient identity cues (e.g., lip shapes and facial silhouettes) from highly correlated frames, while naturally suppressing frames with mismatched poses and expressions. This targeted feature aggregation explicitly demonstrates the effectiveness of the video referencing approach. (b) The plot shows that our identity similarity increases with the number of reference frames, confirming that longer reference input is advantageous. Furthermore, our approach consistently outperforms existing single-image baselines, achieving substantially higher similarity scores.",
+      "page": 3,
+      "index": 3,
+      "width": 981,
+      "height": 410
+    },
+    {
+      "url": "assets/figures/arxiv/2604.27918v1/fig-004.webp",
+      "caption": "Figure 4 Visual comparison across varying reference lengths. The leftmost column displays the input reference video, followed by the corresponding generation results using different numbers of reference frames. Orange arrows highlight the artifacts in the teeth region of the 12-frame variant.",
+      "page": 8,
+      "index": 4,
+      "width": 969,
+      "height": 317
+    },
+    {
+      "url": "assets/figures/arxiv/2604.27918v1/fig-005.webp",
+      "caption": "Figure 3 Performance with reference number changes. (a) Identity Similarity: Increasing the reference context leads to a continuous improvement in similarity scores. (b) Lip Synchronization: Sync-D and Sync-C scores remain stable, demonstrating that TAVR maintains precise lip-sync accuracy as the reference length increases. (c) General Quality: Visual quality metrics show negligible fluctuations, proving that the gain in identity fidelity does not compromise generation stability. Notably, TAVR generalizes effectively to 48 reference frames despite its restricted training context of fewer than 20 frames.",
+      "page": 8,
+      "index": 5,
+      "width": 984,
+      "height": 402
+    },
+    {
+      "url": "assets/figures/arxiv/2604.27918v1/fig-006.webp",
+      "caption": "Figure 2 Overview of TAVR framework. Our framework generates high-fidelity talking avatars with customized backgrounds by integrating cross-scene video references. Visual inputs, including the video reference and masked target background, are encoded by the VAE into latents zref and zbg, followed by a Token Selection module to reduce computational redundancy. These tokens, alongside an optional motion latent zm for longer video synthesis, are concatenated with the noisy target latent z and forwarded through N adapted Transformer blocks. Within each block, a Reference Self-Attention module extends standard self-attention to jointly process target and reference features. Subsequently, two cross-attention modules inject guidance from the text prompt ttxt via text encoder [10] and audio signals encoded from Wav2Vec 2.0 [1]. Notably, besides the driving audio adrv for target lip synchronization, the audio module incorporates the corresponding reference audio aref to inject explicit audio-visual clues into the reference stream, guiding the network to accurately locate and extract the intrinsic speaking dynamics from the reference tokens. After discarding the auxiliary reference and background tokens, the target generation is decoded by the VAE.",
+      "page": 4,
+      "index": 6,
+      "width": 977,
+      "height": 439
+    },
+    {
+      "url": "assets/figures/arxiv/2604.27918v1/fig-007.webp",
+      "caption": "Table 1 Quantitative comparison with state-of-the-art methods.",
+      "page": 9,
+      "index": 7,
+      "width": 968,
+      "height": 385
+    },
+    {
+      "url": "assets/figures/arxiv/2604.27918v1/fig-008.webp",
+      "caption": "Figure 7 Additional qualitative comparisons on the cross-scene benchmark.",
+      "page": 16,
+      "index": 8,
+      "width": 900,
+      "height": 1310
+    }
+  ]
+}
