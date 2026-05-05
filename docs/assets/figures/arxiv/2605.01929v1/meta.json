@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-001.webp",
+      "caption": "Figure 11. Cluster-level RMS energy density after adaptation with FFT and LoRA of all modules in block 20 of Wan2.1-T2V-1.3B.",
+      "page": 15,
+      "index": 1,
+      "width": 962,
+      "height": 746
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-002.webp",
+      "caption": "Figure 16. Structured perturbation observed on HunyuanVideo-1.5 family.",
+      "page": 21,
+      "index": 2,
+      "width": 955,
+      "height": 1129
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-003.webp",
+      "caption": "Table 1. Comparison of direct LoRA reuse and transferring LoRA with CASA on distilled VDMs. Best results are bold.",
+      "page": 7,
+      "index": 3,
+      "width": 488,
+      "height": 331
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-004.webp",
+      "caption": "Figure 17. Routing interference observed on HunyuanVideo-1.5 family. 22",
+      "page": 22,
+      "index": 4,
+      "width": 851,
+      "height": 1402
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-005.webp",
+      "caption": "Figure 10. Similarity matrix of left singular bases before and after applying LoRA on transformer block 30 of Wan2.1-T2V-14B.",
+      "page": 14,
+      "index": 5,
+      "width": 960,
+      "height": 749
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-006.webp",
+      "caption": "Figure 9. Similarity matrix of left singular bases before and after applying LoRA on transformer block 20 of Wan2.1-T2V-1.3B.",
+      "page": 13,
+      "index": 6,
+      "width": 960,
+      "height": 749
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-007.webp",
+      "caption": "Figure 4. Routing pattern and energy coherence of clusters.",
+      "page": 4,
+      "index": 7,
+      "width": 485,
+      "height": 376
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-008.webp",
+      "caption": "Figure 5. Typical cluster-level routing behaviors of LoRA and FFT. Please see Appendix B.1 for more results.",
+      "page": 4,
+      "index": 8,
+      "width": 487,
+      "height": 454
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-009.webp",
+      "caption": "Figure 15. Spectral rigidity observed on HunyuanVideo-1.5 family.",
+      "page": 20,
+      "index": 9,
+      "width": 953,
+      "height": 1019
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01929v1/fig-010.webp",
+      "caption": "Figure 12. Cluster-level routing heatmap induced by FFT and LoRA of all modules in block 20 of Wan2.1-T2V-1.3B.",
+      "page": 16,
+      "index": 10,
+      "width": 961,
+      "height": 574
+    }
+  ]
+}
