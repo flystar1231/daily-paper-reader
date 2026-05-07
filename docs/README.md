@@ -6,61 +6,61 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-06
-- 运行时间：2026-05-06 20:29:42 UTC
+- 最新运行日期：2026-05-07
+- 运行时间：2026-05-07 20:50:30 UTC
 - 运行状态：成功
 - 本次总论文数：13
 - 精读区：2
 - 速读区：11
 
 ### 今日简报（AI）
-深度探索多模态视频生成与世界模型，今日重点解析 UniVidX 统一框架及解耦表征对齐技术。
-扩散先验正驱动视频生成走向全能化，而“分而治之”的对齐策略显著增强了多模态世界模型的逻辑一致性。
-推荐关注扩散模型在结肠镜视频模拟及免训练色彩控制等细分场景的创新应用。
-- 详情：[/202605/06/README](/202605/06/README)
+今日精选 13 篇前沿论文，深度聚焦多模态世界模型的表征对齐与流式视频生成的推理缩放技术。
+核心突破在于通过解耦对齐提升世界模型理解力，以及利用 Stream-T1 实现高质量长视频的实时生成。
+推荐关注视频生成在动漫艺术化与结肠镜模拟等垂直领域的跨界应用，把握生成式 AI 向专业化演进的趋势。
+- 详情：[/202605/07/README](/202605/07/README)
 
 ### 精读区论文标签
-1. [UniVidX: A Unified Multimodal Framework for Versatile Video Generation via Diffusion Priors](/202605/06/2605.00658v1-unividx-a-unified-multimodal-framework-for-versatile-video-generation-via-diffusion-priors)  
+1. [Divide and Conquer: Decoupled Representation Alignment for Multimodal World Models](/202605/07/2605.01896v1-divide-and-conquer-decoupled-representation-alignment-for-multimodal-world-models)  
    标签：评分：8.0/10、query:cv-vg-cs
-   evidence：基于扩散先验的通用视频生成统一多模态框架
-2. [Divide and Conquer: Decoupled Representation Alignment for Multimodal World Models](/202605/06/2605.01896v1-divide-and-conquer-decoupled-representation-alignment-for-multimodal-world-models)  
+   evidence：联合生成包括掩码在内的多种模态视频
+2. [Stream-T1: Test-Time Scaling for Streaming Video Generation](/202605/07/2605.04461v1-stream-t1-test-time-scaling-for-streaming-video-generation)  
    标签：评分：8.0/10、query:cv-vg-cs
-   evidence：跨多种模态（包括掩码/透明度）联合生成视频
+   evidence：无需增加训练成本的视频生成测试时缩放
 
 ### 速读区论文标签
-1. [Colorful-Noise: Training-Free Low-Frequency Noise Manipulation for Color-Based Conditional Image Generation](/202605/06/2605.00548v1-colorful-noise-training-free-low-frequency-noise-manipulation-for-color-based-conditional-image-generation)  
+1. [Bridging the Embodiment Gap: Disentangled Cross-Embodiment Video Editing](/202605/07/2605.03637v1-bridging-the-embodiment-gap-disentangled-cross-embodiment-video-editing)  
    标签：评分：7.5/10、query:cv-vg-cs
-   evidence：用于可控生成的免训练噪声操纵
-2. [DepthPilot: From Controllability to Interpretability in Colonoscopy Video Generation](/202605/06/2604.26232v1-depthpilot-from-controllability-to-interpretability-in-colonoscopy-video-generation)  
+   evidence：具有解耦表示的可控视频编辑生成框架
+2. [AniMatrix: An Anime Video Generation Model that Thinks in Art, Not Physics](/202605/07/2605.03652v1-animatrix-an-anime-video-generation-model-that-thinks-in-art-not-physics)  
+   标签：评分：7.5/10、query:cv-vg-cs
+   evidence：具有双通道调节的可控视频生成模型
+3. [DepthPilot: From Controllability to Interpretability in Colonoscopy Video Generation](/202605/07/2604.26232v1-depthpilot-from-controllability-to-interpretability-in-colonoscopy-video-generation)  
    标签：评分：7.0/10、query:cv-vg-cs
-   evidence：具有深度约束的可控医学视频生成
-3. [Delta Score Matters! Spatial Adaptive Multi Guidance in Diffusion Models](/202605/06/2604.26503v1-delta-score-matters-spatial-adaptive-multi-guidance-in-diffusion-models)  
+   evidence：具有几何接地和深度约束的可控视频生成
+4. [Delta Score Matters! Spatial Adaptive Multi Guidance in Diffusion Models](/202605/07/2604.26503v1-delta-score-matters-spatial-adaptive-multi-guidance-in-diffusion-models)  
    标签：评分：7.0/10、query:cv-vg-cs
-   evidence：视频扩散模型中的空间自适应引导
-4. [YOSE: You Only Select Essential Tokens for Efficient DiT-based Video Object Removal](/202605/06/2604.27322v1-yose-you-only-select-essential-tokens-for-efficient-dit-based-video-object-removal)  
+   evidence：空间自适应多重引导解决视频中的时间不一致性
+5. [PhyCo: Learning Controllable Physical Priors for Generative Motion](/202605/07/2604.28169v1-phyco-learning-controllable-physical-priors-for-generative-motion)  
    标签：评分：7.0/10、query:cv-vg-cs
-   evidence：高效的基于DiT的视频物体移除
-5. [PhyCo: Learning Controllable Physical Priors for Generative Motion](/202605/06/2604.28169v1-phyco-learning-controllable-physical-priors-for-generative-motion)  
+   evidence：具有物理先验的可控视频生成
+6. [Colorful-Noise: Training-Free Low-Frequency Noise Manipulation for Color-Based Conditional Image Generation](/202605/07/2605.00548v1-colorful-noise-training-free-low-frequency-noise-manipulation-for-color-based-conditional-image-generation)  
    标签：评分：7.0/10、query:cv-vg-cs
-   evidence：基于物理先验和ControlNet的可控视频生成
-6. [Action Agent: Agentic Video Generation Meets Flow-Constrained Diffusion](/202605/06/2605.01477v1-action-agent-agentic-video-generation-meets-flow-constrained-diffusion)  
-   标签：评分：7.0/10、query:cv-vg-cs
-   evidence：具有流约束扩散控制的智能体视频生成
-7. [DouC: Dual-Branch CLIP for Training-Free Open-Vocabulary Segmentation](/202605/06/2604.24997v1-douc-dual-branch-clip-for-training-free-open-vocabulary-segmentation)  
+   evidence：用于可控生成的免训练低频噪声处理
+7. [Diffusion-OAMP for Joint Image Compression and Wireless Transmission](/202605/07/2604.27952v1-diffusion-oamp-for-joint-image-compression-and-wireless-transmission)  
    标签：评分：6.5/10、query:cv-vg-cs
-   evidence：用于密集预测的免训练框架
-8. [A Systematic Post-Train Framework for Video Generation](/202605/06/2604.25427v1-a-systematic-post-train-framework-for-video-generation)  
+   evidence：使用预训练扩散模型的免训练重建框架
+8. [Heterogeneous Model Fusion for Privacy-Aware Multi-Camera Surveillance via Synthetic Domain Adaptation](/202605/07/2605.02169v1-heterogeneous-model-fusion-for-privacy-aware-multi-camera-surveillance-via-synthetic-domain-adaptation)  
    标签：评分：6.5/10、query:cv-vg-cs
-   evidence：可控视频生成的后训练框架
-9. [Mutual Forcing: Dual-Mode Self-Evolution for Fast Autoregressive Audio-Video Character Generation](/202605/06/2604.25819v1-mutual-forcing-dual-mode-self-evolution-for-fast-autoregressive-audio-video-character-generation)  
+   evidence：基于扩散的生成模块，通过提示词控制合成特定对象实例
+9. [YOSE: You Only Select Essential Tokens for Efficient DiT-based Video Object Removal](/202605/07/2604.27322v1-yose-you-only-select-essential-tokens-for-efficient-dit-based-video-object-removal)  
    标签：评分：6.0/10、query:cv-vg-cs
-   evidence：可控的人物视频生成
-10. [MarkIt: Training-Free Visual Markers for Precise Video Temporal Grounding](/202605/06/2604.25886v1-markit-training-free-visual-markers-for-precise-video-temporal-grounding)  
+   evidence：高效的基于DiT的视频对象移除
+10. [ExoActor: Exocentric Video Generation as Generalizable Interactive Humanoid Control](/202605/07/2604.27711v1-exoactor-exocentric-video-generation-as-generalizable-interactive-humanoid-control)  
    标签：评分：6.0/10、query:cv-vg-cs
-   evidence：用于精确视频时间定位的免训练框架
-11. [TripVVT: A Large-Scale Triplet Dataset and a Coarse-Mask Baseline for In-the-Wild Video Virtual Try-On](/202605/06/2604.27958v1-tripvvt-a-large-scale-triplet-dataset-and-a-coarse-mask-baseline-for-in-the-wild-video-virtual-try-on)  
+   evidence：用于可控类人交互的大规模视频生成模型
+11. [Generate Your Talking Avatar from Video Reference](/202605/07/2604.27918v1-generate-your-talking-avatar-from-video-reference)  
    标签：评分：6.0/10、query:cv-vg-cs
-   evidence：基于扩散的视频虚拟试穿，使用人体掩码先验进行背景保留
+   evidence：根据视频参考在自定义背景中生成说话人头像
 
 
 <div class="dpr-home-promo-card">
