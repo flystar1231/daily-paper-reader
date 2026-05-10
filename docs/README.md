@@ -6,73 +6,73 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-09
-- 运行时间：2026-05-09 20:20:42 UTC
+- 最新运行日期：2026-05-10
+- 运行时间：2026-05-10 20:38:16 UTC
 - 运行状态：成功
 - 本次总论文数：17
 - 精读区：6
 - 速读区：11
 
 ### 今日简报（AI）
-今日深度复盘 17 篇视觉生成论文，重点攻克流式视频推理扩展与免训练长视频生成两大难题。
-Stream-T1 与 FreeSpec 凭借推理侧缩放和奇异谱重建技术，为长视频的连贯性与实时性提供了 9.0 分的高质量解法。
-建议优先关注这些无需重训即可提升视频长度与跨具身编辑能力的即插即用方案。
-- 详情：[/202605/09/README](/202605/09/README)
+今日聚焦视频生成大爆发，涵盖从满分长视频重构到零样本相机控制的 17 篇前沿进展。
+重点关注 FreeSpec 如何无需训练实现超长视频生成，以及 ActCam 在 3D 动作协同控制上的突破。
+建议对实时交互、动漫艺术化生成及 VLA 数据增强感兴趣的读者深入探索。
+- 详情：[/202605/10/README](/202605/10/README)
 
 ### 精读区论文标签
-1. [Stream-T1: Test-Time Scaling for Streaming Video Generation](/202605/09/2605.04461v1-stream-t1-test-time-scaling-for-streaming-video-generation)  
+1. [FreeSpec: Training-Free Long Video Generation via Singular-Spectrum Reconstruction](/202605/10/2605.06509v1-freespec-training-free-long-video-generation-via-singular-spectrum-reconstruction)  
+   标签：评分：10.0/10、query:cv-vg-cs
+   evidence：基于奇异谱重构的免训练长视频生成
+2. [ActCam: Zero-Shot Joint Camera and 3D Motion Control for Video Generation](/202605/10/2605.06667v1-actcam-zero-shot-joint-camera-and-3d-motion-control-for-video-generation)  
    标签：评分：9.0/10、query:cv-vg-cs
-   evidence：无需训练成本的视频生成测试时缩放
-2. [FreeSpec: Training-Free Long Video Generation via Singular-Spectrum Reconstruction](/202605/09/2605.06509v1-freespec-training-free-long-video-generation-via-singular-spectrum-reconstruction)  
-   标签：评分：9.0/10、query:cv-vg-cs
-   evidence：免训练的长视频生成方法
-3. [Sparkle: Realizing Lively Instruction-Guided Video Background Replacement via Decoupled Guidance](/202605/09/2605.06535v1-sparkle-realizing-lively-instruction-guided-video-background-replacement-via-decoupled-guidance)  
+   evidence：视频生成中相机和3D运动联合控制的零样本方法
+3. [Divide and Conquer: Decoupled Representation Alignment for Multimodal World Models](/202605/10/2605.01896v1-divide-and-conquer-decoupled-representation-alignment-for-multimodal-world-models)  
    标签：评分：8.5/10、query:cv-vg-cs
-   evidence：需要精确前景-背景交互的视频背景替换
-4. [Action Agent: Agentic Video Generation Meets Flow-Constrained Diffusion](/202605/09/2605.01477v1-action-agent-agentic-video-generation-meets-flow-constrained-diffusion)  
+   evidence：包含掩码模态的多模态视频生成
+4. [SpecEdit: Training-Free Acceleration for Diffusion based Image Editing via Semantic Locking](/202605/10/2605.02152v1-specedit-training-free-acceleration-for-diffusion-based-image-editing-via-semantic-locking)  
+   标签：评分：8.5/10、query:cv-vg-cs
+   evidence：基于扩散的图像编辑的免训练动态分辨率采样
+5. [Stream-T1: Test-Time Scaling for Streaming Video Generation](/202605/10/2605.04461v1-stream-t1-test-time-scaling-for-streaming-video-generation)  
+   标签：评分：8.5/10、query:cv-vg-cs
+   evidence：无需训练成本的视频生成测试时缩放技术
+6. [Mamoda2.5: Enhancing Unified Multimodal Model with DiT-MoE](/202605/10/2605.02641v1-mamoda25-enhancing-unified-multimodal-model-with-dit-moe)  
    标签：评分：8.0/10、query:cv-vg-cs
-   evidence：使用流约束扩散的可控视频生成
-5. [Divide and Conquer: Decoupled Representation Alignment for Multimodal World Models](/202605/09/2605.01896v1-divide-and-conquer-decoupled-representation-alignment-for-multimodal-world-models)  
-   标签：评分：8.0/10、query:cv-vg-cs
-   evidence：跨包括掩码在内的多种模态联合生成视频
-6. [ActCam: Zero-Shot Joint Camera and 3D Motion Control for Video Generation](/202605/09/2605.06667v1-actcam-zero-shot-joint-camera-and-3d-motion-control-for-video-generation)  
-   标签：评分：8.0/10、query:cv-vg-cs
-   evidence：具有逐帧控制能力的零样本视频生成方法
+   evidence：用于视频生成和编辑的统一AR-Diffusion框架
 
 ### 速读区论文标签
-1. [Bridging the Embodiment Gap: Disentangled Cross-Embodiment Video Editing](/202605/09/2605.03637v1-bridging-the-embodiment-gap-disentangled-cross-embodiment-video-editing)  
+1. [Seeing Realism from Simulation: Efficient Video Transfer for Vision-Language-Action Data Augmentation](/202605/10/2605.02757v1-seeing-realism-from-simulation-efficient-video-transfer-for-vision-language-action-data-augmentation)  
    标签：评分：7.5/10、query:cv-vg-cs
-   evidence：具有解耦表示的跨具身视频编辑生成框架
-2. [UniVidX: A Unified Multimodal Framework for Versatile Video Generation via Diffusion Priors](/202605/09/2605.00658v1-unividx-a-unified-multimodal-framework-for-versatile-video-generation-via-diffusion-priors)  
-   标签：评分：7.0/10、query:cv-vg-cs
-   evidence：用于多功能视频生成的统一多模态框架
-3. [AttnRouter: Per-Category Attention Routing for Training-Free Image Editing on MMDiT](/202605/09/2605.01480v1-attnrouter-per-category-attention-routing-for-training-free-image-editing-on-mmdit)  
-   标签：评分：7.0/10、query:cv-vg-cs
-   evidence：在注意力层使用alpha混合的免训练图像编辑
-4. [Motion-Aware Caching for Efficient Autoregressive Video Generation](/202605/09/2605.01725v1-motion-aware-caching-for-efficient-autoregressive-video-generation)  
-   标签：评分：7.0/10、query:cv-vg-cs
-   evidence：用于视频生成的免训练运动感知缓存
-5. [SpecEdit: Training-Free Acceleration for Diffusion based Image Editing via Semantic Locking](/202605/09/2605.02152v1-specedit-training-free-acceleration-for-diffusion-based-image-editing-via-semantic-locking)  
-   标签：评分：7.0/10、query:cv-vg-cs
-   evidence：用于语义可控性的免训练动态分辨率采样
-6. [AniMatrix: An Anime Video Generation Model that Thinks in Art, Not Physics](/202605/09/2605.03652v1-animatrix-an-anime-video-generation-model-that-thinks-in-art-not-physics)  
-   标签：评分：7.0/10、query:cv-vg-cs
-   evidence：带有制作变量的可控动漫视频生成
-7. [SignVerse-2M: A Two-Million-Clip Pose-Native Universe of 25+ Sign Languages](/202605/09/2605.01720v1-signverse-2m-a-two-million-clip-pose-native-universe-of-25-sign-languages)  
+   evidence：利用条件视频迁移模型从仿真中合成真实视频
+2. [AniMatrix: An Anime Video Generation Model that Thinks in Art, Not Physics](/202605/10/2605.03652v2-animatrix-an-anime-video-generation-model-that-thinks-in-art-not-physics)  
+   标签：评分：7.5/10、query:cv-vg-cs
+   evidence：具有制作变量的可控动漫视频生成模型
+3. [RealCam: Real-Time Novel-View Video Generation with Interactive Camera Control](/202605/10/2605.06051v1-realcam-real-time-novel-view-video-generation-with-interactive-camera-control)  
+   标签：评分：7.5/10、query:cv-vg-cs
+   evidence：交互式摄像机控制视频生成
+4. [EA-WM: Event-Aware Generative World Model with Structured Kinematic-to-Visual Action Fields](/202605/10/2605.06192v1-ea-wm-event-aware-generative-world-model-with-structured-kinematic-to-visual-action-fields)  
+   标签：评分：7.5/10、query:cv-vg-cs
+   evidence：利用动作信号引导视频合成
+5. [Eulerian Motion Guidance: Robust Image Animation via Bidirectional Geometric Consistency](/202605/10/2605.06280v1-eulerian-motion-guidance-robust-image-animation-via-bidirectional-geometric-consistency)  
+   标签：评分：7.5/10、query:cv-vg-cs
+   evidence：图像动画和运动引导的可控框架
+6. [Sparkle: Realizing Lively Instruction-Guided Video Background Replacement via Decoupled Guidance](/202605/10/2605.06535v1-sparkle-realizing-lively-instruction-guided-video-background-replacement-via-decoupled-guidance)  
+   标签：评分：7.5/10、query:cv-vg-cs
+   evidence：视频背景替换与前景背景交互
+7. [Motion-Aware Caching for Efficient Autoregressive Video Generation](/202605/10/2605.01725v1-motion-aware-caching-for-efficient-autoregressive-video-generation)  
    标签：评分：6.5/10、query:cv-vg-cs
-   evidence：姿态驱动的手语视频生成框架与风格无关模型
-8. [Colorful-Noise: Training-Free Low-Frequency Noise Manipulation for Color-Based Conditional Image Generation](/202605/09/2605.00548v1-colorful-noise-training-free-low-frequency-noise-manipulation-for-color-based-conditional-image-generation)  
-   标签：评分：6.0/10、query:cv-vg-cs
-   evidence：用于可控生成的免训练噪声操作
-9. [VAnim: Rendering-Aware Sparse State Modeling for Structure-Preserving Vector Animation](/202605/09/2605.01517v1-vanim-rendering-aware-sparse-state-modeling-for-structure-preserving-vector-animation)  
-   标签：评分：6.0/10、query:cv-vg-cs
-   evidence：具有结构可编辑性的矢量动画生成
-10. [Video Active Perception: Effective Inference-Time Long-Form Video Understanding with Vision-Language Models](/202605/09/2605.01662v1-video-active-perception-effective-inference-time-long-form-video-understanding-with-vision-language-models)  
-   标签：评分：6.0/10、query:cv-vg-cs
-   evidence：利用视频生成的免训练主动感知方法
-11. [DataEvolver: Let Your Data Build and Improve Itself via Goal-Driven Loop Agents](/202605/09/2605.01789v1-dataevolver-let-your-data-build-and-improve-itself-via-goal-driven-loop-agents)  
-   标签：评分：6.0/10、query:cv-vg-cs
-   evidence：构建包括掩码和深度图在内的可控视觉数据
+   evidence：基于运动感知缓存的高效自回归视频生成
+8. [WorldJen: An End-to-End Multi-Dimensional Benchmark for Generative Video Models](/202605/10/2605.03475v1-worldjen-an-end-to-end-multi-dimensional-benchmark-for-generative-video-models)  
+   标签：评分：6.5/10、query:cv-vg-cs
+   evidence：生成式视频模型的多维度基准测试
+9. [DMGD: Train-Free Dataset Distillation with Semantic-Distribution Matching in Diffusion Models](/202605/10/2605.03877v1-dmgd-train-free-dataset-distillation-with-semantic-distribution-matching-in-diffusion-models)  
+   标签：评分：6.5/10、query:cv-vg-cs
+   evidence：扩散模型的高效免训练引导
+10. [Lightning Unified Video Editing via In-Context Sparse Attention](/202605/10/2605.04569v1-lightning-unified-video-editing-via-in-context-sparse-attention)  
+   标签：评分：6.5/10、query:cv-vg-cs
+   evidence：通过上下文学习进行可控视频编辑
+11. [DBMSolver: A Training-free Diffusion Bridge Sampler for High-Quality Image-to-Image Translation](/202605/10/2605.05889v1-dbmsolver-a-training-free-diffusion-bridge-sampler-for-high-quality-image-to-image-translation)  
+   标签：评分：6.5/10、query:cv-vg-cs
+   evidence：用于图像翻译的免训练扩散桥采样器
 
 
 <div class="dpr-home-promo-card">

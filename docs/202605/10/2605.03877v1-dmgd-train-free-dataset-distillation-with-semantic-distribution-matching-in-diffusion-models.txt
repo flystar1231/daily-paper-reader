@@ -1,0 +1,1858 @@
+Title: DMGD: Train-Free Dataset Distillation with Semantic-Distribution Matching in Diffusion Models
+
+URL Source: https://arxiv.org/pdf/2605.03877v1
+
+Published Time: Wed, 06 May 2026 01:22:44 GMT
+
+Number of Pages: 27
+
+Markdown Content:
+# DMGD: Train-Free Dataset Distillation with Semantic-Distribution Matching in Diffusion Models 
+
+## Qichao Wang 1 Yunhong Lu 1 Hengyuan Cao 1 Junyi Zhang 1 Min Zhang 1,2,3*
+
+1 Zhejiang University 2 Shanghai Institute for Advanced Study-Zhejiang University 
+
+3Shanghai Institute for Mathematics and Interdisciplinary Sciences 
+
+{qichaowang, yunhonglu, caohy, gavin.jy, min zhang }@zju.edu.cn 
+
+## Abstract 
+
+Dataset distillation enables efficient training by distilling the information of large-scale datasets into significantly smaller synthetic datasets. Diffusion based paradigms have emerged in recent years, offering novel perspectives for dataset distillation. However, they typically necessitate ad-ditional fine-tuning stages, and effective guidance mecha-nisms remain underexplored. To address these limitations, we rethink diffusion based dataset distillation and propose a Dual Matching Guided Diffusion (DMGD) framework, centered on efficient training-free guidance. We first es-tablish Semantic Matching via conditional likelihood op-timization, eliminating the need for auxiliary classifiers. Furthermore, we propose a dynamic guidance mechanism that enhances the diversity of synthetic data while main-taining semantic alignment. Simultaneously, we introduce an optimal transport (OT) based Distribution Matching ap-proach to further align with the target distribution structure. To ensure efficiency, we develop two enhanced strategies for diffusion based framework: Distribution Approximate Matching and Greedy Progressive Matching. These strate-gies enable effective distribution matching guidance with minimal computational overhead. Experimental results on ImageNet-Woof, ImageNet-Nette, and ImageNet-1K demon-strate that our training-free approach achieves significant improvements, outperforming state-of-the-art (SOTA) meth-ods requiring additional fine-tuning by average accuracy gains of 2.1% , 5.4% , and 2.4% , respectively. The code is available on https://github.com/solomonWQC/DMGD 
+
+## 1. Introduction 
+
+The exponential growth of datasets has significantly ad-vanced artificial intelligence, yet concurrently introduces formidable challenges regarding storage overheads and computational demands [1, 33, 51]. In this context, dataset 
+
+> *
+
+Corresponding author DM        
+
+> MINIMAX
+> Random
+> noise
+> Synthetic
+> dataset
+> DM
+> MGD3
+> Random
+> noise
+> Synthetic
+> dataset
+> Mode
+> Guidance
+> Isolated
+> mode
+> OURS
+> DM
+> Random
+> noise
+> Synthetic
+> data set
+> Diversity -enhanced semantic matching
+> OT -based distribution matching
+> Dynamic
+> Guidance
+> OT loss
+> Guidance
+> ℒ𝑜𝑡 (,,)
+> Global distribution
+> approximation
+> Previous
+> samples
+> to -be -synthesized
+> sample
+> Stochastic label Soft label class label
+> Dynamic label
+> Diversity Train -free
+> Diversity Train -free Distributional structure alignment
+
+Figure 1. A comparison of different diffusion-based paradigms for dataset distillation. The Minimax [22] relies on additional fine-tuning of diffusion models on the target dataset. In contrast, MGD 3 [8] employs isolated guidance via predicted mode points, neglecting the underlying distribution structure and inter-sample diversity. We decouple dataset distillation into semantic matching and distribution matching. Our method achieves enhanced diver-sity and distribution alignment without any training, resulting in superior dataset distillation performance. 
+
+distillation has emerged as a prominent research paradigm [31, 32, 67, 73, 81]. The core objective of dataset distillation is to synthesize surrogate datasets that preserve the critical information of the original training data. These surrogate datasets enable model training with substantially lower stor-age and computational costs, thereby democratizing access to advanced artificial intelligence. Ongoing research efforts have spurred novel method-ologies in dataset distillation, including gradient match-ing [81], distribution matching [82], and trajectory match-ing [6]. These approaches optimize matching objectives through iterative gradient backpropagation into synthetic samples, achieving remarkable performance on small-scale datasets like CIFAR-10 [4]. SRe 2L [75] proposes a frame-work that decouples model training from data synthesis, 
+
+> arXiv:2605.03877v1 [cs.CV] 5 May 2026
+
+first extending dataset distillation to large-scale datasets. In parallel, researchers are exploring generative models for dataset distillation [7]. Recent breakthroughs demonstrate that diffusion models [26], achieve better dataset distillation performance[8, 10, 22, 60]. However, they typically neces-sitate additional fine-tuning stages, and effective guidance mechanisms remain underexplored. This work explores strategies to boost diffusion based dataset distillation performance at sampling process while avoiding additional training. Our insight is that designing effective guidance objectives unlocks the potential of dif-fusion models for dataset distillation. We prove that un-der semantic alignment, the optimal transport (OT) distance between surrogate and target datasets serves as an upper bound for their risk discrepancy. Thus, we propose the Dual-Matching Guided Diffusion Model (DMGD), an inno-vative framework incorporating two decoupled objectives: 
+
+Semantic Matching and Distribution Matching . First, we formalize the semantic matching objective via condi-tional likelihood optimization. We incorporate classifier-free guidance [25], which establishes the connection be-tween diffusion models and conditional likelihood opti-mization, thereby achieving semantic alignment without re-quiring additional discriminative models. However, con-ditional likelihood optimization with hard labels inevitably impairs diversity, confining the diffusion model’s outputs to high-density regions [63]. To address these limitations, we propose a dynamic semantic matching guidance that modu-lates label guidance across sampling stages to enable explo-ration of the diffusion model’s generative distribution. Beyond extracting semantic information, capturing the distributional characteristics of the target dataset is equally critical for effective dataset distillation. Optimal transport distance serves as the theoretical foundation for quantifying distributional discrepancies [3]. Consequently, we propose an optimal transport based Distribution Matching objective and devise two improvement strategies to enhance its ef-ficiency. Distribution Approximate Matching utilizes opti-mal quantization theory, extracting an approximate distri-bution that preserves the distribution structure of the target dataset to enable efficient optimal transport computation. 
+
+Greedy Progressive Matching adopts a greedy optimization paradigm that progressively optimizes each synthetic sam-ple to align distributions, addressing diffusion model limi-tation in multi-sample optimization. Our main contributions are summarized as follows: • We rethink the dataset distillation framework based on diffusion models and propose a training-free guided framework DMGD, which consists of two guidance com-ponents: semantic matching and distribution matching. We conduct extensive experiments demonstrating that our approach achieves state-of-the-art (SOTA) performance without requiring additional training time. • In semantic matching, we propose a novel soft label based dynamic guidance mechanism, enhancing diversity while ensuring the semantic alignment. • In distribution matching, we propose a guidance loss based on optimal transport and theoretically prove that it can optimize the upper bound of the risk for the dis-tillation dataset. To further enhance computational effi-ciency, we also introduce two strategies: distribution ap-proximate matching and greedy progressive matching. 
+
+## 2. Related work 
+
+Diffusion based dataset distillation Recently, diffu-sion [26] models have provided a powerful foundation for dataset distillation. Minimax [22] introduced an efficient fine-tuning-based approach to further enhance the align-ment between diffusion models and target datasets. IGD [10] incorporates additional classifier training trajectories to guide the diffusion process. However, these methods re-quire extra training, which limits the efficiency. Both D 4M[60] and MGD 3 [8] leverage mode centers discovered by clustering algorithms to control synthetic sample genera-tion. Nevertheless, these approaches may overemphasize invalid modes from clustering, such as proximate cluster centers or outliers, thereby disrupting distribution structure alignment. They also neglect interrelationships among syn-thetic samples, leading to diversity deficiencies. Concurrent to our work, [15] also explores the application of optimal transport-based diffusion models in dataset distillation. As illustrated in Figure 1, our method focuses on training-free efficient guidance mechanisms and theoretically decouples the design space into semantic matching and distribution matching. Meanwhile, our approach optimizes the com-plete synthetic data distribution rather than individual sam-ple, further enhancing diversity and distribution structure alignment. Additional comparative discussions with other dataset distillation paradigms are provided in Appendix A1. 
+
+## 3. Preliminaries 
+
+3.1. Dataset distillation 
+
+Given a large-scale labeled dataset T = {(xi, y i)}NT
+
+> i=1
+
+,where x ∈ RD , y ∈ Y = {1, 2, ..., C }, we aim to ob-tain a surrogate dataset S = { ¯xi, ¯yi}NS
+
+> i=1
+
+, where ¯x ∈ RD ,
+
+¯y ∈ Y = {1, 2, ..., C } and NT ≫ NS . The surrogate dataset S should retain the critical information from T such that the model θ trained on S achieves effective and compa-rable performance on the target dataset. 
+
+E(x,y )∼T [ℓ(x, y ; θ⋆ 
+
+> S
+
+)] ≃ E(x,y )∼T [ℓ(x, y ; θ⋆ 
+
+> T
+
+)] (1) Here, θ⋆ 
+
+> S
+
+and θ⋆ 
+
+> T
+
+are the optimal parameters obtained from training on S and T , respectively. ℓ(x, y ; θ) denotes the : OT coupling 
+
+## Semantic Matching    
+
+> if 𝑡 =0
+
+else 
+
+Distribution Approximate  Greedy Progressive Matching 
+
+## Distribution Matching         
+
+> K-means
+> Approximate
+> Sinkhorn
+> Iteration
+> Optimal
+> Transport
+> Plan
+> 𝒕 =𝑻 𝒕 =𝟎
+> Dynamic
+> Soft Label
+> Stochastic
+> Exploration Semantic
+> Refinement
+> ෤𝑦 𝑡 ෤𝑦 𝑡 ෤𝑦 𝑡
+
+𝒁 𝒕  𝒁 𝒕 −𝟏 
+
+Diffusion 
+
+Process  
+
+> Semantic Matching Distribution Matching
+
+𝒁 𝟎 
+
+Memory 
+
+> 𝒁 𝟎
+> 𝟏
+> 𝒁 𝟎
+> 𝟐
+> 𝒁 𝟎
+> 𝒏
+
+… …    
+
+> 𝒁 𝒕
+> 𝑧 0|𝑡 (𝑧 𝑡 ): Memory sample
+> : Support point
+> : Noise vector : Label vector 𝒚
+> : Randomly selected label vectors 𝒚 ⋆
+
+## DMGD Figure 2. Framework of our DMGD method. Our method establishes two guidance modules during the sampling process: semantic matching and distribution matching. In semantic matching, we propose a dynamic soft label mechanism to unlock the potential of diffusion models for diversified generation while ensuring semantic alignment. In distribution matching, we optimize optimal transport computation through distribution approximation and greedy progressive matching to enable optimal transport-based distribution alignment guidance. We present the corresponding pseudocode in the Appendix A3 Algorithm 1. 
+
+evaluation function designed to validate the performance of model θ on data pairs (x, y ).
+
+3.2. Diffusion Models 
+
+Diffusion models [26] comprise a forward process 
+
+{q(xt)}t∈[0 ,T ] that gradually adds noise to data x0 ∼
+
+q(x0), alongside a learned reverse process {p(xt)}t∈[0 ,T ]
+
+targeting to denoise the data. The forward process is formulated as q(xt|x0) := N (√αtx0, (1 − αt)I) and 
+
+q(xt) := R q(xt|x0)q(x0)d x0, with αt representing a noise schedule. The reverse process, initialized from 
+
+p(xT ) := N (0, I), is characterized by a parameterized de-noiser ϵtθ (xt), which aims to predict the noise added to x0.The denoiser ϵθ is optimized by minimizing: 
+
+LDM := Ex0,t, ϵ ϵtθ (√αtx0 + √1 − αtϵ) − ϵ 22 (2) where x0 ∼ q(x0), t ∼ U (0 , T ), and ϵ ∼ N (0, I). A more widely adopted approach is the Latent Diffusion Model [49], which leverages a Variational Autoencoder [29] to en-code input x into latent space samples z. Our method fo-cuses on the sampling process of LDM. For compact rep-resentation, we define whole sample process as zt−1 =
+
+Dθ (zt, t, y ), where t is the sampling step, and y is the la-bel condition. Furthermore, we can incorporate other con-ditional guidance during sample process to guide diffusion [76]. Given a differentiable conditioning function E(zt, c ),where c represents another conditional input of arbitrary form, we can define a single-step guided diffusion process as: 
+
+zt−1 = Dθ (zt, t, y ) − ρt∇zt E(zt, c ) (3) 
+
+3.3. Optimal Transport 
+
+Optimal Transport [43] provides a principled framework for measuring the dissimilarity between two probability distributions. Given two discrete probability distributions 
+
+a ∈ ∆n and b ∈ ∆m, where ∆ denotes the probability simplex, and a cost matrix C ∈ Rn×m, where Cij repre-sents the cost of moving mass from ai to bj , the OT prob-lem seeks a transport plan γ ∈ Rn×m 
+
+> +
+
+that minimizes the total transportation cost: 
+
+W (a, b) = min 
+
+> γ∈Γ( a,b)
+
+⟨γ, C⟩, (4) where Γ( a, b) = γ ∈ Rn×m 
+
+> +
+
+| γ1 = a, γ T 1 = b is the set of admissible coupling matrices. ⟨∗⟩ is inner product. The exact OT problem is computationally expensive for large-scale applications. To improve efficiency, a common approach is to introduce an entropic regularization term: 
+
+Wε(a, b) = min 
+
+> γ∈Γ( a,b)
+
+⟨γ, C⟩ − εH (γ), (5) where ε > 0 controls the strength of the regularization, and H(γ) = − P 
+
+> i,j
+
+γij log γij is the entropy of the trans-port plan. This modification ensures numerical stability, smoothness and differentiability, enabling integration into gradient-based optimization and faster computation via the Sinkhorn algorithm [16]. We provide a detailed introduc-tion to the Sinkhorn algorithm in the Appendix A1. 
+
+## 4. Method 
+
+4.1. Motivation 
+
+We rethink diffusion based dataset distillation methods, with a focus on establishing efficient training-free guidance during the sampling process. Motivated by applications of optimal transport theory in machine learning [3, 30], we for-mally propose Theorem 1 .
+
+Theorem 1 Let T and S denote the target and surrogate datasets, respectively, with θ∗T and θ∗S being their opti-mal parameters. Define the target risk as: RT (θ) =
+
+E(x,y )∼T [ℓ(x, y, θ )] , where ℓ(·) is an L-Lipschitz contin-uous evaluation function. Under semantic class alignment (i.e., no label mismatch), consider the marginal sample distributions PT and PS with optimal transport distance: 
+
+W (PT , P S ) = inf γ∈Γ( PT ,P S ) E(xT ,x S )∼γ [d(xT , x S )] ,
+
+where Γ( PT , P S ) is the set of all couplings between the distributions, and d(·, ·) is a distance metric on the sample space. Then the risk discrepancy satisfies: 
+
+|RT (θ∗T ) − RT (θ∗S )| ≤ 2L · W (PT , P S ). (6) We provide detailed proofs and analyses in the Appendix A2. This insight motivates us to decouple Semantic Matching and Distribution Matching as the core objec-tives of dataset distillation. We propose Dual Matching Guided Diffusion (DMGD), a training-free framework for dataset distillation that synergistically coordinates these ob-jectives. Our proposed framework is illustrated in Figure 2. 
+
+4.2. Semantic Matching 
+
+Due to the informational redundancy in sample dimensions, direct sample guidance fails to distill representative seman-tic information. Previous work has demonstrated that con-ditional likelihood optimization constitutes an effective ap-proach for extracting semantic information [75]. Our in-sight is that diffusion models can serve as zero-shot clas-sifiers, eliminating the need to train additional classifiers on the target dataset. From this perspective, we introduce Classifier-Free Guidance (CFG) theory [25] as Lemma 1 to establish that diffusion models efficiently approximate con-ditional log-likelihood. 
+
+Lemma 1 (Classifier-Free Guidance [25]) Consider anoise prediction network ϵθ (zt, t, y ), where zt denotes the representation of an original sample x at timestep t, and 
+
+y is a label. Assuming the ϵ models both the conditional generative distribution p(zt|y) and the unconditional distribution p(zt), the gradient of the conditional log-likelihood log p(y|zt) with respect to zt can be implicitly approximated by the difference between the network’s conditional and unconditional outputs: 
+
+∇zt log p(y|zt) ≈ ω
+
+
+
+ϵθ (zt, t, ∅) − ϵθ (zt, t, y )
+
+
+
+(7) 
+
+Here, ω denotes a scalar guidance scale, and ϵθ (zt, t, ∅)
+
+represents the network’s unconditional output (i.e., without a specified class label). 
+
+Based on Lemma 1 , we can achieve semantic match-ing via classifier-free guided conditional generation. No-tably, while diffusion models provide conditional generative capacity for semantic alignment, they tend to over-sample high-density regions of the conditional distribution [63]. This compromises the diversity of surrogate datasets while amplifying the effects of distribution shift. 
+
+Dynamic Semantic Matching for Diversity-Enhanced 
+
+Inspired by the diversity enhancement of diffusion models [50], we reveal that introducing slight perturbations during the sampling process does not disrupt semantic alignment. Consequently, we reframe semantic matching from a static into a dynamic guidance process. Based on a key observa-tion of the properties of the diffusion sampling process[76], we partition the semantic guidance into three distinct stages: stochastic exploration ( t ≥ 45 ), dynamic soft label guid-ance ( t ∈ [25 , 45] ), and semantic refinement ( t ≤ 25 ). The dynamic guidance process is illustrated in Figure 2. Further implementation details are available in the Appendix A3. We provide a theoretical analysis and a deliberate design for the dynamic soft-label guidance [50]. 
+
+Proposition 1 Given a single step sampling process (such as DDIM) based on ϵθ to update z(0)  
+
+> t−1
+
+using condition y,consider a dynamic label ˆyt = y + δt where δt is a time-dependent vector. The modified sampling step admits the first-order approximation: 
+
+zt−1 ≈ z(0)  
+
+> t−1
+
++ Λ t(δt) (8) 
+
+where the condition shift operator Λt is defined as: 
+
+Λt(δt) = ct ·  ∇y ϵθ (zt, t, y )⊤δt with ct = √1 − αt−1 −√αt−1 · √1 − αt/√αt as the intrinsic time-scaling factor. 
+
+According to Proposition 1 , the dynamic label is equiva-lent to introducing an additional shift term into the sampling dynamics. This enables us to enhance the coverage of data modes and improve the diversity by designing dynamic la-bels. Motivated by the concept of soft labels [50, 75], we propose a label diffusion process to construct dynamic soft label vectors at timestep t. Given a label encoder fY and target label y, the dynamic soft label vector is defined as: 
+
+ffY (y) = √σtfY (y) + (1 − √σt)( βsfY (y⋆) + βnn) (9) Where, β is the modulation coefficient and σt represents a time-dependent scheduling. n is an anisotropic Gaus-sian noise term, aiding the sampling process to escape lo-cal modes and more fully explore the data distribution. y⋆
+
+is a randomly chosen label, which induces a deterministic shift towards class boundaries to generate more informative samples. To ensure representative semantic matching, we rescale the dynamic soft label vector to align with the mean and standard deviation of the original label vectors. The fi-nal soft label-guided formula that we adopted is as follows: 
+
+ˆϵθ (zt, t, eyt) = (1 + ω)ϵθ (zt, t, eyt) − ωϵθ (zt, t, ∅) (10) For compactness, we replace ffY (y) with ey. We can de-fine the dynamic soft label denoising process as zt−1 =
+
+Dθ (zt, t, ey). Taking advantage of dynamic guidance, we achieve a thorough exploration of the distribution space while ensuring semantic consistency, thus establishing a ro-bust foundation for distributional alignment. 
+
+4.3. Distribution Matching 
+
+Furthermore, we aim to explore how to construct an ef-fective guidance loss for the distribution alignment. Tradi-tional distribution matching methods, such as mean match-ing [82], often overlook inter-sample relationships and the distribution structure. Consequently, we propose an opti-mal transport guided objective, which achieves distribution alignment by optimizing the optimal transport distance be-tween the target dataset and the surrogate dataset. 
+
+arg min 
+
+> S
+
+W (PT , P S ) = arg min 
+
+> S
+
+min   
+
+> γ∈Γ( PT,P S)
+
+X
+
+> i,j
+
+γij · Cij 
+
+(11) Here, Cij denotes a cost metric. As noted in previous work [7], defining the metric in a high-information rep-resentation space is a more efficient and effective choice. Thus, we utilize the latent space of the diffusion model combined with hyperspherical projection as the distribution space, and the Euclidean distance as the distance metric. We use the Sinkhorn algorithm [16] to compute entropy-regularized optimal transport ( Wε), and the final guidance term is expressed as: 
+
+LOT (P t 
+
+> S
+
+, P T ) = Wε(P t 
+
+> S
+
+, P T ) = ⟨γ∗, C⟩ (12) 
+
+γ∗ is the optimal transport plan. We employ the training-free guidance technique [76] to embed the OT guided loss into the diffusion model framework. By Equation (3), we have the following guided sampling process: 
+
+zit−1 = Dθ (zit ) − ρt∇zit LOT (P t 
+
+> S
+
+, P T )= Dθ (zit ) − ρt∇zit
+
+X
+
+> j
+
+γ∗ 
+
+> ij
+
+· Cij (13) Intuitively, this loss encourages samples in the surrogate dataset to shift toward the nearest misaligned regions of the target distribution, thereby achieving alignment with the complete distribution structure. However, applying the op-timal transport loss to the diffusion based dataset distillation framework still poses challenges: 1) For large-scale target datasets, the computational complexity of optimal transport becomes prohibitively expensive. 2) In high IPC (Instances Per Class) setting, memory constraints preclude end-to-end optimization due to excessive resource demands. To address these issues, we propose two enhanced strategies. 
+
+Distribution Approximate Matching. When processing large-scale target datasets, optimal transport iterations be-come computationally infeasible due to memory and time complexity constraints. To address this challenge, we can first employ a smaller discrete approximation distribution 
+
+ePT that preserves the essential geometric properties of the original target distribution PT . Building upon Theorem 1, we derive the following corollary: 
+
+Corollary 1 Under the conditions of Theorem 1, consider an approximate distribution ePT satisfying W ( ePT , P T ) ≤ ϵ
+
+for small ϵ > 0. Assuming the distance metric satisfies the triangle inequality and distributions lie in a Polish space. the risk discrepancy is bounded by: 
+
+|RT (θ∗T ) − RT (θ∗S )| ≤ 2L ·
+
+
+
+W (PS , ePT ) + W (PT , ePT )
+
+
+
+(14) 
+
+Corollary 1 indicates that we can find an approximate dis-tribution ePT satisfying the property W ( ePT , P T ) ≤ ϵ to simplify the computation of W (PS , ePT ). To obtain ePT , we define the distribution approximation problem, also known as the optimal quantization problem [21]. 
+
+Definition 1 Given a target distribution PT , the discrete distribution approximation problem seeks to find a set of support points {xi}Ni=1 and corresponding mass coefficients 
+
+{mi}Ni=1 with mi ≥ 0 and PNi=1 mi = 1 that minimize the optimal transport distance to PT . Formally, we solve: 
+
+min  
+
+> {xi}⊂X ,m i
+
+W
+
+
+
+PT , ePT
+
+
+
+(15) 
+
+where ePT = PNi=1 miδxi is the discrete approximation. 
+
+For the discrete distribution approximation problem, clustering algorithms have been proven to be methods with favorable convergence bounds [4]. Thus, We propose a class-wise K-means based approximation method. Let 
+
+{Ci}Ki=1 denote the clusters obtained by partitioning the tar-get subset Ty , where Ty is a specific class within the target dataset T . And ki ∈ RD is the centroid of the i-th cluster and ci = |Ci| denotes the cardinality of the i-th cluster. The discrete approximation ePT defined as follows: 
+
+ePT =
+
+> K
+
+X
+
+> i=1
+
+miδki with K = {ki}Ki=1 , m i = ci
+
+PKj=1 cj
+
+(16) Mean matching method can be regarded as a special case of distribution approximation. Proposition 2 provides a theoretical analysis of the error between mean matching method and our proposed method. 
+
+Proposition 2 Let ˜P (1)  
+
+> T
+
+denote the mean matching approx-imation of PT defined by a Dirac measure δμ concentrated at the mean μ of PT , and ˜P (2)  
+
+> T
+
+denote the proposed approx-imation constructed with cluster count K. The Wasserstein distance satisfies: 
+
+W (PT , ˜P (2)  
+
+> T
+
+) ≤ W (PT , ˜P (1)  
+
+> T
+
+) (17) Intuitively, clustering provides a way to discover fine-grained patterns within clusters and uses them as sup-port points. Compared to mean matching, this acquires more comprehensive distribution information. Some sim-ilar ideas has been discussed in prior work on dataset distil-lation [8, 37], but those approaches focused mainly on rep-resentative points without deeper exploration of the distri-butional structure. By incorporating optimal transport, we utilize mass coefficients to better align distribution struc-tures and reduce distribution shift effects. 
+
+Greedy Progressive Matching. From the perspective of greedy optimization, we propose a progressive alignment framework. When optimizing zi, we freeze all zj , where 
+
+j < i , thereby defining the partially optimized surrogate dataset distribution as PSt 
+
+> [i]
+
+. Our optimization objective can then be rewritten as: 
+
+zit−1 = Dθ (zit ) − ρt∇zit LOT (PSt 
+
+> [i]
+
+, P T ) (18) Under progressive matching, the guidance term further aligns the currently generated surrogate sample with pre-viously unaligned regions of the target distribution space. Meanwhile, freezing the earlier samples prevents the surro-gate samples from over-concentrating toward the mean of target distribution, thereby enhancing diversity. 
+
+## 5. Experiment 
+
+5.1. Experiment Setting 
+
+Datasets and Evaluation Metric We evaluate our pro-posed method using general high-resolution ( 256 × 256 )dataset distillation benchmarks. Our evaluation datasets in-clude ImageNet-1K [17] and its subsets, ImageNet-Woof and ImageNet-Nette. For evaluation, we follow the setup of Gu et al. [22] by training classifier on the surrogate dataset and reporting the performance on the testset. Consistent with previous work, we adopt the hard-label evaluation pro-tocol for ImageNet subsets and the soft-label evaluation protocol for the ImageNet-1K. We provide the results of other datasets in Appendix A4. 
+
+Baseline We examine state-of-the-art (SOTA) dataset dis-tillation algorithms based on generative models, especially diffusion models, including GlaD [7], Minimax [22], D 4M[60], and MGD 3 [8]. We also incorporate the pre-trained DiT XL [48], which represents the performance of directly using diffusion models for dataset distillation. Additionally, we include the distribution match (DM) method [82]. In the comparison on ImageNet-1k, we also examined other meth-ods including SRe 2L [75] , G-VBSM [52], and RDED [61]. 
+
+Implementation Details We employ the pre-trained DiT [48] as our baseline model. For semantic matching, we con-figure the CFG scale 1 + ω = 4 , with the modulation coeffi-cient βn = 0 .06 and βs = 0 .01 . For distribution matching, we set K to the minimal IPC configuration of 10 . The regu-larization coefficient ρ is set to 0.05 for ImageNet-Woof and 0.5 for ImageNet-Nette, respectively. Crucially, we strategi-cally confine distribution matching application exclusively to the temporal window t ∈ [30 , 45] . We adopt Sinkhorn al-gorithm configurations [55]: ε = 0 .1 with 5 iterations. All experiments are conducted on a NVIDIA RTX 4090 GPU. 
+
+5.2. Comparison with Other Methods 
+
+Comparison on ImageNet subset Our DiT-based imple-mentation demonstrates significant performance improve-ments across ImageNet subsets, as summarized in Table 1. On the challenging ImageNet-Woof dataset, our method achieves performance gains of 0.4% , 3.1% , and 3.6% over the state-of-the-art MGD 3 under varying IPC configura-tions. The proposed diversity-enhanced distribution align-ment mechanism exhibits increasing efficacy at higher IPC settings in this challenging subset. On ImageNet-Nette, we observe improvements of 2.0% , 1.4% , and 1.1% over MGD 3. Our approach surpasses all competing models. We quantitatively demonstrate the plug-and-play capa-bility of our model in Table 1. Deployment of our method yields significant performance gains over baseline mod-els. On the Imagenet-Nette subset, it achieves average im-provements of 8.1% against the baseline DiT and 5.0% 
+
+against Minimax. When deployed on Minimax, our method achieves optimal performance across all setting. These val-idate the plug-and-play efficacy of our DMGD framework and suggest significant potential for broader applicability. Furthermore, we conduct extensive evaluations of our approach across diverse evaluation architectures and higher IPC configurations (IPC-70 and IPC-100). As demonstrated in Figure 3 (a) and (b), our method consistently surpasses baseline models across all architectures and IPC settings. 
+
+Comparison on ImageNet-1k To validate the scalability of our method in larger-scale datasets, we conducted com-parative experiments under the soft-label evaluation pro-tocol [61] using DiT-based deployment on ImageNet-1K, with results detailed in Table 2. Under IPC-10 settings, our method achieves 4.3% improvement over RDED and 
+
+2.0% improvement over Minimax. Under IPC-50 settings, our method consistently attains state-of-the-art performance comparable to MGD 3. We also maintained the best perfor-mance on the larger model architecture ResNet-101. ImageNet-Woof ImageNet-Nette IPC 10 20 50 10 20 50 Random 29.4 ±0.8 32.7 ±0.4 47.2 ±1.3 54.2 ±1.6 63.5 ±0.5 76.1 ±1.1
+
+DM [82] 30.3 ±1.2 35.2 ±0.6 47.1 ±1.1 60.8 ±0.6 66.5 ±1.1 76.2 ±0.4
+
+GLaD [7] 32.9 ±0.9 - - - - -DiT [48] 34.7 ±0.5 41.1 ±0.8 49.3 ±0.2 59.1 ±0.7 64.8 ±1.2 73.3 ±0.9
+
+MiniMax [22] 39.2 ±1.3 45.8 ±0.5 56.3 ±1.0 62.0 ±0.2 66.8 ±0.4 76.6 ±0.2
+
+MGD 3 [8] 40.4 ±1.9 43.6 ±1.6 56.5 ±0.8 66.4 ±2.4 71.2 ±0.5 79.5 ±1.3
+
+DiT [48] + Ours 40.8 ±1.1 46.7 ±1.4 60.1 ±0.8 68.4 ±0.2 72.6 ±0.6 80.6 ±0.5
+
+∆ +6 .1 +5 .6 +10 .8 +9 .3 +7 .8 +7 .3
+
+MiniMax [22] + Ours 42.4 ±0.5 47.7 ±0.4 60.8 ±0.2 68.7 ±0.8 71.1 ±0.5 80.7 ±0.8
+
+∆ +3 .2 +1 .9 +4 .5 +6 .7 +4 .3 +4 .1
+
+Full dataset 87 .5±0.5 94 .6±0.5
+
+Table 1. Performance comparison between our method and state-of-the-art methods across different ImageNet subsets, evaluated under the hard-label protocol. Results are reported as Top-1 accuracy on ResNet-10 with average pooling (Resnet10-AP). The best performance is highlighted in bold , while the second-best is underlined. 10 20 50 70 100 25 30 35 40 45 50 55 60 65 70 Validation Accuracy (%) IPC  Random  DM  DiT  Minimax  Ours 
+
+(a) 10 20 50 70 100 25 30 35 40 45 50 55 60 65 70 Validation Accuracy (%) IPC  Random  DM  DiT  Minimax  Ours (b) 0.01 0.05 0.08 0.1 0.2 0.5 35 40 45 50 55 60 65 70 Validation Accuracy (%) Guidance Coefficient    
+
+> IPC-50
+> IPC-20
+> IPC-10
+
+(c) 12510 20 50 35 40 45 50 55 60 65 70 Validation Accuracy (%) Number of Support Points  K  IPC-50 IPC-20 IPC-10 (d) 
+
+Figure 3. Evaluation results: (a-b) Evaluation of our method’s performance across different architectures and higher IPC settings: Results are reported as Top-1 accuracy on (a) ResNet10-AP and (b) ResNet-18. (c-d) Evaluation of our method’s performance under different hyperparameters: (c) distribution matching guidance coefficient ρ and (d) number of support points K for distribution approximation. 
+
+5.3. Hyperparameter Analysis 
+
+We conduct experiments and sensitivity analyses on the hy-perparameters of our proposed method. We conduct the evaluation on the ImageNet-Woof dataset and report the top-1 accuracy of ResNet10-AP. Figure 3 (c) and (d) quan-titatively illustrate our method performance sensitivity to two critical hyperparameters of distribution matching. Ad-ditional experimental results examining others hyperparam-eters of semantic matching are detailed in Appendix A4. 
+
+Guidance Coefficient ρ. Figure 3 (c) delineates the im-pact of the guidance constant ρ for distribution matching. At low IPC settings, larger ρ values may induce perfor-mance degradation, whereas under high IPC settings, per-formance remains stable within an appropriate range of ρ.Based on evaluations, we use ρ = 0 .05 for ImageNet-Woof. 
+
+Number of Support Points K. Figure 3 (d) reveals the influence of the number of support points K for distribution approximation. We observe that under high IPC settings, excessively small K values produce overly coarse approxi-mations, leading to performance degradation. While larger 
+
+K values enhance accuracy, they incur computational over-head of optimal transport. Through rigorous performance-efficiency tradeoff analysis, We select K = 10 to achieve an optimal balance between performance and efficiency. 
+
+5.4. Ablation Study 
+
+To evaluate the individual contributions of the proposed components, we conduct component-wise ablation studies assessing the dynamic guidance semantic matching (SM) and optimal transport guidance distribution matching (DM), with results presented in Table 3. Our dynamic guidance se-Method Resnet-18 Resnet-101 IPC-10 IPC-50 IPC-10 IPC-50 SRe 2L [75] 21.3 ±0.6 46.8 ±0.2 30.9 ±0.1 60.8 ±0.5
+
+G-VBSM[52] 31.4 ±0.5 51.8 ±0.4 38.2 ±0.4 63.7 ±0.2
+
+RDED [61] 42.0 ±0.2 56.5 ±0.1 48.3 ±1.0 61.2 ±0.4
+
+D4M [60] 27.9 ±≤ 1 55.2 ±≤ 1 34.2 ±≤ 1 63.4 ±≤ 1
+
+Minimax [22] 44.3 ±0.5 58.6 ±0.3 - -MGD 3 [8] - 60.2 ±0.1 - 67.7 ±0.4
+
+Ours 46.3 ±0.8 61.4 ±0.6 50.6 ±1.2 68.4 ±0.4
+
+Full dataset 69.8 81.9 
+
+Table 2. Performance comparison between our method and state-of-the-art methods on ImageNet-1k, evaluated under the soft-label protocol. Results are reported as Top-1 accuracy on ResNet-18 and ResNet-101. The best performance is highlighted in bold ,while the second-best is underlined. Missing values are due to the original paper not reporting them. 
+
+IPC SM DM Woof Nette 10 - - 34.7 ±0.5 59.1 ±0.7
+
+50 49.3 ±0.2 73.3 ±0.9
+
+10 ✓ - 38.9 ±1.2 67.1 ±0.5
+
+50 59.3 ±0.4 79.7 ±0.1
+
+10 - ✓ 41.6 ±1.1 66.8 ±1.8
+
+50 56.8 ±0.2 76.7 ±0.5
+
+10 ✓ ✓ 40.8 ±1.1 68.4 ±0.2
+
+50 60.1 ±0.8 80.6 ±0.5
+
+Table 3. Ablation study on the components of our method. Results are reported as Top-1 accuracy on ResNet10-AP. The best perfor-mance is highlighted in bold , while the second-best is underlined. 
+
+mantic matching boost surrogate dataset diversity, achiev-ing significant performance gains under high IPC settings. At low IPC settings, optimal transport guidance prioritizes distribution alignment, achieving exceptional performance and demonstrating efficacy in generating critical samples. Consequently, our DMGD framework attains overall best performance for dataset distillation. We present more de-tailed ablation study in the Appendix A4. 
+
+5.5. Representativeness and Diversity Analysis 
+
+We quantitatively evaluate representativeness and diversity in the feature space. Representativeness is measured via Coverage [45] and Dataset Distance [2]. Diversity is com-puted as the mean minimum pairwise distance among all intra-class samples. We additionally report FID results to assess the visual quality. As summarized in Table 4, our method achieves significant improvements in representa-tiveness metrics and diversity metrics. Figure 4 provides DiT 
+
+> Minimax
+> Ours
+
+Figure 4. Generated Samples Visualization: the visual compari-son of Golden Retriever in ImageNet-WOOF, we present the gen-erated samples from different methods under the IPC-10 setting. The method names are marked at the left of each row. 
+
+Method Cov. ↑ OTDD ↓ Diversity ↑ FID ↓
+
+DiT [48] 25.4 142.2 70.1 48.6 
+
+Minimax [22] 28.5 88.5 72.9 49.2 
+
+Ours 30.7 66.4 74.4 48.8 
+
+Table 4. Evaluation of representativeness and diversity of 10 classes each with 100 images in ImageNet-Woof. The evaluation metrics include coverage (cov.), optimal transport dataset distance (OTDD), diversity metric (Diversity), and FID. ↓ means lower is better and ↑ means higher is better. 
+
+a visualization to intuitively demonstrate the representative-ness and diversity of our results. We also provide evaluation of other relevant metrics in the Appendix A4. 
+
+5.6. Computational Cost Analysis 
+
+Our method achieves SOTA performance across all datasets while introducing only marginal computational overhead during the sampling process. For instance, on a 10-class ImageNet subset, the MiniMax requires nearly 0.7 hours for fine-tuning. In contrast, our distribution approximation requires only 0.03 seconds per class. Under the IPC-50 setting, our method processes each image in 1.65 seconds, while baseline DiT requires 1.49 seconds. Crucially, the complete generation of a surrogate dataset for ImageNet-Woof with IPC-50 takes only 0.26 hours, demonstrating the efficiency superiority of our train-free framework. 
+
+## 6. Conclusion 
+
+In this work, we propose a dual matching guided diffusion (DMGD) framework, achieving efficient dataset distillation by introducing training free guidance during the sampling. Our insights encompass two improved matching objectives: a diversified semantic matching objective based on dynamic guidance, and a distribution matching objective based on optimal transport guidance. Theoretically grounded and ex-perimentally validated across multiple datasets, our method achieves SOTA on all metrics. We conducted an analysis of each component and hyperparameter, validating their effec-tiveness through ablation study. Acknowledgments 
+
+This work was supported by the National Major Science and Technology Projects (the grant number 2022ZD0117000), the National Natural Science Foundation of China (the grant number 62202426), and the Shanghai In-stitute for Mathematics and Interdisciplinary Sciences (SIMIS) Fund (the grant number SIMIS-ID-2025-AD). 
+
+## References 
+
+[1] Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ah-mad, Ilge Akkaya, Florencia Leoni Aleman, Diogo Almeida, Janko Altenschmidt, Sam Altman, Shyamal Anadkat, et al. Gpt-4 technical report. arXiv preprint arXiv:2303.08774 ,2023. 1 [2] David Alvarez-Melis and Nicolo Fusi. Geometric dataset distances via optimal transport. Advances in Neural Infor-mation Processing Systems , 33:21428–21439, 2020. 8, 9 [3] Martin Arjovsky et al. Wasserstein generative adversarial networks. In International conference on machine learning ,pages 214–223. PMLR, 2017. 2, 4 [4] Guillermo Canas et al. Learning probability measures with respect to optimal transport metrics. Advances in neural in-formation processing systems , 25, 2012. 1, 5, 6 [5] Hengyuan Cao, Yutong Feng, Biao Gong, Yijing Tian, Yun-hong Lu, Chuang Liu, and Bin Wang. Dimension-reduction attack! video generative models are experts on controllable image synthesis. arXiv preprint arXiv:2505.23325 , 2025. 1 [6] George Cazenavette, Tongzhou Wang, Antonio Torralba, Alexei A Efros, and Jun-Yan Zhu. Dataset distillation by matching training trajectories. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 4750–4759, 2022. 1, 2 [7] George Cazenavette, Tongzhou Wang, Antonio Torralba, Alexei A Efros, and Jun-Yan Zhu. Generalizing dataset distillation via deep generative prior. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 3739–3748, 2023. 2, 5, 6, 7, 11 [8] Jeffrey A Chan-Santiago, Praveen Tirupattur, Gaurav Kumar Nayak, Gaowen Liu, and Mubarak Shah. Mgd 3: Mode-guided dataset distillation using diffusion models. arXiv preprint arXiv:2505.18963 , 2025. 1, 2, 6, 7, 8, 4, 9, 10, 11 [9] Jiaben Chen, Xin Yan, Yihang Chen, Siyuan Cen, Zixin Wang, Qinwei Ma, Haoyu Zhen, Kaizhi Qian, Lie Lu, and Chuang Gan. Rapverse: Coherent vocals and whole-body motion generation from text. In Proceedings of the IEEE/CVF International Conference on Computer Vision ,pages 10097–10107, 2025. 14 [10] Mingyang Chen, Jiawei Du, Bo Huang, Yi Wang, Xiaobo Zhang, and Wei Wang. Influence-guided diffusion for dataset distillation. In The Thirteenth International Conference on Learning Representations , 2025. 2, 4 [11] Nicolas Courty, R´ emi Flamary, Devis Tuia, and Alain Rako-tomamonjy. Optimal transport for domain adaptation. IEEE transactions on pattern analysis and machine intelligence ,39(9):1853–1865, 2016. 3 [12] Florinel-Alin Croitoru, Vlad Hondru, Radu Tudor Ionescu, and Mubarak Shah. Diffusion models in vision: A survey. 
+
+IEEE transactions on pattern analysis and machine intelli-gence , 45(9):10850–10869, 2023. 2 [13] Justin Cui, Ruochen Wang, Si Si, and Cho-Jui Hsieh. Scaling up dataset distillation to imagenet-1k with constant memory. In International Conference on Machine Learning , pages 6565–6590. PMLR, 2023. 2 [14] Xiao Cui, Yulei Qin, Wengang Zhou, Hongsheng Li, and Houqiang Li. Optical: Leveraging optimal transport for con-tribution allocation in dataset distillation. In Proceedings of the Computer Vision and Pattern Recognition Conference ,pages 15245–15254, 2025. 2 [15] Xiao Cui, Yulei Qin, Wengang Zhou, Hongsheng Li, and Houqiang Li. Optimizing distributional geometry align-ment with optimal transport for generative dataset distilla-tion. arXiv preprint arXiv:2512.00308 , 2025. 2 [16] Marco Cuturi. Sinkhorn distances: Lightspeed computation of optimal transport. Advances in neural information pro-cessing systems , 26, 2013. 3, 5 [17] Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. Imagenet: A large-scale hierarchical image database. In 2009 IEEE conference on computer vision and pattern recognition , pages 248–255. Ieee, 2009. 6 [18] Jiawei Du, Qin Shi, and Joey Tianyi Zhou. Sequential subset matching for dataset distillation. Advances in Neural Infor-mation Processing Systems , 36:67487–67504, 2023. 2 [19] Jean Feydy, Thibault S´ ejourn´ e, Franc ¸ois-Xavier Vialard, Shun-ichi Amari, Alain Trouv´ e, and Gabriel Peyr´ e. Inter-polating between optimal transport and mmd using sinkhorn divergences. In The 22nd international conference on arti-ficial intelligence and statistics , pages 2681–2690. PMLR, 2019. 9 [20] Ian J Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, and Yoshua Bengio. Generative adversarial nets. Advances in neural information processing systems , 27, 2014. 2 [21] Peter M Gruber. Optimum quantization and its applications. 
+
+Advances in Mathematics , 186(2):456–497, 2004. 5 [22] Jianyang Gu, Saeed Vahidian, Vyacheslav Kungurtsev, Hao-nan Wang, Wei Jiang, Yang You, and Yiran Chen. Efficient dataset distillation via minimax diffusion. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 15793–15803, 2024. 1, 2, 6, 7, 8, 4, 9, 10, 11 [23] Ziyao Guo, Kai Wang, George Cazenavette, Hui Li, Kaipeng Zhang, and Yang You. Towards lossless dataset distillation via difficulty-aligned trajectory matching. arXiv preprint arXiv:2310.05773 , 2023. 2 [24] Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image recognition. In Proceed-ings of the IEEE conference on computer vision and pattern recognition , pages 770–778, 2016. 9 [25] Jonathan Ho and Tim Salimans. Classifier-free diffusion guidance. arXiv preprint arXiv:2207.12598 , 2022. 2, 4 [26] Jonathan Ho et al. Denoising diffusion probabilistic mod-els. Advances in neural information processing systems , 33: 6840–6851, 2020. 2, 3, 1 [27] Jeremy Howard. Imagenette: A smaller subset of 10 easily classified classes from imagenet, 2019. 9 [28] Jang-Hyun Kim, Jinuk Kim, Seong Joon Oh, Sangdoo Yun, Hwanjun Song, Joonhyun Jeong, Jung-Woo Ha, and Hyun Oh Song. Dataset condensation via efficient synthetic-data parameterization. In International Conference on Ma-chine Learning , pages 11102–11118. PMLR, 2022. 2, 9, 10, 11 [29] Diederik P Kingma and Max Welling. Auto-encoding varia-tional bayes. arXiv preprint arXiv:1312.6114 , 2013. 3, 1 [30] Okan Koc ¸, Alexander Soen, Chao-Kai Chiang, and Masashi Sugiyama. Domain adaptation and entanglement: an opti-mal transport perspective. arXiv preprint arXiv:2503.08155 ,2025. 4, 3 [31] Vyacheslav Kungurtsev, Yuanfang Peng, Jianyang Gu, Saeed Vahidian, Anthony Quinn, Fadwa Idlahcen, and Yiran Chen. Dataset distillation from first principles: Integrating core in-formation extraction and purposeful learning, 2024. 1 [32] Shiye Lei and Dacheng Tao. A comprehensive survey of dataset distillation. IEEE Transactions on Pattern Analysis and Machine Intelligence , 46(1):17–32, 2023. 1 [33] Zhiqiu Lin, Siyuan Cen, Daniel Jiang, Jay Karhade, Hewei Wang, Chancharik Mitra, Tiffany Ling, Yuhan Huang, Sifan Liu, Mingyu Chen, et al. Towards understanding camera mo-tions in any video. arXiv preprint arXiv:2504.15376 , 2025. 1[34] Dai Liu, Jindong Gu, Hu Cao, Carsten Trinitis, and Martin Schulz. Dataset distillation by automatic training trajecto-ries. In European Conference on Computer Vision , pages 334–351. Springer, 2024. 2 [35] Haoyang Liu, Yijiang Li, Tiancheng Xing, Vibhu Dalal, Luwei Li, Jingrui He, and Haohan Wang. Dataset distillation via the wasserstein metric. arXiv preprint arXiv:2311.18531 ,2023. 2 [36] Songhua Liu, Kai Wang, Xingyi Yang, Jingwen Ye, and Xinchao Wang. Dataset distillation via factorization. Ad-vances in neural information processing systems , 35:1100– 1113, 2022. 2 [37] Yanqing Liu, Jianyang Gu, Kai Wang, Zheng Zhu, Wei Jiang, and Yang You. Dream: Efficient dataset distillation by rep-resentative matching. In Proceedings of the IEEE/CVF In-ternational Conference on Computer Vision , pages 17314– 17324, 2023. 6, 2 [38] Renzhi Lu, Zonghe Shao, Yuemin Ding, Ruijuan Chen, Don-grui Wu, Housheng Su, Tao Yang, Fumin Zhang, Jun Wang, Yang Shi, et al. Discovery of the reward function for embod-ied reinforcement learning agents. Nature Communications ,16(1):11064, 2025. 14 [39] Yunhong Lu, Qichao Wang, Hengyuan Cao, Xierui Wang, Xiaoyin Xu, and Min Zhang. Inpo: Inversion preference optimization with reparametrized ddim for efficient diffusion model alignment. In Proceedings of the Computer Vision and Pattern Recognition Conference , pages 28629–28639, 2025. 1[40] Yunhong Lu, Qichao Wang, Hengyuan Cao, Xiaoyin Xu, and Min Zhang. Smoothed preference optimization via renoise inversion for aligning diffusion models with varied human preferences. arXiv preprint arXiv:2506.02698 , 2025. 1 [41] Yunhong Lu, Yanhong Zeng, Haobo Li, Hao Ouyang, Qi-uyu Wang, Ka Leong Cheng, Jiapeng Zhu, Hengyuan Cao, Zhipeng Zhang, Xing Zhu, et al. Reward forcing: Ef-ficient streaming video generation with rewarded distribu-tion matching distillation. arXiv preprint arXiv:2512.04678 ,2025. 14 [42] Laurens van der Maaten and Geoffrey Hinton. Visualizing data using t-sne. Journal of machine learning research , 9 (Nov):2579–2605, 2008. 9 [43] Eduardo Fernandes Montesuma et al. Recent advances in optimal transport for machine learning. IEEE Transactions on Pattern Analysis and Machine Intelligence , 2024. 3 [44] Brian B Moser, Federico Raue, Sebastian Palacio, Stanislav Frolov, and Andreas Dengel. Unlocking dataset distillation with diffusion models. arXiv preprint arXiv:2403.03881 ,2024. 9, 11 [45] Muhammad Ferjad Naeem, Seong Joon Oh, Youngjung Uh, Yunjey Choi, and Jaejun Yoo. Reliable fidelity and diversity metrics for generative models. In International conference on machine learning , pages 7176–7185. PMLR, 2020. 8, 9 [46] Sehban Omer. fast-pytorch-kmeans, 2020. 8 [47] Gaurav Parmar, Richard Zhang, and Jun-Yan Zhu. On aliased resizing and surprising subtleties in gan evaluation. In Proceedings of the IEEE/CVF conference on computer vi-sion and pattern recognition , pages 11410–11420, 2022. 9 [48] William Peebles et al. Scalable diffusion models with trans-formers. In Proceedings of the IEEE/CVF international con-ference on computer vision , pages 4195–4205, 2023. 6, 7, 8, 9, 11 [49] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Bj¨ orn Ommer. High-resolution image synthesis with latent diffusion models. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 10684–10695, 2022. 3, 1 [50] Seyedmorteza Sadat, Jakob Buhmann, Derek Bradley, Otmar Hilliges, and Romann M Weber. Cads: Unleashing the di-versity of diffusion models through condition-annealed sam-pling. arXiv preprint arXiv:2310.17347 , 2023. 4, 5 [51] Christoph Schuhmann, Romain Beaumont, Richard Vencu, Cade Gordon, Ross Wightman, Mehdi Cherti, Theo Coombes, Aarush Katta, Clayton Mullis, Mitchell Worts-man, et al. Laion-5b: An open large-scale dataset for training next generation image-text models. Advances in neural in-formation processing systems , 35:25278–25294, 2022. 1 [52] Shitong Shao, Zeyuan Yin, Muxin Zhou, Xindong Zhang, and Zhiqiang Shen. Generalized large-scale data condensa-tion via various backbone and statistical matching. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 16709–16718, 2024. 6, 8, 2, 4[53] Zonghe Shao, Qichao Wang, Yuzhe Cao, Defu Cai, Yang You, and Renzhi Lu. A novel data-driven lstm-saf model for power systems transient stability assessment. IEEE Transac-tions on Industrial Informatics , 20(7):9083–9097, 2024. 14 [54] Zhiqiang Shen, Ammar Sherif, Zeyuan Yin, and Shitong Shao. Delt: A simple diversity-driven earlylate training for dataset distillation. In Proceedings of the Computer Vi-sion and Pattern Recognition Conference , pages 4797–4806, 2025. 2 [55] Liangliang Shi et al. Ot-clip: Understanding and general-izing clip via optimal transport. In Forty-first International Conference on Machine Learning , 2024. 6 [56] Donghyeok Shin, HeeSun Bae, Gyuwon Sim, Wanmo Kang, and Il-Chul Moon. Distilling dataset into neural field. arXiv preprint arXiv:2503.04835 , 2025. 2 [57] Seungjae Shin, Heesun Bae, Donghyeok Shin, Weonyoung Joo, and Il-Chul Moon. Loss-curvature matching for dataset selection and condensation. In International Conference on Artificial Intelligence and Statistics , pages 8606–8628. PMLR, 2023. 2 [58] Karen Simonyan and Andrew Zisserman. Very deep convo-lutional networks for large-scale image recognition. arXiv preprint arXiv:1409.1556 , 2014. 9 [59] Jiaming Song, Chenlin Meng, and Stefano Ermon. Denoising diffusion implicit models. arXiv preprint arXiv:2010.02502 , 2020. 1, 2 [60] Duo Su, Junjie Hou, Weizhi Gao, Yingjie Tian, and Bowen Tang. Dˆ4: Dataset distillation via disentangled diffusion model. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 5809–5818, 2024. 2, 6, 8, 4, 9 [61] Peng Sun, Bei Shi, Daiwei Yu, and Tao Lin. On the diversity and realism of distilled dataset: An efficient dataset distilla-tion paradigm. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 9390– 9399, 2024. 6, 8, 2, 4, 9 [62] Hui Tang and Kui Jia. Discriminative adversarial domain adaptation. In Proceedings of the AAAI conference on artifi-cial intelligence , pages 5940–5947, 2020. 3 [63] Soobin Um and Jong Chul Ye. Minority-focused text-to-image generation via prompt optimization. In Proceedings of the Computer Vision and Pattern Recognition Conference ,pages 20926–20936, 2025. 2, 4 [64] C´ edric Villani et al. Optimal transport: old and new .Springer, 2008. 3 [65] Kai Wang, Jianyang Gu, Daquan Zhou, Zheng Zhu, Wei Jiang, and Yang You. Dim: Distilling dataset into genera-tive model, 2023. 2 [66] Shaobo Wang, Yicun Yang, Zhiyuan Liu, Chenghao Sun, Xuming Hu, Conghui He, and Linfeng Zhang. Dataset dis-tillation with neural characteristic function: A minmax per-spective. In Proceedings of the Computer Vision and Pattern Recognition Conference , pages 25570–25580, 2025. 2 [67] Tongzhou Wang, Jun-Yan Zhu, Antonio Torralba, and Alexei A. Efros. Dataset distillation, 2020. 1 [68] Ximei Wang, Liang Li, Weirui Ye, Mingsheng Long, and Jianmin Wang. Transferable attention for domain adapta-tion. In Proceedings of the AAAI conference on artificial intelligence , pages 5345–5352, 2019. 3 [69] Max Welling. Herding dynamical weights to learn. In Pro-ceedings of the 26th annual international conference on ma-chine learning , pages 1121–1128, 2009. 10 [70] Lingao Xiao and Yang He. Are large-scale soft labels nec-essary for large-scale dataset distillation? arXiv preprint arXiv:2410.15919 , 2024. 2, 4 [71] Enze Xie, Lewei Yao, Han Shi, Zhili Liu, Daquan Zhou, Zhaoqiang Liu, Jiawei Li, and Zhenguo Li. Difffit: Un-locking transferability of large diffusion models via sim-ple parameter-efficient fine-tuning. In Proceedings of the IEEE/CVF International Conference on Computer Vision ,pages 4230–4239, 2023. 2 [72] Eric Xue, Yijiang Li, Haoyang Liu, Peiran Wang, Yifan Shen, and Haohan Wang. Towards adversarially robust dataset distillation by curvature regularization. In Proceed-ings of the AAAI Conference on Artificial Intelligence , pages 9041–9049, 2025. 2 [73] William Yang, Ye Zhu, Zhiwei Deng, and Olga Russakovsky. What is dataset distillation learning?, 2024. 1 [74] Haotian Ye, Haowei Lin, Jiaqi Han, Minkai Xu, Sheng Liu, Yitao Liang, Jianzhu Ma, James Y Zou, and Stefano Er-mon. Tfg: Unified training-free guidance for diffusion mod-els. Advances in Neural Information Processing Systems , 37: 22370–22417, 2024. 8 [75] Zeyuan Yin et al. Squeeze, recover and relabel: Dataset condensation at imagenet scale from a new perspective. 
+
+Advances in Neural Information Processing Systems , 36: 73582–73603, 2023. 1, 4, 6, 8, 2 [76] Jiwen Yu, Yinhuai Wang, Chen Zhao, Bernard Ghanem, and Jian Zhang. Freedom: Training-free energy-guided condi-tional diffusion model. In Proceedings of the IEEE/CVF In-ternational Conference on Computer Vision , pages 23174– 23184, 2023. 3, 4, 5, 1, 6, 8, 12 [77] David Junhao Zhang, Heng Wang, Chuhui Xue, Rui Yan, Wenqing Zhang, Song Bai, and Mike Zheng Shou. Dataset condensation via generative model, 2023. 2 [78] Haiyu Zhang, Shaolin Su, Yu Zhu, Jinqiu Sun, and Yanning Zhang. Gsdd: generative space dataset distillation for image super-resolution. In Proceedings of the AAAI Conference on Artificial Intelligence , pages 7069–7077, 2024. 2 [79] Junyi Zhang, Yiming Wang, Yunhong Lu, Qichao Wang, Wenzhe Qian, Xiaoyin Xu, David Gu, and Min Zhang. Spherical geometry diffusion: Generating high-quality 3d face geometry via sphere-anchored representations. arXiv preprint arXiv:2601.13371 , 2026. 1 [80] Bo Zhao and Hakan Bilen. Dataset condensation with differ-entiable siamese augmentation. In International Conference on Machine Learning , pages 12674–12685. PMLR, 2021. 2 [81] Bo Zhao et al. Dataset condensation with gradient matching. 
+
+arXiv preprint arXiv:2006.05929 , 2020. 1, 2 [82] Bo Zhao et al. Dataset condensation with distribution match-ing. In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision , pages 6514–6523, 2023. 1, 5, 6, 7, 2, 9, 10, 11 [83] Wenliang Zhong, Haoyu Tang, Qinghai Zheng, Mingzhu Xu, Yupeng Hu, and Weili Guan. Towards stable and storage-efficient dataset distillation: Matching convexified trajectory. In Proceedings of the Computer Vision and Pattern Recogni-tion Conference , pages 25581–25589, 2025. 2 [84] Xinhao Zhong, Hao Fang, Bin Chen, Xulin Gu, Meikang Qiu, Shuhan Qi, and Shu-Tao Xia. Hierarchical features matter: A deep exploration of progressive parameterization method for dataset distillation, 2025. 2 DMGD: Train-Free Dataset Distillation with Semantic-Distribution Matching in Diffusion Models 
+
+# Supplementary Material 
+
+## A1: Background 
+
+A1.1: Diffusion Sample process 
+
+Diffusion models [26, 40, 59] comprise a forward pro-cess {q(xt)}t∈[0 ,T ] that gradually adds noise to data x0 ∼
+
+q(x0), alongside a learned reverse process {p(xt)}t∈[0 ,T ]
+
+targeting to denoise the data. The forward process is formulated as q(xt|x0) := 
+
+N (√αtx0, (1 − αt)I) and q(xt) := R q(xt|x0)q(x0)d x0,with αt representing a noise schedule. The reverse process, initialized from p(xT ) := N (0, I), is characterized by a parameterized denoiser ϵtθ (xt), which aims to predict the noise added to x0. The denoiser ϵθ can be optimized by minimizing: 
+
+LDM := Ex0,t, ϵ[w(t) ϵtθ (√αtx0 + √1 − αtϵ) − ϵ 22]
+
+(1) where x0 ∼ q(x0), t ∼ U (0 , T ), ϵ ∼ N (0, I) and w(t)
+
+is a pre-specified weight function. A more widely adopted approach is the Latent Diffusion Model (LDM) [5, 49, 79], which leverages a Variational Autoencoder (VAE) [29] to compress input x into latent space samples z, followed by executing diffusion within this latent space. In this work, we employ LDM as a pretrained backbone model requiring no additional training, and adopt the sampling process defined by DDIM (Denoising Diffusion Implicit Models) [39, 59]. DDIM first maps the noisy sample zt back to the clean data distribution, obtaining z0|t. Then, it samples zt−1 through the diffusion process: 
+
+z0|t = zt − √1 − ¯αtϵθ (zt, t, c )
+
+√¯αt
+
+(2) We can finally obtain the single-step denoising result via the DDIM sampling formula: 
+
+zt−1 = α1 
+
+> t
+
+z0|t(zt) + α2 
+
+> t
+
+ϵθ (zt, t, c ) + α3 
+
+> t
+
+ϵ (3) where α1 
+
+> t
+
+= √¯αt−1, α2 
+
+> t
+
+= p1 − ¯αt−1 − η2(1 − ¯αt),
+
+α3 
+
+> t
+
+= η√1 − ¯αt−1. η is predefined noise factor. For com-pact representation, we define whole process as zt−1 =
+
+DDIM (zt, t, c ). Furthermore, we can incorporate other conditional gradient guidance during sampling to achieve guided diffusion [76]. Given a differentiable conditioning function E(zt, c ), where c represents a conditional input of arbitrary form, we can define a single-step guided diffusion process as: 
+
+zt−1 = DDIM (zt) − ρt∇E(zt, c ) (4) However, directly evaluating E(zt, c ) on noisy samples zt
+
+is challenging. Thus, we approximate it by computing it at the mapped point of zt on the clean data manifold, i.e., 
+
+E(zt, c ) ≈ ˆE(z0|1(zt), c ), where z0|1 is the denoised esti-mate of zt via Eq. (2). 
+
+Entropy-Regularized OT and Sinkhorn Algorithm To address the computational challenges of OT, entropy regu-larization introduces a penalization term to the objective, smoothing the transport plan γ and enabling efficient com-putation. The entropy-regularized OT problem is defined as: 
+
+Wε(a, b) = min 
+
+> γ∈Π( a,b)
+
+⟨γ, C⟩ − εH (γ), (5) where ε > 0 controls the strength of the regularization, and 
+
+H(γ) = − P 
+
+> i,j
+
+γij log γij is the entropy of the transport plan. The regularization makes the problem strictly convex and allows for efficient iterative solutions, even for large 
+
+a, b. The Sinkhorn algorithm is an iterative method to solve the entropy-regularized OT problem. It leverages the fact that the optimal transport plan γ∗ under entropy regulariza-tion can be expressed in a factorized form: 
+
+P ∗ 
+
+> ij
+
+= aibj exp 
+
+
+
+− Cij 
+
+ϵ + ui + vj
+
+
+
+(6) where u ∈ Rn and v ∈ Rm are dual variables ensuring the marginal constraints are satisfied. Rearranging, this simpli-fies to: 
+
+P ∗ = diag (u) K diag (v) (7) where K ∈ Rn×m 
+
+> +
+
+is the kernel matrix defined as Kij =exp 
+
+
+
+− Cij 
+
+> ϵ
+
+
+
+, and diag (u) (resp. diag (v)) is a diagonal matrix with u (resp. v) on the diagonal. In practice, the Sinkhorn algorithm alternates between updating u and v
+
+to enforce the marginal constraints. Starting with initial guesses u0 = 1 (all ones) and v0 = 1, the updates are: 
+
+vk = βK⊤uk−1
+
+,uk = αKv k
+
+(8) where K⊤ denotes the transpose of K, and division is element-wise. After T iterations, the transport plan is ap-proximated as P ≈ diag (uT )Kdiag (vT ). Besides, A sim-plified and numerically stable variant of the Sinkhorn algo-rithm is the row-column normalization method , which di-rectly operates on the kernel matrix K without explicitly tracking u and v. The key insight is that alternating row and column normalization of K enforces the marginal con-straints α and β iteratively [14]. The steps are as follows: 
+
+Krow = K ⊙
+
+ α
+
+row sum (K)
+
+
+
+(9) 
+
+K = Krow ⊙
+
+ β
+
+col sum (Krow )
+
+
+
+(10) where row sum (K) ∈ Rn is the vector of row sums of K, and ⊙ denotes element-wise multiplication. col sum (Krow ) ∈ Rm is the vector of column sums of Krow .After T iterations, the normalized K itself serves as the ap-proximate transport plan P ≈ K.
+
+A1.2: More Related Work 
+
+Optimization Based Methods. Optimization based methods are classical dataset distillation algorithms. They align representations or training dynamics between synthetic datasets ( S) and real datasets ( T ) via matching losses, and update the synthetic dataset through gradient optimization. Gradient Matching (GM), one of the earliest dataset distillation algorithms, updates samples by match-ing training gradients on S and T [57, 80, 81]. However, GM requires simultaneous gradient updates for both samples and the model, leading to a bi-level optimization dilemma. In contrast, Trajectory Matching (TM) aims to di-rectly match training trajectories between S and T without complex gradient computations [6, 13, 18, 23, 34, 83]. Guo et al. [23] observed that different parameter trajectories can be adopted for distillation across datasets, achieving lossless distillation on small-scale datasets for the first time. Distribution Matching (DM) seeks to ensure that S
+
+effectively covers T in the feature space, i.e., matching their feature distributions [37, 52, 54, 66, 82]. Zhao et al. [82] proposed using randomly initialized feature extractors for mapping and matching the means of T and 
+
+S to approximate distribution matching. [37] proposed selecting representative data via K-means clustering for matching. Optimal Transport is regarded as a key insight for enhancing distribution matching. [35] proposed using the Wasserstein barycenter of the T as matching targets. OPTICAL [14] leverages mini-batch optimal transport to improve the matching relationship between samples in S
+
+and T . Our method also draws on the key insight of optimal transport, designing a new OT-guided loss for the diffusion based dataset distillation framework. We further propose two key strategies: approximate distribution matching and greedy progressive matching, to ensure performance while further optimizing efficiency. 
+
+Disentangled Dataset Distillation Disentangled dataset distillation frameworks have successfully overcome the bi-level optimization dilemma, extending dataset distillation to large-scale datasets such as ImageNet[28, 36, 52, 56, 61, 70, 72, 75]. SRe2L [75] proposed a squeeze-recover-relabel paradigm: first, it squeezes the key information of the dataset into a neural network through training; then, it opti-mizes samples through designed matching losses for recov-ery; finally, it performs relabeling based on the pretrained model. G-VBSM [52] extended such methods via large-scale statistical matching and multi-backbone model. Xiao and He [70] proposed a label pruning method to optimize the label space, significantly reducing the storage space of such methods. Xue et al. [72] proposed a curvature regular-ization loss to improve the adversarial robustness of disen-tangled dataset distillation. Inspired by these approaches, Sun et al. [61] introduced a non-optimization framework RDED, which conducts dataset distillation by directly ex-tracting effective patches using a pre-trained model. In-spired by this category of methods, we designed semantic matching and distribution matching objectives for diffusion based dataset distillation. Meanwhile, we further improved the matching framework specifically for diffusion models. 
+
+Generative Model Based Dataset Distillation In con-trast to methods based on discriminative models, genera-tive model based approaches can synthesize data that ex-hibits high consistency with the original dataset. This con-sistency (also termed realism) effectively enhances cross-architecture performance. Prior research [7, 65, 77, 84] proposed using Generative Adversarial Networks (GANs) [20] as prior models for dataset distillation, synthesizing realistic data by optimizing latent space variables. [78] extended GAN-based dataset distillation methods to the image super-resolution setting, further validating the im-mense potential of generative models in dataset distilla-tion. Recently, researchers have increasingly focused on applying diffusion models [12, 26, 59] to dataset distillation [8, 10, 22, 60]. Minimax [22] introduced an efficient fine-tuning-based method [71] to further align diffusion models with target datasets. D 4M [60] proposed a disentangled dif-fusion model framework: it first extracts mode means via K-means and generates representative samples through DDIM inversion; subsequently, it employs knowledge distillation for soft label annotation. MGD 3 [8] devised a training-free guided diffusion model framework for dataset distillation, comprising three stages: mode discovery, mode guidance, and stop guidance. However, this method lacks attention to the distribution structure, which may lead to overem-phasizing invalid mode points. IGD [10] introduce trajec-tory matching into diffusion model guidance, utilizing a auxiliary trained classifier to steer generation toward high-influence samples. However, complex trajectory optimiza-tion causes it to lose the efficient characteristics of diffusion based methods. Independently and concurrently with our work, [15] explored the application of optimal transport-based diffusion models in dataset distillation, with a spe-cific focus on how optimal transport relates to soft label learning within this task. Our method rethinks the frame-work for applying diffusion models to dataset distillation, proposing two core objectives: semantic matching and dis-tribution matching. For semantic matching, we demonstrate that diffusion models effectively inject semantic informa-tion and design a dynamic soft labeling approach to enhance diversity. For distribution matching, we propose an optimal transport-guided loss that effectively aligns the distribution of generated samples with the real dataset without requiring additional model training. 
+
+## A2: Proof 
+
+In this section, we will provide detailed proofs for the the-oretical analyses presented in the paper, and in conjunction with the design space of dataset distillation, discuss how these theories guide the design of our DMGD framework. 
+
+A2.1: Proof of Theorem 1 
+
+Theorem 1 Let T and S denote the target and surrogate datasets, respectively, with θ∗T and θ∗S being their optimally trained parameters. Define the target risk as: RT (θ) = 
+
+E(x,y )∼T [ℓ(x, y, θ )] , where ℓ(·) is an L-Lipschitz continu-ous evaluation function. Under semantic class alignment (i.e., no label mismatch), consider the marginal sample distributions PT and PS with optimal transport distance: 
+
+W (PT , P S ) = inf γ∈Γ( PT ,P S ) E(xT ,x S )∼γ [d(xT , x S )] ,
+
+where Γ( PT , P S ) is the set of all couplings between the dis-tributions, and d(·, ·) is a metric on the sample space. Then the risk discrepancy satisfies: 
+
+|RT (θ∗T ) − RT (θ∗S )| ≤ 2L · W (PT , P S ). (11) 
+
+Proof. Through the optimal properties of parameters θ∗,we decompose the risk discrepancy: 
+
+∆ = RT (θ∗S ) − RT (θ∗T )= RT (θ∗S ) − RS (θ∗S ) + RS (θ∗S ) − RT (θ∗T )
+
+≤ RT (θ∗S ) − RS (θ∗S )
+
+| {z }
+
+> I
+
++ RS (θ∗T ) − RT (θ∗T )
+
+| {z }
+
+> II
+
+(12) For conciseness, we define ∆ = |RT (θ∗T ) − RT (θ∗S )|. We review the definition of risk RT (θ) = E(x,y )∼T [ℓ(x, y, θ )] .Due to the consistency of labels and the consistency of pa-rameters, we can express the first term as: 
+
+I = Ex∼PT
+
+ℓθ∗ 
+
+> s
+
+(x) − Ex∼PS
+
+ℓθ∗ 
+
+> s
+
+(x) (13) To explain the risk discrepancy from the perspective of op-timal transport theory, we introduce the key lemma for The-orem 1: the Kantorovich-Rubinstein duality ( Lemma 2 ). 
+
+Lemma 2 (Kantorovich-Rubinstein Duality [64]) Let 
+
+(X , d ) be a complete separable metric space (Polish space). For any Borel probability measures μ, ν ∈ P 1(X )
+
+with finite first moments, the Wasserstein distance admits the dual representation: 
+
+W (μ, ν ) = inf  
+
+> γ∈Γ( μ,ν )
+
+E(x,y )∼γ [d(x, y )] = sup   
+
+> f∈Lip 1(X)
+
+(Ex∼μ[f (x)] − Ey∼ν [f (y)]) (14) 
+
+where, Γ( μ, ν ) denotes the set of couplings with marginals 
+
+μ and ν. ∥f ∥Lip = sup x̸=y   
+
+> |f(x)−f(y)|
+> d(x,y )
+
+is the Lipschitz semi-norm. P1(X ) is the space of probability measures with R d(x0, x )dμ (x) < ∞ for some x0 ∈ X 
+
+Let μ = PT , ν = PS . Meanwhile, since ℓ satisfies L-Lipschitz continuity, we can set f (x) = ℓθ∗S (x) 
+
+> L
+
+. Building on the basis of Lemma 2, we have: 
+
+I = Ex∼PT
+
+ℓθ∗S (x) − Ex∼PS
+
+ℓθ∗S (x)
+
+= L · (Ex∼PT [f (x)] − Ex∼PS [f (x)]) 
+
+≤ L · sup   
+
+> f∈Lip 1(X)
+
+(Ex∼PT [f (x)] − Ey∼PS [f (y)]) = L · W (PT , P S )
+
+(15) Similarly, for the second term, we have: 
+
+II = Ex∼PS
+
+ℓθ∗T (x) − Ex∼PT
+
+ℓθ∗T (x)
+
+= L · (Ex∼PS [f (x)] − Ex∼PT [f (x)]) 
+
+≤ L · sup   
+
+> f∈Lip 1(X)
+
+(Ex∼PS [f (x)] − Ey∼PT [f (y)]) = L · W (PS , P T )
+
+(16) Combining the two terms, based on the symmetric prop-erty of the optimal transport distance, i.e. W (PS , P T ) = 
+
+W (PT , P S ), we can derive Theorem 1: 
+
+|RT (θ∗T ) − RT (θ∗S )| ≤ 2L · W (PT , P S ). (17) 
+
+Discussion The core idea of Theorem 1 is to decompose the objectives of dataset distillation into two domain adap-tation objectives [11, 30, 62, 68] concerning the optimal pa-rameters on the target dataset and the optimal parameters on the surrogate dataset, respectively. This decomposition bridges the gap between the fields of dataset distillation and domain adaptation. However, traditional domain adaptation algorithms optimize model parameters, while dataset dis-tillation optimizes synthetic samples. This discrepancy in optimization objects makes it challenging to apply optimal transport to optimizing the joint distribution of samples and labels in the context of dataset distillation. Meanwhile, im-age data has the characteristic of redundancy in information dimensions, which means the semantic information only oc-cupies a small number of dimensions in the pixel or feature space. Performing optimal transport solely on the sample distribution fails to preserve representative semantic infor-mation. Therefore, we aim to handle the alignment of seman-tic information and distribution structures separately, which also constitutes the starting point of our Theorem 1 and the DMGD framework. Theorem 1 indicates that, under certain constraint guidance such that semantic alignment is satisfied, optimizing the optimal transport distance between the surrogate dataset and the target dataset is equivalent to optimizing the upper bound of the risk discrepancy. There-fore, we only need to consider that surrogate samples must have semantic information consistent with the target class, i.e., semantic alignment. We can define semantic alignment from the perspective of conditional likelihood. 
+
+Definition 2 (Semantic Alignment) Let X be the sample space, Y = {y1, . . . , y m} a finite label set of semantic cat-egories, and log p(·| x) a conditional log-likelihood distri-bution over Y for a given sample x ∈ X . A sample x and target semantic label y ∈ Y are semantically aligned if and only if: 
+
+y = arg max  
+
+> y∗∈Y
+
+log p(y∗|x) (18) By Definition 2 , we can achieve semantic alignment by op-timizing the conditional log-likelihood log p(y|x). In dis-criminative models, the conditional log-likelihood can be estimated from the softmax output of the classifier, and synthetic samples can be optimized via backpropagation [52, 70, 75]. In generative models, especially diffusion models, classifier-free guidance [22, 25, 60] is an effec-tive method for estimating and optimizing conditional log-likelihood. This makes it feasible to align semantics within the diffusion model framework without the need for addi-tional classifier training. This also forms the design basis of our semantic matching. For distribution matching, we still need to first consider whether distribution alignment will lead to a mismatch of semantic information, which is also the premise for han-dling the two objectives separately. The traditional setup of dataset distillation provides a natural way to meet the assumptions by distilling instances for each class distribu-tion. We perform distribution matching for each class sep-arately to disentangle semantic information. Through opti-mal transport matching on class distributions, we can obtain the objective of distribution alignment that guides practice. 
+
+arg min  
+
+> Sc
+
+W (PSc , P T c ) (19) 
+
+Sc is the set of instances assigned to class c in the surrogate dataset, and T c is the set of samples labeled c in the target dataset. 
+
+A2.2: Proof of Lemma 1 
+
+Lemma 1 (Classifier-Free Guidance [25]) Consider anoise prediction network ϵθ (zt, t, y ), where zt denotes the representation of an original sample x at timestep t, and 
+
+y is a label. Assuming the ϵ models both the conditional generative distribution p(zt|y) and the unconditional distribution p(zt), the gradient of the conditional log-likelihood log p(y|zt) with respect to zt can be implicitly approximated by the difference between the network’s conditional and unconditional outputs: 
+
+∇zt log p(y|zt) ≈ ω
+
+
+
+ϵθ (zt, t, ∅) − ϵθ (zt, t, y )
+
+
+
+(20) 
+
+Here, ω denotes a scalar guidance scale, and ϵθ (zt, t, ∅)
+
+represents the network’s unconditional output (i.e., without a specified class label). 
+
+Proof. By Bayes’ theorem, the conditional likelihood de-composes as: 
+
+p(y|zt) = p(zt|y) · p(y)
+
+p(zt) (21) Taking the logarithm and differentiating with respect to zt:
+
+∇zt log p(y|zt) = ∇zt log p(zt|y) − ∇ zt log p(zt) (22) In diffusion models, the score functions relate to the noise prediction network via: 
+
+∇zt log p(zt|y) ≈ − σ−1 
+
+> t
+
+ϵθ (zt, t, y )
+
+∇zt log p(zt) ≈ − σ−1 
+
+> t
+
+ϵθ (zt, t, ∅) (23) where σt is the noise magnitude at timestep t. Substituting these identities: 
+
+∇zt log p(y|zt) ≈ − σ−1 
+
+> t
+
+ϵθ (zt, t, y ) + σ−1 
+
+> t
+
+ϵθ (zt, t, ∅)
+
+≈ σ−1 
+
+> t
+
+(ϵθ (zt, t, ∅) − ϵθ (zt, t, y )) 
+
+≈ ω (ϵθ (zt, t, ∅) − ϵθ (zt, t, y )) 
+
+(24) where the guidance scale ω absorbs the proportionality con-stant σ−1 
+
+> t
+
+and sign convention. The final equivalence fol-lows from reordering terms and the scalar nature of ω.
+
+Discussion Lemma 1 demonstrates that diffusion mod-els can effectively estimate conditional likelihood, thereby providing a foundation for semantic alignment without the need for additional classifier training. In previous works [8, 10, 22, 61], this aspect was incorporated, but without further in-depth analysis. We are the first to elaborate on the design in this aspect and verify its significant impact on the performance of dataset distillation, as shown in Table 3 in the paper. A2.3: Proof of Proposition 1 
+
+Proposition 1 Given a single step sampling process (such as DDIM) based on ϵθ to update z(0)  
+
+> t−1
+
+using condition y,consider a dynamic label ˆyt = y + δt where δt is a time-dependent vector. The modified sampling step admits the first-order approximation: 
+
+zt−1 ≈ z(0)  
+
+> t−1
+
++ Λ t(δt) (25) 
+
+where the condition shift operator Λt is defined as: 
+
+Λt(δt) = ct ·  ∇y ϵθ (zt, t, y )⊤δt with ct = √1 − αt−1 −√αt−1 · √1 − αt/√αt as the intrinsic time-scaling factor. 
+
+Proof. By Taylor expansion, we can approximate the de-noising model ϵ under dynamic label. 
+
+ϵθ (zt, t, y + δt) ≈ ϵθ (zt, t, y ) + ∇y ϵθ (zt, t, y )⊤δt (26) Neglecting the effects of higher-order terms, we substitute the approximation formula into the sampling formula of the diffusion model, taking DDIM (Equation (3)) as an example here: 
+
+zt−1 ≈α1 
+
+> t
+
+( zt − √1 − ¯αt(ϵθ (zt, t, y ) + ∇y ϵθ (zt, t, y )⊤δt)
+
+√¯α )+ α2 
+
+> t
+
+(ϵθ (zt, t, y ) + ∇y ϵθ (zt, t, y )⊤δt) + α3 
+
+> t
+
+ϵ
+
+(27) After rearrangement, we obtain: 
+
+zt−1 = z(0)  
+
+> t−1
+
++ ct∇y ϵθ (zt, t, y )⊤δt (28) where, z(0)  
+
+> t−1
+
+corresponds to a standard DDIM sampling pro-cess, ct = √1 − αt−1 − √αt−1 · √1 − αt/√αt. We de-fine the condition shift operator Λt = ct∇y ϵθ (zt, t, y )⊤δt,which represents the additional shift term introduced by dy-namic labels in the sampling dynamics of the data distribu-tion space. 
+
+Discussion From Proposition 1, we can observe that the dynamic term introduces an additional shift term into the sampling dynamics of diffusion models. Researchers have demonstrated that such an offset term helps diffusion mod-els move away from local mode points, further explore the distribution space, and thereby enhance diversity [50]. Sim-ilarly, adding an shift term directly in the sampling process of the sample space can also achieve a similar effect. How-ever, it should be noted that this method leads to more com-plex computations due to the higher dimensionality of the sample space. Meanwhile, the regulation of the shift term in the sample space is also trick, unreasonable coefficients may directly disrupt the entire sampling process. Stable reg-ulation coefficients often need to be obtained by computing the derivative of ϵ. Therefore, introducing a dynamic pro-cess in the label space is a more reasonable choice for us. Furthermore, starting from our goal of generating diverse and high-information samples, we propose the design of two shift terms. The noise shift term provides an effective exploration direction, while the soft label term offers guid-ance toward class boundaries. Since the soft labels selected for each sample are different, the soft label term can also provide reasonable diversity guidance. 
+
+A2.4: Proof of Corollary 1 
+
+Corollary 1 Under the conditions of Theorem 1, consider an approximate distribution ePT satisfying W ( ePT , P T ) ≤ ϵ
+
+for small ϵ > 0. Assuming the distance metric satisfies the triangle inequality, distributions lie in a Polish space. The risk discrepancy is bounded by: 
+
+|RT (θ∗T ) − RT (θ∗S )| ≤ 2L ·
+
+
+
+W (PS , ePT ) + W (PT , ePT )
+
+
+
+(29) 
+
+Proof. Let PS , P T , ePT be Borel probability measures on a Polish metric space (X, d ). Let γ1 and γ2 be the optimal couplings corresponding to W (PS , ePT ) and W (PT , ePT ),respectively. By the gluing lemma , construct a measure 
+
+γ on X3 with (x, y )-marginal γ1 and (y, z )-marginal γ2.Project γ to a coupling γ13 ∈ Γ( PS , P T ) via γ13 (A × C) = 
+
+γ(A × X × C). Then, using the triangle inequality for d,we have: 
+
+Z
+
+> X2
+
+d(x, z ) dγ 13 =
+
+Z
+
+> X3
+
+d(x, z ) dγ 
+
+≤
+
+Z
+
+> X3
+
+[d(x, y ) + d(y, z )] dγ 
+
+≤
+
+Z
+
+> X2
+
+d(x, y ) dγ 1 +
+
+Z
+
+> X2
+
+d(y, z ) dγ 2
+
+= W (PS , ePT ) + W (PT , ePT )
+
+(30) Since W (PS , P T ) is the infimum over all couplings in 
+
+Γ( PS , P T ):
+
+W (PS , P T ) ≤
+
+Z
+
+> X2
+
+d(x, z ) dγ 13 
+
+≤ W (PS , ePT ) + W (PT , ePT )
+
+(31) Substituting the results into the Theorem 1, we can obtain: 
+
+|RT (θ∗T ) − RT (θ∗S )| ≤ 2L ·
+
+
+
+W (PS , ePT ) + W (PT , ePT )
+
+
+
+(32) 
+
+Disscusion. Corollary 1 reveals that the target risk dis-crepancy admits an upper bound. This decomposition pro-vides critical guidance for practical implementation. The first term W (PS , ePT ) represents the alignment error, whose optimization requires ePT to be computationally tractable. The second term W ( ePT , P T ) quantifies the approximation error, which must be minimized to preserve distributional fidelity. To satisfy both requirements, we seek a discrete approximation ePT that minimizes W ( ePT , P T ) while en-abling efficient optimization of PS . This leads naturally to the classical optimal quantization problem [4]. Clustering algorithms are efficient solutions with good convergence properties for this type of problem. 
+
+A2.5: Proof of Proposition 2 
+
+Proposition 2 Let ˜P (1)  
+
+> T
+
+denote the mean-matching approx-imation of PT defined by a Dirac measure δμ concentrated at the mean μ of PT , and ˜P (2)  
+
+> T
+
+denote the proposed approx-imation constructed via our method with cluster count K.The Wasserstein distance satisfies: 
+
+W (PT , ˜P (2)  
+
+> T
+
+) ≤ W (PT , ˜P (1)  
+
+> T
+
+) (33) 
+
+Proof. For ˜P (1)  
+
+> T
+
+, the optimal transport cost is the integral of distances to μ:
+
+W (PT , ˜P (1)  
+
+> T
+
+) = 
+
+Z
+
+d(x, μ ) dP T (x) (34) For ˜P (2)  
+
+> T
+
+, consider transporting mass in cluster Ci to its cen-troid ki . The cost of this local plan is: Cost =
+
+> K
+
+X
+
+> i=1
+
+Z
+
+> Ci
+
+d(x, k i) dP T (x) (35) By the key property of K-means, ki is the optimal center for Ci , meaning it minimizes the local transport cost: 
+
+Z
+
+> Ck
+
+d(x, k i) dP T (x) ≤
+
+Z
+
+> Ck
+
+d(x, z ) dP T (x), ∀z ∈ Rd
+
+(36) Setting z = μ (the mean of PT ), we immediately get: 
+
+Z
+
+> Ci
+
+d(x, k i) dP T (x) ≤
+
+Z
+
+> Ci
+
+d(x, μ ) dP T (x) (37) Summing the inequality over all clusters i = 1 , . . . , K , we have: Cost ≤
+
+> K
+
+X
+
+> i=1
+
+Z
+
+> Ci
+
+d(x, μ ), dP T (x) = 
+
+Z
+
+d(x, μ ) dP T (x)
+
+(38) For all transport plans, the optimal transport plan achieves the minimal cost, and thus: 
+
+W (PT , ˜P (2)  
+
+> T
+
+) ≤ Cost ≤
+
+Z
+
+d(x, μ ) dP T (x) = W (PT , ˜P (1)  
+
+> T
+
+)
+
+(39) 
+
+Discussion. In a more general case, we can analyze the bounds of W (PT , ˜P (2)  
+
+> T
+
+). When effectively evaluating the intrinsic manifold dimension of the data, for a specific K,we can obtain the Wasserstein distance convergence bounds between the approximate distribution based on the K-means algorithm and the original distributions. We recommend re-ferring to Theorem 5.2 in [4] for more details. 
+
+## A3: More Implementation Details 
+
+A3.1: More Details of Method 
+
+We provide detailed specifics of the algorithm rapid re-production, and we will also open-source the implementa-tion code of the paper after organizing it. Algorithm 1 for-malizes the overall framework of our approach, featuring parallel application of dual-matching guidance at targeted diffusion phases. 
+
+Semantic Matching. Building on insights from Yu et al. [76], we partition the diffusion process into three distinct phases for semantic matching: 1) Chaotic Stage: Leverag-ing pure noise vectors as label proxies to facilitate exhaus-tive stochastic exploration. 2) Semantic Stage: Employing our proposed dynamic soft labels for guided generation. 3) Refinement Stage: Conducting deterministic sampling with target vectors to ensure semantic alignment.The Fig. 1 intu-itively illustrates our dynamic sampling process. The label strategy across stages is mathematically formalized as: 
+
+eyt =
+
+
+
+n t ≥ t1
+
+√σty + (1 − √σt)( βsy⋆ + βnn) t2 < t < t 1
+
+y t ≤ t2
+
+(40) where n ∼ N (0 , I ) denotes Gaussian noise, y⋆ is a random select label subject to y⋆̸ = y, βn and βs are modulation coefficients, and σt represents a time-dependent scheduling term defined as: 
+
+σt = t1 − tt1 − t2
+
+(41) Based on the observations of the stages of the diffusion model, we set t1 = 45 and t2 = 25 . Furthermore, to main-tain semantic consistency, we also perform rescaling on the label vectors. The rescaling process is determined by the mean and variance of the target label vectors. 
+
+eyre = ey − mean (ey)
+
+std (ey) ∗ std (y) + mean (y) (42) Substituting the label vector into the denoising model and applying classifier-free guidance, we have 
+
+ˆϵθ (zt, t, eyt) = ϵθ (zt, t, eyt) − ∇ zt log p(y|zt)
+
+≈ (1 + ω)ϵθ (zt, t, eyt) − ωϵ θ (zt, t, ∅) (43) Algorithm 1 Dual Matching-Guided Diffusion Models 
+
+Require: CFG factor ω, semantic matching coefficient βn and βs, distribution matching coefficient ρ, number of Support Points K, number of class C, image per class N , distribution matching range [t1, t 2]
+
+Require: Target dataset T , pre-trained diffusion model ϵθ , VAE decoder model VD .
+
+Ensure: Surrogate dataset S 
+
+> 1:
+
+for c = 1 to C do  
+
+> 2:
+
+Obtain the approximated distribution ePT via Algorithm 2  
+
+> 3:
+
+Initialize class-aware surrogate dataset storage Sc 
+
+> [0]
+
+← {}  
+
+> 4:
+
+for n = 1 to N do  
+
+> 5:
+
+Sample initial random noise zTn ∼ N (0 , I ); 
+
+> 6:
+
+Select y⋆, s.t. y⋆̸ = c 
+
+> 7:
+
+for t = T to t do  
+
+> 8:
+
+Obtain dynamic label eyt via Equation (40)  
+
+> 9:
+
+Semantic matching guided sampling zt−1 = D(zt, t, eyt, ϵ θ ). 
+
+> 10:
+
+if t ∈ [t1, t 2] then  
+
+> 11:
+
+Obtain a temporary class-aware surrogate dataset Sc 
+
+> [n]
+
+← S c 
+
+> [n−1]
+
+∪ { z0|t(zt)}. 
+
+> 12:
+
+Calculate the OT loss LOT (PSc 
+
+> [i]
+
+, ePT c ) via Sinkhorn algorithm.  
+
+> 13:
+
+Distribution matching guided sampling zt−1 = zt−1 − ρt∇zt LOT (PSc 
+
+> [n]
+
+, ePT c ). 
+
+> 14:
+
+end if  
+
+> 15:
+
+end for  
+
+> 16:
+
+Store surrogate data Sc 
+
+> [n]
+
+← S c 
+
+> [n−1]
+
+∪ { z0} 
+
+> 17:
+
+end for  
+
+> 18:
+
+end for  
+
+> 19:
+
+return Decoded synthetic image S = VD (S[N ])𝑫 𝜽 (𝒙 𝒕 , 𝒚 )
+
+## Class 𝒚 ∗
+
+## 𝑫 𝜽 (𝒙 𝒕 , 𝒏 )
+
+## 𝑫 𝜽 (𝒙 𝒕 , ෥𝒚 )
+
+## 𝑫 𝜽 (𝒙 𝒕 , 𝒚 )
+
+## 𝒙 𝑻 
+
+## Class 𝒚 
+
+Figure 1. Intuitive demonstration of the dynamic semantic match-ing guided sampling process. Compared with the sampling pro-cess without dynamic guidance, our method can greatly improve diversity and avoid oversampling samples in high-density regions. 
+
+In practice, ∅ is also injected into the denoising model in the form of label vectors. Therefore, we suggest imposing a dynamic process on it as well to improve stability. We define the single-step dynamic sampling process as zt−1 =
+
+Dθ (zt, t, eyt).
+
+Distribution Matching. We introduce the distribution matching term in parallel to guide sampling, which show in Fig. 2. Distribution matching is performed within each 𝑫 𝜽 (𝒙 𝒕 , 𝒚 )𝒙 𝑻 
+
+Target distribution 
+
+Diffusion distribution 
+
+## −𝜵 𝒛 𝒕 𝓛 𝑶𝑻 
+
+Figure 2. Intuitive demonstration of the distribution matching guided sampling process.Compared with the original sampling process , adding distribution matching guidance can enable the sampling regions to align with the distribution of the target dataset, which is particularly applicable when there is a large discrepancy between the distribution of the diffusion model and that of the tar-get dataset. 
+
+class to avoid introducing additional semantic information that interferes with semantic alignment. First, we map the samples in the target dataset to the latent space of the dif-fusion model. Given the VAE encoder VE and the image sample xi ∼ PT ⌋ and xi ∈ RD , we have: 
+
+zi 
+
+> 0
+
+= VE (xi) (44) Where, z ∈ RN with N < D . To distinguish from noise samples, we define the samples from the data distribution in the latent space as z0. We also introduce a hyperspherical projection to project latent space samples onto the hyper-sphere of RN −1:
+
+ˆzi 
+
+> 0
+
+= zi
+
+> 0
+
+|| zi
+
+> 0
+
+|| 2
+
+(45) We define the Euclidean distance in the latent space as the distance metric, which is used for distribution approxima-tion and subsequent optimal transport. 
+
+d(zi
+
+> 0
+
+, z j
+
+> 0
+
+) = || zi 
+
+> 0
+
+− zj
+
+> 0
+
+|| 2 (46) Before performing distribution matching, we first need to perform distribution approximation on the distribution of the target dataset to optimize the efficiency of computing optimal transport. We adopt an implementation of the GPU-based fast K-means clustering algorithm [46]. Taking the centroid of the cluster as support points of the approximate distribution, the normalization of the cardinality of each cluster serves as the mass coefficients. We present our dis-tribution approximation algorithm in Algorithm 2 .
+
+Algorithm 2 K-Means based Distribution Approximation 
+
+Require: Target dataset T , cluster count K
+
+Ensure: Approximated distribution ePT 
+
+> 1:
+
+Initialize centroids {k(0)  
+
+> i
+
+}Ki=1  
+
+> 2:
+
+for iter = 1 to max iter do  
+
+> 3:
+
+C(iter ) 
+
+> i
+
+← { x ∈ T : arg min j ∥x − k(iter −1)  
+
+> j
+
+∥}  
+
+> 4:
+
+k(iter ) 
+
+> i
+
+← 1 
+
+> |C(iter )
+> i|
+
+P
+
+> x∈C(iter )
+> i
+
+x 
+
+> 5:
+
+end for  
+
+> 6:
+
+Compute masses: mi ← | C(f inal ) 
+
+> i
+
+|/|T |  
+
+> 7:
+
+return ePT = PKi=1 miδki
+
+Since optimizing all instances simultaneously in the dif-fusion model space is not feasible, we propose a greedy progressive matching strategy. We construct a memory set 
+
+Sc 
+
+> [n]
+
+= {zi
+
+> 0
+
+, y i}ni=1 to store the generated surrogate sam-ples,where yi = c. For the next surrogate sample, we first initialize it from the noise distribution zn+1  
+
+> T
+
+∼ N (0 , I ) and execute the reverse process. Notably, applying distribution matching guidance in all sample stages is unnecessary (see Table 7 in the Appendix A4), so we only perform it in stages where t ∈ [30 , 45] . For a zn+1  
+
+> t
+
+to be optimized, we first map it to the clean data distribution through single-step dif-fusion. 
+
+zn+1 0|t = zn+1  
+
+> t
+
+− √1 − ¯αtϵθ (zn+1  
+
+> t
+
+, t, c )
+
+√¯αt
+
+(47) We construct a temporary distribution Sc 
+
+> [n+1]
+
+by combining 
+
+zn+1 0|t with Sc
+
+> [n]
+
+, and calculate the optimal transport distance in sample distribution PSc 
+
+> [n+1]
+
+.
+
+LOT = W (PSc 
+
+> [n+1]
+
+, P T c ) = ⟨γ, C⟩ (48) where γ is the optimal coupling, C is the cost matrix. We only need to focus on zn+1 , which means that LOT can be simplified to: 
+
+LOT =
+
+> K
+
+X
+
+> j=1
+
+γn+1 ,j · Cn+1 ,j (49) This loss models the matching relationship between the new sample zn+1 and the support points of the approximate dis-tribution. Due to the presence of optimal transport, the op-timization direction of LOT will prompt zn+1 to align with the unaligned regions in the approximate distribution, en-suring the performance of distribution alignment. We uti-lize training-free guidance technology [74, 76] to incorpo-rate this loss into the diffusion model framework. 
+
+zn+1  
+
+> t−1
+
+= Dθ (zn+1  
+
+> t
+
+) − ρt∇zn+1 
+
+> t
+
+LOT (PSc 
+
+> [n+1]
+
+, P T )= Dθ (zn+1  
+
+> t
+
+) − ρt∇zn+1 
+
+> t
+> K
+
+X
+
+> j
+
+γn+1 ,j · Cn+1 ,j (50) Following the suggestions from previous work [74], we set 
+
+ρt as a time-dependent term and a scale term ρ:
+
+ρt = ρ ∗ logα 2 
+
+> t
+
+(51) 
+
+logα 2 
+
+> t
+
+is log-variance of diffusion models. 
+
+Diversity vs. Representativeness trade-off While rep-resentativeness and diversity have been demonstrated as two crucial characteristics for dataset distillation optimiza-tion [61], our semantic matching and distribution match-ing specifically enhance representativeness in the seman-tic space and sample space respectively. Simultaneously, our dynamic guidance mechanism provides a pathway for further diversity optimization. However, in practice, we observe that diversity enhancement does not consistently translate into performance gains. As shown in Table 7 and Table 8, we find that for lower IPC settings, diversity en-hancement may be unnecessary, whereas in higher IPC con-figurations, it facilitates broader exploration of the gener-ative distribution and helps avoid local optima. This ex-plains the more substantial performance improvements ob-served under high IPC conditions. We plan to formulate diversity-related parameters as functions of IPC, represent-ing a promising direction for future research. 
+
+A3.2: More Details of Experiment setting 
+
+Evaluation Protocol In the hard label protocol, we fol-low Gu et al. [22] original code and parameter definitions; for more details, please refer to their work. During the training of the target network, we apply the same random resize-crop and CutMix as data augmentation techniques. This protocol is used to evaluate ImageNet subsets, includ-ing ImageNet-Woof and ImageNet-Nette [27]. It should be noted that we also applied the hard label protocol to ImageNet-IDC [28]; however, to align with Gu et al. [22] and Kim et al. [28], our specific settings adopt Kim et al. [28]’s definitions. In the soft label protocol, we followed Sun et al. [61] original code and parameter settings. Soft labels are gener-ated by a pre-trained ResNet-18 [24] model and applied to the training of the evaluation model. We applied this proto-col to the full ImageNet-1k dataset. Under the same experimental settings and repeated ex-periments, we directly report the experimental results of previous works [8, 22, 28, 61]. 
+
+Evaluation metric We have provided explanations for the evaluation metrics adopted in the paper, including: • Accuracy: The accuracy metric denotes the best TOP-1 accuracy on the test set achieved during the training pro-cess of the evaluation model. For the evaluation model, we repeated the training 5 times and report the mean and standard deviation of the best TOP-1 accuracy. • Coverage: For the coverage metric, we first extract fea-tures of the dataset using a pre-trained VGG network [58]. The feature space we adopt is the output of the second classification layer of the VGG network, which has a to-tal of 4096 dimensions. We performed code in Naeem et al. [45] to calculate the coverage between the surrogate dataset and the target dataset. • Optimal Transport Dataset Distance: We utilized the idea of Alvarez-Melis and Fusi [2] and calculated the op-timal transport between datasets to evaluate the dataset distance. We adopted the same VGGnet feature space and used t-SNE [42] to map it to a two-dimensional space. Optimal transport was applied in the t-SNE space to cal-culate the dataset distance [19]. • Diversity: For the diversity metric, we calculate the min-imum distance between each surrogate sample and all other surrogate samples in the VGG feature space, and report the average as the diversity metric. • FID: We directly adopted the official implementation of clean-fid to calculate the FID scores between the surro-gate dataset and the target dataset [47]. • Other generative quality metrics : We directly applied the official implementations of [45] in the VGG feature space. Method IPC-10 IPC-20 IPC-50 Random 48.1 ±0.8 52.5 ±0.9 68.1 ±0.7
+
+DM [82] 52.8 ±0.5 58.5 ±0.4 69.1 ±0.8
+
+DiT [48] 54.1 ±0.4 58.9 ±0.2 64.3 ±0.6
+
+D4M [60] 51.1 ±2.4 58.0 ±1.4 64.1 ±2.5
+
+Minimax [22] 53.1 ±0.2 59.0 ±0.4 69.6 ±0.2
+
+MGD 3 [8] 55.9 ±0.4 61.9 ±0.9 72.1 ±0.8
+
+Ours 57.0 ±0.3 63.3 ±1.4 73.2 ±0.7 
+
+> Table 1. Performance comparison between our method and state-of-the-art methods on ImageNet-IDC10, evaluated under the hard-label protocol of Kim et al. [28]. Results are reported as Top-1 ac-curacy on ResNet-AP with average pooling. The best performance is highlighted in bold .
+
+## A4: Additional Result 
+
+A4.1: Experiments on Imagenet-IDC 
+
+We conducted additional experiments on ImageNet-IDC. ImageNet-IDC is a dataset consisting of 100 classes, among which Imagenet-IDC10 corresponds to the first ten classes [28]. We adopted the hyperparameters defined on ImageNet-Woof without additional parameter tuning. The Table 1 presents our results on ImageNet-IDC10. Our method achieved the best performance across all IPC set-tings. Compared with the SOTA method MGD3, we achieved improvements of 1.1% , 1.4% , and 1.1% respec-tively. This further validates the generalization capability of our proposed framework. ImageNet-IDC100 is a more complex and larger-scale subset. The Table 2 presents our comparative experiments on it. Our method achieves performance comparable to state-of-the-art (SOTA) models while being more stable. This also validates the scalability of our proposed frame-work. Further precise parameter tuning could yield better results, but we have not conducted it due to constraints on computational resources. Overall, our method achieves excellent performance on the ImageNet-IDC dataset. Compared with other dataset distillation algorithms, our method is more efficient. Un-der the IPC-10 setting for Imagenet-IDC100, IDC-1 [28] requires over 100 hours of optimization time, while Mini-max [22] needs nearly 10 hours for fine-tuning. In contrast, our method introduces only a small amount of additional computation during the sampling stage and takes approxi-mately 0.5 hours. 
+
+A4.2: Experiments on Imagenet-A,B,C,D,E 
+
+We conducted further comparisons using the evaluation benchmark provided by LD3M[44]. This benchmark com-prises five ImageNet subsets, designated as A, B, C, D, and E. Evaluations were performed across four distinct network Method IPC-10 IPC-20 Random 19.1 ±0.4 26.7 ±0.5
+
+Herding [69] 19.8 ±0.3 27.6 ±0.1
+
+IDC-1 [28] 25.7 ±0.1 29.9 ±0.2
+
+Minimax [22] 24.8 ±0.2 32.3 ±0.1
+
+MGD 3 [8] 25.8 ±0.5 33.9 ±1.1
+
+Ours 25.7 ±0.4 34.0 ±0.1 
+
+> Table 2. Performance comparison between our method and state-of-the-art methods on ImageNet-IDC100 , evaluated under the hard-label protocol of Kim et al. [28]. Results are reported as Top-1 accuracy on ResNet-AP with average pooling. The best perfor-mance is highlighted in bold , while the second-best is underlined.
+
+architectures (AlexNet, VGG11, ResNet18, and ViT), re-porting the mean top-1 accuracy over 5 runs. We main-tained the same hyperparameter configuration as ImageNet-Woof. The IPC-10 evaluation results are presented in the Table 3, where our model achieves comprehensive superi-ority across all subsets. These results collectively demon-strate the strong cross-dataset and cross-architecture gener-alization capability of our method. 
+
+A4.3: Additional Comparisons on ConvNet-6 
+
+We further evaluate our method using ConvNet-6 under var-ious IPC settings. Our approach achieves superior perfor-mance at IPC-20 and IPC-50 configurations. However, at IPC-10, our results fall slightly behind Minimax, which can be attributed to our use of the same hyperparameter config-uration as employed for IPC-50. Subsequent experiments revealed that allocating distinct hyperparameters for differ-ent IPC settings yields more optimal results. This is because lower IPC settings require less emphasis on diversity en-hancement while prioritizing the generation of more repre-sentative samples. We provide comprehensive analysis and discussion of this aspect in Table 7 and Table 8. 
+
+A4.4: Additional Ablation Study 
+
+In this subsection, we conduct more detailed ablation study to demonstrate the rationality of the design of our method. We focus on three key aspects of the method design: 1) the construction mechanism of dynamic labels; 2) the impact of different distribution approximation algorithms; 3) the guidance stage of matching terms. 
+
+Construction Mechanism of Dynamic Labels We com-pared the construction method using only random noise (Noise) with the dynamic soft label construction method we adopted (Soft label with Noise). The results are presented in Table 5. We found that constructing dynamic labels us-ing only noise terms can also achieve effective performance gains; particularly under the IPC-50 setting, it achieves per-formance close to that of our full method. This further demonstrates the excellent performance of our proposed dynamic label semantic matching technique in enhancing the diversity of dataset distillation. Moreover, after adding soft label terms, the performance can be further improved, which illustrates the effectiveness of the deterministic shift term we defined for the dataset distillation task. This exper-iment also proves that designing effective semantic match-ing guidance is one of the key factors for enhancing dataset distillation performance, which has often been overlooked in previous work. We further conducted an analysis by combining distribu-tion matching (OT), and it can be observed that dataset dis-tillation performance is further enhanced after integrating distribution matching. This also experimentally validates our proposed theoretical framework ( Theorem 1 ). 
+
+Different Distribution Approximation Distribution ap-proximation is a key component of our algorithm, and its performance influences the performance of distribution matching based on optimal transport. We conducted an ab-lation study on three different distribution approximation algorithms. The widely used classical distribution match-ing loss [82], mean matching (mean), can be regarded as a special case of our proposed method when K = 1 . This represents allocating the mass of the entire conditional dis-tribution to the distribution center. Density-based random sampling (DBS) is a sampling-based distribution approxi-mation method, which selects support points by calculating the density of sample points from the original distribution to assign sampling probabilities, and normalizes the densi-ties of different support points as mass coefficients. In the Tab. 6, we present the performance comparison of the three methods. The Mean achieves effective performance gains under IPC-10. However, in high IPC settings, the Mean yields overly coarse distribution approximations and fails to fully model the distribution structure. Meanwhile, for diffusion models that can only optimize a single sample at a time, matching against the same mean point impairs diversity. This experimental result also validates our Proposition 2. DBS provides effective signals for distribution match-ing at high IPC settings. Nevertheless, due to its random-ness, DBS often fails to capture comprehensive represen-tative points and particularly overlooks some fine-grained patterns with small K. This randomness impairs dataset distillation performance, especially under low IPC settings. The comprehensively leading performance results of our proposed method demonstrate the effectiveness of our pro-posed local distribution approximation matching. Notably, our distribution approximation technique provides an ef-ficient solution for achieving distribution alignment with limited samples under resource-constrained settings. Com-Distil Alg. Method ImageNet-A ImageNet-B ImageNet-C ImageNet-D ImageNet-E DC Pixel 52.3 ±0.7 45.1 ±8.3 40.1 ±7.6 36.1 ±0.4 38.1 ±0.4 
+
+GLaD[7] 53.1 ±1.4 50.1 ±0.6 48.9 ±1.1 38.9 ±1.0 38.4 ±0.7 
+
+LD3M[44] 55.2 ±1.0 51.8 ±1.4 49.9 ±1.3 39.5 ±1.0 39.0 ±1.3 
+
+DM Pixel 52.6 ±0.4 50.6 ±0.5 47.5 ±0.7 35.4 ±0.4 36.0 ±0.57 
+
+GLaD[7] 52.8 ±1.0 51.3 ±0.6 49.7 ±0.4 36.4 ±0.4 38.6 ±0.7 
+
+LD3M[44] 57.0 ±1.3 52.3 ±1.1 48.2 ±4.9 39.5 ±1.5 39.4 ±1.8 
+
+MGD 3[8] 63.4 ±0.8 66.3 ±1.1 58.6 ±1.2 46.8 ±0.8 51.1 ±1.0 
+
+Ours 65.4 ±0.3 70.2 ±0.9 62.2 ±1.0 46.8 ±1.5 51.3 ±0.3 
+
+Table 3. Performance comparison between our method and state-of-the-art methods on ImageNet-A, B, C, D, and E , evaluated via the benchmark of Moser et al. [44] under IPC-10. Results are reported as mean Top-1 accuracy on AlexNet, VGG11, ResNet18, and ViT. The best performance is highlighted in bold .
+
+Method IPC-10 IPC-20 IPC-50 Random 24.3 ±1.1 29.1 ±0.7 41.3 ±0.6
+
+DM [82] 26.9 ±1.2 29.9 ±1.0 44.4 ±1.0
+
+Glad [7] 33.8 ±0.9
+
+IDC-1[28] 33.3 ±1.1 35.5 ±0.8 43.9 ±1.2
+
+DiT [48] 34.2 ±0.4 36.1 ±0.8 46.5 ±0.8
+
+Minimax [22] 37.0 ±1.0 37.6 ±0.2 53.9 ±0.6
+
+MGD 3 [8] 34.7 ±1.1 39.0 ±3.5 54.5 ±1.6
+
+Ours 34.5 ±0.1 40.1 ±0.3 54.9 ±0.5
+
+Table 4. Performance comparison between our method and state-of-the-art methods on ImageNet-Woof. Results are reported as Top-1 accuracy on ConvNet-6. The best performance is high-lighted in bold .
+
+Dynamic label IPC-10 IPC-50 DiT 34.7 ±0.5 49.3 ±0.2
+
+Noise 36.6 ±1.7 59.2 ±1.1
+
+Noise + OT 40.6 ±1.4 59.7 ±0.3
+
+Soft label with Noise 38.9 ±1.2 59.3 ±0.4
+
+Soft label with Noise + OT 40.8 ±1.2 60.1 ±0.8
+
+Table 5. Ablation study on different dynamic label construction methods. Results are reported as Top-1 accuracy on ResNet-10 with average pooling in ImageNet-Woof. The best performance is highlighted in bold .
+
+pared to MGD 3 which requires sample sizes proportional to IPC, our method maintains stable performance with fixed-size samples while achieving effective performance gains even at high IPC settings (e.g., IPC=100). 
+
+Guidance Mechanism We explored the guidance mech-anism, and the results are presented in the Table 7. For se-Approximation IPC-10 IPC-50 IPC-100 Mean 39.6 ±1.1 58.6 ±0.5 62.5 ±0.4
+
+DBS 39.2 ±1.6 59.6 ±0.5 64.4 ±0.5
+
+K-means 40.8 ±1.2 60.1 ±0.8 65.8 ±0.2
+
+Table 6. Ablation study on different distribution approximation methods. Results are reported as Top-1 accuracy on ResNet-10 with average pooling in Imagenet-Woof. The best performance is highlighted in bold , while the second-best is underlined. 
+
+Guidance Mechanism IPC-10 IPC-50 
+
+Semantic matching 
+
+Dynamic Soft Label 35.1 ±0.8 55.6 ±0.4
+
+w/ Stochastic Exploration 31.2 ±0.8 54.3 ±1.5
+
+w/ Semantic Refinement 42.0 ±1.5 59.6 ±1.6
+
+Distribution matching 
+
+Full-stage guidance 40.4 ±0.5 57.2 ±0.7
+
+Ours Full 40.8 ±1.1 60.1 ±0.8
+
+Table 7. Ablation study on different guidance mechanism. Results are reported as Top-1 accuracy on ResNet-10 with average pooling in Imagenet-Woof. The best performance is highlighted in bold ,while the second-best is underlined. 
+
+mantic matching, we found that the Semantic Refinement is necessary. Using only dynamic soft labels or only combin-ing with Stochastic Exploration leads to performance degra-dation due to insufficient semantic alignment. This further illustrates the criticality of our proposed semantic alignment assumption. However, incorporating the Semantic Refine-ment can further ensure semantic alignment and improve dataset distillation performance. Especially under lower IPC settings, Dynamic Soft Label combining only Semantic Hyperparameter IPC-10 IPC-50 
+
+βn = 0 .01 42.7 ±1.3 58.7 ±0.7
+
+βn = 0 .04 40.5 ±0.2 60.1 ±0.7
+
+βn = 0 .1 36.3 ±0.6 60.2 ±0.7
+
+βs = 0 .04 41.5 ±0.5 59.9 ±0.7
+
+βs = 0 .06 41.2 ±0.5 59.7 ±1.3
+
+βs = 0 .1 41.3 ±1.1 59.9 ±0.8
+
+1 + ω = 1 19.9 ±0.5 38.6 ±1.2
+
+1 + ω = 7 38.9 ±1.1 57.6 ±1.6
+
+tw = [20 , 45] 40.6 ±0.8 60.4 ±0.9
+
+tw = [30 , 45] 40.4 ±1.0 59.6 ±0.6
+
+tw = [25 , 40] 39.8 ±0.4 59.9 ±0.6
+
+tw = [25 , 50] 42.0 ±1.5 59.6 ±1.6
+
+Ours 40.8 ±1.1 60.1 ±0.8
+
+> Table 8. Evaluation of different parameter. Results are reported as Top-1 accuracy on ResNet-10 with average pooling in ImageNet-Woof.
+
+Refinement achieves optimal performance. In higher IPC settings, further introducing Stochastic Exploration can en-hance performance, from 59 .6% to 60 .1% . This empirically validates our earlier discussion: stochastic exploration for diversity enhancement becomes superfluous under low IPC settings, since dynamic labeling already provides sufficient diversity improvement. Therefore, we can further optimize performance by adaptively controlling the temporal window size for stochastic exploration in accordance with the IPC configuration. For distribution matching, we investigated the differ-ences between full-stage guidance and the key-stage guid-ance we adopted. We found that full-stage guidance fails to improve performance; on the contrary, in high IPC stages, it may significantly impair performance. This is because in the early stage of sampling, samples have not generated suf-ficient semantic information, and guidance through distri-bution matching at this point will produce erroneous guid-ance signals. Meanwhile, in the later stage, gradient-based guidance may also introduce artifacts into the images, so guidance should be terminated early. Our observations on loss values also illustrate this point: LOT decreases only in the key-stage. Therefore, performing distribution guidance only in the key-stage is a reasonable and efficient choice. 
+
+A4.5: Additional Hyperparameter Analysis 
+
+We analyzed the hyperparameters involved in semantic matching, including CFG scale 1 + ω, temporal window 
+
+tw , modulation coefficient βn and βs. Results of the hyper-parameter analysis are presented in the Table 8. 
+
+βn is used to regulate the intensity of the noise term. A larger βn will result in stronger stochastic exploration and further enhance the diversity of generation. Therefore, a larger βn can enhance performance under high IPC set-tings but may also impair performance under low IPC set-tings. Specifically, we found that under low IPC settings, 
+
+βn = 0 .01 achieves optimal performance. This validates our assumption that under low IPC settings, randomness should be reduced to generate representative key samples, whereas under high IPC settings, greater consideration of diversity is needed to achieve better performance. Our analytical experiments on βs further demonstrate the role of our soft label terms. We found that under low IPC settings, using stronger guidance via soft label terms can generate more informative samples, thereby further im-proving performance. Meanwhile, under high IPC settings, soft label terms of different intensities can all ensure stable performance. Under different IPC settings, appropriately adjusting βs and βm is undoubtedly a better choice. We recommend that for low IPC settings, βs can be increased while βn is decreased to generate representative samples with high information concentration. In contrast, under high IPC settings, we focus more on enhancing diversity, and increasing βn will further strengthen performance. To demonstrate the generality of our method across different IPC settings, we adopted unified parameters βs = 0 .01 and 
+
+βn = 0 .06 , which still achieve SOTA performance. The parameter 1 + ω controls the strength of semantic matching. When 1 + ω = 1 , the diffusion model fails to capture sufficient semantic information, resulting in signif-icantly degraded performance. Conversely, at 1 + ω = 7 ,overly strong semantic alignment impairs generation qual-ity, also leading to decreased performance. Therefore, we set 1 + ω = 4 .Additionally, we performed hyperparameter validation on the temporal window using a step size of 5. We observed that within small variation ranges, the temporal window ex-hibits minimal impact on the overall experimental results, which aligns with our hypothesis regarding the diversity-representativeness trade-off. For more extreme variations, we have conducted corresponding experiments as docu-mented in Table 7. The selection of this parameter is in-formed by empirical observations of the diffusion model sampling process in prior literature [76], with its effective-ness further verified through our sensitivity analysis. 
+
+A4.6: Generation Quality Evaluation 
+
+We evaluated the approach using additional generative qual-ity metrics. Results are presented in the Table 9. On com-mon generative quality metrics, our method achieves per-formance comparable to the original DiT, demonstrating the realism of our generated samples. Notably, we observe that diversity enhancement in-evitably incurs a slight compromise in semantic representa-60 40 20 0 20 40 60 
+
+> t-SNE Dimension 1
+> 60
+> 40
+> 20
+> 0
+> 20
+> 40
+> 60
+> 80
+> t-SNE Dimension 2
+
+(a) DiT 60 40 20 0 20 40 60  
+
+> t-SNE Dimension 1
+> 60
+> 40
+> 20
+> 0
+> 20
+> 40
+> 60
+> 80
+> t-SNE Dimension 2
+
+(b) Minimax 60 40 20 0 20 40 60  
+
+> t-SNE Dimension 1
+> 60
+> 40
+> 20
+> 020 40 60 80
+> t-SNE Dimension 2
+
+(c) Ours 80 60 40 20 0 20 40 60 
+
+> t-SNE Dimension 1
+> 60
+> 40
+> 20
+> 0
+> 20
+> 40
+> 60
+> t-SNE Dimension 2
+
+(d) DiT 80 60 40 20 0 20 40 60  
+
+> t-SNE Dimension 1
+> 60
+> 40
+> 20
+> 0
+> 20
+> 40
+> 60
+> t-SNE Dimension 2
+
+(e) Minimax 80 60 40 20 0 20 40 60  
+
+> t-SNE Dimension 1
+> 60
+> 40
+> 20
+> 0
+> 20
+> 40
+> 60
+> t-SNE Dimension 2
+
+(f) Ours 
+
+Figure 3. Distribution Visualization: Visualization results of sample distributions for surrogate datasets generated by different methods and the original dataset: top row corresponds to ImageNet-Woof under IPC-100 setting, bottom row corresponds to ImageNet-Nette under IPC-50 setting. 
+
+tiveness, reflected by marginally reduced precision. How-ever, the substantially improved recall demonstrates our method’s enhanced diversity, which ultimately translates into performance gains. As previously discussed, this minor representational trade-off becomes negligible under high IPC settings. Furthermore, such representational degrada-tion can be effectively mitigated by incorporating soft-label criteria during subsequent distillation stages. Method DiT Minimax Ours 
+
+FID 48.6 49.2 48.8 Precision ( %) 91.2 94.4 92.4 Recall ( %) 51.2 49.5 57.8 Density ( %) 1.19 1.38 1.36 
+
+Table 9. Evaluation of generation quality evaluation of 10 classes each with 100 images in ImageNet-Woof. 
+
+A4.7: Visualization 
+
+Generated Samples Visualization: We present gener-ated samples for visualization. Fig. 5 and Fig. 6 present generated examples on the ImageNet-Nette and ImageNet-Woof datasets, respectively. The generated samples were randomly selected under the IPC-50 setting and arranged from left to right in the order of generation. This visualiza-tion demonstrates our method’s intra-class diversity: earlier samples exhibit stronger semantic representativeness, while later samples display greater uniqueness. 
+
+Distribution Visualization: We further visualize the sample distributions using t-SNE. Figure 3 presents the dis-tributions of DiT, Minimax, and our method within the same feature space (Inception-v3) on Imagenet-woof and Imagenet-Nette, demonstrating our approach’s diverse se-mantic matching capability and effective distribution align-ment. Our method achieves superior coverage of the target dataset’s distribution. 
+
+OT Distance Visualization: To better illustrate the re-lationship between distribution matching and semantic matching, we visualize the optimal transport (OT) distance losses under two scenarios: using distribution matching alone (Distribution Matching), and combining distribution 10 20 30 40 50 60 70 80 90 100 
+
+> Sample Size
+> 1.20
+> 1.24
+> 1.28
+> 1.32
+> 1.36
+> 1.40
+> OT Distance
+> Distribution Matching
+> Distribution Matching+Semantic Matching
+
+Figure 4. OT Distance Visualization: We systematically recorded the final optimal transport (OT) distance loss for each sample during progressive distillation. A randomly selected cate-gory from ImageNet-Woof was visualized to illustrate the results. 
+
+matching with diversity-enhanced semantic matching (Dis-tribution Matching+Semantic Matching). Each data point represents the final OT distance loss of an individual sam-ple during progressive distillation. The visualization results for a randomly selected class from ImageNet-Woof are pre-sented in the Figure 4. It can be observed that our distribu-tion matching module effectively optimizes the OT loss dur-ing dataset distillation. However, due to the diffusion mod-els tendency to generate homogeneous samples, this opti-mization is prone to converge to local optima. In contrast, the diversity-enhanced semantic matching provides supe-rior distribution exploration capability, which not only ac-celerates OT loss optimization but also alleviates the local optimum problem. These findings validate that our pro-posed dual-matching framework exhibits no optimization conflicts, thereby further demonstrating the effectiveness of DMGD. 
+
+6.1. Limitation 
+
+Currently, our method is confined to dataset distillation with limited semantic scope. Exploration regarding diffusion models possessing general semantic properties and more complex datasets remains insufficient. Furthermore, due to inherent constraints of diffusion models, our approach can not generalize to other data modalities, such as audio [9], video [41], time-series [53] or embodied AI data [38]. In future work, we aim to push the boundaries of dataset dis-tillation towards a more universal and efficient paradigm. Figure 5. Generated samples are from our proposed DMGD method for the ImageNet-Woof dataset. We present the randomly selected generated samples under the IPC-50 setting. The class names are marked at the left of each row. Figure 6. Generated samples are from our proposed DMGD method for the ImageNet-Nette dataset. We present the randomly selected generated samples under the IPC-50 setting. The class names are marked at the left of each row.
