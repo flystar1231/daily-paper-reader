@@ -1,0 +1,238 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-001.webp",
+      "caption": "Figure 20: Guided generation on \"bear\" with guidance parameter c = 5",
+      "page": 57,
+      "index": 1,
+      "width": 1013,
+      "height": 552
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-002.webp",
+      "caption": "Figure 21: Guided generation on \"wolf\" with guidance parameter c = 8",
+      "page": 57,
+      "index": 2,
+      "width": 1015,
+      "height": 550
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-003.webp",
+      "caption": "Figure 10: DOIT on the two-moons guided task. DOIT uses the same VP reverse SDE base sampler and the same total proposal budget, but its local Doob correction does not close the terminal KL gap as effectively as SALD or VA-SALD.",
+      "page": 43,
+      "index": 3,
+      "width": 948,
+      "height": 685
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-004.webp",
+      "caption": "Figure 4: Unguided SALD overview. The KL trajectory and terminal KL confirm that increasing the slow-down budget reduces the mismatch to the terminal two-Gaussian target until the finite-particle and discretization floor dominates.",
+      "page": 38,
+      "index": 4,
+      "width": 948,
+      "height": 677
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-005.webp",
+      "caption": "Figure 16: Generated Images on prompt \"In the ink painting style, a naive giant panda is sitting on the majestic Great Wall, leisure lychewing bamboo\" with guidance c = 8",
+      "page": 53,
+      "index": 5,
+      "width": 876,
+      "height": 1466
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-006.webp",
+      "caption": "Figure 14: DOIT on the eight-Gaussian mode-penalty task. The local proposal-based Doob correction improves the guide-related statistic but leaves a larger terminal KL than SALD and VA-SALD at the same computational budgets.",
+      "page": 47,
+      "index": 6,
+      "width": 948,
+      "height": 685
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-007.webp",
+      "caption": "Figure 22: Guided generation on \"wolf\" with guidance parameter c = 5",
+      "page": 58,
+      "index": 7,
+      "width": 1013,
+      "height": 552
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-008.webp",
+      "caption": "Figure 23: Guided generation on \"hippo\" with guidance parameter c = 8",
+      "page": 58,
+      "index": 8,
+      "width": 1015,
+      "height": 550
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-009.webp",
+      "caption": "Figure 5: Unguided SALD terminal samples. Larger budgets produce visibly sharper recovery of the two target modes.",
+      "page": 39,
+      "index": 9,
+      "width": 948,
+      "height": 417
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-010.webp",
+      "caption": "Figure 2: Guided generation on \"lion\" with guidance of black-box reward functions based on neural Aesthetic scorer. Across increasing budgets, VA-SALD produces stable and progressively refined samples, whereas FM-ZG and FM-Evolv exhibit severe artifacts and unstable semantic preservation.",
+      "page": 10,
+      "index": 10,
+      "width": 1015,
+      "height": 550
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-011.webp",
+      "caption": "Figure 17: Generated Images on prompt \"The art deco music festival poster has a fox made of polished brass in the center of the picture, with smooth lines and elegant posture\" with guidance c = 8",
+      "page": 54,
+      "index": 11,
+      "width": 876,
+      "height": 1466
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-012.webp",
+      "caption": "Figure 8: VA-SALD on the two-moons guided task. Incorporating the VP velocity field yields low terminal KL across the tested budgets and a stable guidance-objective trajectory.",
+      "page": 42,
+      "index": 12,
+      "width": 948,
+      "height": 685
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-013.webp",
+      "caption": "Figure 9: VA-SALD samples for the two-moons guided task. The sample panels show that VA-SALD reaches the guided terminal geometry at small and large budgets.",
+      "page": 42,
+      "index": 13,
+      "width": 948,
+      "height": 422
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-014.webp",
+      "caption": "Figure 13: VA-SALD on the eight-Gaussian mode-penalty task. The terminal KL is low and nearly budget-insensitive, indicating that the velocity-aware reverse dynamics already align well with this guided target.",
+      "page": 46,
+      "index": 14,
+      "width": 948,
+      "height": 686
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-015.webp",
+      "caption": "Figure 12: SALD on the eight-Gaussian mode-penalty task. SALD reduces the terminal KL as r increases and then approaches a plateau.",
+      "page": 45,
+      "index": 15,
+      "width": 948,
+      "height": 686
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-016.webp",
+      "caption": "Figure 26: Guided generation on \"lion\" with guidance parameter c = 5",
+      "page": 60,
+      "index": 16,
+      "width": 1013,
+      "height": 551
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-017.webp",
+      "caption": "Figure 18: Generated Images on prompt \"quick doodle of a guy, medium hair with long bangs, hd detailed detailed\" with guidance c = 8",
+      "page": 55,
+      "index": 17,
+      "width": 876,
+      "height": 1466
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-018.webp",
+      "caption": "Figure 6: SALD on the two-moons guided two-Gaussian task. SALD follows the expected budget trend: larger r improves the terminal-target KL, with the curve eventually flattening near the Monte Carlo floor.",
+      "page": 40,
+      "index": 18,
+      "width": 948,
+      "height": 686
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-019.webp",
+      "caption": "Table 1: Terminal KL. Budgets are r ∈ {1, 2, 4, 10, 50, 100}. Smaller values are better.",
+      "page": 40,
+      "index": 19,
+      "width": 652,
+      "height": 207
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-020.webp",
+      "caption": "Table 7: On prompt \"In the ink painting style, a naive giant panda is sitting on the majestic Great Wall, leisure lychewing bamboo\" with guidance c = 8",
+      "page": 51,
+      "index": 20,
+      "width": 1018,
+      "height": 307
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-021.webp",
+      "caption": "Figure 11: Eight-Gaussian guided terminal target. Blue markers denote unpenalized modes, and orange crosses denote penalized modes. Contours show the base and guided terminal densities.",
+      "page": 44,
+      "index": 21,
+      "width": 744,
+      "height": 622
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-022.webp",
+      "caption": "Figure 7: SALD samples for the two-moons guided task. Terminal samples increasingly align with the two-moons guided target as the budget increases.",
+      "page": 41,
+      "index": 22,
+      "width": 948,
+      "height": 423
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-023.webp",
+      "caption": "Table 2: Budget accounting and representative terminal guide statistics. The table reports the final budget r = 100, the number of Euler steps, the particle count used by the sampler, and the effective particle count used for budget matching. The guide statistic is the terminal mean penalty.",
+      "page": 41,
+      "index": 23,
+      "width": 677,
+      "height": 355
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-024.webp",
+      "caption": "Figure 19: Guided generation on \"bear\" with guidance parameter c = 8",
+      "page": 56,
+      "index": 24,
+      "width": 1015,
+      "height": 550
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-025.webp",
+      "caption": "Figure 1: Synthetic guided VP experiments. We compare SALD, VA-SALD, and DOIT on two guided VP benchmarks: two-Gaussian/two-moons (a,b) and eight-Gaussian/left-mode penalty (c,d). Panels (a,c) show terminal-target KL versus budget r, and panels (b,d) show mean guidance value along reverse progress. Unlike DOIT, SALD and VA-SALD consistently reduce terminal KL as r grows; VA-SALD also yields the strongest guidance-value profiles.",
+      "page": 9,
+      "index": 25,
+      "width": 1022,
+      "height": 196
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-026.webp",
+      "caption": "Figure 24: Guided generation on \"hippo\" with guidance parameter c = 5",
+      "page": 59,
+      "index": 26,
+      "width": 1015,
+      "height": 552
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-027.webp",
+      "caption": "Figure 25: Guided generation on \"lion\" with guidance parameter c = 8",
+      "page": 59,
+      "index": 27,
+      "width": 1015,
+      "height": 550
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-028.webp",
+      "caption": "Figure 3: Reverse-indexed VP marginal family for the unguided two-Gaussian experiment. The forward VP diffusion contracts the mixture means toward the origin, so the reverse initialization is close to a centered Gaussian while the terminal law remains bimodal.",
+      "page": 37,
+      "index": 28,
+      "width": 744,
+      "height": 433
+    },
+    {
+      "url": "assets/figures/arxiv/2605.07950v1/fig-029.webp",
+      "caption": "Figure 15: Generated Images on prompt \"A glowing dragon soaring through floating islands, leaving behind a trail of shimmering stardust\" with guidance c = 8",
+      "page": 52,
+      "index": 29,
+      "width": 876,
+      "height": 1466
+    }
+  ]
+}

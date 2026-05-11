@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.01720v2/fig-001.webp",
+      "caption": "Figure 3: Distribution of content hours across sign languages in YouTube-SL-25. The x-axis lists sign language names, and the y-axis reports total hours on a logarithmic scale.",
+      "page": 6,
+      "index": 1,
+      "width": 818,
+      "height": 247
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01720v2/fig-002.webp",
+      "caption": "Figure 1: Overview of SignVerse-2M. SignVerse-2M organizes large-scale public sign language videos into a unified pose-native interface for multilingual sign language modeling. This representation is designed to be directly consumable by modern pose-driven generation pipelines and can serve as an intermediate control space for digital human or avatar generation Chen et al. [2023], Cai et al. [2023], Zwitserlood et al. [2004], Zhang and Agrawala [2023].",
+      "page": 2,
+      "index": 2,
+      "width": 818,
+      "height": 299
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01720v2/fig-003.webp",
+      "caption": "Figure 4: Schema of the released ‘poses.npz‘ payload. The stored format is person-centric: each frame payload records the number of detected signers and organizes body, face, left-hand, and right-hand keypoints together with their confidence scores under each ‘person_k‘. This structure is the native representation released by SignVerse-2M and is the basis from which visualization scripts derive OpenPose-style aggregated renderings.",
+      "page": 7,
+      "index": 3,
+      "width": 826,
+      "height": 232
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01720v2/fig-004.webp",
+      "caption": "Figure 5: Qualitative comparison of pose-conditioned sign video rendering. The first row shows the input DWPose video. To remain compatible with model-specific preprocessing pipelines, we prepend a body-shape mask before feeding the pose video into each method. The next three rows compare ControlNext-SVD Peng et al. [2025], One-to-All Shi et al. [2025], and KLing Motion V3 Team et al. [2025] under the same pose sequence. This figure is intended to illustrate interface compatibility and coarse motion preservation rather than to compare the renderers themselves. For each rendering row, the left half shows the male signer and the right half shows the female signer.",
+      "page": 9,
+      "index": 4,
+      "width": 806,
+      "height": 392
+    },
+    {
+      "url": "assets/figures/arxiv/2605.01720v2/fig-005.webp",
+      "caption": "Figure 2: Overview of the SignVerse-2M data processing pipeline. The pipeline is organized into three main lanes: raw acquisition and caption curation, whole-body pose extraction, and sharding for public release. Starting from a manifest indexed by ‘video_id‘ and ‘sign_language‘, the system retrieves metadata, subtitles, and raw videos, converts each video into DWPose-based body, hand, and face keypoint sequences, and then packages the processed outputs into dataset shards for publication. The orchestration layer maintains status records, supports staged re-execution and failure recovery, and enables the corpus to be built incrementally rather than as a one-shot preprocessing export.",
+      "page": 5,
+      "index": 5,
+      "width": 826,
+      "height": 383
+    }
+  ]
+}
