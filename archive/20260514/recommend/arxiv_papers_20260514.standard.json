@@ -1,0 +1,682 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-14T20:40:17.740436+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 16,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 44,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2605.06509v1",
+      "source": "arxiv",
+      "title": "FreeSpec: Training-Free Long Video Generation via Singular-Spectrum Reconstruction",
+      "abstract": "Video diffusion models perform well in short-video synthesis, but their training-free extension to long videos often suffers from content drift, temporal inconsistency, and over-smoothed dynamics. Existing methods improve temporal consistency by combining a global branch with a local branch, but they often further decompose appearance consistency and temporal dynamics within each branch using predefined criteria. This assignment is unreliable when appearance and action progression are tightly coupled, such as in camera motion and sequential motion. We analyze the video temporal extension issue from a singular-spectrum perspective and show that enlarged self-attention windows induce spectral concentration: spectral energy becomes dominated by a few low-rank singular directions, preserving coarse structure but suppressing high-rank spatial details and motion-rich temporal variations. To mitigate this problem, we propose FreeSpec, a training-free spectral reconstruction framework for long-video generation. FreeSpec decomposes global and local features with singular value decomposition, and uses the global branch as low-rank spectral guidance and the local branch as a high-rank reconstruction basis. This spectrum-level fusion avoids the rigid feature partitioning of previous decomposition rules, preserving long-range consistency while better retaining spatial details and temporal dynamics. Experiments on Wan2.1 and LTX-Video demonstrate that FreeSpec improves long-video generation, especially for temporal dynamics, while maintaining strong visual quality and temporal consistency. Project demo: https://fdchen24.github.io/FreeSpec-Website/.",
+      "authors": [
+        "Fangda Chen",
+        "Shanshan Zhao",
+        "Longrong Yang",
+        "Chuanfu Xu",
+        "Zhigang Luo",
+        "Long Lan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-07T16:21:34+00:00",
+      "link": "https://arxiv.org/pdf/2605.06509v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 9.5,
+      "llm_evidence_en": "training-free long video generation via singular-spectrum reconstruction",
+      "llm_evidence_cn": "通过奇异谱重构实现免训练的长视频生成",
+      "llm_evidence": "通过奇异谱重构实现免训练的长视频生成",
+      "canonical_evidence": "通过奇异谱重构实现免训练的长视频生成",
+      "llm_tldr_en": "FreeSpec enables training-free long video generation by addressing spectral concentration in self-attention.",
+      "llm_tldr_cn": "FreeSpec通过解决自注意力中的频谱集中问题，实现了免训练的长视频生成。",
+      "llm_tldr": "FreeSpec通过解决自注意力中的频谱集中问题，实现了免训练的长视频生成。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.10079v1",
+      "source": "arxiv",
+      "title": "SocialDirector: Training-Free Social Interaction Control for Multi-Person Video Generation",
+      "abstract": "Video generation has advanced rapidly, producing photorealistic videos from text or image prompts. Meanwhile, film production and social robotics increasingly demand multi-person videos with rich social interactions, including conversations, gestures, and coordinated actions. However, existing models offer no explicit control over interactions, such as who performs which action, when it occurs, and toward whom it is directed. This often results in wrong person performing unintended actions (actor-action mismatch), disordered social dynamics, and wrong action targets. To address these challenges, we present SocialDirector, a training-free interaction controller that enhances the generation model by modulating cross-attention maps. SocialDirector contains two modules: Social Actor Masking and Directional Reweighting. Social Actor Masking constrains each person's visual tokens to attend only to their own textual descriptions via a spatiotemporal mask, avoiding actor-action mismatch and disordered social dynamics. Directional Reweighting amplifies attention to directional words (e.g., \"leftward\", \"right\"), leading each action towards its intended target. To evaluate generated social interactions, we annotate existing datasets with interaction descriptions and build a fully automated evaluation pipeline powered by open-source VLMs. Experiments on different video generation models show that SocialDirector significantly improves interaction fidelity and approaches the upper bound set by real videos.",
+      "authors": [
+        "Liangyang Ouyang",
+        "Ruicong Liu",
+        "Caixin Kang",
+        "Yifei Huang",
+        "Yoichi Sato"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-11T07:01:38+00:00",
+      "link": "https://arxiv.org/pdf/2605.10079v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 9.5,
+      "llm_evidence_en": "training-free interaction controller for multi-person video generation",
+      "llm_evidence_cn": "用于多人物视频生成的免训练交互控制器",
+      "llm_evidence": "用于多人物视频生成的免训练交互控制器",
+      "canonical_evidence": "用于多人物视频生成的免训练交互控制器",
+      "llm_tldr_en": "SocialDirector is a training-free method for controlling social interactions in multi-person video generation.",
+      "llm_tldr_cn": "SocialDirector是一种用于在多人物视频生成中控制社交互动的免训练方法。",
+      "llm_tldr": "SocialDirector是一种用于在多人物视频生成中控制社交互动的免训练方法。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.07695v1",
+      "source": "arxiv",
+      "title": "OphEdit: Training-Free Text-Guided Editing of Ophthalmic Surgical Videos",
+      "abstract": "High-fidelity surgical video generation can greatly improve medical training and the development of AI, adapting these generative models for precise video editing remains a formidable challenge. Modifying surgical attributes, such as instrument tissue interactions or procedural phases is challenging due to the strict anatomical and temporal constraints. In this paper, we propose OphEdit, a novel training-free framework for the text-guided editing of ophthalmic surgical videos. Our approach leverages a deterministic second-order ODE inversion pipeline to capture Attention Value (V) tensors from the original video. By selectively injecting these stored tensors into the conditional Classifier-Free Guidance (CFG) branch during the denoising phase, OphEdit rigorously preserves the intricate anatomical geometry of the eye while seamlessly mapping text-driven semantic modifications onto the video stream. Clinical evaluations demonstrates that OphEdit effectively handles complex surgical transformations, such as instrument swaps and procedural variations, with superior structural fidelity and temporal consistency compared to natural-domain video editors. Our work represents the first application of training-free video editing in the ophthalmic surgical domain, offering a scalable solution for generating diverse, annotated medical datasets without the need for exhaustive manual recording or costly model fine-tuning. The code and prompts can be accessed at https://github.com/ophedit/OphEdit",
+      "authors": [
+        "Ritul Jangir",
+        "Arkya Jyoti Bagchi",
+        "Aiman Farooq",
+        "Mangalton Okram",
+        "Saurabh Seetaram Korgaonkar",
+        "Deepak Mishra"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-08T13:05:02+00:00",
+      "link": "https://arxiv.org/pdf/2605.07695v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "training-free framework for text-guided editing of surgical videos",
+      "llm_evidence_cn": "用于手术视频文本引导编辑的免训练框架",
+      "llm_evidence": "用于手术视频文本引导编辑的免训练框架",
+      "canonical_evidence": "用于手术视频文本引导编辑的免训练框架",
+      "llm_tldr_en": "OphEdit is a training-free framework for precise text-guided editing of ophthalmic surgical videos.",
+      "llm_tldr_cn": "OphEdit是一个用于眼科手术视频精确文本引导编辑的免训练框架。",
+      "llm_tldr": "OphEdit是一个用于眼科手术视频精确文本引导编辑的免训练框架。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.09442v1",
+      "source": "arxiv",
+      "title": "SWIFT: Prompt-Adaptive Memory for Efficient Interactive Long Video Generation",
+      "abstract": "Streaming long-video generation faces a central challenge in continuous semantic switching, requiring adaptive memory to preserve coherent visual evolution. Current approaches rely on cache rebuilding at prompt boundaries or fixed memory budgets, but they introduce redundant computation and limit flexible semantic adaptation. This limitation arises from a mismatch between cached video history and prompt updates, as memory preserves visual continuity while prompt switches demand rapid semantic adaptation. Motivated by this observation, we present SWIFT, Semantic Windowing and Injection for Flexible Transitions, a training-free framework for multi-prompt long-video generation that enables efficient semantic switching while preserving temporal coherence in causal video diffusion models. SWIFT introduces a lightweight Semantic Injection Cache that augments cached video memory rather than reconstructing it from scratch at every prompt boundary. To avoid uniformly perturbing all attention channels, we further perform head-wise semantic injection, so that each attention head receives a prompt update proportional to its alignment with the current video state. In addition, we introduce an Adaptive Dynamic Window that allocates temporal memory according to prompt phase, using larger local context near switching boundaries and smaller windows during stable segments to reduce average inference cost. To preserve long-range semantic consistency under compressed local attention, we further maintain segment-level semantic anchors that summarize prompt-conditioned video history and reintroduce it as compact memory tokens. Compared with current state-of-the-art methods, SWIFT preserves generation quality while achieving 22.6 FPS on a single H100 GPU, establishing a substantially more efficient solution for multi-prompt long-video generation. Our code is available at https://github.com/ShanwenTan/SWIFT.",
+      "authors": [
+        "Shanwen Tan",
+        "Hao Li",
+        "Jingtao Zhang",
+        "Xiaosong Jia",
+        "Xue Yang",
+        "Shaofeng Zhang",
+        "Yanyong Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-10T09:37:56+00:00",
+      "link": "https://arxiv.org/pdf/2605.09442v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "training-free framework for multi-prompt long-video generation",
+      "llm_evidence_cn": "用于多提示词长视频生成的免训练框架",
+      "llm_evidence": "用于多提示词长视频生成的免训练框架",
+      "canonical_evidence": "用于多提示词长视频生成的免训练框架",
+      "llm_tldr_en": "SWIFT is a training-free framework for efficient long-video generation with flexible semantic transitions.",
+      "llm_tldr_cn": "SWIFT是一个免训练框架，通过语义窗口化实现高效的长视频生成和灵活的语义切换。",
+      "llm_tldr": "SWIFT是一个免训练框架，通过语义窗口化实现高效的长视频生成和灵活的语义切换。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.11871v1",
+      "source": "arxiv",
+      "title": "$h$-control: Training-Free Camera Control via Block-Conditional Gibbs Refinement",
+      "abstract": "Training-free camera control for pretrained flow-matching video generators is a partial-observation inverse problem: a depth-warped guidance video supplies noisy evidence on a subset of latent sites, which the sampler must reconcile with the pretrained prior. Existing methods struggle to balance the trade-off between trajectory adherence and visual quality and the heuristic guidance-strength tuning lacks robustness. We propose \\textbf{$h$-control}, which resolves this dilemma through a structural change to the sampler: each outer hard-replacement guidance step is augmented with an inner-loop \\emph{block-conditional pseudo-Gibbs refinement} on the unobserved complement at the same noise level, with provable convergence to the partial-observation conditional data law. To accelerate convergence on high-dimensional video latents, we exploit their conditional locality, partitioning the unobserved complement into 3D patches, each tracked by a custom mixing indicator that adaptively freezes converged patches. On RealEstate10K and DAVIS, \\textbf{$h$-control} attains the best FVD against all seven training-free and training-based competitors, outperforming every training-free baseline on every reported metric.",
+      "authors": [
+        "Yuzhu Wang",
+        "Xi Ye",
+        "Duo Su",
+        "Yangyang Xu",
+        "Jun Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-12T09:51:04+00:00",
+      "link": "https://arxiv.org/pdf/2605.11871v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "training-free camera control for video generators",
+      "llm_evidence_cn": "视频生成器的免训练摄像机控制",
+      "llm_evidence": "视频生成器的免训练摄像机控制",
+      "canonical_evidence": "视频生成器的免训练摄像机控制",
+      "llm_tldr_en": "h-control provides training-free camera control for video generators via Gibbs refinement.",
+      "llm_tldr_cn": "h-control通过Gibbs细化为视频生成器提供免训练的摄像机控制。",
+      "llm_tldr": "h-control通过Gibbs细化为视频生成器提供免训练的摄像机控制。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.04461v1",
+      "source": "arxiv",
+      "title": "Stream-T1: Test-Time Scaling for Streaming Video Generation",
+      "abstract": "While Test-Time Scaling (TTS) offers a promising direction to enhance video generation without the surging costs of training, current test-time video generation methods based on diffusion models suffer from exorbitant candidate exploration costs and lack temporal guidance. To address these structural bottlenecks, we propose shifting the focus to streaming video generation. We identify that its chunk-level synthesis and few denoising steps are intrinsically suited for TTS, significantly lowering computational overhead while enabling fine-grained temporal control. Driven by this insight, we introduced Stream-T1, a pioneering comprehensive TTS framework exclusively tailored for streaming video generation. Specifically, Stream-T1 is composed of three units: (1) Stream -Scaled Noise Propagation, which actively refines the initial latent noise of the generating chunk using historically proven, high-quality previous chunk noise, effectively establishes temporal dependency and utilizing the historical Gaussian prior to guide the current generation; (2) Stream -Scaled Reward Pruning, which comprehensively evaluates generated candidates to strike an optimal balance between local spatial aesthetics and global temporal coherence by integrating immediate short-term assessments with sliding-window-based long-term evaluations; (3) Stream-Scaled Memory Sinking, which dynamically routes the context evicted from KV-cache into distinct updating pathways guided by the reward feedback, ensuring that previously generated visual information effectively anchors and guides the subsequent video stream. Evaluated on both 5s and 30s comprehensive video benchmarks, Stream-T1 demonstrates profound superiority, significantly improving temporal consistency, motion smoothness, and frame-level visual quality.",
+      "authors": [
+        "Yijing Tu",
+        "Shaojin Wu",
+        "Mengqi Huang",
+        "Wenchuan Wang",
+        "Yuxin Wang",
+        "Chunxiao Liu",
+        "Zhendong Mao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-06T03:40:05+00:00",
+      "link": "https://arxiv.org/pdf/2605.04461v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 8.5,
+      "llm_evidence_en": "test-time scaling for video generation without training costs",
+      "llm_evidence_cn": "无需训练成本的视频生成测试时缩放",
+      "llm_evidence": "无需训练成本的视频生成测试时缩放",
+      "canonical_evidence": "无需训练成本的视频生成测试时缩放",
+      "llm_tldr_en": "Stream-T1 enables fine-grained temporal control in streaming video generation through test-time scaling.",
+      "llm_tldr_cn": "Stream-T1通过测试时缩放实现了流式视频生成中的细粒度时间控制。",
+      "llm_tldr": "Stream-T1通过测试时缩放实现了流式视频生成中的细粒度时间控制。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.06667v1",
+      "source": "arxiv",
+      "title": "ActCam: Zero-Shot Joint Camera and 3D Motion Control for Video Generation",
+      "abstract": "For artistic applications, video generation requires fine-grained control over both performance and cinematography, i.e., the actor's motion and the camera trajectory. We present ActCam, a zero-shot method for video generation that jointly transfers character motion from a driving video into a new scene and enables per-frame control of intrinsic and extrinsic camera parameters. ActCam builds on any pretrained image-to-video diffusion model that accepts conditioning in terms of scene depth and character pose. Given a source video with a moving character and a target camera motion, ActCam generates pose and depth conditions that remain geometrically consistent across frames. We then run a single sampling process with a two-phase conditioning schedule: early denoising steps condition on both pose and sparse depth to enforce scene structure, after which depth is dropped and pose-only guidance refines high-frequency details without over-constraining the generation. We evaluate ActCam on multiple benchmarks spanning diverse character motions and challenging viewpoint changes. We find that, compared to pose-only control and other pose and camera methods, ActCam improves camera adherence and motion fidelity, and is preferred in human evaluations, especially under large viewpoint changes. Our results highlight that careful camera-consistent conditioning and staged guidance can enable strong joint camera and motion control without training. Project page: https://elkhomar.github.io/actcam/.",
+      "authors": [
+        "Omar El Khalifi",
+        "Thomas Rossi",
+        "Oscar Fossey",
+        "Thibault Fouque",
+        "Ulysse Mizrahi",
+        "Philip Torr",
+        "Ivan Laptev",
+        "Fabio Pizzati",
+        "Baptiste Bellot-Gurlet"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-05-07T17:59:58+00:00",
+      "link": "https://arxiv.org/pdf/2605.06667v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 8.5,
+      "llm_evidence_en": "zero-shot controllable video generation with camera and motion control",
+      "llm_evidence_cn": "具有摄像机和动作控制的零样本可控视频生成",
+      "llm_evidence": "具有摄像机和动作控制的零样本可控视频生成",
+      "canonical_evidence": "具有摄像机和动作控制的零样本可控视频生成",
+      "llm_tldr_en": "ActCam enables zero-shot joint control of character motion and camera trajectory in video generation.",
+      "llm_tldr_cn": "ActCam 实现了视频生成中角色动作和摄像机轨迹的零样本联合控制。",
+      "llm_tldr": "ActCam 实现了视频生成中角色动作和摄像机轨迹的零样本联合控制。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.06280v2",
+      "source": "arxiv",
+      "title": "Eulerian Motion Guidance: Robust Image Animation via Bidirectional Geometric Consistency",
+      "abstract": "Recent advancements in image animation have utilized diffusion models to breathe life into static images. However, existing controllable frameworks typically rely on Lagrangian motion guidance, where optical flow is estimated relative to the initial frame. This paper revisits the same optical-flow primitive through a more local supervision design: we use adjacent-frame Eulerian motion fields to guide generation, where the motion signal always describes a short temporal hop. This shift enables parallelized training and provides bounded-error supervision throughout the generation process. To mitigate the drift artifacts common in adjacent frame generation, we introduce a Bidirectional Geometric Consistency mechanism, which computes a forward-backward cycle check to mathematically identify and mask occluded regions, preventing the model from learning incorrect warping objectives. Extensive experiments demonstrate that our approach accelerates training, preserves temporal coherence, and reduces dynamic artifacts compared to reference-based baselines.",
+      "authors": [
+        "Thong Nguyen",
+        "Khoi M. Le",
+        "Cong-Duy Nguyen",
+        "Luu Anh Tuan",
+        "See-Kiong Ng",
+        "Chunyan Miao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-07T13:53:31+00:00",
+      "link": "https://arxiv.org/pdf/2605.06280v2",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 7.5,
+      "llm_evidence_en": "controllable image animation via Eulerian motion guidance",
+      "llm_evidence_cn": "通过欧拉运动引导实现可控图像动画",
+      "llm_evidence": "通过欧拉运动引导实现可控图像动画",
+      "canonical_evidence": "通过欧拉运动引导实现可控图像动画",
+      "llm_tldr_en": "Proposes Eulerian motion guidance for robust and controllable image animation using diffusion models.",
+      "llm_tldr_cn": "提出欧拉运动引导，利用扩散模型实现鲁棒且可控的图像动画。",
+      "llm_tldr": "提出欧拉运动引导，利用扩散模型实现鲁棒且可控的图像动画。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.04569v1",
+      "source": "arxiv",
+      "title": "Lightning Unified Video Editing via In-Context Sparse Attention",
+      "abstract": "Video editing has evolved toward In-Context Learning (ICL) paradigms, yet the resulting quadratic attention costs create a critical computational bottleneck. In this work, we propose In-context Sparse Attention (ISA), the first near-lossless empirical sparse framework tailored for ICL video editing. Our design is grounded in two key insights: first, context tokens exhibit significantly lower saliency than source tokens; second, we theoretically prove and empirically validate that Query sharpness correlates with approximation error. Motivated by these findings, ISA implements an efficient pre-selection strategy to prune redundant context, followed by a dynamic query grouping mechanism that routes high-error queries to full attention and low-error ones to a computationally efficient 0-th order Taylor sparse attention. Furthermore, we build \\textbf{\\texttt{LIVEditor}} , a novel lightning video editing model via ISA and a proposed video-editing data pipeline that curated a 1.7M high-quality dataset. Extensive experiments demonstrate that LIVEditor achieves a $\\sim$60% reduction in attention-module latency while surpassing state-of-the-art methods across EditVerseBench, IVE-Bench, and VIE-Bench, delivering near-lossless acceleration without compromising visual fidelity.",
+      "authors": [
+        "Shitong Shao",
+        "Zikai Zhou",
+        "Haopeng Li",
+        "Yingwei Song",
+        "Wenliang Zhong",
+        "Lichen Bai",
+        "Zeke Xie"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-06T07:15:29+00:00",
+      "link": "https://arxiv.org/pdf/2605.04569v1",
+      "tags": [
+        "query:CV VG CS"
+      ],
+      "llm_score": 6.5,
+      "llm_evidence_en": "sparse attention framework for video editing",
+      "llm_evidence_cn": "用于视频编辑的稀疏注意力框架",
+      "llm_evidence": "用于视频编辑的稀疏注意力框架",
+      "canonical_evidence": "用于视频编辑的稀疏注意力框架",
+      "llm_tldr_en": "ISA reduces computational costs in video editing through a near-lossless sparse attention mechanism.",
+      "llm_tldr_cn": "ISA通过近乎无损的稀疏注意力机制，解决了视频编辑中的计算瓶颈问题。",
+      "llm_tldr": "ISA通过近乎无损的稀疏注意力机制，解决了视频编辑中的计算瓶颈问题。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.06892v1",
+      "source": "arxiv",
+      "title": "Not All Tokens Need 40 Steps: Heterogeneous Step Allocation in Diffusion Transformers for Efficient Video Generation",
+      "abstract": "Diffusion Transformers (DiTs) have achieved state-of-the-art video generation quality, but they incur immense computational cost because standard inference applies the same number of denoising steps uniformly to every token in the sequence. It is well known that human vision ignores vast amounts of redundant motion. Why, then, do our densest models treat every spatiotemporal token with equal priority? In this paper, we introduce Heterogeneous Step Allocation (HSA), a training-free inference algorithm that assigns varying step budgets to different spatiotemporal tokens based on their velocity dynamics. To resolve the resulting sequence-length mismatch without sacrificing global context, HSA introduces a KV-cache synchronization mechanism that allows active tokens to attend to the full sequence while entirely bypassing inactive tokens. Furthermore, we derive a cached Euler update that advances the latent states of skipped tokens in a single operation without additional model evaluations. We evaluate HSA on the Wan-2 and LTX-2 models for both text-to-video (T2V) and image-to-video (I2V) generation. Our results demonstrate that HSA significantly outperforms previous state-of-the-art caching methods and the vanilla Flow Matching baseline, especially at aggressive acceleration regimes (e.g., 50% and 25% runtimes). Crucially, HSA achieves a superior quality-runtime Pareto frontier without the need for expensive offline profiling, robustly preserving structural integrity and generation quality even under tight computational budgets.   Project page: https://ernestchu.github.io/hsa",
+      "authors": [
+        "Ernie Chu",
+        "Vishal M. Patel"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-07T19:49:47+00:00",
+      "link": "https://arxiv.org/pdf/2605.06892v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 8.5,
+      "llm_evidence_en": "training-free inference algorithm for efficient video generation",
+      "llm_evidence_cn": "用于高效视频生成的免训练推理算法",
+      "llm_evidence": "用于高效视频生成的免训练推理算法",
+      "canonical_evidence": "用于高效视频生成的免训练推理算法",
+      "llm_tldr_en": "Proposes a training-free algorithm that allocates denoising steps based on token dynamics for efficient video generation.",
+      "llm_tldr_cn": "提出一种免训练算法，根据令牌动态分配去噪步骤，以实现高效的视频生成。",
+      "llm_tldr": "提出一种免训练算法，根据令牌动态分配去噪步骤，以实现高效的视频生成。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.06280v3",
+      "source": "arxiv",
+      "title": "Eulerian Motion Guidance: Robust Image Animation via Bidirectional Geometric Consistency",
+      "abstract": "Recent advancements in image animation have utilized diffusion models to breathe life into static images. However, existing controllable frameworks typically rely on Lagrangian motion guidance, where optical flow is estimated relative to the initial frame. This paper revisits the same optical-flow primitive through a more local supervision design: we use adjacent-frame Eulerian motion fields to guide generation, where the motion signal always describes a short temporal hop. This shift enables parallelized training and provides bounded-error supervision throughout the generation process. To mitigate the drift artifacts common in adjacent frame generation, we introduce a Bidirectional Geometric Consistency mechanism, which computes a forward-backward cycle check to mathematically identify and mask occluded regions, preventing the model from learning incorrect warping objectives. Extensive experiments demonstrate that our approach accelerates training, preserves temporal coherence, and reduces dynamic artifacts compared to reference-based baselines.",
+      "authors": [
+        "Thong Nguyen",
+        "Khoi M. Le",
+        "Cong-Duy Nguyen",
+        "Luu Anh Tuan",
+        "See-Kiong Ng",
+        "Chunyan Miao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-07T13:53:31+00:00",
+      "link": "https://arxiv.org/pdf/2605.06280v3",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 7.5,
+      "llm_evidence_en": "controllable image animation via motion guidance",
+      "llm_evidence_cn": "通过运动引导实现可控图像动画",
+      "llm_evidence": "通过运动引导实现可控图像动画",
+      "canonical_evidence": "通过运动引导实现可控图像动画",
+      "llm_tldr_en": "Introduces Eulerian motion guidance for robust and controllable image animation using diffusion models.",
+      "llm_tldr_cn": "引入欧拉运动引导，利用扩散模型实现稳健且可控的图像动画。",
+      "llm_tldr": "引入欧拉运动引导，利用扩散模型实现稳健且可控的图像动画。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.05077v1",
+      "source": "arxiv",
+      "title": "FlowDIS: Language-Guided Dichotomous Image Segmentation with Flow Matching",
+      "abstract": "Accurate image segmentation is essential for modern computer vision applications such as image editing, autonomous driving, and medical image analysis. In recent years, Dichotomous Image Segmentation (DIS) has become a standard task for training and evaluating highly accurate segmentation models. Existing DIS approaches often fail to preserve fine-grained details or fully capture the semantic structure of the foreground. To address these challenges, we present FlowDIS, a novel dichotomous image segmentation method built on the flow matching framework, which learns a time-dependent vector field to transport the image distribution to the corresponding mask distribution, optionally conditioned on a text prompt. Moreover, with our Position-Aware Instance Pairing (PAIP) training strategy, FlowDIS offers strong controllability through text prompts, enabling precise, pixel-level object segmentation. Extensive experiments demonstrate that our method significantly outperforms state-of-the-art approaches both with and without language guidance. Compared with the best prior DIS method, FlowDIS achieves a 5.5% higher $F_β^ω$ measure and 43% lower MAE ($\\mathcal{M}$) on the DIS-TE test set. The code is available at: https://github.com/Picsart-AI-Research/FlowDIS",
+      "authors": [
+        "Andranik Sargsyan",
+        "Shant Navasardyan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-06T16:12:07+00:00",
+      "link": "https://arxiv.org/pdf/2605.05077v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 6.5,
+      "llm_evidence_en": "dichotomous image segmentation for high-accuracy mask distribution",
+      "llm_evidence_cn": "用于高精度掩码分布的二分图像分割",
+      "llm_evidence": "用于高精度掩码分布的二分图像分割",
+      "canonical_evidence": "用于高精度掩码分布的二分图像分割",
+      "llm_tldr_en": "FlowDIS uses flow matching for high-accuracy image segmentation, relevant for alpha channel/mask generation.",
+      "llm_tldr_cn": "FlowDIS使用流匹配进行高精度图像分割，与透明通道/掩码生成相关。",
+      "llm_tldr": "FlowDIS使用流匹配进行高精度图像分割，与透明通道/掩码生成相关。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "video generation with transparent background and alpha channel",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.07950v1",
+      "source": "arxiv",
+      "title": "Slowly Annealed Langevin Dynamics: Theory and Applications to Training-Free Guided Generation",
+      "abstract": "We study Slowly Annealed Langevin Dynamics (SALD), a sampler for tracking a path of moving target distributions and approximating the terminal target through time slowdown. We establish non-asymptotic convergence guarantees via a KL differential inequality, showing that slowdown improves tracking through contraction of intermediate targets and the complexity of the path. Motivated by training-free guided generation with pretrained score-based generative models, we further introduce Velocity-Aware SALD (VA-SALD), which explicitly incorporates the underlying marginal distributions of the pretrained model and uses slowdown to correct the additional deviation induced by guidance. This yields a principled framework for training-free guided generation for diffusion-based and related generative model families, together with convergence guarantees that clarify the roles of intermediate functional inequalities and guidance bias. Code is available at https://github.com/anitan0925/sald.",
+      "authors": [
+        "Atsushi Nitanda",
+        "Dake Bu",
+        "Yueming Lyu",
+        "Tanya Veeravalli"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-08T16:17:34+00:00",
+      "link": "https://arxiv.org/pdf/2605.07950v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 8.5,
+      "llm_evidence_en": "principled framework for training-free guided generation with pretrained models",
+      "llm_evidence_cn": "使用预训练模型进行免训练引导生成的原则性框架",
+      "llm_evidence": "使用预训练模型进行免训练引导生成的原则性框架",
+      "canonical_evidence": "使用预训练模型进行免训练引导生成的原则性框架",
+      "llm_tldr_en": "Develops a theoretical framework for training-free guided generation using annealed Langevin dynamics.",
+      "llm_tldr_cn": "利用退火朗之万动力学开发了一个用于免训练引导生成的理论框架。",
+      "llm_tldr": "利用退火朗之万动力学开发了一个用于免训练引导生成的理论框架。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.08050v1",
+      "source": "arxiv",
+      "title": "MoCoTalk: Multi-Conditional Diffusion with Adaptive Router for Controllable Talking Head Generation",
+      "abstract": "Talking-head generation requires joint modeling of identity, head pose, facial expression, and mouth dynamics. Existing methods typically address only a subset of these factors, and rely on fixed-weight or heuristic fusion when multiple conditions are involved. We present MoCoTalk, a multi-conditional video diffusion framework that unifies four complementary control signals: a reference image, facial keypoints, 3DMM-rendered shading meshes, and the corresponding speech audio. To resolve destructive interference among heterogeneous conditions, we introduce an Adaptive Multi-Condition Router that computes channel-wise, timestep-aware gating over the four condition streams, allowing the fusion strategy to vary with both feature subspace and noise level. To better capture speech-related facial dynamics, we design a Mouth-Augmented Shading Mesh, a 3DMM-based representation that decouples head motion, mouth motion, expression, and lighting. This design provides a temporally consistent geometric prior and allows flexible recombination of these attributes at inference. We further introduce a lip consistency loss to tighten audio-visual alignment. Extensive experiments show that MoCoTalk achieves state-of-the-art performance on the majority of structural, motion, and perceptual metrics, while offering attribute-level controllability that single-condition methods do not provide.",
+      "authors": [
+        "Xinyan Ye",
+        "Jiankang Deng",
+        "Abbas Edalat"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-08T17:40:01+00:00",
+      "link": "https://arxiv.org/pdf/2605.08050v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 7.5,
+      "llm_evidence_en": "multi-conditional video diffusion framework for controllable generation",
+      "llm_evidence_cn": "用于可控生成的多条件视频扩散框架",
+      "llm_evidence": "用于可控生成的多条件视频扩散框架",
+      "canonical_evidence": "用于可控生成的多条件视频扩散框架",
+      "llm_tldr_en": "MoCoTalk unifies multiple control signals for high-fidelity controllable talking head video generation.",
+      "llm_tldr_cn": "MoCoTalk统一了多种控制信号，通过自适应路由实现高保真的可控人像视频生成。",
+      "llm_tldr": "MoCoTalk统一了多种控制信号，通过自适应路由实现高保真的可控人像视频生成。",
+      "llm_tags": [
+        "query:cv-vg-cs:composite"
+      ],
+      "matched_query_tag": "query:cv-vg-cs:composite",
+      "matched_query_text": "Papers central to 计算机视觉、可控视频生成、免训练、透明通道, especially work that connects or combines: c; t; d; v; video generation with transparent alpha channel support; computer vision research on transparent video generation; video generation with transparent background and alpha channel; training free controllable video generation methods.",
+      "matched_requirement_id": "req-composite-cv-vg-cs",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.07503v1",
+      "source": "arxiv",
+      "title": "Diffusion-APO: Trajectory-Aware Direct Preference Alignment for Video Diffusion Transformers",
+      "abstract": "Efficiently aligning large-scale video diffusion models with human intent requires a scalable and trajectory-aware pathway that bridges the inherent discrepancy between training noise distributions and practical inference trajectories. While existing paradigms such as Direct Preference Optimization (DPO) and Group Relative Policy Optimization (GRPO) attempt to address this, they are often hindered by either reliance on bias-prone, complex reward models or suboptimal timestep sampling. In this paper, we propose Diffusion-APO (Aligned Preference Optimization), a trajectory-aware algorithm that resolves this misalignment by synchronizing training noise with inference-time denoising paths to maximize gradient signal efficacy. To translate this algorithmic innovation into a practical solution, we introduce a unified and modular RLHF framework that integrates online ranking, half-online anchoring, offline refinement, and distillation-aware drift correction. This framework enables flexible, multi-stage preference alignment across diverse data and computational constraints without relying on scalar-reward-based policy gradients. Through extensive experiments, we demonstrate that Diffusion-APO consistently outperforms standard baselines in visual quality and instruction following, while effectively preserving generative fidelity during model acceleration, providing a robust, end-to-end pathway for scalable video diffusion alignment.",
+      "authors": [
+        "Jingyuan Zhu",
+        "Biaolong Chen",
+        "Le Zhang",
+        "Aixi Zhang",
+        "Hao Jiang",
+        "Pipei Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-08T09:37:46+00:00",
+      "link": "https://arxiv.org/pdf/2605.07503v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 6.5,
+      "llm_evidence_en": "aligning large-scale video diffusion models with human intent",
+      "llm_evidence_cn": "将大规模视频扩散模型与人类意图对齐",
+      "llm_evidence": "将大规模视频扩散模型与人类意图对齐",
+      "canonical_evidence": "将大规模视频扩散模型与人类意图对齐",
+      "llm_tldr_en": "Proposes Diffusion-APO to align video diffusion transformers with human intent via trajectory-aware optimization.",
+      "llm_tldr_cn": "提出Diffusion-APO算法，通过轨迹感知优化使视频扩散模型与人类意图对齐。",
+      "llm_tldr": "提出Diffusion-APO算法，通过轨迹感知优化使视频扩散模型与人类意图对齐。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.11869v1",
+      "source": "arxiv",
+      "title": "FIS-DiT: Breaking the Few-Step Video Inference Barrier via Training-Free Frame Interleaved Sparsity",
+      "abstract": "While the overall inference latency of Video Diffusion Transformers (DiTs) can be substantially reduced through model distillation, per-step inference latency remains a critical bottleneck. Existing acceleration paradigms primarily exploit redundancy across the denoising trajectory; however, we identify a limitation where these step-wise strategies encounter diminishing returns in few-step regimes. In such scenarios, the scarcity of temporal states prevents effective feature reuse or predictive modeling, creating a formidable barrier to further acceleration. To overcome this, we propose Frame Interleaved Sparsity DiT (FIS-DiT), a training-free and operator-agnostic framework that shifts the optimization focus from the temporal trajectory to the latent frame dimension. Our approach is motivated by an intrinsic duality within this dimension: the existence of frame-wise sparsity that permits reduced computation, coupled with a structural consistency where each frame position remains equally vital to the global spatiotemporal context. Leveraging this insight, we implement Frame Interleaved Sparsity (FIS) as an execution strategy that manipulates frame subsets across the model hierarchy, refreshing all latent positions without requiring full-scale block computation. Empirical evaluations on Wan 2.2 and HunyuanVideo 1.5 demonstrate that FIS-DiT consistently achieves 2.11--2.41$\\times$ speedup with negligible degradation across VBench-Q and CLIP metrics, providing a scalable and robust pathway toward real-time high-definition video generation.",
+      "authors": [
+        "Jian Tang",
+        "Jiawei Fan",
+        "Qingbin Liu",
+        "Zheng Wei"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-05-12T09:49:36+00:00",
+      "link": "https://arxiv.org/pdf/2605.11869v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 8.5,
+      "llm_evidence_en": "training-free and operator-agnostic framework for video inference",
+      "llm_evidence_cn": "用于视频推理的免训练且算子无关的框架",
+      "llm_evidence": "用于视频推理的免训练且算子无关的框架",
+      "canonical_evidence": "用于视频推理的免训练且算子无关的框架",
+      "llm_tldr_en": "FIS-DiT accelerates video diffusion transformers using a training-free frame interleaved sparsity approach.",
+      "llm_tldr_cn": "FIS-DiT通过免训练的帧间稀疏策略，显著降低了视频扩散Transformer的推理延迟。",
+      "llm_tldr": "FIS-DiT通过免训练的帧间稀疏策略，显著降低了视频扩散Transformer的推理延迟。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.11494v1",
+      "source": "arxiv",
+      "title": "STRIDE: Training-Free Diversity Guidance via PCA-Directed Feature Perturbation in Single-Step Diffusion Models",
+      "abstract": "Distilled one-step (T=1) or few-step (T$\\leq$4) diffusion models enable real-time image generation but often exhibit reduced sample diversity compared to their multi-step counterparts. In multi-step diffusion, diversity can be introduced through schedules, trajectories, or iterative optimization; however, these mechanisms are unavailable in the few-step or single-step setting, limiting the effectiveness of existing diversity-enhancing methods. A natural alternative is to perturb intermediate features, but naive feature perturbation is often ineffective, either yielding limited diversity gains or degrading generation quality. We argue that effective diversity injection in few-step models requires perturbations that respect the model's learned feature geometry. Based on this insight, we propose STRIDE, a training-free and optimization-free method that operates in a single forward pass. STRIDE injects spatially coherent (pink) noise into intermediate transformer features, projected onto the principal components of the model's own activations, ensuring that perturbations lie on the learned feature manifold. This design enables controlled variation along meaningful directions in the representation space. Extensive experiments on FLUX.1-schnell and SD3.5 Turbo across COCO, DrawBench, PartiPrompts, and GenEval show that STRIDE consistently improves diversity while maintaining strong text alignment. In particular, STRIDE reduces intra-batch similarity with minimal impact on CLIP score, and Pareto-dominates existing training-free baselines on the diversity-fidelity frontier. These results highlight that, in the absence of iterative refinement, improving diversity in few-step and one-step diffusion depends not on increasing perturbation strength, but on aligning perturbations with the model's internal representation structure.",
+      "authors": [
+        "Ankit Yadav",
+        "Arpit Garg",
+        "Ta Duc Huy",
+        "Lingqiao Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-12T04:10:42+00:00",
+      "link": "https://arxiv.org/pdf/2605.11494v1",
+      "tags": [
+        "keyword:CV VG CS",
+        "query:CV VG CS"
+      ],
+      "llm_score": 7.5,
+      "llm_evidence_en": "training-free diversity guidance in diffusion models",
+      "llm_evidence_cn": "扩散模型中的免训练多样性引导",
+      "llm_evidence": "扩散模型中的免训练多样性引导",
+      "canonical_evidence": "扩散模型中的免训练多样性引导",
+      "llm_tldr_en": "Proposes STRIDE for training-free diversity enhancement in single-step diffusion models via feature perturbation.",
+      "llm_tldr_cn": "提出STRIDE，通过特征扰动在单步扩散模型中实现免训练的多样性增强。",
+      "llm_tldr": "提出STRIDE，通过特征扰动在单步扩散模型中实现免训练的多样性增强。",
+      "llm_tags": [
+        "query:cv-vg-cs"
+      ],
+      "matched_query_tag": "query:cv-vg-cs",
+      "matched_query_text": "training free controllable video generation methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

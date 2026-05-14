@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.11494v1/fig-001.webp",
+      "caption": "Table 2: Results on DrawBench (199 prompts × 4 images) and PartiPrompts (1632 prompts × 4 images). Among single-pass training-free methods, STRIDE achieves the best diversity-quality tradeoff on both backbones, Pareto-dominating all baselines on FLUX. On SD3.5 Turbo, CADS collapses†. Per-prompt standard deviations and significance analysis in Tables 11 and 12. Bold indicates the better result between STRIDE and its no-PCA ablation.",
+      "page": 6,
+      "index": 1,
+      "width": 740,
+      "height": 625
+    },
+    {
+      "url": "assets/figures/arxiv/2605.11494v1/fig-002.webp",
+      "caption": "Figure 1: STRIDE motivation. (a) STRIDE vs. random-seed baseline on FLUX.1-schnell: each block shows four samples from one DrawBench prompt; STRIDE produces diverse poses and styles. (b) Unstructured noise pushes features off-manifold and is treated as corruption, while PCA-directed perturbation keeps noise on the learned manifold M.",
+      "page": 2,
+      "index": 2,
+      "width": 829,
+      "height": 291
+    },
+    {
+      "url": "assets/figures/arxiv/2605.11494v1/fig-003.webp",
+      "caption": "Table 3: Results on GenEval (553 prompts × 4 images; FLUX at 5122, SD3.5-Turbo at 10242). Among single-pass training-free methods, STRIDE achieves the best diversity-quality tradeoff on both backbones, improving diversity while preserving CLIP and HPS. On SD3.5 Turbo, CADS collapses†. Rows marked ⋆ are taken directly from [16] for a comparable FLUX-schnell setting. Per-prompt standard deviations in Table 11; further setup details in Sec. B.2. Bold indicates the better result between STRIDE and its no-PCA ablation.",
+      "page": 7,
+      "index": 3,
+      "width": 852,
+      "height": 344
+    },
+    {
+      "url": "assets/figures/arxiv/2605.11494v1/fig-004.webp",
+      "caption": "Table 1: Main results on COCO (2000 prompts × 10 images). STRIDE achieves the best diversityquality tradeoff among single-pass training-free methods on both FLUX.1-schnell and SD3.5 Turbo. DDC reaches a comparable Pareto point on SD3.5 Turbo at the cost of doubled inference-time VRAM. KID values are ×10−3. †CADS collapses on SD3.5 Turbo. Per-prompt standard deviations and significance analysis in Tables 11 and 12. Bold indicates the better result between STRIDE and its no-PCA ablation.",
+      "page": 3,
+      "index": 4,
+      "width": 822,
+      "height": 272
+    },
+    {
+      "url": "assets/figures/arxiv/2605.11494v1/fig-005.webp",
+      "caption": "Figure 2: Pareto frontiers for diversity-quality trade-off. We compare STRIDE against baselines using InBSim↓ and CLIP↑ on FLUX.1-schnell and SD3.5 Turbo. STRIDE achieves the strongest Pareto frontier on both architectures, improving diversity while preserving image-text alignment.",
+      "page": 8,
+      "index": 5,
+      "width": 812,
+      "height": 308
+    },
+    {
+      "url": "assets/figures/arxiv/2605.11494v1/fig-006.webp",
+      "caption": "Table 4: Patch size P ablation on DrawBench (199 prompts × 4 images) at per-backbone perturbation strength (α=0.5 for FLUX, α=0.1 for SD3.5 Turbo). The locked configuration P=2 (bolded); larger P values dilute per-patch PCA coverage, reducing diversity gains.",
+      "page": 9,
+      "index": 6,
+      "width": 760,
+      "height": 195
+    },
+    {
+      "url": "assets/figures/arxiv/2605.11494v1/fig-007.webp",
+      "caption": "Figure 3: Diversity-quality Pareto frontier on DrawBench. We compare STRIDE No-PCA (undirected pink noise) and STRIDE (PCA-directed pink noise) across frequency exponent fα and perturbation strength α on FLUX.1-schnell and SD3.5 Turbo using 199 prompts with 4 images per prompt. STRIDE offers a better diversity-quality trade-off, achieving lower InBSim at comparable CLIP across both backbones.",
+      "page": 9,
+      "index": 7,
+      "width": 809,
+      "height": 283
+    }
+  ]
+}
