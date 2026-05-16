@@ -1,0 +1,4953 @@
+Title: Slowly Annealed Langevin Dynamics: Theory and Applications to Training-Free Guided Generation
+
+URL Source: https://arxiv.org/pdf/2605.07950v1
+
+Published Time: Mon, 11 May 2026 01:41:07 GMT
+
+Number of Pages: 60
+
+Markdown Content:
+# Slowly Annealed Langevin Dynamics: Theory and Applications to Training-Free Guided Generation 
+
+## Atsushi Nitanda 1,2,†, Dake Bu 3,1, Yueming Lyu 1, Tanya Veeravalli 1
+
+> 1
+
+Agency for Science, Technology and Research (A ⋆STAR) ,
+
+> 2
+
+Nanyang Technological University ,
+
+> 3
+
+City University of Hong Kong 
+
+Email: †atsushi_nitanda@cfar.a-star.edu.sg 
+
+## Abstract 
+
+We study Slowly Annealed Langevin Dynamics (SALD), a sampler for tracking a path of moving target distributions and approximating the terminal target through time slowdown. We establish non-asymptotic convergence guarantees via a KL differential inequality, showing that slowdown improves tracking through contraction of intermediate targets and the complexity of the path. Motivated by training-free guided generation with pretrained score-based generative models, we further introduce Velocity-Aware SALD (VA-SALD), which explicitly incorporates the underlying marginal distributions of the pretrained model and uses slowdown to correct the additional deviation induced by guidance. This yields a principled framework for training-free guided generation for diffusion-based and related generative model families, together with convergence guarantees that clarify the roles of intermediate functional inequalities and guidance bias. Code is available at 
+
+https://github.com/anitan0925/sald .
+
+## 1 Introduction 
+
+Sampling from complex high-dimensional distributions is a central problem in machine learning, statistics, and generative modeling. A successful strategy is to construct a path of intermediate distributions that gradually deforms a simple reference law into a target distribution, and to follow this path using Langevin-type dynamics. This idea underlies annealed Langevin methods and score-based generative modeling, where a time-dependent score function guides the sampler through a sequence of increasingly structured distributions [ 29 , 30 , 20 , 33 , 7, 9, 5 ]. In particular, diffusion-based generative models can be viewed as defining a family of time-varying marginals whose terminal distribution coincides with the data distribution [ 15 , 30 ]. This viewpoint naturally leads to the problem of sampling while tracking a moving target path .A recent line of work has highlighted the benefit of slowdown in annealed Langevin dynamics. In particular, [ 13 ]studied Slowly Annealed Langevin Dynamics (SALD), where the target path is traversed more slowly in algorithmic time, and established the convergence guarantee via a path-space comparison argument based on Girsanov’s theorem. Their analysis reveals a complexity term governed by the path geometry and explains why slow schedules are beneficial for non-log-concave sampling. However, path-space arguments are less directly suited to capturing 
+
+marginal contraction toward moving targets from mismatched initialization. In many applications, one would like to understand how slowdown interacts with functional inequalities (e.g., log-Sobolev inequality) of intermediate targets, how it reduces tracking error at the distribution level, and how it stabilizes dynamics even when the initial law does not match the starting point of the target path. At the same time, guided generation has emerged as a major use case for time-dependent generative sampling. Given a pretrained score-based generative model, one would like to steer sampling toward outputs preferred by a reward, constraint, or guidance function [ 16 , 34 , 17 , 23 , 8]. A theoretically principled approach is provided by Doob’s h-transform, which yields the correct time-dependent modification of the reverse process targeting a tilted terminal distribution [ 18 , 31 , 6, 35 , 19 ]. However, this correction generally requires learning or approximating a time-dependent guiding function, or performing costly inference-time Monte Carlo estimation. More broadly, 1
+
+> arXiv:2605.07950v1 [cs.LG] 8 May 2026
+
+directly tracking the full guided target path may be substantially more complex than following the pretrained marginal path itself. In this work, we revisit SALD from a marginal-distribution viewpoint and extend it to training-free guided generation. First, we develop a non-asymptotic convergence analysis of SALD based on a forward KL differential inequality. Our analysis shows that slowdown improves tracking through two complementary mechanisms: contraction induced by functional inequalities of intermediate targets, and a path-complexity term captured by an action/energy term. This yields a transparent explanation of how slowdown can reduce both tracking error and initialization mismatch. Second, motivated by pretrained score-based generative models, we introduce Velocity-Aware SALD (VA-SALD). The key idea is to explicitly incorporate the underlying transport velocity of the pretrained marginal path and to use slowdown primarily to compensate for the additional deviation induced by the guide. As a result, VA-SALD avoids paying for the full complexity of the guided path and instead focuses on the guide-induced correction. Our contributions are summarized as follows: 
+
+• We establish a forward-KL convergence analysis of SALD for general moving target distributions. The resulting bounds reveal how slowdown combines contraction of intermediate targets with the path complexity of the moving target path (Theorem 1). We further extend the analysis to discrete-time SALD and obtain an iteration complexity of O(ε−6) for achieving an ε2-accurate solution (Theorem 2). 
+
+• We propose Velocity-Aware SALD (VA-SALD), a training-free and easy-to-implement guided sampling method that explicitly exploits the pretrained marginal evolution of score-based generative models. We prove convergence guarantees for VA-SALD in both continuous- and discrete-time settings, and show that its complexity is governed by the guide-induced correction rather than the full guided path (Theorems 3 and Section 10.2 in Appendix). This can lead to substantially improved convergence compared with a direct application of SALD to guided targets. 
+
+• We empirically verify the benefits of SALD and VA-SALD on synthetic guided sampling tasks and guided image generation. Across these settings, we observe stable performance improvements consistent with our theoretical predictions (Section 5 and Section 11 in Appendix). 
+
+## 2 Problem Setup and Methods 2.1 Slowly Annealed Langevin Dynamics [13] 
+
+We give an overview of annealed Langevin dynamics with slowdown [ 13 ]. Let (πt)t∈[0 ,T ] be an evolution of probability measures on Rd with finite second moments. Our objective is to approximately sample from the terminal target distribution πT , assuming oracle access to the time-dependent score function ∇ log πt(x). A straightforward approach is to consider an annealed Langevin dynamics governed by this score: dXt = ∇ log πt(Xt)d t + √2 dWt,where Wt is the standard Brownian motion in Rd. To enhance tracking performance for rapidly evolving target distributions, we follow [ 13 ] and slow down the annealing schedule; with a slowdown parameter r ≥ 1, we reparametrize the time scale as t = t(s) ( s ∈ [0 , S ]) where t(s) is a smooth monotonic increasing sequence. An example is t(s) = s/r (s ∈ [0 , rT ]) where r > 1 is a hyperparameter that defines the time-scale. The corresponding target at time s is ˜πs = πt(s). Then, we arrive at a Slowly Annealed Langevin Dynamics (SALD) [13] that uses the slowly changing score ∇ log ˜ πs in s.
+
+Continuous-time SALD. Define the SALD diffusion (Xs)s∈[0 ,rT ] by the SDE 
+
+dXs = ∇ log ˜ πs(Xs) d s + √2 d Ws, X0 ∼ ρ0, (1) where X0 ∼ ρ0 is an initial distribution. Note that we do not necessarily assume ρ0 = π0. The probability law 
+
+ρs := Law (Xs) of SALD satisfies the following Fokker–Planck equation: 
+
+∂sρs = ∇ · 
+
+
+
+ρs∇ log ρs
+
+˜πs
+
+
+
+. (2) 2Discrete-time implementation. We also consider a simple Euler–Maruyama discretization with stepsize η:
+
+Xηk+1 = Xηk + η ∇ log πtk (Xηk ) + p2ηξ k, ξk
+
+> i.i.d.
+
+∼ N (0 , I d), Xη 
+
+> 0
+
+∼ ρ0, (3) where tk = t(kη ) is a discrete-time index 1.
+
+Relation to SMLD. Score-based sampling methods such as SMLD [ 29 ] use a two-loop structure: an outer loop advances the noise level (or intermediate target), while an inner loop performs multiple Langevin updates to better equilibrate at the current target. SALD shares a related intuition, namely to exploit the closeness of neighboring intermediate targets. The key difference is that SALD uses a single dynamics with a slowly varying score, rather than alternating between frozen targets and repeated inner-loop corrections. In addition, while SMLD is typically formulated in the context of diffusion-based generative sampling, our analysis of SALD is developed for general moving targets (πt)t∈[0 ,T ].SALD can be used to sample from a target Gibbs distribution proportional to exp (−V ). For example, [ 13 ] considers a Gaussian annealing path: πt ∝ exp  −ω(t)V − λ(t)2 ∥ · ∥ 2 where ω(·) and λ(·) are differentiable monotone schedules satisfying ω0 = ω(0) ↗ ω(1) = 1 and λ0 = λ(0) ↘ λ(1) = 0 , (ω0 ∈ [0 , 1] , λ 0 ∈ [1 , ∞)) . For this construction, [ 13 ]established an iteration complexity of O(ε−6) for obtaining an ε-accurate solution in reverse KL divergence, under the matched-initialization assumption ρ0 = π0, using a Girsanov-based path-space argument. In contrast, our analysis provides a comparable complexity guarantee for the forward KL divergence while allowing mismatched initialization. We also verify the assumptions for reverse VP diffusion paths initialized from the target Gibbs distribution under smooth dissipativity conditions; see Appendix 10.3. 
+
+## 2.2 Velocity-Aware SALD for Guided Generation 
+
+In this section, we extend SALD (1) to enable efficient guided generation with pretrained score-based generative models following Itô diffusion processes such as diffusion models, flow matching models, and Schrödinger bridges. Given a score-based generative model trained on the data distribution pdata , we consider sampling from a tilted distribution proportional to pdata exp (−f ), where f : Rd → R is a smooth guide function. Our objective is to achieve this by using only the score of pre-trained generative model and the gradient of f . Let (pt)t∈[0 ,T ] denote the marginal distributions of the reverse process of the generative model, with pT = pdata . While the score-based models provide only an approximate estimate of the score ∇ log pt, we assume oracle access to it for simplicity. Under this assumption, we propose an extension of SALD that exploits the underlying velocity field of (pt)t∈[0 ,T ]
+
+for sampling from the target distribution πT ∝ pdata exp( −f ).We first provide the notion of transport velocity field . Consider the deterministic particle dynamics dXt = ut(Xt)d t
+
+induced by a time-dependent vector field ut : Rd → Rd (t ∈ [0 , T ]) . The corresponding probability law μt := Law (Xt)
+
+evolves according to the continuity equation ∂tμt = −∇ · (μtut) in the weak sense. Thus, ut describes how mass is transported along the path (μt)t∈[0 ,T ]. We therefore call ut a transport velocity field of (μt)t∈[0 ,T ], or simply say that ut generates (μt)t∈[0 ,T ].
+
+Itô diffusion. We now describe our setting. Let (qτ )τ ∈[0 ,T ] be the marginal laws of the forward Itô diffusion with q0 = pdata :
+
+dYτ = ¯Bτ (Yτ ) d τ + ¯ στ dWτ , τ ∈ [0 , T ], Y0 ∼ q0 = pdata , (4) where ¯στ > 0 is a real-valued scalar function of time and ¯Bτ : Rd → Rd is a drift term (vector field). Assume that each qτ admits a smooth positive density. Define the reverse marginal family by pt := qT −t, B t := ¯BT −t, σt := ¯σT −t, t ∈ [0 , T ]. Then the velocity fields that generate forward and reverse marginal distributions are (forward) ¯uτ (y) = ¯Bτ (y) − ¯σ2
+
+> τ
+
+2 ∇ log qτ (y),
+
+(reverse) ut(x) = −¯uT −t(x) = −Bt(x) + σ2
+
+> t
+
+2 ∇ log pt(x).
+
+(5) 
+
+> 1In [13], this discrete-time SALD is referred to as ALMC.
+
+3That is, ∂τ qτ + ∇ · (¯ uτ qτ ) = 0 , ∂ tpt + ∇ · (utpt) = 0 hold. Let ft be a (possibly time-varying) guide function satisfying fT = f , and πt(x) ∝ pt(x) exp( −ft(x)) is the guided moving target. Our Velocity-Aware SALD (VA-SALD) is then defined as: 
+
+dXs = ˙t(s)ut(s)(Xs) + σ2
+
+> t(s)
+
+2 ∇ log pt(s)(Xs) − σ2
+
+> t(s)
+
+2 ∇ft(s)(Xs)
+
+!
+
+ds + σt(s)dWs
+
+= ˙t(s)ut(s)(Xs) + σ2
+
+> t(s)
+
+2 ∇ log πt(s)(Xs)
+
+!
+
+ds + σt(s)dWs
+
+(6) Equivalently, by Eq. (5) 
+
+dXs = − ˙t(s)Bt(s)(Xs) +   ˙t(s) + 1  σ2
+
+> t(s)
+
+2 ∇ log pt(s)(Xs) − σ2
+
+> t(s)
+
+2 ∇ft(s)(Xs)
+
+!
+
+ds + σt(s)dWs. (7) Compared to Eq. (1) , VA-SALD requires the knowledge of velocity, namely ut(s)(Xs), σ t(s) from the forward process of Itô diffusion. 
+
+Example 1. Itô diffusion contains the Variance Preserving diffusion, flow-matching and Schrödinger bridge as special cases: 
+
+• Variance Preserving (VP) diffusion [ 15 ]. Set ¯Bτ (y) = − 12 β(τ )y, ¯στ = pβ(τ ), where β(τ ) is a prescribed schedule. Then the reverse velocity is 
+
+ut(x) = 12 β(T − t) x + ∇ log pt(x).
+
+• Flow matching [ 22 ]. Set ¯Bτ (y) = β(τ )
+
+
+
+vτ (y) + σ(τ )2 
+
+> 2
+
+∇ log qτ (y)
+
+
+
+, ¯στ = pβ(τ ) σ(τ ), where β(τ ) is a prescribed schedule and vτ : Rd → Rd is a prescribed flow-matching velocity field generating the target marginal path (e.g., a compatible v in [ 22 ], vRF in rectified flow [ 25 ], or vMF in MeanFlow [ 12 ]). Then the reverse velocity is 
+
+ut(x) = −β(T − t)vT −t(x).
+
+For a guide function class ft with fT = f , the Velocity-Aware SALD of the three cases could be directly obtained by substituting their own ut and σt into Eq. (6) .
+
+Since ut generates the marginal distributions (pt)t∈[0 ,T ] through the continuity equation ∂tpt = −∇ · (ptut), slowing down t = t(s) yields 
+
+∂spt(s) = ˙ t(s)∂tpt|t=t(s) = − ˙t(s)∇ · (pt(s)ut(s)) = −∇ · (pt(s) ˙t(s)ut(s)).
+
+Thus, ˙t(s)ut(s) is precisely the transport velocity associated with the slowed marginal distributions (pt(s))s∈[0 ,S ].In the unguided case ft ≡ 0, the Fokker–Planck equation of VA-SALD (6) admits the above slowed marginal path as a solution. Indeed, at ρs = pt(s), the score drift and diffusion terms cancel, and the equation reduces to 
+
+∂spt(s) = −∇ ·  pt(s) ˙t(s)ut(s)
+
+. Thus, when initialized from p0, the unguided VA-SALD follows pt(s) regardless of the choice of time-rescaling. In particular, for t(S) = T , the terminal distribution remains pT = pdata . This shows that VA-SALD with the slowdown itself does not introduce bias in the unguided dynamics. Under guidance, the discrepancy from the tilted target pt exp (−ft) is therefore primarily induced by the guide term in (6) . Although the original SALD (1) with πt ∝ pt exp (−ft) can in principle be applied to guided generation, it has to track the entire guided moving targets (πt)t∈[0 ,T ]. In contrast, VA-SALD explicitly incorporates the underlying marginal distributions (pt)t∈[0 ,T ] of the pretrained generative model, so that the slowdown can be used primarily to compensate for the additional deviation induced by the guide ft.4Remark. Let ht(x) := E e−f (XT ) | Xt = x. If one has access to this time-dependent h-function, then the corrected score ∇ log pt(x) + ∇ log ht(x) corresponds to the Doob’s h-transform and yields a reverse process targeting the tilted terminal distribution proportional to pT e−f . However, constructing or approximating ht
+
+typically requires either additional training of a time-dependent guide model [ 18 , 31 , 6] or inference-time Monte Carlo estimation [ 35 ]. In contrast, (VA-)SALD can be run with any prescribed time-dependent guide ft by simply adding its gradient at inference time, while using slowdown to mitigate the bias introduced by this guidance. 
+
+## 3 Convergence Analysis of SALD 
+
+In this section, we provide further theoretical justification for SALD through convergence analysis. We introduce several key concepts for convergence analysis. The first is the log-Sobolev inequality (LSI), which is imposed on the evolution of the moving target. 
+
+Definition 1 (Log-Sobolev Inequality (LSI)) . We say a probability distribution π satisfies LSI with constant 
+
+CLSI > 0 if for all smooth φ with R φ2 dπ = 1 ,
+
+Z
+
+φ2 log φ2dπ ≤ 2
+
+CLSI 
+
+Z
+
+∥∇ φ∥2dπ. 
+
+In particular, for all densities ρ ≪ π, LSI with φ = pρ/π implies the following inequality. 
+
+KL( ρ∥π) ≤ 12CLSI FI( ρ∥π), (8) where KL and FI are the Kullback-Leibler divergence and Fisher information defined below. For probability distributions ρ, π with ρ ≪ π, define 
+
+KL( ρ∥π) := 
+
+Z
+
+log ρπ (x)ρ(d x), FI( ρ∥π) := 
+
+Z
+
+∇ log ρπ (x) 2
+
+ρ(d x).
+
+Next, we introduce a quantity that measures the complexity of vector fields along π = ( πt)t∈[0 ,T ]. Let v = ( vt)t∈[0 ,T ]
+
+be any family of measurable vector fields vt : Rd → Rd. For α > 0, define 
+
+Eα(πt, v t) := 1
+
+α log Eπt
+
+exp  α∥vt∥2 , Aα(π, v ) := 
+
+Z T
+
+> 0
+
+Eα(πt, v t) dt. 
+
+We refer to Aα(π, v ) as the α-complexity of the field v along π.In the special case where vt is a transport velocity field generating π = ( πt)t∈[0 ,T ], that is, ∂tπt + ∇ · (πtvt) = 0 ,we call Aα(π, v ) the α-energy (or α-action ) of the path π. In particular, we will take vt to be the minimizer of 
+
+∥vt∥L2(πt) among all transport velocity fields generating (πt)t∈[0 ,T ]. Such a minimizer exists provided that the metric derivative lim h→0 W2(πt+h,π t) 
+
+> |h|
+
+exists for all t ∈ [0 , T ]; see [1, Theorems 8.3.1 and 8.4.5]. 
+
+Aα(π, v ) is a non-decreasing function in α and reproduces the action A(π, v ) = R T 
+
+> 0
+
+∥vt∥2
+
+> L2(πt)
+
+dt [13 ] as A0(πt, v t) := lim α→0+ Aα(π, v ). Analogous to the action studied in [ 13 ], the α-complexity serves as a measure of the complexity of the path (πt)t∈[0 ,T ] and vector fields v = ( vt)t∈[0 ,T ], which characterizes the convergence rate of SALD and VA-SALD under slowdown. 
+
+Continuous-time SALD. We present a general result for SALD under a general time-rescaling scheme. In the following, we extend the definition of the LSI constant to allow the value 0; that is, we set CLSI  
+
+> t
+
+= 0 when the distribution does not satisfy LSI with any positive constant. Let s = s(t) denote the inverse function of t = t(s).
+
+Theorem 1. Assume that πt satisfies LSI with constant CLSI  
+
+> t
+
+≥ 0 for all t ∈ [0 , T ], and that there exists a constant 
+
+α0 > 0 such that Eα0 (πt, v t) < +∞ for all t ∈ [0 , T ], where v is the transport velocity field of π. Then, for any 
+
+5α ∈ (0 , α 0], the probability law (ρs)s∈[0 ,S ] of SALD (1) satisfies 
+
+KL( ρS ∥πT ) ≤ exp −
+
+Z T
+
+> 0
+
+˙s(t)CLSI  
+
+> t
+
+dt
+
+!
+
+exp 
+
+Z T
+
+> 0
+
+12 ˙s(t)−1α−1dt
+
+!
+
+KL( ρ0∥π0)+
+
+Z T
+
+> 0
+
+exp 
+
+Z Tt
+
+12 ˙s(u)−1α−1du
+
+!
+
+12 ˙s(t)−1Eα(πt, v t)d t. 
+
+We next specialize the above results to the case of linear slowdown, where t(s) = s/r with r ≥ 1.
+
+Corollary 1 (Continuous-time SALD with linear slowdown) . Under the same assumptions as in Theorem 1, for any α ∈ (0 , α 0],
+
+KL( ρS ∥πT ) ≤ exp −r
+
+Z T
+
+> 0
+
+CLSI  
+
+> t
+
+dt
+
+!
+
+exp 
+
+ T
+
+2rα 
+
+
+
+KL( ρ0∥π0) + 12r exp 
+
+ T
+
+2rα 
+
+
+
+Aα(π, v ).
+
+The initial error KL (ρ0∥π0) decays at the exponential rate exp 
+
+
+
+−r R T 
+
+> 0
+
+CLSI  
+
+> t
+
+dt
+
+
+
+as r → ∞ , provided that 
+
+R T 
+
+> 0
+
+CLSI  
+
+> t
+
+dt > 0. In the typical construction of the moving targets πt, earlier targets satisfy stronger func-tional inequalities such as LSI. SALD therefore reduces the initial error by exploiting these earlier-stage targets. The second term, governed by α-complexity, also vanishes as r → ∞ . Consequently, Theorem 1 guarantees the quantitative convergence rate of SALD under a linear slowdown schedule. Furthermore, since Aα(π, v ) ↘ A 0(π, v )
+
+as α ↘ 0, we obtain the following convergence rate regarding r → ∞ ; for sufficiently small α > 0,
+
+KL( ρS ∥πT ) = O exp −r
+
+Z T
+
+> 0
+
+CLSI  
+
+> t
+
+dt
+
+!
+
+KL( ρ0∥π0) + A0(π, v )
+
+r
+
+!
+
+.
+
+Comparison with Girsanov-based path-space analysis. Guo et al. [ 13 ] analyze SALD through a Girsanov-based comparison of path measures, followed by data processing to obtain a terminal marginal bound. While this approach captures the cost of moving along the target path, it does not directly explain contraction toward the moving targets. In contrast, our analysis differentiates the marginal KL divergence KL (ρs∥˜πs) itself. The resulting differential inequality converts the LSIs of the intermediate targets into contraction, while controlling the remaining error by the α-complexity. Consequently, our forward-KL bound can reduce initialization mismatch 
+
+ρ0̸ = π0 through slowdown, a mechanism that is not visible from a purely path-space comparison. 
+
+Discrete-time SALD. We also present a similar result for discrete-time SALD (3) . Define sk := kη, t k := 
+
+t(sk), ρ ηk := Law (Xηk ), where k = 0 , . . . , K, K = Sη . Akin to [ 13 ], we consider Lipschitz assumptions with constants 
+
+Lπ, space , L π, time > 0 and a measurable function M (·) such that for all x, y ∈ Rd, t ∈ [tk, t k+1 ]
+
+∥∇ log πtk (x) − ∇ log πtk (y)∥ ≤ Lπ, space ∥x − y∥, (9) and for all s < s ′ (s, s ′ ∈ [0 , S ]) , x ∈ Rd,
+
+∥∇ log πt(s′)(x) − ∇ log πt(s)(x)∥ ≤ Lπ, time (s′ − s)(1 + M (x)) . (10) Furthermore, we define ¯Γ := R T 
+
+> 0
+
+Γ( t)d t, ¯∆α′ := R T 
+
+> 0
+
+∆( t)d t, where 
+
+Γ( t) := 2 L2 
+
+> π, time
+
++ 64 L2
+
+> π, space
+
+
+
+˙s(t)−2 + 1 + η2L2
+
+> π, time
+
+
+
+,
+
+∆( t) := 64 ηL 2
+
+> π, space
+
+Eα′ (πt, ∇ log πt) + 2 ηL 2
+
+> π, time
+
+(1 + 32 η2L2
+
+> π, space
+
+)Eα′ (πt, 1 + M ) + 16 dL 2
+
+> π, space
+
+.
+
+¯Γ and ¯∆α′ arise from the time-discretization. They are controlled by smoothness and complexities and remain 
+
+O(1) regarding η → 0 and α′ → 0. We consider the linear slowdown t(s) = s/r (r ≥ 1) .6Theorem 2. Assume the same assumptions of Theorem 1 and Lipschitz continuity conditions in Eq. (9) , (10) .Assume also there exists α′ 
+
+> 0
+
+> 0, Eα′ 
+
+> 0
+
+(πt, ∇ log πt) < ∞ and Eα′ 
+
+> 0
+
+(πt, 1 + M ) < ∞, ∀t ∈ [0 , T ], and 4η2L2 
+
+> π, space
+
+< 12 .Then, for any α ∈ (0 , α 0) and α′ ∈ (0 , α ′
+
+> 0
+
+], discrete-time SALD (3) satisfies 
+
+KL( ρηK ∥πT ) ≤ exp −r
+
+Z T
+
+> 0
+
+CLSI  
+
+> t
+
+dt
+
+!
+
+exp 
+
+ Trα + 2rη 2
+
+α′ ¯Γ
+
+
+
+KL( ρ0∥π0)+ exp 
+
+ Trα + 2rη 2
+
+α′ ¯Γ
+
+  1
+
+r Aα(π, v ) + 2 rη ¯∆α′
+
+
+
+.
+
+Theorem 2 yields the following convergence rate regarding r → ∞ and η → 0 under rη = O(1) :
+
+KL( ρηK ∥πT ) = O exp −r
+
+Z T
+
+> 0
+
+CLSI  
+
+> t
+
+dt
+
+!
+
+KL( ρ0∥π0) + 1
+
+r Aα(π, v ) + rη ¯∆α′
+
+!
+
+.
+
+Set Λ := R T 
+
+> 0
+
+CLSI  
+
+> t
+
+dt. To achieve ε2-accurate solutions, KL (ρηK ∥πT ) ≤ ε2, it is sufficient to choose r =
+
+O  max {Λ−1 log ε−1, Aα(π, v )ε−2} and η = O(ε2r−1 ¯∆−1 
+
+> α′
+
+). This results in the iteration complexity 
+
+K = rT η = O max 
+
+( ¯∆α′
+
+ε2Λ2
+
+
+
+log 1
+
+ε
+
+2
+
+, ¯∆α′ Aα(π, v )2
+
+ε6
+
+)! 
+
+.
+
+[ 13 ] established an iteration complexity of O(ε−6) for the reverse KL-divergence KL (πT ∥· ) without requiring an LSI. Our result for the forward KL-divergence achieves a comparable complexity while additionally allowing for a mismatch between the initial distributions, i.e., ρ0̸ = π0 by exploiting the contraction of intermediate distributions, provided that the accumulated LSI R T 
+
+> 0
+
+CLSI  
+
+> t
+
+dt is positive. This condition is typically satisfied in practice, as πt is annealed toward a simpler distribution. The assumptions in Theorem 2 are satisfied by a broad class of reverse diffusion paths. In particular, consider the VP forward process (qτ )τ ∈[0 ,T ] initialized from pdata ∝ e−V0 , and set πt = qT −t. If V0 has Lipschitz continuous derivatives up to third order and satisfies a two-point dissipativity condition, then the reverse VP marginal path satisfies the score Lipschitz conditions (9) –(10) . The required α-complexity terms are also finite for sufficiently small α, α ′ > 0, as the dissipativity condition yields suitable quadratic exponential moment bounds. The full verification is given in Appendix 10.3. 
+
+## 4 Convergence Analysis of Velocity-Aware SALD 
+
+We now analyze VA-SALD in the guided generation setting introduced in Section 2.2. As discussed above, VA-SALD is designed to correct the additional deviation from the underlying pretrained marginal path (pt)t∈[0 ,T ] induced by the guide ft. We first make this deviation explicit. Let ut : Rd → Rd (t ∈ [0 , T ]) be a velocity field generating the pretrained path (pt)t∈[0 ,T ], namely ∂tpt + ∇ · (ptut) = 0 . For the guided path πt ∝ pte−ft , the same velocity field does not in general generate (πt)t∈[0 ,T ]. Indeed, 
+
+∂tπt + ∇ · (πtut) = −πt
+
+
+
+gt − Eπt [gt]
+
+
+
+, (11) where gt := ∂tft + ∇f ⊤ 
+
+> t
+
+ut (see Proposition 1 in Appendix 10). Thus, the residual term on the right-hand side precisely quantifies the part of the guided evolution that is not captured by the pretrained velocity field ut. To compensate for this mismatch, we introduce a correction field wt : Rd → Rd satisfying 
+
+∇ · (πtwt) = πt
+
+
+
+gt − Eπt [gt]
+
+
+
+. (12) Then ut + wt is a transport velocity field for πt. In this sense, wt represents the additional transport required to deform the pretrained marginal evolution into the guided one. The next proposition shows that the convergence of VA-SALD is governed by the complexity of this correction field 
+
+wt, rather than that of the full guided velocity ut + wt.7Theorem 3. Assume that πt satisfies LSI with constant CLSI  
+
+> t
+
+≥ 0 for all t ∈ [0 , T ], and that there exists α0 > 0
+
+such that Eα0 (πt, w t) < +∞, ∀t ∈ [0 , T ]. Then, for any α ∈ (0 , α 0], the probability law (ρs)s∈[0 ,S ] of VA SALD 
+
+(6) satisfies 
+
+KL( ρS ∥πT ) ≤ exp −
+
+Z T
+
+> 0
+
+σ2
+
+> t
+
+2 ˙s(t)CLSI  
+
+> t
+
+dt
+
+!
+
+exp 
+
+Z T
+
+> 0
+
+σ−2 
+
+> t
+
+˙s(t)−1α−1 dt
+
+!
+
+KL( ρ0∥π0)+
+
+Z T
+
+> 0
+
+exp 
+
+Z Tt
+
+σ−2 
+
+> u
+
+˙s(u)−1α−1 du
+
+!
+
+σ−2 
+
+> t
+
+˙s(t)−1Eα(πt, w t) d t. (13) We specialize the above results to the case of linear slowdown, where t(s) = s/r with r ≥ 1. Set σmin := min t∈[0 ,T ] σt.
+
+Corollary 2. Under the same assumptions in Theorem 3, for any α ∈ (0 , α 0], VA SALD (6) satisfies 
+
+KL( ρS ∥πT ) ≤ exp − rσ 2min 
+
+2
+
+Z T
+
+> 0
+
+CLSI  
+
+> t
+
+dt
+
+!
+
+exp 
+
+ Trσ 2min α
+
+
+
+KL( ρ0∥π0) + 1
+
+rσ 2min 
+
+exp 
+
+ Trσ 2min α
+
+
+
+Aα(π, w ).
+
+Therefore a linear slowdown implies KL (ρS ∥πT ) → 0 as r → ∞ under the assumptions above. The key advantage of VA-SALD over a direct application of SALD to the guided path πt ∝ pte−ft lies in the associated α-complexity term. For the original SALD, the relevant complexity is governed by Aα(π, u + w), since the dynamics must track the entire guided path directly. In contrast, VA-SALD explicitly incorporates the pretrained velocity ut in its update and only needs to control the correction field wt, leading to the smaller complexity term Aα(π, w ). This distinction is particularly meaningful when ∥wt∥ ≪ ∥ ut + wt∥, in which case Aα(π, w ) ≪ A α(π, u + w). Such a regime is natural in guided generation: ut encodes the full marginal evolution of the pretrained generative model 
+
+(pt)t∈[0 ,T ], whereas (wt)t∈[0 ,T ] only compensates for the additional deviation induced by the guide. VA-SALD also exhibits an interesting behavior in the unguided case ft ≡ 0. In this case, the correction term vanishes, i.e., wt ≡ 0, and hence the α-complexity term in Theorem 3 disappears. The error bound then reduces to the exponential contraction of the initial KL error alone. In particular, slowdown effectively removes initialization mismatch ρ0̸ = p0 without incurring any correction-complexity cost. Furthermore, as Aα(π, w ) ↘ A 0(π, w ) as α ↘ 0, we have the following convergence rate; for sufficiently small 
+
+α > 0,
+
+KL( ρS ∥πT ) = O exp − rσ 2min 
+
+2
+
+Z T
+
+> 0
+
+CLSI  
+
+> t
+
+dt
+
+!
+
+KL( ρ0∥π0) + A0(π, w )
+
+r
+
+!
+
+.
+
+Furthermore, a discrete-time analogue is provided in Theorem 5 in Appendix 10.2. 
+
+## 5 Experiments 
+
+We empirically evaluate SALD and VA-SALD in both controlled and practical guided generation settings. The synthetic experiments are designed to test the theoretical prediction that increasing the slowdown budget improves tracking of the terminal distribution, where distributional errors can be computed directly. The image-generation experiments then examine whether the velocity-aware slowdown principle improves inference-time, training-free guidance with pretrained generative models and black-box rewards. 
+
+## 5.1 Synthetic Data 
+
+We evaluate guided generation on two 2D VP tasks: a two-Gaussian law with a two-moons guide, and an eight-Gaussian ring with a penalty on the four left-half modes. All methods use the same VP family, score, guide, and matched particle-step budgets. For DOIT [ 35 ], r denotes the computational cost; see Appendix 11.1 for the precise setup and implementation details. Figure 1 shows that SALD improves monotonically with r, VA-SALD achieves low KL with smaller budgets, and DOIT remains far from the guided terminal target under matched budgets. 8(a) (b) (c) (d) 
+
+Figure 1: Synthetic guided VP experiments. We compare SALD, VA-SALD, and DOIT on two guided VP benchmarks: two-Gaussian/two-moons (a,b) and eight-Gaussian/left-mode penalty (c,d). Panels (a,c) show terminal-target KL versus budget r, and panels (b,d) show mean guidance value along reverse progress. Unlike DOIT, SALD and VA-SALD consistently reduce terminal KL as r grows; VA-SALD also yields the strongest guidance-value profiles. 
+
+## 5.2 Guided Image Generation 
+
+We further evaluate our VA-SALD on training-free guided image generation tasks. Specifically, we focus on practical inference-time guidance for high-resolution image generation using black-box reward functions. We employ the pre-trained Stable-Diffusion 3.5 Medium (SD-3.5M) [ 10 ] as our backbone and the aesthetic score as the black-box reward function. We evaluate our VA-SALD by comparing it with two closely related baselines, FM-ZG and FM-Evolv [ 32 ], that use the default (Flow-Matching) SDE sampler in [ 24 ] and zeroth-order gradient estimator for guided generation. More details can be found in Appendix 11.2. Figure 2 shows that our VA-SALD achieves more stable guided generation compared with FM-ZG and FM-Evolv. Our image-generation experiments are intended to illustrate the stability of VA-SALD under black-box inference-time guidance. Beyond the representative example in Figure 2, we provide additional text-to-image generation results in Appendix 11.2, where reward functions, including aesthetic score, pickscore, and CLIPscore, are used as guidance functions. These experiments suggest that velocity-aware slowdown can help preserve the pretrained generative trajectory while incorporating external guidance, although a more systematic evaluation across broader prompt sets and human-preference metrics remains an important direction for future work. 
+
+## Conclusion and Discussion 
+
+We studied Slowly Annealed Langevin Dynamics (SALD) for tracking moving target distributions and approximating their terminal target via time slowdown. Our forward-KL analysis, based on marginal KL differentiation, shows how slowdown amplifies contraction induced by functional inequalities of intermediate targets. We also introduced Velocity-Aware SALD (VA-SALD) for training-free guided generation with pretrained score-based generative models. By incorporating the pretrained marginal velocity, VA-SALD separates the complexity of the pretrained path from the additional deviation induced by guidance, yielding convergence bounds governed by the correction field wt
+
+rather than the full guided velocity. Several limitations and directions remain. First, slowdown improves tracking by giving the sampler more algorithmic time to follow the moving target, but it also increases the number of iterations. Combining SALD with acceleration or distillation techniques is an important direction for retaining the benefit of slow tracking while improving generation efficiency. Second, although VA-SALD avoids paying for the full complexity of the guided moving target path and instead depends on the guide-induced correction wt, it remains unclear how to choose the intermediate guide schedule (ft)t∈[0 ,T ] for a given terminal guide f . Designing guide schedules that reduce the α-complexity of 
+
+(wt)t∈[0 ,T ] remains an open problem. 9VA -SALD      
+
+> FM -ZG
+> FM -Evolv
+> no guidance r=1/steps=40 r=2/steps=80 r=3/steps=120 r=4/steps=160 r=5/steps=200
+
+Figure 2: Guided generation on "lion" with guidance of black-box reward functions based on neural Aesthetic scorer. Across increasing budgets, VA-SALD produces stable and progressively refined samples, whereas FM-ZG and FM-Evolv exhibit severe artifacts and unstable semantic preservation. 
+
+## Acknowledgements 
+
+This research is supported by the National Research Foundation, Singapore and the Ministry of Digital Development and Information under the AI Visiting Professorship Programme (award number AIVP-2024-004). Any opinions, findings and conclusions or recommendations expressed in this material are those of the author(s) and do not reflect the views of National Research Foundation, Singapore and the Ministry of Digital Development and Information. Yueming Lyu is partially supported by the Career Development Fund (CDF) of the Agency for Science, Technology and Research (A*STAR) (No: C243512014) 
+
+## References 
+
+[1] Luigi Ambrosio, Nicola Gigli, and Giuseppe Savaré. Gradient flows: in metric spaces and in the space of probability measures . Springer, 2005. [2] Lorenzo Baldassari, Josselin Garnier, Knut Solna, and Maarten V de Hoop. Dimension-free multimodal sampling via preconditioned annealed langevin dynamics. arXiv preprint arXiv:2602.01449 , 2026. [3] Stéphane Boucheron, Gábor Lugosi, and Pascal Massart. Concentration Inequalities: A Nonasymptotic Theory of Independence . Oxford University Press, 2013. [4] Arwen Bradley and Preetum Nakkiran. Classifier-free guidance is a predictor-corrector. Transactions on Machine Learning Research , 2025. [5] Patrick Cattiaux, Paula Cordero-Encinar, and Arnaud Guillin. Diffusion annealed langevin dynamics: a theoretical study. arXiv preprint arXiv:2511.10406 , 2025. [6] Jinyuan Chang, Chenguang Duan, Yuling Jiao, Yi Xu, and Jerry Zhijian Yang. Inference-time alignment for diffusion models via variationally stable doob’s matching. arXiv preprint arXiv:2601.06514 , 2026. 10 [7] Omar Chehab, Anna Korba, Austin Stromme, and Adrien Vacher. Provable convergence and limitations of geometric tempering for langevin dynamics. In The Thirteenth International Conference on Learning Representations , 2025. [8] Minshuo Chen, Song Mei, Jianqing Fan, and Mengdi Wang. An overview of diffusion models: Applications, guided generation, statistical rates and optimization. arXiv preprint arXiv:2404.07771 , 2024. [9] Paula Cordero-Encinar, O Deniz Akyildiz, and Andrew B Duncan. Non-asymptotic analysis of diffusion annealed langevin monte carlo for generative modelling. arXiv preprint arXiv:2502.09306 , 2025. [10] Patrick Esser, Sumith Kulal, Andreas Blattmann, Rahim Entezari, Jonas Müller, Harry Saini, Yam Levi, Dominik Lorenz, Axel Sauer, Frederic Boesel, et al. Scaling rectified flow transformers for high-resolution image synthesis. In Forty-first international conference on machine learning , 2024. [11] Rong Ge, Holden Lee, and Andrej Risteski. Simulated tempering langevin monte carlo ii: An improved proof using soft markov chain decomposition. arXiv preprint arXiv:1812.00793 , 2018. [12] Zhengyang Geng, Mingyang Deng, Xingjian Bai, J Zico Kolter, and Kaiming He. Mean flows for one-step generative modeling. arXiv preprint arXiv:2505.13447 , 2025. [13] Wei Guo, Molei Tao, and Yongxin Chen. Provable benefit of annealed langevin monte carlo for non-log-concave sampling. In The Thirteenth International Conference on Learning Representations , 2025. [14] Yingqing Guo, Yukang Yang, Hui Yuan, and Mengdi Wang. Training-free guidance beyond differentiability: Scalable path steering with tree search in diffusion and flow models. arXiv preprint arXiv:2502.11420 , 2025. [15] Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. Advances in neural information processing systems , 33:6840–6851, 2020. [16] Jonathan Ho and Tim Salimans. Classifier-free diffusion guidance. arXiv preprint arXiv:2207.12598 , 2022. [17] Yuchen Jiao, Yuxin Chen, and Gen Li. Towards a unified framework for guided diffusion models. arXiv preprint arXiv:2512.04985 , 2025. [18] Ryotaro Kawata, Kazusato Oko, Atsushi Nitanda, and Taiji Suzuki. Direct distributional optimization for provable alignment of diffusion models. In The Thirteenth International Conference on Learning Representations ,2025. [19] Sunwoo Kim, Minkyu Kim, and Dongmin Park. Test-time alignment of diffusion models without reward over-optimization. In The Thirteenth International Conference on Learning Representations , 2025. [20] Holden Lee, Jianfeng Lu, and Yixin Tan. Convergence for score-based generative modeling with polynomial complexity. Advances in Neural Information Processing Systems 35 , 35:22870–22882, 2022. [21] Xiner Li, Masatoshi Uehara, Xingyu Su, Gabriele Scalia, Tommaso Biancalani, Aviv Regev, Sergey Levine, and Shuiwang Ji. Dynamic search for inference-time alignment in diffusion models. arXiv preprint arXiv:2503.02039 ,2025. [22] Yaron Lipman, Ricky TQ Chen, Heli Ben-Hamu, Maximilian Nickel, and Matt Le. Flow matching for generative modeling. arXiv preprint arXiv:2210.02747 , 2022. [23] Buhua Liu, Shitong Shao, Bao Li, Lichen Bai, Zhiqiang Xu, Haoyi Xiong, James T Kwok, Sumi Helal, and Zeke Xie. Alignment of diffusion models: Fundamentals, challenges, and future. ACM Computing Surveys ,58(9):1–37, 2026. [24] Jie Liu, Gongye Liu, Jiajun Liang, Yangguang Li, Jiaheng Liu, Xintao Wang, Pengfei Wan, Di Zhang, and Wanli Ouyang. Flow-grpo: Training flow matching models via online rl. arXiv preprint arXiv:2505.05470 ,2025. [25] Xingchao Liu, Chengyue Gong, and Qiang Liu. Flow straight and fast: Learning to generate and transfer data with rectified flow. arXiv preprint arXiv:2209.03003 , 2022. 11 [26] Yueming Lyu, Kim Yong Tan, Yew Soon Ong, and Ivor W Tsang. Covariance-adaptive sequential black-box optimization for diffusion targeted generation. arXiv preprint arXiv:2406.00812 , 2024. [27] Yueming Lyu and Ivor W Tsang. Black-box optimizer with implicit natural gradient. arXiv preprint arXiv:1910.04301 , 2019. [28] Yurii Nesterov and Vladimir Spokoiny. Random gradient-free minimization of convex functions. Foundations of Computational Mathematics , 17(2):527–566, 2017. [29] Yang Song and Stefano Ermon. Generative modeling by estimating gradients of the data distribution. Advances in neural information processing systems , 32, 2019. [30] Yang Song, Jascha Sohl-Dickstein, Diederik P Kingma, Abhishek Kumar, Stefano Ermon, and Ben Poole. Score-based generative modeling through stochastic differential equations. In The Ninth International Conference on Learning Representations , 2021. [31] Wenpin Tang and Renyuan Xu. A stochastic analysis approach to conditional diffusion guidance. Columbia University Preprint , 2024. [32] Zhao Wei, Chin Chun Ooi, Abhishek Gupta, Jian Cheng Wong, Pao-Hsiung Chiu, Sheares Xue Wen Toh, and Yew-Soon Ong. Evolvable conditional diffusion. arXiv preprint arXiv:2506.13834 , 2025. [33] Zhiyang Xun, Shivam Gupta, and Eric Price. Posterior sampling by combining diffusion models with annealed langevin dynamics. Advances in Neural Information Processing Systems 38 , 2025. [34] Haotian Ye, Haowei Lin, Jiaqi Han, Minkai Xu, Sheng Liu, Yitao Liang, Jianzhu Ma, James Zou, and Stefano Ermon. TFG: Unified training-free guidance for diffusion models. In The Thirty-eighth Annual Conference on Neural Information Processing Systems , 2024. [35] Qijie Zhu, Zeqi Ye, Han Liu, Zhaoran Wang, and Minshuo Chen. Training-free adaptation of diffusion models via doob’s h-transform. arXiv preprint arXiv:2602.16198 , 2026. 12 Table of Contents 
+
+1 Introduction 12 Problem Setup and Methods 2
+
+2.1 Slowly Annealed Langevin Dynamics [13] . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22.2 Velocity-Aware SALD for Guided Generation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+
+3 Convergence Analysis of SALD 54 Convergence Analysis of Velocity-Aware SALD 75 Experiments 8
+
+5.1 Synthetic Data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 85.2 Guided Image Generation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+
+6 Other Related Work 15 7 Auxiliary Lemmas 16 8 Bounding the Complexity under Poincaré Inequality 17 9 Analysis of SALD 18 
+
+9.1 Analysis of Continuous-Time SALD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18 9.2 Analysis of Discrete-Time SALD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19 
+
+10 Analysis of Velocity-Aware SALD 22 
+
+10.1 Analysis of Continuous-Time Velocity-Aware SALD . . . . . . . . . . . . . . . . . . . . . . . . . . . 23 10.2 Analysis of Discrete-Time Velocity-Aware SALD . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 10.3 Verification of Theorem 2 for VP-reverse Marginals under Dissipativity . . . . . . . . . . . . . . . . 31 
+
+11 Additional Experimental Details 37 
+
+11.1 Additional Details of Synthetic Data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37 11.1.1 Two-moons guided two-Gaussian VP diffusion. . . . . . . . . . . . . . . . . . . . . . . . . . 37 11.1.2 Eight-Gaussian mode-penalty VP diffusion. . . . . . . . . . . . . . . . . . . . . . . . . . . . 39 11.2 Additional Details of Guided Image Generation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48 11.2.1 Apply VA-SALD to Flow-Matching Setting . . . . . . . . . . . . . . . . . . . . . . . . . . . 48 11.2.2 Construction of πt for Black-box Guidance . . . . . . . . . . . . . . . . . . . . . . . . . . . 48 11.2.3 Discretization Update . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48 11.2.4 Baselines . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 13 11.2.5 Guided Function . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 11.2.6 Experiments Setup . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 11.2.7 Visualization of the Generated Images with different r (number of steps) . . . . . . . . . . 56 14 Appendix 
+
+## 6 Other Related Work 
+
+Annealed Langevin Annealed Langevin dynamics is based on the idea of sampling through a path of intermediately-noised distributions rather than directly targeting a (potentially difficult to sample from) ter-minal law. In score-based generative modeling, this manifests in SMLD (score-matching with Langevin dynamics) and continuous-time score-based diffusion models, where a time-dependent score ∇ log πt is used to move samples through progressively less noisy marginals toward the data distribution [29, 30, 2]. In sampling theory, annealing and tempering are used to improve the exploration of multi-modal or non-log-concave targets, by introducing intermediate distributions with more favorable geometry [ 11 , 7]. Recent work has developed non-asymptotic theory for several variants of annealed Langevin methods, including geometric tempering [ 7], diffusion annealed Langevin Monte Carlo along Gaussian or heavy-tailed interpolation paths [ 9], diffusion annealed Langevin dynamics from the viewpoint of prescribed marginal flows and functional inequalities [ 5], dimension-robust preconditioned annealed Langevin dynamics for mixture-like multimodal targets [ 2], and posterior sampling methods that combine diffusion priors with annealed Langevin updates [33]. The work closest to ours is the slowly annealed Langevin Monte Carlo analysis [ 13 ], which shows that traversing an annealing path more slowly can improve sampling complexity for non-log-concave targets. Their analysis proceeds through a path-space comparison based on Girsanov’s theorem, and the resulting guarantee is governed by the action of the annealing path. Our analysis is complementary. Instead of comparing path measures, we directly differentiate the marginal forward KL divergence between the sampler law and the instantaneous target. This reveals two distinct mechanisms behind slowdown: the moving-target forcing term is reduced by the time-rescaling, while the dissipative Fisher-information term can be converted into contraction whenever the intermediate targets satisfy log-Sobolev inequalities. As a result, our bounds explicitly separate initialization mismatch, contraction along the path, and the energy of the target evolution. This marginal viewpoint also leads naturally to discrete-time guarantees for Euler–Maruyama implementations and to iteration-complexity bounds (e.g. for Gaussian-mixture annealing paths). Our formulation is also related to the two-loop structure of SMLD [ 29 ], where one alternates between changing the noise level and applying several Langevin correction steps at a fixed level. SALD can be viewed as a continuous moving-target analogue of this intuition, but it is not simply the continuous-time limit of SMLD: the target evolves continuously in algorithmic time, and the analysis applies to general moving distributions rather than only to diffusion-model noise marginals. This distinction is important for our theory, since the key object is not only the score field but also the transport cost, or energy of the prescribed target path. 
+
+Guided generation and alignment Guided generation modifies a pretrained generative sampler to favor samples satisfying a certain condition, reward, preference, or constraint. Classical diffusion guidance mechanisms include the classifier guidance and classifier-free guidance paradigms [ 30 , 16 ]. Recent work has further clarified the structure of such guidance rules; for instance, classifier-free guidance can be interpreted through the lens of predictor-corrector mechanisms [ 4]. More broadly, training-free guidance methods seek to steer a pretrained diffusion model (at inference time) without retraining the base score network, often by adding a reward-gradient or condition-dependent drift to the reverse sampling process [ 8, 17 , 34 , 23 ]. Additionally, [ 19 ] proposes a training-free test-time method based on a (tempered) sequential Monte Carlo (SMC) method to align diffusion models with arbitrary rewards. In addition, several works focus on addressing black-box guidance. [ 26 ] formulates the training-free guided generation as a sequential black-box optimization problem of a sequence of Gaussian distributions and explicitly optimizes the drift term. Furthermore, [ 32 ] employs the zeroth-order gradient update at each inference-time sampling step. TreeG [ 14 ] builds a tree-search scheme along the inference-time sampling process. DSearch [21] investigates a dynamic tree expansion for inference-time guidance. Our work contributes to this perspective by considering a moving-target sampling framework. Given a pretrained marginal path (pt)t∈[0 ,T ] and a guide ft, the natural guided path is 
+
+πt(x) ∝ pt(x) exp( −ft(x)) .
+
+15 A direct application of SALD would require tracking the full evolution of (πt)t∈[0 ,T ]. In contrast, VA-SALD explicitly uses the transport velocity of the pretrained path (pt)t∈[0 ,T ] and applies Langevin correction only with respect to the guided density. This separates the base generative evolution from the additional guide-induced deformation. In our theory, this distinction appears through the correction vector field wt with the relevant energy complexity term 
+
+Eα(πt, w t). This is in contrast to direct SALD on the guided path which involves the complexity and energy of the full guided velocity. Thus, VA-SALD is especially well-suited to settings where the pretrained model already captures most of the marginal evolution and the guide only introduces a comparatively small correction. 
+
+h-Transform to align diffusion models A principled way to modify Markov diffusion so that it targets its desired target tilted distribution is given by Doob’s h-transform. If 
+
+ht(x) := E[exp( −f (XT )) | Xt = x] ,
+
+then adding the correction ∇ log ht to the reverse-time score yields the exact transformed process whose terminal law is proportional to pT e−f , under the idealized setting where ht is known exactly. This makes the h-transform a natural theoretical tool for conditional generation, preference alignment, and reward-guided diffusion sampling [31, 35, 18, 6] [31 ] tackles the problem of supervised fine-tuning with endogenous conditioning, in which they learn the h-function through a martingale-covariation loss. In the alignment for diffusion models in the Direct Preference Optimization (DPO) setting, a recent work [ 18 ] formulates a distributional optimization problem and subsequently enable sampling from the learned distribution through the h-transform independent of isoperimetric inequalities. Doob’s matching [ 6] is an inference-time alignment method that estimates the h-function via a gradient-regularized regression objective whose output is variationally stable (outputs converge as well as their gradients, yielding good approximation). DOIT (Doob-Oriented Inference-time Transformation) [ 35 ] instead approximates the dynamic Doob correction at inference time through simulation, allowing training-free adaptation to more general reward functions, including non-differentiable rewards. Our approach is different in both mechanism and objective; VA-SALD does not attempt to learn or estimate the exact ht, and thus does not require solving a backwards conditional-expectation correction, training a time-dependent guidance network, or repeatedly estimating the exact Doob correction. Instead, it allows one to prescribe a guide ft directly and uses slowdown to control the bias introduced by this simpler guidance rule. The resulting guarantee is not an exact h-transform guarantee; rather, it quantifies how well the sampler tracks the guided moving target under functional inequlities of πt and the energy of the guide-induced correction field wt. Thus, our work is positioned as a lightweight, training-free alternative to exact h-transform alignment since it trades exact Doob optimality for a simple, inference-time algorithm whose error is tracked by a moving-target KL analysis. 
+
+## 7 Auxiliary Lemmas 
+
+We present useful lemmas on which our convergence theory relies. 
+
+Lemma 1 (Grönwall’s inequality) . Let at, b t be continuous functions and Kt be a differentiable function in t ∈ [0 , t 1].Suppose ddt Kt ≤ − atKt + bt (t ∈ [0 , t 1]) . Then, it follows that, 
+
+Kt1 ≤ exp 
+
+
+
+−
+
+Z t1
+
+> 0
+
+audu
+
+
+
+K0 +
+
+Z t1
+
+> 0
+
+exp 
+
+
+
+−
+
+Z t1
+
+> t
+
+audu
+
+
+
+btdt. 
+
+Proof. We get following inequality: 
+
+ddt
+
+
+
+exp 
+
+Z t
+
+> 0
+
+audu
+
+
+
+Kt
+
+
+
+= at exp 
+
+Z t
+
+> 0
+
+audu
+
+
+
+Kt + exp 
+
+Z t
+
+> 0
+
+audu
+
+ dKt
+
+dt
+
+≤ exp 
+
+Z t
+
+> 0
+
+audu
+
+
+
+bt.
+
+16 Integrating the above inequality, we get exp 
+
+R t1 
+
+> 0
+
+audu
+
+
+
+Kt1 ≤ K0 + R t1 
+
+> 0
+
+exp 
+
+R t 
+
+> 0
+
+audu
+
+
+
+btdt. Therefore, 
+
+Kt1 ≤ exp 
+
+
+
+−
+
+Z t1
+
+> 0
+
+audu
+
+
+
+K0 + exp 
+
+
+
+−
+
+Z t1
+
+> 0
+
+audu
+
+ Z t1
+
+> 0
+
+exp 
+
+Z t
+
+> 0
+
+audu
+
+
+
+btdt
+
+= exp 
+
+
+
+−
+
+Z t1
+
+> 0
+
+audu
+
+
+
+K0 +
+
+Z t1
+
+> 0
+
+exp 
+
+
+
+−
+
+Z t1
+
+> t
+
+audu
+
+
+
+btdt. 
+
+Lemma 2 (Corollary 4.15, [3]) . Let μ and ν be the probability distributions on the same space. Then, 
+
+KL( ν∥μ) = sup 
+
+> Z
+
+{Eν [Z] − log Eμ[exp( Z)] } ,
+
+where the supremum is taken over all random variables such that log Eμ[exp( Z)] < +∞.
+
+## 8 Bounding the Complexity under Poincaré Inequality 
+
+We present a way to estimate the complexity under Poincaré Inequality (PI). 
+
+Definition 2 (Poincaré Inequality (PI)) . We say a probability distribution μ satisfies PI with constant CPI > 0 if for all smooth φ
+
+Var μ[φ] = Eμ[φ2] − Eμ[φ]2 ≤ 1
+
+CPI 
+
+Z
+
+∥∇ φ∥2dμ. 
+
+Let μ be a probability distribution that satisfies PI with a constant CPI > 0. We consider the weighted mean-zero Sobolev space defined as follows: 
+
+˙H1(μ) = 
+
+
+
+φ ∈ H1(μ)
+
+Z
+
+φ(x)μt(x)d x = 0 
+
+
+
+, (14) where H1(μ) = W 1,2(μ) is a weighted Sobolev space. We equip ˙H1(μ) with the inner-product defined as ⟨φ, ψ ⟩ ˙H1(μ) =
+
+R ∇φ(x)⊤∇ψ(x)μ(x)d x for all φ, ψ ∈ ˙H1(μ). PI implies that for any φ ∈ ˙H1(μt),
+
+∥φ∥2˙H1(μ) ≤ ∥ φ∥2 
+
+> H1(μ)
+
+=
+
+Z
+
+φ2(x)μ(x)d x +
+
+Z
+
+∥∇ φ(x)∥22μ(x)d x ≤
+
+
+
+1 + 1
+
+CPI 
+
+
+
+∥φ∥2˙H1(μ).
+
+Therefore ∥ · ∥ ˙H1(μ) defines the norm equivalent to ∥ · ∥ H1(μ) on ˙H1(μ).
+
+Lemma 3. Given g ∈ ˙H1(μ), consider the PDE: ∇ · (μv ) = −gμ where v = ( v1, . . . , v d), (vi ∈ L2(μt)) . If μ
+
+satisfies PI with a constant CPI , the weak solution v of this PDE exists, with ∥v∥L2(μ) ≤ 1√CPI ∥g∥L2(μ).Proof. Here, we restrict the class of solutions to those of the form v = ∇φ with ψ ∈ ˙H1(μt). The weak form of 
+
+∇ · (μ∇φ) = −gμ is as follows; for any φ ∈ ˙H1(μ),
+
+⟨φ, ψ ⟩ ˙H1(μ) =
+
+Z
+
+ψ(x)g(x)μ(x)d x =: Tμ(ψ). (15) Under PI, the following inequality holds 
+
+Tμ(ψ) ≤ ∥ ψ∥L2(μ)∥g∥L2(μ) =
+
+q
+
+Var μ[ψ]∥g∥L2(μ) ≤ 1
+
+pCPI ∥ψ∥ ˙H1(μ)∥g∥L2(μ),
+
+meaning that Tμ : ˙H1(μ) → R is the bounded linear operator with the operator norm 1√CPI ∥g∥L2(μ). Therefore, the Riesz representation theorem yields the solution φ of Eq. (15) with 
+
+∥∇ φ∥L2(μ) = ∥φ∥ ˙H1(μ) ≤ 1
+
+pCPI ∥g∥L2(μ).
+
+17 We here demonstrate that Lemma 3 immediately yields the bound on the energy of moving targets (πt)t∈[0 ,T ].We suppose πt satisfies Poincaré inequality with a constant CPI  
+
+> t
+
+for all t ∈ [0 , T ] and consider PDE: ∇ · (πtvt) = 
+
+−πt(∂t log πt). Then, Lemma 3 with μ = πt and g = ∂t log πt guarantees the solution of vt with ∥vt∥L2(πt) ≤
+
+> 1
+
+√CPI 
+
+> t
+
+∥∂t log πt∥L2(πt). Therefore, 
+
+A0(π, v ) ≤
+
+Z T
+
+> 0
+
+1
+
+CPI 
+
+> t
+
+∥∂t log πt∥2
+
+> L2(πt)
+
+dt. 
+
+This improves the constant in the estimate of [13] from 2 to 1.In the context of guided generation in Section 4, we can also estimate the bound on the complexity of (wt)t∈[0 ,T ]
+
+along (πt)t∈[0 ,T ]. If πt satisfies Poincaré inequality with a constant CPI  
+
+> t
+
+> 0 for all t ∈ [0 , T ], we can further bound the complexity A0(π, w ). Applying Lemma 3 with g = Eπt [gt] − gt where gt = ∂tft + ∇f ⊤ 
+
+> t
+
+ut, we get 
+
+∥wt∥L2(πt) ≤ 1√CPI 
+
+> t
+
+∥gt − Eπt [gt]∥L2(πt). Therefore, we obtain the following bound: 
+
+A0(π, w ) ≤
+
+Z T
+
+> 0
+
+1
+
+CPI 
+
+> t
+
+Var πt [gt]d t. 
+
+## 9 Analysis of SALD 
+
+In this section, we provide the convergence analysis of SALD described in Section 3. 
+
+## 9.1 Analysis of Continuous-Time SALD 
+
+We first provide the proof of the convergence rate of SALD (Theorem 1). 
+
+Proof of Theorem 1. Differentiating KL( ρs∥˜πs) in time s, we get 
+
+dds KL( ρs∥˜πs) = 
+
+Z
+
+∂sρs log ρs
+
+˜πs
+
+dx −
+
+Z ρs
+
+˜πs
+
+∂s ˜πsdx (16) since R ∂sρsdx = 0 .Using the following Fokker–Planck equation associated with (1) 
+
+∂sρs = ∇ · 
+
+
+
+ρs∇ log ρs
+
+˜πs
+
+
+
+,
+
+the first term of Eq. (16) becomes 
+
+Z
+
+∂sρs log ρs
+
+˜πs
+
+dx = −
+
+Z
+
+ρs ∇ log ρs
+
+˜πs
+
+> 2
+
+dx
+
+= −FI( ρs∥˜πs). (17) Let vt (t ∈ [0 , T ]) be a velocity field satisfying the continuity equation 
+
+∂tπt + ∇ · (vtπt) = 0 .
+
+Then ˜vs := ˙ t(s)vt(s) generates ˜πs because 
+
+∂s ˜πs = ˙ t(s)∂tπt|t=t(s) = − ˙t(s)∇ · (vt(s)πt(s)) = −∇ · (˜ vs ˜πs).
+
+18 The second term of Eq. (16) can be evaluated as follows: 
+
+−
+
+Z ρs
+
+˜πs
+
+∂s ˜πsdx =
+
+Z ρs
+
+˜πs
+
+∇ · (˜ vs ˜πs)d x
+
+= −
+
+Z
+
+∇ ρs
+
+˜πs
+
+> ⊤
+
+(˜ vs ˜πs)d x
+
+= −
+
+Z
+
+ρs∇ log ρs
+
+˜πs
+
+> ⊤
+
+˜vsdx
+
+≤ pFI( ρs∥˜πs)∥˜vs∥L2(ρs)
+
+≤ 12 FI( ρs∥˜πs) + 12 ∥˜vs∥2
+
+> L2(ρs)
+
+. (18) Combining Eq. (16), (17), (18), and LSI, we get 
+
+dds KL( ρs∥˜πs) ≤ − 12 FI( ρs∥˜πs) + 12 ∥˜vs∥2
+
+> L2(ρs)
+
+≤ − CLSI 
+
+> t(s)
+
+KL( ρs∥˜πs) + ˙ t(s)2 12 ∥vt(s)∥2
+
+> L2(ρs)
+
+.
+
+Since ddt KL( ρs(t)∥˜πs(t)) = ˙ s(t) dds KL( ρs∥˜πs) s=s(t)
+
+,
+
+we further get 
+
+ddt KL( ρs(t)∥πt) ≤ − ˙s(t)CLSI  
+
+> t
+
+KL( ρs(t)∥πt) + ˙s(t)−1
+
+2 ∥vt∥2
+
+> L2(ρs(t))
+
+.
+
+By Lemma 2, 
+
+∥vt∥2 
+
+> L2(ρs(t))
+
+≤ 1
+
+α KL( ρs(t)∥πt) + 1
+
+α log Eπt
+
+exp( α∥vt∥2) .
+
+Therefore, 
+
+ddt KL( ρs(t)∥πt) ≤ − 
+
+
+
+˙s(t)CLSI  
+
+> t
+
+− 12 ˙s(t)−1α−1
+
+
+
+KL( ρs(t)∥πt) + 12 ˙s(t)−1Eα(πt, v t).
+
+Applying Lemma 1, we get 
+
+KL( ρS ∥πT ) ≤ exp −
+
+Z T
+
+> 0
+
+
+
+˙s(t)CLSI  
+
+> t
+
+− 12 ˙s(t)−1α−1
+
+
+
+dt
+
+!
+
+KL( ρ0∥π0)+
+
+Z T
+
+> 0
+
+exp −
+
+Z Tt
+
+
+
+˙s(u)CLSI  
+
+> u
+
+− 12 ˙s(u)−1α−1
+
+
+
+du
+
+!
+
+12 ˙s(t)−1Eα(πt, v t)d t
+
+≤ exp −
+
+Z T
+
+> 0
+
+˙s(t)CLSI  
+
+> t
+
+dt
+
+!
+
+exp 
+
+Z T
+
+> 0
+
+12 ˙s(t)−1α−1dt
+
+!
+
+KL( ρ0∥π0)+
+
+Z T
+
+> 0
+
+exp 
+
+Z Tt
+
+12 ˙s(u)−1α−1du
+
+!
+
+12 ˙s(t)−1Eα(πt, v t)d t. 
+
+## 9.2 Analysis of Discrete-Time SALD 
+
+We next prove the convergence rate of discrete-SALD. To do so, we here define the continuous interpolation 
+
+( ˆXs)s∈[0 ,S ] of Eq. (3) as follows. For time s ∈ [sk, s k+1 ],
+
+ˆXs := Xηk + ( s − sk) ∇ log πtk (Xηk ) + √2 ( Ws − Wsk ). (19) 19 The next lemma provides the bound on R ˆρs⟨δπt (x), ∇ log ˆρs 
+
+> ˜πs
+
+⟩ dx needed for the analysis of discrete-time SALD. We omit its proof here, since it follows directly from the general lemma proved later in Lemma 5 by setting c ≡ 0
+
+and ση (t) = √2.For t ∈ [tk, t k+1 ], define the frozen-field error 
+
+δπt (x) := ∇ log πt(x) − E
+
+h
+
+∇ log πtk (Xηk ) ˆXs = x
+
+i
+
+. (20) Set ˆρs := Law( ˆXs).
+
+Lemma 4. Let As := ∇ log ˆρs 
+
+> ˜πs
+
+. We make the following assumptions. 1. There exist constant Lπ, space > 0 such that for all x, y ∈ Rd, t ∈ [0 , T ]
+
+∥∇ log πt(x) − ∇ log πt(y)∥ ≤ Lπ, space ∥x − y∥.
+
+2. There exist a measurable function M and constants Lπ, time > 0 such that for every s < s ′, (s, s ′ ∈ [0 , S ]) , and every x ∈ Rd,
+
+∥∇ log πt(s′)(x) − ∇ log πt(s)(x)∥ ≤ Lπ, time (s′ − s)(1 + M (x)) .
+
+3. There exists α′ 
+
+> 0
+
+> 0 such that 
+
+Eα′ 
+
+> 0
+
+(πt, ∇ log πt) < +∞, Eα′ 
+
+> 0
+
+(πt, 1 + M ) < +∞, ∀t ∈ [0 , T ].
+
+4. We assume η2L2 
+
+> π, space
+
+< 18 .Then, for every α′ ∈ (0 , α ′
+
+> 0
+
+] and every s ∈ [sk, s k+1 ],
+
+−
+
+Z
+
+ˆρs⟨δπt(s) (x), A s⟩ dx ≤ 14 FI(ˆ ρs∥˜πs) + 2 η2α′− 1Γ( t(s))KL(ˆ ρs∥˜πs) + 2 η∆( t(s)) . (21) 
+
+Here, 
+
+Γ( t) := 2 L2 
+
+> π, time
+
++ 64 L2
+
+> π, space
+
+
+
+˙s(t)−2 + 1 + η2L2
+
+> π, time
+
+
+
+,
+
+∆( t) := 64 ηL 2
+
+> π, space
+
+Eα′ (πt, ∇ log πt) + 2 ηL 2
+
+> π, time
+
+(1 + 32 η2L2
+
+> π, space
+
+)Eα′ (πt, 1 + M ) + 16 dL 2
+
+> π, space
+
+.
+
+We here present the proof of Theorem 2, based on Lemma 4. 
+
+Proof of Theorem 2. Fix k ∈ { 0, . . . , K − 1}. For s ∈ [sk, s k+1 ], ˆρsk = ρηk, ˆρsk+1 = ρηk+1 .Differentiating KL(ˆ ρs∥˜πs) with respect to s, we get 
+
+dds KL(ˆ ρs∥˜πs) = 
+
+Z
+
+∂s ˆρs log ˆρs
+
+˜πs
+
+dx −
+
+Z ˆρs
+
+˜πs
+
+∂s ˜πs dx, (22) since R ∂s ˆρs dx = 0 .We define ¯bk,s (x) := E
+
+h
+
+∇ log πtk (Xηk ) ˆXs = x
+
+i
+
+,
+
+Using the Fokker–Planck equation associated with (19), 
+
+∂s ˆρs = −∇ · (ˆ ρs¯bk,s ) + ∆ˆ ρs, s ∈ [sk, s k+1 ],
+
+together with 
+
+∆ˆ ρs = ∇ · (ˆ ρs∇ log ˆ ρs) = ∇ · 
+
+
+
+ˆρs∇ log ˆρs
+
+˜πs
+
+
+
++ ∇ · (ˆ ρs∇ log ˜ πs),
+
+20 we obtain 
+
+∂s ˆρs = −∇ · (ˆ ρs¯bk,s ) + ∇ · 
+
+
+
+ˆρs∇ log ˆρs
+
+˜πs
+
+
+
++ ∇ · (ˆ ρs∇ log ˜ πs)= ∇ · 
+
+
+
+ˆρs∇ log ˆρs
+
+˜πs
+
+
+
++ ∇ ·  ˆρs(∇ log ˜ πs − ¯bk,s ) , s ∈ [sk, s k+1 ].
+
+Hence the first term of Eq. (22) becomes 
+
+Z
+
+∂s ˆρs log ˆρs
+
+˜πs
+
+dx =
+
+Z
+
+∇ · 
+
+
+
+ˆρs∇ log ˆρs
+
+˜πs
+
+
+
+log ˆρs
+
+˜πs
+
+dx
+
++
+
+Z
+
+∇ ·  ˆρs(∇ log ˜ πs − ¯bk,s ) log ˆρs
+
+˜πs
+
+dx
+
+= −
+
+Z
+
+ˆρs ∇ log ˆρs
+
+˜πs
+
+> 2
+
+dx −
+
+Z
+
+ˆρs
+
+D
+
+∇ log ˜ πs − ¯bk,s , ∇ log ˆρs
+
+˜πs
+
+E
+
+dx
+
+= −FI(ˆ ρs∥˜πs) −
+
+Z
+
+ˆρs
+
+D
+
+∇ log ˜ πs − ¯bk,s , ∇ log ˆρs
+
+˜πs
+
+E
+
+dx. (23) Let vt be a velocity field that generate πt satisfying ∂tπt + ∇ · (vtπt) = 0 , t ∈ [0 , T ]. As in the continuous-time proof, ˜vs := ˙ t(s) vt(s) generates ˜πs, namely ∂s ˜πs + ∇ · (˜ vs ˜πs) = 0 .Therefore, the second term of Eq. (22) can be evaluated as 
+
+−
+
+Z ˆρs
+
+˜πs
+
+∂s ˜πsdx =
+
+Z ˆρs
+
+˜πs
+
+∇ · (˜ vs ˜πs)d x
+
+= −
+
+Z
+
+∇ ˆρs
+
+˜πs
+
+> ⊤
+
+(˜ vs ˜πs)d x
+
+= −
+
+Z
+
+ˆρs
+
+D
+
+∇ log ˆρs
+
+˜πs
+
+, ˜vs
+
+E
+
+dx. (24) Combining Eq. (22), (23), and (24), we obtain 
+
+dds KL(ˆ ρs∥˜πs) = −FI(ˆ ρs∥˜πs) −
+
+Z
+
+ˆρs
+
+D
+
+∇ log ˜ πs − ¯bk,s , ∇ log ˆρs
+
+˜πs
+
+E
+
+dx
+
+−
+
+Z
+
+ˆρs
+
+D
+
+∇ log ˆρs
+
+˜πs
+
+, ˜vs
+
+E
+
+dx. (25) By Lemma 4 as well as Cauchy–Schwarz and Young’s inequality, 
+
+−
+
+Z
+
+ˆρs
+
+D
+
+∇ log ˜ πs − ¯bk,s , ∇ log ˆρs
+
+˜πs
+
+E
+
+dx ≤ 14 FI(ˆ ρs∥˜πs) + 2 η2α′− 1Γ( t(s))KL(ˆ ρs∥˜πs) + 2 η∆( t(s)) , (26) 
+
+−
+
+Z
+
+ˆρs
+
+D
+
+∇ log ˆρs
+
+˜πs
+
+, ˜vs
+
+E
+
+dx ≤ 14 FI(ˆ ρs∥˜πs) + ∥˜vs∥2
+
+> L2( ˆ ρs)
+
+. (27) Substituting these estimates into (25), we get 
+
+dds KL(ˆ ρs∥˜πs) ≤ − 12 FI(ˆ ρs∥˜πs) + ∥˜vs∥2 
+
+> L2( ˆ ρs)
+
++ 2 η2α′− 1Γ( t(s))KL(ˆ ρs∥˜πs) + 2 η∆( t(s)) 
+
+≤ − CLSI 
+
+> t(s)
+
+KL(ˆ ρs∥˜πs) + ∥˜vs∥2 
+
+> L2( ˆ ρs)
+
++ 2 η2α′− 1Γ( t(s))KL(ˆ ρs∥˜πs) + 2 η∆( t(s)) , (28) where we applied LSI on ˜πs.We now estimate ∥˜vs∥2 
+
+> L2( ˆ ρs)
+
+by Lemma 2. Since ˜vs = ˙t(s)vt(s), Lemma 2 with ν = ˆρs, μ = ˜πs, Z = α∥vt(s)∥2 yields 
+
+∥˜vs∥2 
+
+> L2( ˆ ρs)
+
+= ˙ t(s)2∥vt(s)∥2
+
+> L2( ˆ ρs)
+
+≤ ˙t(s)2
+
+ 1
+
+α KL(ˆ ρs∥˜πs) + 1
+
+α log E˜πs
+
+exp  α∥vt(s)∥2 
+
+= ˙ t(s)2
+
+ 1
+
+α KL(ˆ ρs∥˜πs) + Eα(πt(s), v t(s))
+
+
+
+. (29) 21 Substituting (29) into (28), we obtain 
+
+dds KL(ˆ ρs∥˜πs) ≤ − 
+
+
+
+CLSI  
+
+> t(s)
+
+− ˙t(s)2α−1 − 2η2α′− 1Γ( t(s)) 
+
+
+
+KL(ˆ ρs∥˜πs)+ ˙ t(s)2Eα(πt(s), v t(s)) + 2 η∆( t(s)) . (30) Since ddt KL(ˆ ρs(t)∥πt) = ddt KL(ˆ ρs(t)∥˜πs(t)) = ˙ s(t) dds KL(ˆ ρs∥˜πs) s=s(t)
+
+,
+
+Eq. (30) implies, for t ∈ [tk, t k+1 ],
+
+ddt KL(ˆ ρs(t)∥πt) ≤ −   ˙s(t)CLSI  
+
+> t
+
+− ˙s(t)−1α−1 − 2 ˙ s(t)η2α′− 1Γ( t) KL(ˆ ρs(t)∥πt)+ ˙ s(t)−1Eα(πt, v t) + 2 ˙ s(t)∆( t)η. (31) Applying Lemma 1, we get 
+
+KL( ρηK ∥πT ) ≤ exp −
+
+Z T
+
+> 0
+
+
+
+˙s(t)CLSI  
+
+> t
+
+− ˙s(t)−1α−1 − 2 ˙ s(t)η2α′− 1Γ( t)
+
+
+
+dt
+
+!
+
+KL( ρ0∥π0)+
+
+Z T
+
+> 0
+
+exp −
+
+Z Tt
+
+
+
+˙s(u)CLSI  
+
+> u
+
+− ˙s(u)−1α−1 − 2 ˙ s(u)η2α′− 1Γ( u)
+
+
+
+du
+
+!
+
+·
+
+
+
+˙s(t)−1Eα(πt, v t) + 2 ˙ s(t)∆( t)η
+
+
+
+dt. 
+
+## 10 Analysis of Velocity-Aware SALD 
+
+In this section, we provide the convergence analysis of VA-SALD for guided generation described in Section We first clarify the residual term 11 that is not captured by pretrained velocity field ut. Let (pt)t∈[0 ,T ] be a smooth positive density path on Rd, and let ut : Rd → Rd be a velocity field generating (pt), i.e. 
+
+∂tpt + ∇ · (ptut) = 0 .
+
+Let ft : Rd → R be a smooth guide, and define 
+
+Zt := 
+
+Z
+
+> Rd
+
+pt(x)e−ft(x) dx, πt(x) := 1
+
+Zt
+
+pt(x)e−ft(x).
+
+We also set 
+
+gt(x) := ∂tft(x) + ∇ft(x)⊤ut(x).
+
+Proposition 1 (Residual identity for the guided path) . For every t ∈ [0 , T ],
+
+∂tπt + ∇ · (πtut) = −πt
+
+
+
+gt − Eπt [gt]
+
+
+
+. (32) 
+
+In particular, the right-hand side has zero πt-mean: 
+
+Z
+
+> Rd
+
+
+
+gt − Eπt [gt]
+
+
+
+πt dx = 0 .
+
+22 Proof. Since πt = 1 
+
+> Zt
+
+pte−ft , we first compute the derivative of Zt. Using ∂tpt = −∇ · (ptut) and integration by parts, 
+
+˙Zt =
+
+Z
+
+> Rd
+
+∂t
+
+ pte−ft  dx 
+
+=
+
+Z
+
+> Rd
+
+(∂tpt)e−ft dx −
+
+Z
+
+> Rd
+
+pte−ft ∂tft dx 
+
+= −
+
+Z
+
+> Rd
+
+∇ · (ptut)e−ft dx −
+
+Z
+
+> Rd
+
+pte−ft ∂tft dx 
+
+=
+
+Z
+
+> Rd
+
+ptut · ∇ (e−ft ) dx −
+
+Z
+
+> Rd
+
+pte−ft ∂tft dx 
+
+= −
+
+Z
+
+> Rd
+
+pte−ft
+
+
+
+∇f ⊤ 
+
+> t
+
+ut + ∂tft
+
+
+
+dx 
+
+= −Zt Eπt [gt].
+
+Hence ˙Zt
+
+Zt
+
+= −Eπt [gt]. (33) Next, differentiate πt and use again ∂tpt = −∇ · (ptut):
+
+∂tπt = − ˙Zt
+
+Zt
+
+πt + 1
+
+Zt
+
+(∂tpt)e−ft − 1
+
+Zt
+
+pte−ft ∂tft
+
+= − ˙Zt
+
+Zt
+
+πt − 1
+
+Zt
+
+∇ · (ptut)e−ft − πt ∂tft.
+
+Also, 
+
+∇ · (πtut) = ∇ · 
+
+ 1
+
+Zt
+
+pte−ft ut
+
+
+
+= 1
+
+Zt
+
+∇ · (ptut)e−ft + 1
+
+Zt
+
+ptut · ∇ (e−ft )= 1
+
+Zt
+
+∇ · (ptut)e−ft − πt ∇f ⊤ 
+
+> t
+
+ut.
+
+Adding the two identities, the divergence terms cancel and we obtain 
+
+∂tπt + ∇ · (πtut) = − ˙Zt
+
+Zt
+
+πt − πt
+
+
+
+∂tft + ∇f ⊤ 
+
+> t
+
+ut
+
+
+
+.
+
+Substituting (33) gives 
+
+∂tπt + ∇ · (πtut) = πt Eπt [gt] − πtgt = −πt
+
+
+
+gt − Eπt [gt]
+
+
+
+,
+
+which is exactly (32). The mean-zero property is immediate by integration. 
+
+## 10.1 Analysis of Continuous-Time Velocity-Aware SALD 
+
+We now extend VA-SALD further by allowing the vector field u to be replaced by a general vector field c:
+
+dXs = ˙t(s)ct(s)(Xs) + σ2
+
+> t(s)
+
+2 ∇ log πt(s)(Xs)
+
+!
+
+ds + σt(s)dWs, X0 ∼ ρ0. (34) 
+
+Theorem 4. Let (vt)t∈[0 ,T ] be a transport velocity field of πt and set mt(x) := vt(x) − ct(x). Assume that πt
+
+satisfies LSI with constant CLSI  
+
+> t
+
+≥ 0, and that there exists α0 > 0 such that Eα0 (πt, m t) < +∞, ∀t ∈ [0 , T ]. Then, 
+
+23 for any α ∈ (0 , α 0], the law (ρs)s∈[0 ,S ] of (Xs)s∈[0 ,S ]] defined by (34) satisfies 
+
+KL( ρS ∥πT ) ≤ exp −
+
+Z T
+
+> 0
+
+σ2
+
+> t
+
+2 ˙s(t)CLSI  
+
+> t
+
+dt
+
+!
+
+exp 
+
+Z T
+
+> 0
+
+σ−2 
+
+> t
+
+˙s(t)−1α−1 dt
+
+!
+
+KL( ρ0∥π0)+
+
+Z T
+
+> 0
+
+exp 
+
+Z Tt
+
+σ−2 
+
+> u
+
+˙s(u)−1α−1 du
+
+!
+
+σ−2 
+
+> t
+
+˙s(t)−1Eα(πt, m t) d t. (35) 
+
+Notably, if ct has the full knowledge of the moving target πt’s velocity, namely 
+
+ct(x) = vt(x) for all (t, x ) ∈ [0 , T ] × Rd,
+
+then mt(x) ≡ 0, Eα(πt, m t) = 0 , and the bound (35) reduces to the pure contraction estimate 
+
+KL( ρS ∥πT ) ≤ exp −
+
+Z T
+
+> 0
+
+σ2
+
+> t
+
+2 ˙s(t)CLSI  
+
+> t
+
+dt
+
+!
+
+exp 
+
+Z T
+
+> 0
+
+σ−2 
+
+> t
+
+˙s(t)−1α−1 dt
+
+!
+
+KL( ρ0∥π0). (36) 
+
+Proof of Theorem 4. Differentiating KL( ρs∥πt(s)) in time s, we get 
+
+dds KL( ρs∥πt(s)) = 
+
+Z
+
+∂sρs log ρs
+
+πt(s)
+
+dx −
+
+Z ρs
+
+πt(s)
+
+∂sπt(s) dx (37) since R ∂sρs dx = 0 .Using the SDE (34), the law ρs satisfies the Fokker–Planck equation 
+
+∂sρs = −∇ ·   ˙t(s)ct(s) ρs
+
+ + σ2
+
+> t(s)
+
+2 ∇ · 
+
+
+
+ρs∇ log ρs
+
+πt(s)
+
+
+
+. (38) Let As := ∇ log ρs 
+
+> πt(s)
+
+. Then the first term in (37) becomes 
+
+Z
+
+∂sρs log ρs
+
+πt(s)
+
+dx =
+
+Z "
+
+−∇ ·   ˙t(s)ct(s) ρs
+
+ + σ2
+
+> t(s)
+
+2 ∇ · (ρsAs)
+
+#
+
+log ρs
+
+πt(s)
+
+dx
+
+= ˙ t(s)
+
+Z
+
+ρs c⊤
+
+> t(s)
+
+As dx − σ2
+
+> t(s)
+
+2
+
+Z
+
+ρs∥As∥2 dx
+
+= ˙ t(s)
+
+Z
+
+ρs c⊤
+
+> t(s)
+
+As dx − σ2
+
+> t(s)
+
+2 FI( ρs∥πt(s)). (39) Next, since vt generates πt, the rescaled velocity ˜vs := ˙ t(s) vt(s) generates πt(s), because 
+
+∂sπt(s) = ˙ t(s)∂tπt t=t(s) = − ˙t(s)∇ · (vt(s)πt(s)) = −∇ · (˜ vsπt(s)).
+
+Therefore the second term in (37) is 
+
+−
+
+Z ρs
+
+πt(s)
+
+∂sπt(s) dx =
+
+Z ρs
+
+πt(s)
+
+∇ · (˜ vsπt(s)) d x
+
+= −
+
+Z
+
+ρs ˜v⊤ 
+
+> s
+
+As dx. (40) Combining (37), (39), and (40), we obtain 
+
+dds KL( ρs∥πt(s)) = − σ2
+
+> t(s)
+
+2 FI( ρs∥πt(s)) − ˙t(s)
+
+Z
+
+ρs
+
+ vt(s) − ct(s)
+
+⊤ As dx. 
+
+That is, 
+
+dds KL( ρs∥πt(s)) = − σ2
+
+> t(s)
+
+2 FI( ρs∥πt(s)) − ˙t(s)
+
+Z
+
+ρs m⊤
+
+> t(s)
+
+As dx. 
+
+24 By Hölder’s inequality and ab ≤ ε 
+
+> 2
+
+a2 + 12ε b2 with ε = 2 ˙ t(s)/σ 2
+
+> t(s)
+
+,
+
+dds KL( ρs∥πt(s)) ≤ − σ2
+
+> t(s)
+
+4 FI( ρs∥πt(s)) + σ−2 
+
+> t(s)
+
+˙t(s)2
+
+Z
+
+ρs∥mt(s)∥2 dx. (41) Now define K(t) := KL (ρs(t)∥πt) = KL (ρs(t)∥˜πs(t)). Multiplying (41) by ˙s(t), and using ˙t(s(t)) = ˙s(t)−1, we obtain 
+
+ddt K(t) ≤ − σ2
+
+> t
+
+4 ˙s(t)FI( ρs(t)∥πt) + σ−2 
+
+> t
+
+˙s(t)−1∥mt∥2
+
+> L2(ρs(t))
+
+.
+
+Combining this with the LSI for πt, we get 
+
+ddt K(t) ≤ − σ2
+
+> t
+
+2 ˙s(t)CLSI  
+
+> t
+
+K(t) + σ−2 
+
+> t
+
+˙s(t)−1∥mt∥2
+
+> L2(ρs(t))
+
+.
+
+The last term can be evaluated by Lemma 2: 
+
+∥mt∥2 
+
+> L2(ρs(t))
+
+≤ 1
+
+α KL( ρs(t)∥πt) + 1
+
+α log Eπt
+
+exp  α∥mt∥2 = 1
+
+α K(t) + Eα(πt, m t).
+
+Therefore ddt K(t) ≤ − 
+
+ σ2
+
+> t
+
+2 ˙s(t)CLSI  
+
+> t
+
+− σ−2 
+
+> t
+
+˙s(t)−1α−1
+
+
+
+K(t) + σ−2 
+
+> t
+
+˙s(t)−1Eα(πt, m t).
+
+Applying Lemma 1, we obtain 
+
+KL( ρS ∥πT ) ≤ exp −
+
+Z T
+
+> 0
+
+ σ2
+
+> t
+
+2 ˙s(t)CLSI  
+
+> t
+
+− σ−2 
+
+> t
+
+˙s(t)−1α−1
+
+
+
+dt
+
+!
+
+KL( ρ0∥π0)+
+
+Z T
+
+> 0
+
+exp −
+
+Z Tt
+
+ σ2
+
+> u
+
+2 ˙s(u)CLSI  
+
+> u
+
+− σ−2 
+
+> u
+
+˙s(u)−1α−1
+
+
+
+du
+
+!
+
+σ−2 
+
+> t
+
+˙s(t)−1Eα(πt, m t)d t. 
+
+This inequality yields Eq. (35). Finally, if (4) holds, then mt ≡ 0, and hence 
+
+Eα(πt, m t) = 1
+
+α log Eπt exp  α∥mt∥2 = 0 .
+
+Substituting this into (35) yields (36). 
+
+Proof of Theorem 3. Theorem 3 immediately follows as a special case of Theorem 4 by setting ct ← ut.
+
+## 10.2 Analysis of Discrete-Time Velocity-Aware SALD 
+
+In this section, we present the convergence analysis of VA-SALD with linear slowdown. The Euler–Maruyama discretization of the general form of VA-SALD (34) is defined as follows. 
+
+Discrete-time general VA-SALD. Xη 
+
+> 0
+
+∼ ρ0, ξ k
+
+> i.i.d.
+
+∼ N (0 , I d),
+
+Xηk+1 = Xηk + η
+
+
+
+˙tkctk (Xηk ) + σ2
+
+> tk
+
+2 ∇ log πtk (Xηk )
+
+
+
++ σtk
+
+√η ξ k, (42) where tk = t(kη ), and sk = kη .Next, we introduce the continuous interpolation of the above step as follows. For t ∈ [0 , T ], let k(t) ∈ { 0, . . . , K − 1}
+
+be the unique index such that t ∈ [tk(t), t k(t)+1 ), and define the piecewise constant diffusion level 
+
+ση (t) := σtk(t) .
+
+25 Then, for s ∈ [sk, s k+1 ], we define 
+
+ˆXs := Xηk + ( s − sk)
+
+ ˙tk ctk (Xηk ) + σ2
+
+> η
+
+2 ∇ log πtk (Xηk )
+
+
+
++ ση (Ws − Wsk ). (43) For t ∈ [tk, t k+1 ], with s = s(t) ∈ [sk, s k+1 ], define 
+
+φt(x) := ˙ t(s) ct(x) + σ2
+
+> η
+
+2 ∇ log πt(x),
+
+and define the frozen-field error 
+
+δVA  
+
+> πt
+
+(x) := ˙ t(s) ct(x) + σ2
+
+> η
+
+2 ∇ log πt(x) − E
+
+"
+
+˙tk ctk (Xηk ) + σ2
+
+> η
+
+2 ∇ log πtk (Xηk ) ˆXs = x
+
+#
+
+. (44) That is, δVA  
+
+> πt
+
+(x) = φt(x) − E
+
+h
+
+φtk (Xηk ) ˆXs = x
+
+i
+
+.The next lemma provides a bound on R ˆρs⟨δVA  
+
+> πt
+
+(x), ∇ log ˆρs 
+
+> ˜πs
+
+⟩ dx. Assume we work in the linear slowdown case, namely ˙t(s) is constant on [0 , S ]. Set ˆρs := Law( ˆXs).
+
+Lemma 5. Let As := ∇ log ˆρs 
+
+> ˜πs
+
+. We make the following assumptions. 1. There exist constants Lc, space , L π, space > 0 such that for all x, y ∈ Rd, t ∈ [0 , T ]
+
+∥ct(x) − ct(y)∥ ≤ Lc, space ∥x − y∥, (45) 
+
+∥∇ log πt(x) − ∇ log πt(y)∥ ≤ Lπ, space ∥x − y∥. (46) 
+
+2. There exist a measurable function M and constants Lc, time , L π, time > 0 such that for every s < s ′, (s, s ′ ∈ [0 , S ]) ,and every x ∈ Rd,
+
+∥ct(s′)(x) − ct(s)(x)∥ ≤ Lc, time (s′ − s)(1 + M (x)) , (47) 
+
+∥∇ log πt(s′)(x) − ∇ log πt(s)(x)∥ ≤ Lπ, time (s′ − s)(1 + M (x)) . (48) 
+
+3. There exists α′ 
+
+> 0
+
+> 0 such that 
+
+Eα′ 
+
+> 0
+
+(πt, c t) < +∞, Eα′ 
+
+> 0
+
+(πt, ∇ log πt) < +∞, Eα′ 
+
+> 0
+
+(πt, 1 + M ) < +∞, ∀t ∈ [0 , T ].
+
+4. We assume 
+
+4η2 ˙t(s)Lc, space + ση (t(s)) 2
+
+2 Lπ, space 
+
+2
+
+< 12 .
+
+Then, for every α′ ∈ (0 , α ′
+
+> 0
+
+] and every s ∈ [sk, s k+1 ],
+
+−
+
+Z
+
+ˆρs⟨δVA  
+
+> πt(s)
+
+(x), A s⟩ dx ≤ ση (t(s)) 2
+
+8 FI(ˆ ρs∥˜πs) + 2 η2α′− 1Γ( t(s))KL(ˆ ρs∥˜πs) + 2 η∆( t(s)) . (49) 
+
+Here 
+
+Γ( t) := ση (t)−2
+
+(
+
+4 ˙ s(t)−2L2 
+
+> c, time
+
++ ση (t)4L2
+
+> π, time
+
++ 8  4 ˙ s(t)−2L2 
+
+> c, space
+
++ ση (t)4L2
+
+> π, space
+
+ 
+
+4 ˙ s(t)−2 + ση (t)4 + η2 4 ˙ s(t)−2L2 
+
+> c, time
+
++ ση (t)4L2
+
+> π, time
+
+)
+
+,
+
+26 and 
+
+∆( t) := ησ η (t)−2
+
+(
+
+8
+
+
+
+4 ˙ s(t)−2L2 
+
+> c, space
+
++ ση (t)4L2
+
+> π, space
+
+ 
+
+4 ˙ s(t)−2 Eα′ (πt, c t) + ση (t)4 Eα′ (πt, ∇ log πt)
+
+
+
++
+
+
+
+4 ˙ s(t)−2L2 
+
+> c, time
+
++ ση (t)4L2
+
+> π, time
+
+ 
+
+1 + 8 η2
+
+4 ˙ s(t)−2L2 
+
+> c, space
+
++ ση (t)4L2
+
+> π, space
+
+ 
+
+Eα′ (πt, 1 + M )
+
+)
+
++ 4 d
+
+
+
+4 ˙ s(t)−2L2 
+
+> c, space
+
++ ση (t)4L2
+
+> π, space
+
+
+
+.
+
+Proof. Consider s ∈ [sk, s k+1 ). Let the joint distribution of Xηk and ˆXs be defined as ˆρtk ,s . Then, 
+
+−
+
+Z
+
+ˆρs⟨δVA  
+
+> πt(s)
+
+(x), A s⟩ dx (50) 
+
+= −
+
+Z
+
+ˆρtk ,s (xηk, ˆxs)  φt(s)(ˆ xs) − φtk (xηk)⊤ Asdˆ xsdxηk
+
+≤ ση (t(s)) 2
+
+8 FI(ˆ ρs∥˜πs) + 2 ση (t(s)) −2
+
+Z
+
+ˆρtk ,s (xηk, ˆxs)∥φt(s)(ˆ xs) − φtk (xηk)∥2dˆ xsdxηk, (51) where the inequality is obtained by the Cauchy–Schwarz and Young’s inequalities. We proceed to bound ∥φt(s)(ˆ xs) − φtk (xηk)∥2:
+
+∥φt(s)(ˆ xs) − φtk (xηk)∥2 ≤ 2∥φt(s)(ˆ xs) − φtk (ˆ xs)∥2 + 2 ∥φtk (ˆ xs) − φtk (xηk)∥2.
+
+For the time-varying term, 
+
+2∥φt(s)(ˆ xs) − φtk (ˆ xs)∥2 ≤ η2
+
+4 ˙ t(s)2L2 
+
+> c, time
+
++ ση (tk)4L2
+
+> π, time
+
+
+
+(1 + M (ˆ xs)) 2.
+
+For the space-varying term, 
+
+2∥φtk (ˆ xs) − φtk (xηk)∥2 ≤
+
+
+
+4 ˙ t(s)2L2 
+
+> c, space
+
++ ση (tk)4L2
+
+> π, space
+
+
+
+∥ˆxs − xηk∥2.
+
+Hence, 
+
+Z
+
+ˆρtk ,s (xηk, ˆxs)∥φt(s)(ˆ xs) − φtk (xηk)∥2 dˆ xsdxηk
+
+≤ η2
+
+4 ˙ t(s)2L2 
+
+> c, time
+
++ ση (tk)4L2
+
+> π, time
+
+
+
+∥1 + M ∥2
+
+> L2( ˆ ρs)
+
++
+
+
+
+4 ˙ t(s)2L2 
+
+> c, space
+
++ ση (tk)4L2
+
+> π, space
+
+
+
+Eˆρtk ,s 
+
+h
+
+∥ ˆXs − Xηk ∥2i
+
+. (52) We now bound the quantity ∥ ˆXs − Xηk ∥2 under the law ˆρtk ,s . Recall that ˆXs is the continuous EM interpolation (43): ˆXs = Xηk + ( s − sk)φtk (Xηk ) + ση (t(s)) √s − sk ξ, ξ ∼ N (0 , I ).
+
+Thus, 
+
+Eˆρtk ,s [∥ ˆXs − Xηk ∥2] ≤ 2( s − sk)2E∥φtk (Xηk )∥2 + 2 ση (t)2(s − sk)E[∥ξ∥2]
+
+≤ 2η2E[∥φtk (Xηk )∥2] + 2 ση (t(s)) 2ηd. (53) Next, by the Lipschitz property of φtk ,
+
+∥φtk (Xηk )∥2 ≤ 2∥φtk ( ˆXs)∥2 + 2 
+
+ ˙t(s)Lc, space + ση (tk)2
+
+2 Lπ, space 
+
+2
+
+∥ ˆXs − Xηk ∥2.
+
+Taking expectation and substituting into (53), we obtain 
+
+Eˆρtk ,s 
+
+h
+
+∥ ˆXs − Xηk ∥2i
+
+≤ 4η2∥φtk ∥2 
+
+> L2( ˆ ρs)
+
++ 4 η2 ˙t(s)Lc, space + ση (tk)2
+
+2 Lπ, space 
+
+2
+
+Eˆρtk ,s 
+
+h
+
+∥ ˆXs − Xηk ∥2i
+
++ 2 ση (t(s)) 2ηd. 
+
+27 Since 4η2
+
+ ˙t(s)Lc, space + ση (t(s)) 2 
+
+> 2
+
+Lπ, space 
+
+2
+
+< 12 , we have 
+
+Eˆρtk ,s 
+
+h
+
+∥ ˆXs − Xηk ∥2i
+
+≤ 8η2∥φtk ∥2 
+
+> L2( ˆ ρs)
+
++ 4 ση (t)2ηd. (54) To estimate ∥φtk ∥2
+
+> L2( ˆ ρs)
+
+, we compare φtk with φt(s). By Lipschitz continuity in time, 
+
+∥φtk (x)∥2 ≤ 2∥φt(s)(x)∥2 + 2 ∥φt(s)(x) − φtk (x)∥2
+
+≤ 2∥φt(s)(x)∥2 + η2
+
+4 ˙ t(s)2L2 
+
+> c, time
+
++ ση (tk)4L2
+
+> π, time
+
+
+
+(1 + M (x)) 2.
+
+Also, 
+
+∥φt(s)(x)∥2 ≤ 2 ˙ t(s)2∥ct(s)(x)∥2 + ση (tk)4
+
+2 ∥∇ log πt(s)(x)∥2.
+
+Hence 
+
+∥φtk ∥2 
+
+> L2( ˆ ρs)
+
+≤ 4 ˙ t(s)2∥ct(s)∥2 
+
+> L2( ˆ ρs)
+
++ ση (tk)4∥∇ log πt(s)∥2
+
+> L2( ˆ ρs)
+
++ η2
+
+4 ˙ t(s)2L2 
+
+> c, time
+
++ ση (tk)4L2
+
+> π, time
+
+
+
+∥(1 + M )∥2
+
+> L2( ˆ ρs)
+
+. (55) Invoking Lemma 2, 
+
+∥ct(s)∥2 
+
+> L2( ˆ ρs)
+
+≤ α′− 1KL(ˆ ρs∥˜πs) + Eα′ (πt(s), c t(s)),
+
+∥∇ log πt(s)∥2 
+
+> L2( ˆ ρs)
+
+≤ α′− 1KL(ˆ ρs∥˜πs) + Eα′ (πt(s), ∇ log πt(s)),
+
+∥(1 + M )∥2 
+
+> L2( ˆ ρs)
+
+≤ α′− 1KL(ˆ ρs∥˜πs) + Eα(πt(s), 1 + M ).
+
+Substituting into (55), we obtain 
+
+∥φtk ∥2 
+
+> L2( ˆ ρs)
+
+≤
+
+
+
+4 ˙ t(s)2 + ση (tk)4 + η2 4 ˙ t(s)2L2 
+
+> c, time
+
++ ση (tk)4L2
+
+> π, time
+
+
+
+α′− 1KL(ˆ ρs∥˜πs)+ 4 ˙ t(s)2 Eα′ (πt(s), c t(s)) + ση (tk)4 Eα′ (πt(s), ∇ log πt(s))+ η2
+
+4 ˙ t(s)2L2 
+
+> c, time
+
++ ση (tk)4L2
+
+> π, time
+
+
+
+Eα′ (πt(s), 1 + M ). (56) Substituting (54) and (56) into (52), we obtain 
+
+Z
+
+ˆρtk ,s (xηk, ˆxs)∥φt(s)(ˆ xs) − φtk (xηk)∥2 dˆ xsdxηk
+
+≤ η2
+
+4 ˙ t(s)2L2 
+
+> c, time
+
++ ση (tk)4L2
+
+> π, time
+
+
+
+(α′− 1KL(ˆ ρs∥˜πs) + Eα(πt(s), 1 + M )) + 8 η2
+
+4 ˙ t(s)2L2 
+
+> c, space
+
++ ση (tk)4L2
+
+> π, space
+
+
+
+·
+
+
+
+4 ˙ t(s)2 + ση (tk)4 + η2 4 ˙ t(s)2L2 
+
+> c, time
+
++ ση (tk)4L2
+
+> π, time
+
+
+
+α′− 1KL(ˆ ρs∥˜πs)+ 8 η2
+
+4 ˙ t(s)2L2 
+
+> c, space
+
++ ση (tk)4L2
+
+> π, space
+
+
+
+·
+
+(
+
+4 ˙ t(s)2 Eα′ (πt(s), c t(s)) + ση (tk)4 Eα′ (πt(s), ∇ log πt(s))+ η2
+
+4 ˙ t(s)2L2 
+
+> c, time
+
++ ση (tk)4L2
+
+> π, time
+
+
+
+Eα′ (πt(s), 1 + M )
+
+)
+
++ 4 ση (tk)2ηd 
+
+
+
+4 ˙ t(s)2L2 
+
+> c, space
+
++ ση (tk)4L2
+
+> π, space
+
+
+
+(57) Combining this inequality and Eq. (51) concludes the proof. We here provide the convergence analysis of the discrete-time general VA-SALD (42) . Set ρηk := Law (Xηk ), k =0, . . . , K .28 Theorem 5 (Discrete-time general VA-SALD) . Assume the same conditions as in Theorem 4 and Lemma 5. Consider ˙t(s) = ˙ s(t)−1 is a constant. Then, for any α ∈ (0 , α 0] and α′ ∈ (0 , α ′
+
+> 0
+
+],
+
+KL( ρηK ∥πT )
+
+≤ exp −
+
+Z T
+
+> 0
+
+ ση (t)2
+
+2 ˙s(t)CLSI  
+
+> t
+
+− 2ση (t)−2 ˙s(t)−1α−1 − 2 ˙ s(t)η2α′− 1Γ( t)
+
+
+
+dt
+
+!
+
+KL( ρ0∥π0)+
+
+Z T
+
+> 0
+
+exp −
+
+Z Tt
+
+ ση (u)2
+
+2 ˙s(u)CLSI  
+
+> u
+
+− 2ση (u)−2 ˙s(u)−1α−1 − 2 ˙ s(u)η2α′− 1Γ( u)
+
+
+
+du
+
+!
+
+·
+
+
+
+2ση (t)−2 ˙s(t)−1Eα(πt, m t) + 2 ˙ s(t)η∆( t)
+
+
+
+dt, (58) 
+
+where mt = vt − ct.Proof. Proof of Theorem 5. 
+
+Fix k ∈ { 0, . . . , K − 1}. For s ∈ [sk, s k+1 ], let ˆρs := Law( ˆXs). Then ˆρsk = ρηk, ˆρsk+1 = ρηk+1 .Differentiating KL(ˆ ρs∥˜πs) with respect to s, we obtain 
+
+dds KL(ˆ ρs∥˜πs) = 
+
+Z
+
+∂s ˆρs log ˆρs
+
+˜πs
+
+dx −
+
+Z ˆρs
+
+˜πs
+
+∂s ˜πs dx, (59) since R ∂s ˆρs dx = 0 .Define the frozen conditional drift field 
+
+¯bk,s (x) := E
+
+"
+
+˙tk ctk (Xηk ) + σ2
+
+> η
+
+2 ∇ log πtk (Xηk ) ˆXs = x
+
+#
+
+.
+
+By the Fokker–Planck equation associated with (43), 
+
+∂s ˆρs = −∇ · (ˆ ρs¯bk,s ) + σ2
+
+> η
+
+2 ∆ˆ ρs.
+
+Let As := ∇ log ˆρs 
+
+> ˜πs
+
+. Using 
+
+∆ˆ ρs = ∇ · (ˆ ρs∇ log ˆ ρs) = ∇ · (ˆ ρsAs) + ∇ · (ˆ ρs∇ log ˜ πs),
+
+we rewrite 
+
+∂s ˆρs = −∇ · (ˆ ρs¯bk,s ) + σ2
+
+> η
+
+2 ∇ · (ˆ ρsAs) + σ2
+
+> η
+
+2 ∇ · (ˆ ρs∇ log ˜ πs)= σ2
+
+> η
+
+2 ∇ · (ˆ ρsAs) + ∇ · ˆρs
+
+ σ2
+
+> η
+
+2 ∇ log ˜ πs − ¯bk,s 
+
+!
+
+.
+
+Hence 
+
+Z
+
+∂s ˆρs log ˆρs
+
+˜πs
+
+dx = − σ2
+
+> η
+
+2 FI(ˆ ρs∥˜πs) −
+
+Z
+
+ˆρs
+
+D σ2
+
+> η
+
+2 ∇ log ˜ πs − ¯bk,s , A s
+
+E
+
+dx. (60) Next, since vt generates πt, the rescaled velocity 
+
+˜vs := ˙ t(s) vt(s)
+
+generates ˜πs. Therefore, 
+
+−
+
+Z ˆρs
+
+˜πs
+
+∂s ˜πs dx = −
+
+Z
+
+ˆρs⟨˜vs, A s⟩ dx. (61) 29 Combining (59), (60), and (61), we get 
+
+dds KL(ˆ ρs∥˜πs) = − σ2
+
+> η
+
+2 FI(ˆ ρs∥˜πs) −
+
+Z
+
+ˆρs
+
+D σ2
+
+> η
+
+2 ∇ log ˜ πs − ¯bk,s + ˜ vs, A s
+
+E
+
+dx. (62) Now observe that, by definition of mt = vt − ct and (44), for t = t(s) ∈ [tk, t k+1 ],
+
+σ2
+
+> η
+
+2 ∇ log ˜ πs − ¯bk,s + ˜ vs = δVA  
+
+> πt(s)
+
+(x) + ˙ t(s) mt(s).
+
+Hence (62) becomes 
+
+dds KL(ˆ ρs∥˜πs) = − σ2
+
+> η
+
+2 FI(ˆ ρs∥˜πs) −
+
+Z
+
+ˆρs⟨δVA  
+
+> πt(s)
+
+(x), A s⟩ dx − ˙t(s)
+
+Z
+
+ˆρs⟨mt(s), A s⟩ dx. (63) Applying Young’s inequality in the form ab ≤ ε 
+
+> 2
+
+a2 + 12ε b2 with some constants ε and Lemma 5, 
+
+− ˙t(s)
+
+Z
+
+ˆρs⟨mt(s), A s⟩ dx ≤ σ2
+
+> η
+
+8 FI(ˆ ρs∥˜πs) + 2 σ−2 
+
+> η
+
+˙t(s)2∥mt(s)∥2
+
+> L2( ˆ ρs)
+
+, (64) 
+
+−
+
+Z
+
+ˆρs⟨δVA  
+
+> πt(s)
+
+(x), A s⟩ dx ≤ σ2
+
+> η
+
+8 FI(ˆ ρs∥˜πs) + 2Γ( t(s)) η2α′− 1KL(ˆ ρs∥˜πs) + 2∆( t(s)) η. (65) Substituting these bounds into (63), we obtain 
+
+dds KL(ˆ ρs∥˜πs) ≤ − σ2
+
+> η
+
+4 FI(ˆ ρs∥˜πs) + 2 σ−2 
+
+> η
+
+˙t(s)2∥mt(s)∥2 
+
+> L2( ˆ ρs)
+
++ 2Γ( t(s)) η2α′− 1KL(ˆ ρs∥˜πs) + 2∆( t(s)) η. (66) Using the LSI for ˜πs = πt(s),
+
+FI(ˆ ρs∥˜πs) ≥ 2CLSI 
+
+> t(s)
+
+KL(ˆ ρs∥˜πs),
+
+we get 
+
+dds KL(ˆ ρs∥˜πs) ≤ − σ2
+
+> η
+
+2 CLSI 
+
+> t(s)
+
+KL(ˆ ρs∥˜πs) + 2 σ−2 
+
+> η
+
+˙t(s)2∥mt(s)∥2 
+
+> L2( ˆ ρs)
+
++ 2Γ( t(s)) η2α′− 1KL(ˆ ρs∥˜πs) + 2∆( t(s)) η. (67) We now bound the last two terms by Lemma 2: 
+
+∥mt(s)∥2 
+
+> L2( ˆ ρs)
+
+≤ 1
+
+α KL(ˆ ρs∥˜πs) + Eα(πt(s), m t(s)). (68) Substituting (68) and Γ( t) into (67), we find 
+
+dds KL(ˆ ρs∥˜πs) ≤ − 
+
+ σ2
+
+> η
+
+2 CLSI  
+
+> t(s)
+
+− 2σ−2 
+
+> η
+
+˙t(s)2α−1 − 2Γ( t(s)) η2α′− 1
+
+KL(ˆ ρs∥˜πs)+ 2 σ−2 
+
+> η
+
+˙t(s)2Eα(πt(s), m t(s)) + 2∆( t(s)) η (69) Now define 
+
+K(t) := KL(ˆ ρs(t)∥πt) = KL(ˆ ρs(t)∥˜πs(t)).
+
+Since ddt K(t) = ˙ s(t) dds KL(ˆ ρs∥˜πs) s=s(t)
+
+,
+
+and ˙t(s(t)) = ˙ s(t)−1, Eq. (69) yields 
+
+ddt K(t) ≤ − 
+
+ ση (t)2
+
+2 ˙s(t)CLSI  
+
+> t
+
+− 2ση (t)−2 ˙s(t)−1α−1 − 2 ˙ s(t)η2α′− 1Γ( t)
+
+
+
+K(t)+ 2 ση (t)−2 ˙s(t)−1Eα(πt, m t) + 2 ˙ s(t)∆( t)η (70) Finally, applying Lemma 1 finishes the proof. As the discrete-time VA-SALD, Euler-Maruyama discretization of 7 is a special case of (42) , Theorem 5 immediately yields the convergence rate of discrete-time VA-SALD just by replacing c with u (see Section 2.2 for the notation 
+
+u). 30 10.3 Verification of Theorem 2 for VP-reverse Marginals under Dissipativity 
+
+We verify the assumptions of Theorem 2 for the reverse marginal path of the VP forward process. Let 
+
+dYτ = − 12 βτ Yτ dτ + pβτ dWτ , Y0 ∼ q0 = pdata ,
+
+where 0 ≤ βτ ≤ βmax on [0 , T ]. Then 
+
+Yτ = aτ X0 + γτ Z, aτ := exp 
+
+
+
+− 12
+
+Z τ
+
+> 0
+
+βs ds 
+
+
+
+, γ2 
+
+> τ
+
+:= 1 − a2 
+
+> τ
+
+,
+
+with Z ∼ N (0 , I d) independent of X0. Then, (X0, Y τ ) follows the distribution proportional to 
+
+exp 
+
+
+
+−V0(x0) − 12γ2
+
+> τ
+
+∥yτ − aτ x0∥2
+
+
+
+.
+
+We write qτ = Law( Yτ ) and consider the reverse marginal path 
+
+πt := qT −t, t ∈ [0 , T ].
+
+Since T < ∞, we have aτ ≥ aT > 0.
+
+Assumption 1 (Dissipativity and smoothness) . Assume that q0(x) = Z−10 e−V0(x) with V0 ∈ C3(Rd), and that there exist constants m0 > 0, b0 ≥ 0, G, L 2, L 3 < ∞ such that 
+
+⟨x − y, ∇V0(x) − ∇ V0(y)⟩ ≥ m0∥x − y∥2 − b0, ∀x, y ∈ Rd, (71) 
+
+and 
+
+∥∇ V0(x)∥ ≤ G + L2∥x∥, ∥∇ 2V0(x)∥op ≤ L2, ∥∇ 3V0(x)∥op ≤ L3, ∀x ∈ Rd. (72) 
+
+Lemma 6 (Radial dissipativity and quadratic exponential moment) . Under Assumption 1, we have 
+
+⟨x, ∇V0(x)⟩ ≥ c1∥x∥2 − C1,
+
+where c1 := m0 
+
+> 2
+
+, C 1 := b0 + G2 
+
+> 2m0
+
+. Moreover, for X0 ∼ q0 ∝ e−V0 ,
+
+M0(θ) := E[eθ∥X0∥2
+
+] ≤
+
+
+
+1 − 2θc1
+
+−(d+C1)/2
+
+, 0 < ∀θ < c1
+
+2 .
+
+Consequently, for the VP marginal qτ = Law( aτ X0 + γτ Z),
+
+Mτ (θ) := Eqτ [eθ∥X∥2
+
+] ≤ Q (θ), ∀τ ∈ [0 , T ], 0 < ∀θ < min 
+
+ c1
+
+4 , 14
+
+
+
+,
+
+where 
+
+Q(θ) := 
+
+
+
+1 − 4θc1
+
+−(d+C1)/2
+
+(1 − 4θ)−d/ 2.
+
+Proof. Taking y = 0 in the two-point dissipativity condition gives 
+
+⟨x, ∇V0(x) − ∇ V0(0) ⟩ ≥ m0∥x∥2 − b0.
+
+Using ∥∇ V0(0) ∥ ≤ G, we obtain 
+
+⟨x, ∇V0(x)⟩ ≥ m0∥x∥2 − G∥x∥ − b0 ≥ m0
+
+2 ∥x∥2 −
+
+
+
+b0 + G2
+
+2m0
+
+
+
+. (73) 31 Next, let M0(θ) = Eeθ∥X0∥2
+
+. Applying integration by parts to 0 = R ∇ · 
+
+
+
+xe θ∥x∥2
+
+e−V0(x0)
+
+
+
+dx,
+
+E[⟨X0, ∇V0(X0)⟩eθ∥X0∥2
+
+] = E[( d + 2 θ∥X0∥2)eθ∥X0∥2
+
+].
+
+Using Eq. (73), 
+
+(c1 − 2θ)M ′
+
+> 0
+
+(θ) ≤ (d + C1)M0(θ).
+
+For 0 < θ < c 1/2, this yields 
+
+ddθ log M0(θ) ≤ d + C1
+
+c1 − 2θ .
+
+Integrating from 0 to θ, and using M0(0) = 1 , gives 
+
+M0(θ) ≤
+
+
+
+1 − 2θc1
+
+−(d+C1)/2
+
+.
+
+Finally, since Yτ = aτ X0 + γτ Z,
+
+∥Yτ ∥2 ≤ 2∥X0∥2 + 2 ∥Z∥2.
+
+Therefore, 
+
+E[] eθ∥Yτ ∥2
+
+] ≤ M0(2 θ)(1 − 4θ)−d/ 2.
+
+Lemma 7 (Posterior first moment bound) . Under Assumption 1, there exists Cpost > 0 such that for all τ ∈ [0 , T ]
+
+and y ∈ Rd,
+
+E[∥X0∥ | Yτ = y] ≤
+
+r d + C1
+
+c1
+
++ ∥y∥
+
+aτ
+
+≤ Cpost (1 + ∥y∥).
+
+Proof. Let Φz,λ (x) := V0(x) + λ∥x − z∥2 and qz,λ (x) ∝ exp (−Φz,λ (x)) . Applying integration by parts to R ∞−∞ xi∂iqz,λ (x)d x, we get 
+
+Eqz,λ [⟨X, ∇Φz,λ (X)⟩] = d. 
+
+On the other hand, 
+
+⟨x, ∇Φz,λ (x)⟩ = ⟨x, ∇V0(x)⟩ + 2 λ∥x∥2 − 2λ⟨x, z ⟩≥ c1∥x∥2 − C1 + 2 λ∥x∥2 − λ∥x∥2 − λ∥z∥2
+
+= ( c1 + λ)∥x∥2 − C1 − λ∥z∥2.
+
+Therefore, (c1 + λ)Eqz,λ [∥X∥2] ≤ d + C1 + λ∥z∥2. Thus, 
+
+Eqz,λ [∥X∥] ≤
+
+ d + C1 + λ∥z∥2
+
+c1 + λ
+
+1/2
+
+≤
+
+r d + C1
+
+c1
+
++ ∥z∥.
+
+For the VP posterior, z = y/a τ and λ = a2 
+
+> τ
+
+/(2 γ2 
+
+> τ
+
+), which gives the claim. 
+
+Lemma 8 (Score growth) . Under Assumption 1, there exist constants A, B < ∞ such that 
+
+∥∇ log qτ (y)∥ ≤ A + B∥y∥, ∀τ ∈ [0 , T ], ∀y ∈ Rd.
+
+Proof. For τ > 0, integration by parts gives 
+
+∇ log qτ (y) = − 1
+
+aτ
+
+E[∇V0(X0) | Yτ = y].
+
+Therefore, using (72) and Lemma 7, 
+
+∥∇ log qτ (y)∥ ≤ 1
+
+aT
+
+E[G + L2∥X0∥ | Yτ = y] ≤ GaT
+
++ Cpost L2
+
+aT
+
+(1 + ∥y∥).
+
+At τ = 0 , by (72) 
+
+∥∇ log q0(y)∥ = ∥∇ V0(y)∥ ≤ G + L2∥y∥,
+
+32 Let qτ,y (x) be a conditional probability of X0 given Yτ = y, that is, 
+
+qτ,y (x) ∝ exp 
+
+
+
+−V0(x) − ∥y − aτ x∥2
+
+2γ2
+
+> τ
+
+
+
+. (74) 
+
+Lemma 9 (Posterior centered moments) . Let X be a random variable that follows qτ,y . Under Assumption 1, 
+
+E[∥X − E[X]∥2] ≤ 2d + b0
+
+2( m0 + ητ ) ,
+
+E[∥X − E[X]∥4] ≤ (2 d + 4 + b0)(2 d + b0)(m0 + ητ )2 ,
+
+where ητ := a2 
+
+> τ
+
+/γ 2 
+
+> τ
+
+.Proof. Let Φτ,y (x) := V0(x) + ητ 
+
+> 2
+
+x − yaτ
+
+> 2
+
+. Then qτ,y ∝ e−Φτ,y , and by (71), 
+
+⟨x − x′, ∇Φτ,y (x) − ∇ Φτ,y (x′)⟩ ≥ (m0 + ητ )∥x − x′∥2 − b0.
+
+Let X, X ′ be i.i.d. from qτ,y . For p ≥ 2,
+
+0 = 
+
+> d
+
+X
+
+> i=1
+
+Z ∞−∞ 
+
+∂xi (∥x − x′∥p−2(xi − x′
+
+> i
+
+)qτ,y (x))d x
+
+=
+
+> d
+
+X
+
+> i=1
+
+Z ∞−∞ 
+
+∂xi (∥x − x′∥p−2(xi − x′
+
+> i
+
+)) qτ,y (x) − ∥ x − x′∥p−2(xi − x′
+
+> i
+
+)∂xi Φτ,y (x)qτ,y (x) dx
+
+= ( d + p − 2) 
+
+Z ∞−∞ 
+
+∥x − x′∥p−2qτ,y (x)d x −
+
+Z ∞−∞ 
+
+∥x − x′∥p−2⟨x − x′, Φτ,y (x)⟩qτ,y (x)d x. 
+
+Taking the expectation w.r.t X′ ∼ qτ,y (X′) as well, we have 
+
+(d + p − 2) E[∥X − X′∥p−2] = E[∥X − X′∥p−2⟨X − X′, Φτ,y (X)⟩].
+
+The equation where X and X′ are flipped is also obtained in the same way. As a result, 
+
+E ∥X − X′∥p−2⟨X − X′, ∇Φτ,y (X) − ∇ Φτ,y (X′)⟩ = 2( d + p − 2) E∥X − X′∥p−2.
+
+Therefore, we get 
+
+(m0 + ητ )[ E∥X − X′∥p] ≤ { 2( d + p − 2) + b0}E[∥X − X′∥p−2]. (75) For p = 2 ,
+
+E[∥X − X′∥2] ≤ 2d + b0
+
+m0 + ητ
+
+.
+
+Since E[∥X − X′∥2] = 2 E[∥X − E[X]∥2], the second-moment bound follows. For p = 4 , using the bound with p = 2 and Eq. (75), 
+
+E[∥X − X′∥4] ≤ (2 d + 4 + b0)(2 d + b0)(m0 + ητ )2 .
+
+This bound and Jensen’s inequality E[∥X − E[X]∥4] ≤ E[∥X − X′∥4] conclude the proof. 
+
+Lemma 10 (Uniform spatial Lipschitzness of the VP score) . Under Assumption 1, 
+
+sup   
+
+> τ∈[0 ,T ]
+
+sup 
+
+> y∈Rd
+
+∥∇ 2 
+
+> y
+
+log qτ (y)∥op ≤ max 
+
+
+
+L2, L2(2 d + b0)2a2
+
+> T
+
+
+
+=: H2.
+
+Consequently, the condition (9) of Theorem 2 holds for πt = qT −t with Lπ, space = H2.
+
+33 Proof. For τ > 0, posterior calculus gives 
+
+∇2 
+
+> y
+
+log qτ (y) = − 1
+
+γ2
+
+> τ
+
+Cov qτ,y (∇V0(X), X ).
+
+Let X, X ′ be i.i.d. from qτ,y . Then 
+
+Cov( ∇V0(X), X ) = 12 E[( ∇V0(X) − ∇ V0(X′))( X − X′)⊤].
+
+Using the L2-Lipschitz continuity of ∇V0,
+
+∥ Cov( ∇V0(X), X )∥op ≤ L2
+
+2 E[∥X − X′∥2] = L2E[∥X − E[X]∥2].
+
+By Lemma 9, 
+
+∥ Cov( ∇V0(X), X )∥op ≤ L2(2 d + b0)2( m0 + ητ ) .
+
+Thus 
+
+∥∇ 2 
+
+> y
+
+log qτ (y)∥op ≤ L2(2 d + b0)2γ2 
+
+> τ
+
+(m0 + ητ ) = L2(2 d + b0)2( a2 
+
+> τ
+
++ m0γ2 
+
+> τ
+
+) ≤ L2(2 d + b0)2a2
+
+> T
+
+.
+
+At τ = 0 , ∇2 log q0 = −∇ 2V0, hence 
+
+∥∇ 2 log q0∥op ≤ L2.
+
+The claim follows. 
+
+Lemma 11 (Uniform third derivative bound for the VP score) . Under Assumption 1, 
+
+sup   
+
+> τ∈[0 ,T ]
+
+sup 
+
+> y∈Rd
+
+∥D3 
+
+> y
+
+log qτ (y)∥op ≤ H3
+
+for some finite constant H3 depending only on aT , L 2, L 3, m 0, b 0, d .Proof. For τ > 0, posterior calculus gives, for unit vectors u, v, w ,
+
+D3 
+
+> y
+
+log qτ (y)[ u, v, w ] = a3
+
+> τ
+
+γ6
+
+> τ
+
+Eqτ,y [⟨u, ¯X⟩⟨ v, ¯X⟩⟨ w, ¯X⟩], (76) where X ∼ qτ,y ∝ exp 
+
+
+
+−V0(x) − ∥y−aτ x∥2
+
+> 2γ2
+> τ
+
+
+
+and ¯X = X − E[X].Set ητ = a2 
+
+> τ
+
+/γ 2 
+
+> τ
+
+. We split into two regimes. First suppose ητ ≥ 2L2. Let m := E[X], H := ∇2V0(m), and write 
+
+∇V0(X) − E[∇V0(X)] = H ¯X + R(X) − E[R(X)] ,
+
+where 
+
+R(X) := ∇V0(X) − ∇ V0(m) − H ¯X. 
+
+By Eq. (72) (Assumption 1), 
+
+∥R (X)∥ ≤ L3
+
+2 ∥ ¯X∥2.
+
+Set Φτ,y (x) := V0(x) + ητ 
+
+> 2
+
+x − yaτ
+
+> 2
+
+and 
+
+T (u, v, w ) := E[⟨u, ¯X⟩⟨ v, ¯X⟩⟨ w, ¯X⟩],
+
+By integration by parts 
+
+0 = E[∇f (X)] = E[f (X)∇Φτ,y (X)] (f (x) = ⟨u, x − m⟩⟨ v, x − m⟩),
+
+0 = E[∇Φτ,y (X)] ,
+
+34 we obtain 0 = E[f (X)( ∇Φτ,y (X) − E[∇Φτ,y (X)])] . Combining this with 
+
+∇Φτ,y (X) − E[∇Φτ,y (X)] = ∇V0(X) − E[∇V0(X)] + ηr ¯X
+
+= H ¯X + R(X) − E[R(X)] + ηr ¯X, 
+
+we get 
+
+T (u, v, (ητ I + H)w) = −E[⟨u, ¯X⟩⟨ v, ¯X⟩⟨ w, R(X) − E[R(X)] ⟩].
+
+Since ∥H∥op ≤ L2 and ητ ≥ 2L2, ∥ητ I + H∥op ≥ ητ − L2. Therefore, 
+
+(ητ − L2)|T (u, v, w )| ≤ L3
+
+2
+
+E[∥ ¯X∥4] + ( E[∥ ¯X∥2]) 2 .
+
+By Lemma 9, the bracketed term is bounded by ∃C(m0, b 0, d )/(m0 + ητ )2. Since ητ ≥ 2L2, there exists C > 0 such that 
+
+|T (u, v, w )| ≤ CL 3
+
+η3
+
+> τ
+
+.
+
+Plugging this into Eq. (76) yields 
+
+|D3 
+
+> y
+
+log pτ (y)[ u, v, w ]| ≤ CL 3a3
+
+> τ
+
+γ6 
+
+> τ
+
+η3
+
+> τ
+
+= CL 3
+
+a3
+
+> τ
+
+≤ CL 3
+
+a3
+
+> T
+
+.
+
+Next suppose ητ < 2L2. Then a3
+
+> τ
+> γ6
+> τ
+
+= η3
+
+> τ
+> a3
+> τ
+
+≤ (2 L2)3
+
+> a3
+> T
+
+.Moreover, Lemma 9 gives a uniform fourth moment bound, and hence E∥ ¯X∥3 ≤ ∃ C(m0, b 0, d ).Therefore, Eq. (76) gives a uniform bound in this regime as well. At τ = 0 , D3 log q0 = −D3V0, which is bounded by L3. Combining the three cases proves the claim. 
+
+Lemma 12 (Time Lipschitzness of the VP score) . Under Assumption 1, there exists Ctime < ∞ such that 
+
+∥∂τ ∇ log qτ (x)∥ ≤ Ctime (1 + ∥x∥), ∀τ ∈ [0 , T ], x ∈ Rd.
+
+Consequently, for the linear slowdown t(s) = s/r , r ≥ 1,the condition (10) of Theorem 2 holds with 
+
+M (x) = ∥x∥, Lπ, time = Ctime 
+
+r .
+
+Proof. Let sτ (x) := ∇ log qτ (x). The Fokker–Planck equation gives 
+
+∂τ qτ = βτ
+
+2 ∇ · (xq τ ) + βτ
+
+2 ∆qτ .
+
+Hence 
+
+∂τ log qτ = βτ
+
+2
+
+d + x⊤sτ + ∇ · sτ + ∥sτ ∥2 .
+
+Taking the gradient, 
+
+∂τ sτ = βτ
+
+2 [sτ + ( ∇sτ )x + ∇(∇ · sτ ) + 2( ∇sτ )sτ ] .
+
+Using Lemmas 8, 10, and 11, we get 
+
+∥∂τ sτ (x)∥ ≤ Ctime (1 + ∥x∥).
+
+For πt(s) = qT −t(s), the mean value theorem gives 
+
+∥∇ log πt(s′)(x) − ∇ log πt(s)(x)∥≤ Ctime |t(s′) − t(s)|(1 + ∥x∥) ≤ Ctime 
+
+r (s′ − s)(1 + ∥x∥)
+
+for s′ ≥ s, because t(s) = s/r and r ≥ 1.35 Proposition 2 (Verification of Theorem 2 assumptions) . Under Assumption 1, the VP reverse marginal path 
+
+πt = qT −t
+
+satisfies the smoothness and complexity assumptions of Theorem 2. More precisely, under the linear slowdown 
+
+t(s) = s/r , the conditions (9) and (10) holds with 
+
+Lπ, space = H2, M (x) = ∥x∥, Lπ, time = Ctime .
+
+Furthermore, for sufficiently small α, α ′ > 0,
+
+Aα(π, v ) < ∞, sup  
+
+> t∈[0 ,T ]
+
+Eα′ (πt, ∇ log πt) < ∞, sup  
+
+> t∈[0 ,T ]
+
+Eα′ (πt, 1 + M ) < ∞.
+
+Proof. The conditions (9) and (10) follow from Lemmas 10 and 12. It remains to verify the complexity terms. We use the elementary fact that if 
+
+∥g(x)∥ ≤ m + M ∥x∥,
+
+then, for any γ > 0 such that 2γB 2 < ¯θ := min  c1 
+
+> 4
+
+, 14 ,
+
+Eγ (qτ , g ) := 1
+
+γ log Eqτ [eγ∥g(X)∥2
+
+] ≤ 2m2 + 1
+
+γ log Q(2 γM 2),
+
+by Lemma 6. First, Lemma 8 gives ∥∇ log pτ (x)∥ ≤ A + B∥x∥, and hence if 2α′B2 < ¯θ,
+
+sup  
+
+> t∈[0 ,T ]
+
+Eα′ (πt, ∇ log πt) ≤ 2A2 + 1
+
+α′ log Q(2 α′B2).
+
+Second, since M (x) = ∥x∥ (Lemma 12), (1 + M (x)) 2 ≤ 2 + 2 ∥x∥2. Therefore, if 2α′ < ¯θ,
+
+sup  
+
+> t∈[0 ,T ]
+
+Eα′ (πt, 1 + M ) ≤ 2 + 1
+
+α′ log Q(2 α′).
+
+Finally, the transport velocity of the reverse VP marginal path is 
+
+vT −τ (x) = βτ
+
+2 (x + ∇ log qτ (x)) .
+
+Hence 
+
+∥vT −τ (x)∥ ≤ Av + Bv ∥x∥,
+
+where one can take Av := βmax  
+
+> 2
+
+As, B v := βmax  
+
+> 2
+
+(1 + Bs). Thus, if 2αB 2 
+
+> v
+
+< ¯θ,
+
+Aα(π, v ) = 
+
+Z T
+
+> 0
+
+Eα(πt, v t)d t =
+
+Z T
+
+> 0
+
+Eα(pτ , v T −τ )d τ ≤ T
+
+
+
+2A2 
+
+> v
+
++ 1
+
+α log Q(2 αB 2 
+
+> v
+
+)
+
+
+
+.
+
+This proves all required complexity bounds. 36 11 Additional Experimental Details 11.1 Additional Details of Synthetic Data 
+
+This appendix reports additional experimental details of two tasks. Both tasks use the same scalar VP forward diffusion 
+
+dYτ = − 12 β(τ )Yτ dτ + pβ(τ ) d Wτ , β(τ ) = βmin + βmax − βmin 
+
+T τ, (77) and the reverse-indexed marginal family pt = qT −t. The SALD and VA-SALD samplers use the slowed time parametrization t = s/r , where r is the computational budget. In contrast, the DOIT baseline is run on the ordinary reverse VP time interval t ∈ [0 , T ]; its budget label is denoted by rb below to emphasize that it controls only the number of Euler transitions, not a time slowdown. 
+
+Unguided VP sanity check. Before adding guide functions, we verify that the Euler-Maruyama SALD sampler recovers the terminal two-Gaussian mixture as the slow-down budget increases. 
+
+Figure 3: Reverse-indexed VP marginal family for the unguided two-Gaussian experiment. The forward VP diffusion contracts the mixture means toward the origin, so the reverse initialization is close to a centered Gaussian while the terminal law remains bimodal. 
+
+11.1.1 Two-moons guided two-Gaussian VP diffusion. 
+
+The first guided task starts from a two-component Gaussian data distribution and uses a two-moons guide. The guide is represented by a fixed reference cloud {yj }Nj=1 sampled from a translated and rescaled two-moons distribution. The potential and gradient are 
+
+fmoon (x) = 1
+
+λN 
+
+> N
+
+X
+
+> j=1
+
+∥x − yj ∥2, ∇fmoon (x) = 1
+
+λN 
+
+> N
+
+X
+
+> j=1
+
+x − yj
+
+∥x − yj ∥2
+
+. (78) The guided moving target is 
+
+πt(x) ∝ pt(x) exp {− fmoon (x)}. (79) Directly averaging over the full reference population inside every sampler step is expensive, so the notebook precomputes fmoon and ∇fmoon on a two-dimensional grid and uses bilinear interpolation during sampling. All reported KL values for this task are computed against the guided terminal target πT , not against the unguided two-Gaussian law. The next figures isolate each method on this same two-moons guided task. These diagnostics show the guided terminal density, the KL trajectory, terminal KL, and the mean guidance objective. 37 Figure 4: Unguided SALD overview. The KL trajectory and terminal KL confirm that increasing the slow-down budget reduces the mismatch to the terminal two-Gaussian target until the finite-particle and discretization floor dominates. 
+
+DOIT [ 35 ] adaptation and budget matching. We adapt DOIT [ 35 ] (Opensource at DOIT) as a training-free local approximation to the Doob h-transform. For a base reverse transition density ϕθ (xℓ−1 | xℓ) and terminal preference h(x0, 0) , DOIT [35] estimates 
+
+h(xℓ, t ℓ) = E[h(X0, 0) | Xtℓ = xℓ] , (80) and adds a correction proportional to ∇ log h to the base reverse dynamics. In our VP adaptation, DOIT [ 35 ] is not slowed down. For a budget label rb ∈ { 1, 2, 4, 10 , 50 , 100 } we set 
+
+NDOIT (rb) = 
+
+ rbTηs
+
+
+
+, ηDOIT = TNDOIT (rb) , tk = kη DOIT . (81) Thus DOIT [ 35 ] uses the same number of reverse transitions as SALD and VA-SALD at budget rb, but it traverses the original interval [0 , T ] instead of using t = s/r b.The base sampler for DOIT [ 35 ] is the original VP reverse SDE, not the probability-flow velocity used in the VA-SALD derivation. Its drift is 
+
+bbase (x, t ) = β(T − t)2 x + β(T − t)∇ log pt(x). (82) For each particle, DOIT [35] draws M local Gaussian proposals 
+
+x(m) 
+
+> k+1
+
+= xk + ηDOIT bbase (xk, t k) + pηDOIT β(T − tk) zm, zm ∼ N (0 , I ), (83) scores them with the reward R(x) = −f (x), and forms Boltzmann weights 
+
+wm = softmax m
+
+R(x(m)
+
+> k+1
+
+) − max j R(x(j)
+
+> k+1
+
+)
+
+τR
+
+!
+
+. (84) 38 Figure 5: Unguided SALD terminal samples. Larger budgets produce visibly sharper recovery of the two target modes. The corresponding local Doob direction is 
+
+bgDoob =
+
+> M
+
+X
+
+> m=1
+
+wm
+
+zm
+
+pηDOIT β(T − tk) , (85) and the adapted update is 
+
+Xk+1 = Xk + ηDOIT (bbase (Xk, t k) + γβ (T − tk)bgDoob ) + pηDOIT β(T − tk) ξk. (86) Since DOIT spends M proposal evaluations per particle and step, a fair particle-step comparison uses approximately 
+
+1/M as many DOIT particles as SALD and VA-SALD particles. In the notebook M = 4 , so DOIT uses 2500 
+
+particles and has effective proposal-particle budget 2500 × 4 = 10000 , matching the 10000 particles used by SALD and VA-SALD. 
+
+11.1.2 Eight-Gaussian mode-penalty VP diffusion. 
+
+The second guided task uses an eight-component Gaussian mixture with centers uniformly spaced on a circle around the origin. With radius R and angular offset θ0 = π/ 8, the centers are 
+
+cj = R
+
+
+
+cos 
+
+
+
+θ0 + 2πj 
+
+8
+
+
+
+, sin 
+
+
+
+θ0 + 2πj 
+
+8
+
+ 
+
+, j = 0 , . . . , 7, (87) and 
+
+pdata (x) = 18
+
+> 7
+
+X
+
+> j=0
+
+φ2(x − cj ). (88) Because the component covariance is the stationary covariance of the VP diffusion, the marginals remain mixtures with decayed means, 
+
+pt(x) = 18
+
+> 7
+
+X
+
+> j=0
+
+φ2(x − α(T − t)cj ) . (89) The exact score used by all methods is 
+
+∇ log pt(x) = 
+
+> 7
+
+X
+
+> j=0
+
+ωj (x, t ) ( α(T − t)cj − x) , ωj (x, t ) = φ2(x − α(T − t)cj )
+
+P7 
+
+> ℓ=0
+
+φ2(x − α(T − t)cℓ) . (90) 39 Figure 6: SALD on the two-moons guided two-Gaussian task. SALD follows the expected budget trend: larger r improves the terminal-target KL, with the curve eventually flattening near the Monte Carlo floor. The guide penalizes a chosen set P of modes. We use the four left-half modes, i.e. those with negative first coordinate, and define 
+
+fP (x) = λ X
+
+> j∈P
+
+exp − ∥x − cj ∥2
+
+2ℓ2
+
+> f
+
+!
+
+, (91) with gradient 
+
+∇fP (x) = − λℓ2
+
+> f
+
+X
+
+> j∈P
+
+exp − ∥x − cj ∥2
+
+2ℓ2
+
+> f
+
+!
+
+(x − cj ). (92) The guided terminal target is πT (x) ∝ pT (x) exp {− fP (x)}, which shifts mass away from the penalized modes while preserving the same VP marginal family and exact mixture score. 
+
+Summaries. Tables 1 and 2 summarize the terminal metrics. The effective DOIT particle budget is reported as the number of particles times the number of local proposals, so that it is directly comparable to the SALD and VA-SALD particle counts. Table 1: Terminal KL. Budgets are r ∈ { 1, 2, 4, 10 , 50 , 100 }. Smaller values are better.                                                        
+
+> Task Method r= 1 r= 2 r= 4 r= 10 r= 50 r= 100
+> Two moons SALD 0.715 0.592 0.525 0.516 0.523 0.511 Two moons VA-SALD 0.556 0.549 0.546 0.528 0.527 0.518 Two moons DOIT 1.267 1.272 1.265 1.257 1.268 1.270 Eight Gaussian SALD 1.547 1.239 1.057 1.005 1.013 1.032 Eight Gaussian VA-SALD 1.015 1.020 1.023 1.014 1.014 1.022 Eight Gaussian DOIT 2.198 2.191 2.192 2.222 2.190 2.181
+
+40 Figure 7: SALD samples for the two-moons guided task. Terminal samples increasingly align with the two-moons guided target as the budget increases. Table 2: Budget accounting and representative terminal guide statistics. The table reports the final budget r = 100 , the number of Euler steps, the particle count used by the sampler, and the effective particle count used for budget matching. The guide statistic is the terminal mean penalty.                                    
+
+> Task Method Steps Particles Effective particles Mean penalty Two moons SALD 100000 10000 10000 2.661 Two moons VA-SALD 100000 10000 10000 2.662 Two moons DOIT 100000 2500 10000 2.591 Eight Gaussian SALD 100000 10000 10000 0.197 Eight Gaussian VA-SALD 100000 10000 10000 0.197 Eight Gaussian DOIT 100000 2500 10000 0.171
+
+41 Figure 8: VA-SALD on the two-moons guided task. Incorporating the VP velocity field yields low terminal KL across the tested budgets and a stable guidance-objective trajectory. 
+
+Figure 9: VA-SALD samples for the two-moons guided task. The sample panels show that VA-SALD reaches the guided terminal geometry at small and large budgets. 42 Figure 10: DOIT on the two-moons guided task. DOIT uses the same VP reverse SDE base sampler and the same total proposal budget, but its local Doob correction does not close the terminal KL gap as effectively as SALD or VA-SALD. 43 Figure 11: Eight-Gaussian guided terminal target. Blue markers denote unpenalized modes, and orange crosses denote penalized modes. Contours show the base and guided terminal densities. 44 Figure 12: SALD on the eight-Gaussian mode-penalty task. SALD reduces the terminal KL as r increases and then approaches a plateau. 45 Figure 13: VA-SALD on the eight-Gaussian mode-penalty task. The terminal KL is low and nearly budget-insensitive, indicating that the velocity-aware reverse dynamics already align well with this guided target. 46 Figure 14: DOIT on the eight-Gaussian mode-penalty task. The local proposal-based Doob correction improves the guide-related statistic but leaves a larger terminal KL than SALD and VA-SALD at the same computational budgets. 47 11.2 Additional Details of Guided Image Generation 
+
+11.2.1 Apply VA-SALD to Flow-Matching Setting 
+
+We employ the pre-trained Stable-Diffusion 3.5 Medium (SD-3.5M) [ 10 ] trained by the Flow Matching objective as the backbone to access the velocity and the base score function for VA-SALD. Specifically, given the forward SDE in Eq. (94) that generates the same marginal pτ w.r.t the deterministic ODE in Eq (93) of flow-matching [24], 
+
+dxτ = vτ dτ (93) 
+
+dxτ = ( vτ
+
+ xτ ) + σ2
+
+> τ
+
+2 ∇ log pτ (xτ )dτ + στ dWτ (94) the score function is 
+
+∇ log pτ (xτ ) = − xτ
+
+τ − 1 − ττ vτ (xτ ) (95) Note that t = T − τ (with T = 1 in flow-matching), the SDE of our VA-SALD for guidance is 
+
+dXs = − ˙t(s)Bt(s)(Xs) + ˙ t(s) σ2
+
+> t(s)
+
+2 ∇ log pt(s)(Xs) + σ2
+
+> t(s)
+
+2 ∇ log πt(s)(Xs)
+
+!
+
+ds + σt(s)dWs. (96) 
+
+= − ˙t(s)vt(s)(Xs) + σ2
+
+> t(s)
+
+2 ∇ log πt(s)(Xs)
+
+!
+
+ds + σt(s)dWs (97) where πt(s)(Xs) ∝ pt(Xs) exp ( −c f t(s)(Xs)) and Bt(s)(Xs) = vt(s)(Xs) + σ2 
+
+> t(s)
+> 2
+
+∇ log pt(s)(Xs).In our experiments, we employ t = sr and then ˙t(s) = 1 
+
+> r
+
+, and we set σt = (1 − t)σ0. We set σ0 = 0 .7 same as the noise level used in [24]. Finally, the SDE of our VA-SALD for guidance used in our experiments is 
+
+dXs =
+
+
+
+− σ2
+
+> t
+
+2(1 − t) Xs −   1
+
+r + tσ 2
+
+> t
+
+2(1 − t)
+
+vt(s)(Xs) − cσ 2
+
+> t
+
+2 ∇ft(s)(Xs)
+
+
+
+ds + σt(s)dWs (98) 
+
+=
+
+
+
+− (1 − t)σ20
+
+2 Xs −   1
+
+r + t(1 − t)σ20
+
+2
+
+vt(s)(Xs) − c(1 − t)2σ20
+
+2 ∇ft(s)(Xs)
+
+
+
+ds + (1 − t)σ0dWs (99) 
+
+11.2.2 Construction of πt for Black-box Guidance 
+
+To apply our VA-SALD on the appealing inference-time black-box guided generation task, we construct the moving distribution sequence πt as πt ∝ pt exp ( −c f t) with Gaussian-smooth reward functions ft(x) = EN (0,I)[f (x + ¯σtϵ)] .And ¯σT = 0 leads to fT = f to achieve the true reward function f .The gradient ∇ft(x) can be approximated by the zeroth-order gradient estimator Eq. (100) [28]: 
+
+∇ft(x) = 1¯σt
+
+EN (0,I)[f (x + ¯ σtϵ)ϵ] ≈ 1
+
+N ¯σtNX
+
+> i=1
+
+f (x + ¯ σtϵi)ϵi, (100) where ϵi for all i ∈ { 1, · · · , N } denote i.i.d. samples from N (0, I). We employ the group reward normalization technique introduced in [ 27 ] to normalize the reward as ˆf (xi) = f (xi)−ˆμ 
+
+> ˆσ
+
+, where xi = x + ¯σtϵi, ˆμ and ˆσ denote the mean and std of the rewards among the group samples. 
+
+11.2.3 Discretization Update 
+
+Apply the Euler-Maruyama discretization to the SDE in Eq.(98) with stepsize η, we have 
+
+X(k+1) η =
+
+
+
+1 − σ2
+
+> t
+
+2(1 − t) η
+
+
+
+Xkη −
+
+ 1
+
+r + tσ 2
+
+> t
+
+2(1 − t)
+
+
+
+η vt(Xkη ) − cσ 2 
+
+> t
+
+η
+
+2 ∇ft(Xkη ) + σt
+
+√η w (101) 48 with t = kη r and w sampling from N (0, I).In our experiments , we set the ¯σt in zeroth-order gradient estimator in Eq.(100) as ¯σt = σt
+
+√η. Plug the zeroth-order gradient estimator in Eq.(100) into Eq. (101), we achieve the discrete update rule. 
+
+X(k+1) η =
+
+
+
+1 − σ2
+
+> t
+
+2(1 − t) η
+
+
+
+Xkη −
+
+ 1
+
+r + tσ 2
+
+> t
+
+2(1 − t)
+
+
+
+η vt(Xkη )
+
+− cσ t
+
+√η
+
+2N
+
+> N
+
+X
+
+> i=1
+
+f (Xkη + σt
+
+√ηϵi)ϵi + σt
+
+√η w (102) with t = kη r and w sampling from N (0, I).We employ the group normalized reward and fix stepsize η = 0 .025 and batch query size N = 32 in our experiments. Given stepsize η, the number of steps of VA-SALD is K = rη .
+
+11.2.4 Baselines 
+
+We compare our VA-SALD with two closely-related baselines that employ zeroth-order gradient: FM-ZG and FM-Evolv [32] 
+
+• FM-ZG : Apply the default (Flow-Matching) SDE sampler in [ 24 ] with the plug-in zeroth-order gradient estimator (the same one used in VA-SALD) in the drift term. The std parameter ¯σt of the zeroth-order gradient estimator is set to the same value as the coefficient of the Gaussian variable w, which is the same setting scheme as VA-SALD. 
+
+• FM-Evolv : Apply the default (Flow-Matching) SDE sampler in [ 24 ] with a posterior zeroth-order gradient update at each inference step [ 32 ]. The std parameter ¯σt of the zeroth-order gradient estimator is set to the same value as the coefficient of the Gaussian variable w, which is the same setting scheme as VA-SALD. In all the experiments, we keep the number of steps and batch query size of all baselines the same as VA-SALD. 
+
+11.2.5 Guided Function 
+
+We employ Aesthetic Score, PickScore, and CLIP Score as the guided function. In addition, we compute the mean pair-wise distance of CLIP embedding as the Diversity score, same as in [24]. The Hugging Face link of the pre-trained SD3.5-M model and the Guided Function used in our experiments are listed below: SD3.5-M https://huggingface.co/stabilityai/stable-diffusion-3.5-medium Aesthetic Score https://huggingface.co/trl-lib/ddpo-aesthetic-predictor PickScore https://huggingface.co/yuvalkirstain/PickScore_v1 
+
+11.2.6 Experiments Setup 
+
+We evaluate our VA-SALD on four generation tasks with complex prompts. Details of the prompt used are listed in the Table 3. For VA-SALD, and all baselines FM-ZG, FM-Evolv, we perform 10 independent runs with seed in {0, 1, · · · , 9} for each guided function. In all experiments, we set the guidance scale c = 8 . For VA-SALD, we fix r = 4 , stepsize 
+
+η = 0 .025 , which leads to the number of steps K = 160 . For all baselines, we use the same number of steps 
+
+K = 160 .49 Table 3: Four generation tasks with complex prompts. Task#1 "The art deco music festival poster has a fox made of polished brass in the center of the picture, with smooth lines and elegant posture" Task#2 "A glowing dragon soaring through floating islands, leaving behind a trail of shimmering stardust" Task#3 "quick doodle of a guy, medium hair with long bangs, hd detailed detailed" Task#4 "In the ink painting style, a naive giant panda is sitting on the majestic Great Wall, leisure lychewing bamboo" Table 4: On prompt "The art deco music festival poster has a fox made of polished brass in the center of the picture, with smooth lines and elegant posture" with guidance c = 8 
+
+Aesthetic DiversityScore pickscore DiversityScore CLIPscore DiversityScore VA-SALD 6.061 ± 0.479 13.941 24.207 ± 0.764 13.636 35.264 ± 3.441 11.461 FM-ZG 5.977 ± 0.258 12.405 23.079 ± 0.467 13.339 33.733 ± 2.941 14.058 FM-Evolv 5.547 ± 0.323 10.693 20.795 ± 0.688 12.136 32.089 ± 3.086 11.847 
+
+The experimental results are shown in Table 4 to Table 7, respectively. We can observe that VA-SALD achieves higher Aesthetic Scores and PickScores in this large guidance strength setting ( c = 8 ). The generated images with Aesthetic Score guidance are shown in Figure 15 to Figure 18. We can see that the generated images of the baselines begin to degenerate, indicating that the heuristic guidance update is more likely to lead to over-optimization and to generation far from the image data manifold. VA-SALD still generates good quality images. This is because VA-SALD theoretically converges to the distribution 
+
+πT ∝ p0 · exp ( −cf ) for a given pre-trained model distribution p0. The distribution πT is the optimal solution of the following regularized optimization problem 
+
+min 
+
+> p∈P
+
+
+
+Ep[f (X)] + 1
+
+c KL (p|| p0)
+
+
+
+, (103) which well-balanced the optimization for guidance f and the KL-divergence to the pre-trained distribution p0.In contrast, baselines employ a heuristic guidance update, which leads to an unknown distribution after guidance. The resulting distribution of baselines is inferior compared with VA-SALD for the above optimization problem (in Eq. (103)) 50 Table 5: On prompt "A glowing dragon soaring through floating islands, leaving behind a trail of shimmering stardust" with guidance c = 8 
+
+Aesthetic DiversityScore pickscore DiversityScore CLIPscore DiversityScore VA-SALD 6.586 ± 0.140 7.393 24.526 ± 0.433 7.466 29.619 ± 1.187 7.718 FM-ZG 6.291 ± 0.325 9.929 22.201 ± 0.537 10.220 29.729 ± 0.714 8.889 FM-Evolv 5.633 ± 0.590 13.498 21.420 ± 0.528 10.456 31.794 ± 1.916 10.367 
+
+Table 6: On prompt "quick doodle of a guy, medium hair with long bangs, hd detailed detailed" with guidance 
+
+c = 8 
+
+Aesthetic DiversityScore pickscore DiversityScore CLIPscore DiversityScore VA-SALD 6.309 ± 0.109 10.078 21.728 ± 0.327 10.901 24.858 ± 1.353 9.767 FM-ZG 6.091 ± 0.130 11.205 21.606 ± 0.299 10.609 24.127 ± 1.047 10.740 FM-Evolv 6.048 ± 0.249 11.635 21.158 ± 0.688 11.916 25.569 ± 1.535 10.735 
+
+Table 7: On prompt "In the ink painting style, a naive giant panda is sitting on the majestic Great Wall, leisure lychewing bamboo" with guidance c = 8 
+
+Aesthetic DiversityScore pickscore DiversityScore CLIPscore DiversityScore VA-SALD 6.697 ± 0.153 6.977 22.821 ± 0.318 7.378 36.541 ± 0.902 7.411 FM-ZG 6.337 ± 0.148 8.485 21.529 ± 0.271 7.967 34.660 ± 1.019 8.423 FM-Evolv 5.598 ± 0.240 9.135 20.543 ± 0.460 9.821 35.333 ± 1.905 9.701 
+
+51 (a) VA-SALD 
+
+(b) FM-ZG 
+
+52 (a) VA-SALD 
+
+(b) FM-ZG 
+
+53 (a) VA-SALD 
+
+(b) FM-ZG 
+
+54 (a) VA-SALD 
+
+(b) FM-ZG 
+
+55 VA -SALD      
+
+> FM -ZG
+> FM -Evolv
+> no guidanc er=1/steps=4 0r=2/steps=80 r=3/steps=120 r=4/steps=160 r=5/steps=200
+
+Figure 19: Guided generation on "bear" with guidance parameter c = 8 
+
+11.2.7 Visualization of the Generated Images with different r (number of steps) 
+
+We further provide the visualization of the generated images with different r ( and number of steps). Four simple prompts, "bear", "wolf", "hippo", and "lion" , are employed. For all the methods, we fix seed = 0 . The generated images are shown in Figure 19 to Figure 26. We can observe that as the r increases, VA-SALD changes gradually significantly in a stable manner for both small guidance c = 5 and large guidance c = 8 . In contrast, baseline: FM-ZG and FM-Evolv tend to degenearte at large guidance c = 8 .56 VA -SALD 
+
+> FM -ZG
+> FM -Evolv
+
+no guidance r=2/ steps =80 r=4/ steps =160 r=6/ steps =240 r=8/ steps =3 20 r=10/ steps =400 Figure 20: Guided generation on "bear" with guidance parameter c = 5 VA -SALD 
+
+> FM -ZG
+> FM -Evolv
+
+no guidance r=1/steps=40 r=2/steps=80 r=3/steps=120 r=4/steps=160 r=5/steps=200 
+
+Figure 21: Guided generation on "wolf" with guidance parameter c = 8 
+
+57 VA -SALD 
+
+> FM -ZG
+> FM -Evolv
+
+no guidance r=2/steps=80 r=4/steps=160 r=6/steps=240 r=8/steps=320 r=10/steps=400 Figure 22: Guided generation on "wolf" with guidance parameter c = 5 VA -SALD 
+
+> FM -ZG
+> FM -Evolv
+
+no guidance r=1/steps=40 r=2/steps=80 r=3/steps=120 r=4/steps=160 r=5/steps=200 
+
+Figure 23: Guided generation on "hippo" with guidance parameter c = 8 
+
+58 VA -SALD 
+
+> FM -ZG
+> FM -Evolv
+
+no guidance r=2/ steps =80 r=4/ steps =160 r=6/ steps =2 40 r=8/ steps =3 20 r=10/ steps =400 Figure 24: Guided generation on "hippo" with guidance parameter c = 5 VA -SALD 
+
+> FM -ZG
+> FM -Evolv
+
+no guidance r=1/steps=40 r=2/steps=80 r=3/steps=120 r=4/steps=160 r=5/steps=200 
+
+Figure 25: Guided generation on "lion" with guidance parameter c = 8 
+
+59 VA -SALD 
+
+> FM -ZG
+> FM -Evolv
+
+no guidance r=2/ steps =80 r=4/ steps =160 r=6/ steps =2 40 r=8/ steps =3 20 r=10/ steps =400 Figure 26: Guided generation on "lion" with guidance parameter c = 5 
+
+60
