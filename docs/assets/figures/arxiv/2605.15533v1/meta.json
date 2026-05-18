@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.15533v1/fig-001.webp",
+      "caption": "Table 1. Quantitative comparison with previous methods.",
+      "page": 5,
+      "index": 1,
+      "width": 513,
+      "height": 289
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15533v1/fig-002.webp",
+      "caption": "Fig. 3. Qualitative results of ablation studies.",
+      "page": 5,
+      "index": 2,
+      "width": 505,
+      "height": 549
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15533v1/fig-003.webp",
+      "caption": "Fig. 2. Qualitative comparison with peer methods. The video (a) and (e) denote source video while the other video are edited video from (b) TokenFlow, (f) MiniMax-Remover, (c)&(g) AnyV2V, (d)&(h) our model.",
+      "page": 4,
+      "index": 3,
+      "width": 1051,
+      "height": 355
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15533v1/fig-004.webp",
+      "caption": "Fig. 1. The overview of our proposed methods. Utilizing the tailored framework, which incorporates EIAM, SNIS and NGM, source video S can be transformed into target video T according to user instruction I. G-SAM-2 denotes Grounded-SAM-2. At timestep 𝑡, we introduce the SNIS to get a denoised starting state 𝑧𝑡 . During the period 𝑖 ∈ [𝛼𝑇, 𝛽𝑇], we introduce the NGM to maintain the background and optimize the generated video by leveraging video priors.",
+      "page": 3,
+      "index": 4,
+      "width": 1052,
+      "height": 298
+    }
+  ]
+}

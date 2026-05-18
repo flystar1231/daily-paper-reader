@@ -6,73 +6,79 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-16
-- 运行时间：2026-05-16 20:18:55 UTC
+- 最新运行日期：2026-05-18
+- 运行时间：2026-05-18 20:32:08 UTC
 - 运行状态：成功
-- 本次总论文数：17
-- 精读区：6
+- 本次总论文数：19
+- 精读区：8
 - 速读区：11
 
 ### 今日简报（AI）
-今日聚焦 17 篇视觉生成前沿，重点突破免训练相机控制与长视频交互生成难题。
-$h$-control 与 Warp-as-History 刷新了镜头操控精度，证明无需重训即可实现极低成本的电影级视频调度。
-建议关注“免训练”引导生成技术，这是普通用户实现专业级视频编辑与长内容创作的捷径。
-- 详情：[/202605/16/README](/202605/16/README)
+今日精选 19 篇前沿论文，深度解析了分层图像编辑与长视频生成的高效架构。
+重点关注 LimeCross 实现的结构一致性分层编辑，以及 SWIFT 带来的交互式长视频生成效率突破。
+建议关注视觉到视觉生成的新范式及 3D 高斯泼溅技术，探索更直观的创意内容创作流。
+- 详情：[/202605/18/README](/202605/18/README)
 
 ### 精读区论文标签
-1. [$h$-control: Training-Free Camera Control via Block-Conditional Gibbs Refinement](/202605/16/2605.11871v1-h-control-training-free-camera-control-via-block-conditional-gibbs-refinement)  
-   标签：评分：10.0/10、query:cv-vg-cs
-   evidence：视频生成器的免训练摄像机控制
-2. [Warp-as-History: Generalizable Camera-Controlled Video Generation from One Training Video](/202605/16/2605.15182v1-warp-as-history-generalizable-camera-controlled-video-generation-from-one-training-video)  
+1. [LimeCross: Context-Conditioned Layered Image Editing with Structural Consistency](/202605/18/2605.10319v1-limecross-context-conditioned-layered-image-editing-with-structural-consistency)  
    标签：评分：9.5/10、query:cv-vg-cs
-   evidence：基于Warp-as-History接口的免训练摄像机控制视频生成
-3. [SocialDirector: Training-Free Social Interaction Control for Multi-Person Video Generation](/202605/16/2605.10079v1-socialdirector-training-free-social-interaction-control-for-multi-person-video-generation)  
+   evidence：免训练的分层图像编辑，支持RGBA层和透明度
+2. [SWIFT: Prompt-Adaptive Memory for Efficient Interactive Long Video Generation](/202605/18/2605.09442v1-swift-prompt-adaptive-memory-for-efficient-interactive-long-video-generation)  
    标签：评分：9.0/10、query:cv-vg-cs
-   evidence：用于多人物视频生成的免训练交互控制器
-4. [LimeCross: Context-Conditioned Layered Image Editing with Structural Consistency](/202605/16/2605.10319v1-limecross-context-conditioned-layered-image-editing-with-structural-consistency)  
+   evidence：用于多提示词长视频生成的免训练框架
+3. [SocialDirector: Training-Free Social Interaction Control for Multi-Person Video Generation](/202605/18/2605.10079v1-socialdirector-training-free-social-interaction-control-for-multi-person-video-generation)  
    标签：评分：9.0/10、query:cv-vg-cs
-   evidence：支持RGBA图层和透明度的免训练分层图像编辑
-5. [TeDiO: Temporal Diagonal Optimization for Training-Free Coherent Video Diffusion](/202605/16/2605.14136v1-tedio-temporal-diagonal-optimization-for-training-free-coherent-video-diffusion)  
+   evidence：多人物视频生成的免训练交互控制器
+4. [$h$-control: Training-Free Camera Control via Block-Conditional Gibbs Refinement](/202605/18/2605.11871v1-h-control-training-free-camera-control-via-block-conditional-gibbs-refinement)  
    标签：评分：9.0/10、query:cv-vg-cs
-   evidence：增强时间一致性的免训练推理阶段方法
-6. [Compositional Video Generation via Inference-Time Guidance](/202605/16/2605.14988v1-compositional-video-generation-via-inference-time-guidance)  
+   evidence：视频生成器的免训练相机控制
+5. [TeDiO: Temporal Diagonal Optimization for Training-Free Coherent Video Diffusion](/202605/18/2605.14136v1-tedio-temporal-diagonal-optimization-for-training-free-coherent-video-diffusion)  
    标签：评分：9.0/10、query:cv-vg-cs
-   evidence：针对冻结文本视频模型的推理时引导，无需重新训练
+   evidence：用于连贯视频扩散的免训练推理阶段方法
+6. [Warp-as-History: Generalizable Camera-Controlled Video Generation from One Training Video](/202605/18/2605.15182v1-warp-as-history-generalizable-camera-controlled-video-generation-from-one-training-video)  
+   标签：评分：9.0/10、query:cv-vg-cs
+   evidence：免训练的摄像机控制视频生成
+7. [Sound Sparks Motion: Audio and Text Tuning for Video Editing](/202605/18/2605.15307v1-sound-sparks-motion-audio-and-text-tuning-for-video-editing)  
+   标签：评分：9.0/10、query:cv-vg-cs
+   evidence：视频生成中动作编辑的免训练框架
+8. [Tuning-free Instruction-based Video Editing Via Structural Noise Initialization and Guidance](/202605/18/2605.15533v1-tuning-free-instruction-based-video-editing-via-structural-noise-initialization-and-guidance)  
+   标签：评分：9.0/10、query:cv-vg-cs
+   evidence：免微调的基于指令的视频编辑框架
 
 ### 速读区论文标签
-1. [OphEdit: Training-Free Text-Guided Editing of Ophthalmic Surgical Videos](/202605/16/2605.07695v1-ophedit-training-free-text-guided-editing-of-ophthalmic-surgical-videos)  
-   标签：评分：8.0/10、query:cv-vg-cs
-   evidence：文本引导视频编辑的免训练框架
-2. [Slowly Annealed Langevin Dynamics: Theory and Applications to Training-Free Guided Generation](/202605/16/2605.07950v1-slowly-annealed-langevin-dynamics-theory-and-applications-to-training-free-guided-generation)  
-   标签：评分：8.0/10、query:cv-vg-cs
-   evidence：免训练引导生成的理论框架
-3. [SWIFT: Prompt-Adaptive Memory for Efficient Interactive Long Video Generation](/202605/16/2605.09442v1-swift-prompt-adaptive-memory-for-efficient-interactive-long-video-generation)  
-   标签：评分：8.0/10、query:cv-vg-cs
-   evidence：多提示词长视频生成的免训练框架
-4. [RevealLayer: Disentangling Hidden and Visible Layers via Occlusion-Aware Image Decomposition](/202605/16/2605.11818v1-reveallayer-disentangling-hidden-and-visible-layers-via-occlusion-aware-image-decomposition)  
-   标签：评分：8.0/10、query:cv-vg-cs
-   evidence：将 RGB 图像分解为包含透明通道的多个 RGBA 图层
-5. [DriveCtrl: Conditioned Sim-to-Real Driving Video Generation](/202605/16/2605.15116v1-drivectrl-conditioned-sim-to-real-driving-video-generation)  
+1. [Beyond Text Prompts: Visual-to-Visual Generation as A Unified Paradigm](/202605/18/2605.12271v1-beyond-text-prompts-visual-to-visual-generation-as-a-unified-paradigm)  
+   标签：评分：8.5/10、query:cv-vg-cs
+   evidence：免训练的视觉到视觉生成框架
+2. [PanoPlane: Plane-Aware Panoramic Completion for Sparse-View Indoor 3D Gaussian Splatting](/202605/18/2605.14135v1-panoplane-plane-aware-panoramic-completion-for-sparse-view-indoor-3d-gaussian-splatting)  
+   标签：评分：8.5/10、query:cv-vg-cs
+   evidence：在扩散模型中引导注意力的免训练机制
+3. [Training-Free Generative Sampling via Moment-Matched Score Smoothing](/202605/18/2605.14276v1-training-free-generative-sampling-via-moment-matched-score-smoothing)  
+   标签：评分：8.5/10、query:cv-vg-cs
+   evidence：通过矩匹配分数平滑实现免训练生成采样
+4. [Head Forcing: Long Autoregressive Video Generation via Head Heterogeneity](/202605/18/2605.14487v1-head-forcing-long-autoregressive-video-generation-via-head-heterogeneity)  
+   标签：评分：8.5/10、query:cv-vg-cs
+   evidence：免训练的长视频生成框架
+5. [Enhancing Domain Generalization in 3D Human Pose Estimation through Controllable Generative Augmentation](/202605/18/2605.12198v1-enhancing-domain-generalization-in-3d-human-pose-estimation-through-controllable-generative-augmentation)  
    标签：评分：7.5/10、query:cv-vg-cs
-   evidence：深度调节的可控仿真到真实驾驶视频生成
-6. [From Articulated Kinematics to Routed Visual Control for Action-Conditioned Surgical Video Generation](/202605/16/2605.08712v1-from-articulated-kinematics-to-routed-visual-control-for-action-conditioned-surgical-video-generation)  
+   evidence：可控人体姿态生成框架
+6. [Pyramid Forcing: Head-Aware Pyramid KV Cache Policy for High-Quality Long Video Generation](/202605/18/2605.13111v1-pyramid-forcing-head-aware-pyramid-kv-cache-policy-for-high-quality-long-video-generation)  
+   标签：评分：7.5/10、query:cv-vg-cs
+   evidence：使用头感知KV缓存策略的高质量长视频生成
+7. [FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customization](/202605/18/2605.15824v1-fashionchameleon-towards-real-time-and-interactive-human-garment-video-customization)  
+   标签：评分：7.5/10、query:cv-vg-cs
+   evidence：交互式人像服装视频定制与控制
+8. [AllocMV: Optimal Resource Allocation for Music Video Generation via Structured Persistent State](/202605/18/2605.10723v1-allocmv-optimal-resource-allocation-for-music-video-generation-via-structured-persistent-state)  
    标签：评分：7.0/10、query:cv-vg-cs
-   evidence：使用关节运动学的可控视频生成
-7. [TIE: Time Interval Encoding for Video Generation over Events](/202605/16/2605.10543v1-tie-time-interval-encoding-for-video-generation-over-events)  
-   标签：评分：7.0/10、query:cv-vg-cs
-   evidence：视频生成的即插即用时间间隔感知泛化
-8. [Couple to Control: Joint Initial Noise Design in Diffusion Models](/202605/16/2605.11311v1-couple-to-control-joint-initial-noise-design-in-diffusion-models)  
-   标签：评分：7.0/10、query:cv-vg-cs
-   evidence：通过扩散模型中的联合初始噪声设计实现可控生成
-9. [Semantic-Aware Adaptive Visual Memory for Streaming Video Understanding](/202605/16/2605.07897v1-semantic-aware-adaptive-visual-memory-for-streaming-video-understanding)  
+   evidence：通过结构化持久状态实现可控音乐视频生成
+9. [MiVE: Multiscale Vision-language features for reference-guided video Editing](/202605/18/2605.14664v1-mive-multiscale-vision-language-features-for-reference-guided-video-editing)  
    标签：评分：6.5/10、query:cv-vg-cs
-   evidence：用于流式视频内存生成的免训练框架
-10. [Towards Generative Predictive Display for Vision-Based Teleoperation: A Zero-Shot Benchmark of Off-the-Shelf Video Models](/202605/16/2605.09670v1-towards-generative-predictive-display-for-vision-based-teleoperation-a-zero-shot-benchmark-of-off-the-shelf-video-models)  
+   evidence：基于多尺度特征的参考引导视频编辑
+10. [Video Models Can Reason with Verifiable Rewards](/202605/18/2605.15458v1-video-models-can-reason-with-verifiable-rewards)  
    标签：评分：6.5/10、query:cv-vg-cs
-   evidence：针对预测显示的现成生成式视频模型零样本基准测试
-11. [From Imagined Futures to Executable Actions: Mixture of Latent Actions for Robot Manipulation](/202605/16/2605.12167v1-from-imagined-futures-to-executable-actions-mixture-of-latent-actions-for-robot-manipulation)  
+   evidence：利用基于规则的反馈优化视频扩散模型以实现可验证推理
+11. [AdaEraser: Training-Free Object Removal via Adaptive Attention Suppression](/202605/18/2605.15921v1-adaeraser-training-free-object-removal-via-adaptive-attention-suppression)  
    标签：评分：6.5/10、query:cv-vg-cs
-   evidence：用于机器人操作动作的可控视频生成
+   evidence：通过自适应注意力抑制实现的免训练物体移除
 
 
 <div class="dpr-home-promo-card">

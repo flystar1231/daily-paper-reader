@@ -1,0 +1,304 @@
+Title: Enhancing Domain Generalization in 3D Human Pose Estimation through Controllable Generative Augmentation
+
+URL Source: https://arxiv.org/pdf/2605.12198v1
+
+Published Time: Wed, 13 May 2026 01:46:16 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+## ENHANCING DOMAIN GENERALIZATION IN 3D HUMAN POSE ESTIMATION THROUGH CONTROLLABLE GENERATIVE AUGMENTATION 
+
+## Xinhao Hu, Yiyi Zhang, Liqing Zhang, Jianfu Zhang 
+
+## School of Computer Science, Shanghai Jiao Tong University 
+
+ABSTRACT 
+
+Pedestrian motion, due to its causal nature, is strongly influenced by domain gaps arising from discrepancies be-tween training and testing data distributions. Focusing on 3D human pose estimation, this work presents a controllable human pose generation framework that synthesizes diverse video data by systematically varying poses, backgrounds, and camera viewpoints. This generative augmentation en-riches training datasets, enhances model generalization, and alleviates the limitations of existing methods in handling do-main discrepancies. By leveraging both indoor/real-world and outdoor/virtual datasets, we perform cross-domain data fusion and controllable video generation to construct en-riched training data, tailored to realistic deployment settings. Extensive experiments show that the augmented datasets sig-nificantly improve model performance on unseen scenarios and datasets, validating the effectiveness of the proposed approach. 
+
+Index Terms — 3D Human Pose Estimation, Domain Generalization, Video Generation 
+
+1. INTRODUCTION 
+
+Pedestrian motion reconstruction and monocular 3D human pose estimation (3D-HPE) are fundamental to autonomous driving, AR/VR, HCI, and robotics, as they enable under-standing of human–vehicle interactions and support down-stream reasoning. Despite notable advances, real-world de-ployment remains challenging due to limited multi-view cov-erage, the high cost of collecting rare events, and substan-tial domain shifts between training and test data ( e.g. , indoor vs. outdoor, studio vs. in-the-wild) [1, 2]. These distribu-tional discrepancies—commonly referred to as the domain gap —lead to severe performance degradation when models are applied to unseen domains [3, 4]. A common remedy is to enlarge training data through aug-mentation or by merging multiple datasets. Standard 3D mo-tion datasets, such as Human3.6M [5], MPI-INF-3DHP [6], 3DPW [7], and PMR [8], are each collected under specific capture conditions, which inherently introduce domain dif-ferences. Recent domain generalization (DG) efforts for 3D-HPE often operate at the pose level, augmenting or syn-thesizing joint configurations to increase variability [9, 10]. While partly effective, such pose-only augmentation over-looks appearance, background, and camera motion in the video modality, which constitutes a major source of domain shift in real-world applications. Meanwhile, controllable image and video generative models, particularly diffusion-based approaches, have ad-vanced significantly, enabling the synthesis of consistent, temporally coherent videos conditioned on pose, reference appearance, and camera parameters [11, 12, 13]. These mod-els allow fine-grained control over pose, background, and viewpoint, and can thus produce large-scale, automatically annotated RGB sequences without manual collection. While prior work has applied generative models for image-level do-main adaptation [14, 15], video-centric generative methods for domain generalization remain largely unexplored. This work addresses the domain gap by synthesizing large-scale video data to expand training domains for 3D-HPE. Nevertheless, using generated videos for 3D-HPE is non-trivial: lifting models are sensitive to the train–test mismatch between clean projected 2D keypoints and noisy detector outputs, and generative artifacts may further de-grade 2D detections. Motivated by this, we explicitly target the realistic HPE–HPE regime and combine appearance-and camera-aware video synthesis with a lightweight 2D-consistency filtering step, yielding high-quality synthetic data as an offline augmentation without inference-time overhead. Rather than augmenting poses alone, we employ control-lable video generation to produce diverse RGB sequences through cross-fusion of scenes, poses, and camera trajecto-ries from multiple sources (Human3.6M [5] and PMR [8] in our experiments). The generated videos expose 3D-HPE models to realistic variations in appearance, background, and viewpoint while preserving accurate 2D/3D pose annota-tions (obtained via the source motion parameters and camera transformations). We then fine-tune state-of-the-art monoc-ular 3D pose estimators ( e.g. , KTPFormer [16], D3DP [17], GLA-GCN [18]) and evaluate their cross-domain generaliza-tion on held-out datasets. Compared with prior pose-only DG strategies, our video-based approach (1) captures appearance-and camera-induced domain shifts, (2) provides temporally consistent inputs for video-based estimators, thus enabling training on realistic 2D detections, and (3) scales without            
+
+> arXiv:2605.12198v1 [cs.CV] 12 May 2026 Pose
+> Sample
+> Scene
+> Sample
+> Alignment
+> &
+> Augmentation
+> RGB
+> RGB
+> Camera
+> Transformation
+> 𝑌𝑌 𝑎𝑎𝑎𝑎 ′:𝑇𝑇 𝑎𝑎 ,𝐽𝐽 , 3
+> Extra-Keypoints Simulator
+> Video Generator
+> RGB
+> 𝑇𝑇 𝑎𝑎 ,𝐽𝐽𝐽 , 2
+> Generated
+> Sample
+> Image Reference
+> Pose
+> Guidance
+> 𝑌𝑌 𝑎𝑎 :𝑇𝑇 𝑎𝑎 𝐽𝐽 , 3
+> 𝑌𝑌 𝑎𝑎 :𝑇𝑇 𝑎𝑎 ,𝐽𝐽 , 3
+> 𝑥𝑥 𝑎𝑎𝑎𝑎 ′:𝑇𝑇 𝑎𝑎 ,𝐽𝐽 , 2
+
+𝓐𝓐 
+
+𝓠𝓠 
+
+𝓖𝓖                   
+
+> 𝐼𝐼 𝑎𝑎 :𝑇𝑇 𝑎𝑎 ,𝐶𝐶 ,𝐻𝐻 ,𝑊𝑊
+> 𝐼𝐼 𝑎𝑎𝑎𝑎 ′:𝑇𝑇 𝑎𝑎 ,𝐶𝐶 ,𝐻𝐻 ,𝑊𝑊
+> 𝑌𝑌 𝑎𝑎𝑎𝑎 ′,𝑋𝑋 𝑎𝑎𝑎𝑎 ′:𝑇𝑇 𝑎𝑎 ,𝐽𝐽 , 3 �𝑥𝑥 𝑎𝑎𝑎𝑎 ′:𝑇𝑇 𝑎𝑎 ,𝐽𝐽 , 2
+
+𝓟𝓟 2𝐷𝐷    
+
+> Projection 𝓡𝓡
+> 𝑋𝑋 𝑎𝑎𝑎𝑎 ′:𝑇𝑇 𝑎𝑎 ,𝐽𝐽 , 3
+
+Fig. 1 . First, the 3D pose sequence from a Pose source sample is aligned to the coordinate frame of a Scene target sample via a simple linear transformation, producing Y ′ 
+
+> ab
+
+(which serves as the 3D ground truth for the new sequence). After projecting to 2D (and simulating any extra keypoints required by the generator), we obtain a pose-guided keypoint sequence x′
+
+> ab
+
+. Finally, conditioning on the Scene sample’s RGB frames and the pose guidance, the video generator synthesizes a new video. The output is a paired synthetic sample consisting of the generated RGB sequence and its corresponding 3D pose ground truth. manual labeling. We leverage recent advances in controllable video diffusion and appearance encoding to preserve subject identity and ensure temporal coherence [12, 13]. Our contributions are threefold: • We propose a pipeline that constructs large-scale syn-thetic RGB video datasets for 3D-HPE through controllable cross-fusion of poses, scenes, and camera viewpoints. • We show that training with these controllably generated videos (using detected 2D poses as inputs) effectively miti-gates domain gaps and substantially improves cross-domain generalization compared to pose-only augmentation, in-cluding in realistic settings where both training and testing use detector outputs. • Extensive experiments on Human3.6M [5] and PMR [8] show that modern 3D-HPE models ( e.g. , KTPFormer [16]) achieve enhanced robustness on unseen domains. 
+
+2. METHODOLOGY 
+
+Our goal is to design a practical pipeline that enhances cross-domain generalization in 3D human pose estimation by synthesizing realistic RGB video sequences that inte-grate scenes, camera parameters, and motions from multiple source datasets, effectively reframing 3D-HPE domain gen-eralization as a video-level augmentation problem. Unlike pose-only augmentation (which ignores scene appearance and camera factors), our approach transplants motions across different scenes and generates large-scale annotated RGB videos with diverse appearances and viewpoints. We then train 3D pose estimators on 2D keypoints detected from these synthetic videos, thereby jointly addressing domain shifts in appearance, background, and viewpoint. 
+
+2.1. Data and Notation 
+
+We adopt Human3.6M (H36M) [5] and PMR [8] as repre-sentative indoor (studio) and mixed-reality outdoor domains. A dataset sample is denoted as I ∈ ZN ×T ×C×H×W and 
+
+Y ∈ RN ×T ×J×3, where N is the number of sequences, T
+
+is the number of frames per sequence, C, H, W represent the number of channels, height, and width of images, and J is the number of body joints. Ground-truth 3D keypoints Y are transformed into camera space X via Q and projected to 2D keypoints x via R. Specifically, Q denotes the transformation into the camera coordinate frame (applying the camera’s rota-tion and translation), and R represents the projection from 3D camera coordinates to the 2D image plane (using the camera intrinsics). This explicit modeling of camera pose ensures that our pipeline accounts for viewpoint variations across datasets. A 2D pose detector P2D maps an image sequence I to de-tected 2D keypoints ˆx, and a lifting-based 3D pose estimator 
+
+P3D maps ˆx to a 3D prediction ˆX:
+
+P2D (I) = ˆ x, P3D : ˆ x 7 → ˆX. (1) 
+
+2.2. Generative Augmentation Pipeline 
+
+While existing DG methods mainly augment poses, such strategies neglect scene appearance and camera effects—major sources of domain shift in real deployments. To overcome this limitation, we design a generative augmentation pipeline that explicitly fuses scene, motion, and camera parameters. This enables the synthesis of realistic RGB sequences with preserved 2D/3D annotations, offering richer variability than pose-only augmentation and scaling without manual data collection. Formally, let a, b index source datasets ( e.g. , a = H36M, 
+
+b = PMR) and m, n index samples. A scene sample pro-Table 1 . 2D position error between 2D-HPE results of gener-ated samples (under different generator weights and filtering conditions) and the 2D ground truth. Generated Dataset Original Pretrained Weights Fine-tuned on PMR/H36M Scene Pose Unfiltered Filtered Unfiltered PMR PMR 87.62 17.45 20.53 PMR H36M 54.52 20.50 24.25 H36M PMR 84.61 25.05 21.69 H36M H36M 64.33 27.15 24.63    
+
+> Note: 2D positions are normalized in the camera plane (width ≈2000
+> pixels, preserving aspect ratio). For filtered samples, only the top 10% of generated data are retained. For the original H36M and PMR test sets, this error is 25.14 and 16.63, respectively . Thus, our filtered generated data achieves errors close to those of real datasets, ensuring high generation quality.
+
+vides image(s) I(m) 
+
+> a
+
+, camera parameters, and root pose Y (m) 
+
+> ao
+
+;a motion sample provides a full motion sequence Y (n) 
+
+> b
+
+with root Y (n) 
+
+> bo
+
+. We align the motion to the target scene by trans-lation and a mild linear transform W (e.g., orientation and ground plane alignment): 
+
+A(Y (m) 
+
+> a
+
+, Y (n) 
+
+> b
+
+) = W Y (n) 
+
+> b
+
+− Y (n) 
+
+> bo
+
++ Y (m)
+
+> ao
+
+ = Y ′(l) 
+
+> ab
+
+. (2) The aligned 3D motion Y ′ 
+
+> ab
+
+(which serves as the ground-truth 3D pose for the synthetic sequence) is then projected to 2D keypoints x′ 
+
+> ab
+
+= R(Q(Y ′
+
+> ab
+
+)) and used as temporal pose guid-ance for the video generator: 
+
+G I(m,j ) 
+
+> a
+
+, R(Q(A(Y (m) 
+
+> a
+
+, Y (n) 
+
+> b
+
+)))  = I′(l) 
+
+> ab
+
+, (3) where j indexes one or more reference frame(s) from the scene acting as appearance anchors. We adopt a controllable video diffusion framework ( e.g. , AnimateAnyone [13]) to synthesize temporally coherent frames conditioned on the reference appearance and per-frame 2D keypoints. 
+
+2.3. Training Objective 
+
+Applying the above cross-dataset augmentation yields (a) 
+
+cross-domain samples ( a̸ = b) and (b) in-domain augmenta-tions ( a = b, m ̸ = n). From each generated video I′ 
+
+> ab
+
+we can obtain either detector-produced 2D poses ˆx′ 
+
+> ab
+
+= P2D (I′
+
+> ab
+
+) or the projected aligned keypoints x′ 
+
+> ab
+
+= R(Q(Y ′
+
+> ab
+
+)) as inputs to the 2D-to-3D lifting model. Using the generated inputs, we train the 3D pose model with a standard supervised loss: 
+
+min  
+
+> θ
+
+LP
+
+ P3D,θ (ˆ x′
+
+> ab
+
+), X ′
+
+> ab
+
+ , (4) where X′ 
+
+> ab
+
+denotes the camera-space 3D ground truth derived from the aligned motion, and ˆx′ 
+
+> ab
+
+is the detector’s 2D output. This training setup enables the lifter to learn robustness to appearance- and camera-induced variations, complementing pose-only augmentation approaches [9, 10, 19, 20, 21]. 
+
+3. EXPERIMENTS 3.1. Datasets and Implementation Details 
+
+We train lifting-based 3D-HPE models on combinations of H36M [5] and PMR [8] (source domains), and evaluate cross-scenario on H36M vs. PMR and cross-dataset on MPI-INF-3DHP [6] and 3DPW [7]. Generated RGB videos are pro-duced by cross-fusing scene and pose sources (H36M/PMR) using AnimateAnyone [13]. 2D keypoint detections are ob-tained with DWPose [22]. Since AnimateAnyone requires COCO-WholeBody format [23], we convert the keypoints via a lightweight mapper (simulated hand/face keypoints are dropped). Dataset-specific coordinate handedness is also corrected during alignment. To ensure quality, we filter the generated samples based on the 2D detection error, keeping only the top 10%. The final augmented corpus (including both H36M and PMR sources) contains about 80,000 frames. All training and evaluation are conducted in PyTorch on an NVIDIA RTX 4090, with KTPFormer [16] as the 3D pose model. Notably, our pipeline does not require fine-tuning the video generator. Generating the full candidate pool took roughly 336 GPU-hours on an RTX 4090 per dataset, but this is a one-off offline process with no impact on inference-time speed. During 3D-HPE backbone training and testing, all re-ported numbers use a single 2D detector (DWPose) to pro-duce HPE inputs; for GT , 2D keypoints are obtained by projecting 3D ground truth under the corresponding camera intrinsics/extrinsics. This yields four train/test combinations (GT–GT, GT–HPE, HPE–GT, HPE–HPE). Importantly, most prior DG methods for 3D lifting operate only on 2D ground-truth poses during training and therefore can be evaluated fairly only under the GT–GT/GT–HPE regimes; our pipeline additionally supports the realistic HPE–HPE setting by gen-erating RGB videos and training the lifter on detector outputs that match the test-time distribution. 
+
+Metrics : We use standard MPJPE (mean per-joint po-sition error) and its variants (P-MPJPE after Procrustes, N-MPJPE after normalization): 
+
+MPJPE( X, ˆX) = 1
+
+N T J 
+
+> N
+
+X
+
+> i=1
+> T
+
+X
+
+> t=1
+> J
+
+X
+
+> j=1
+
+|X(i,t,j ) − ˆX(i,t,j )| .
+
+(5) Results are reported as per-sequence averages. We also report Velocity Error (error in first-order temporal differences) and 2D Position Error (MPJPE computed in the image plane). 
+
+3.2. Video Quality and Dataset Variability 
+
+The quality of the generated videos critically affects down-stream 2D detections and thus 3D-HPE performance. We measure generation quality by the 2D Position Error between the predicted 2D keypoints and ground-truth 2D keypoints. Fig. 2 . H36M, 3DPW and MPI-INF-3DHP evaluation results of KTPFormer trained on our various augmented datasets (added to the H36M training set).              
+
+> Note: Gen .denotes generated data. “A/B (Gen.)” indicates generated samples using scene from dataset A and pose from dataset B. GT and HPE denote whether ground-truth or predicted 2D poses (from DWPose) are used as inputs. All results are averaged over sequences. MPJPE and P-MPJPE are in mm, and Vel. Err. denotes the velocity error (mm/frame). Bold values are best (lower is better). 2D Estimations Ground Truth H36M Only PMR G_PMR G_PMR_S_H36M_P G_H36M_S_PMR_P G_H36M
+
+Fig. 3 . Cross-scenario and cross-dataset performance of KTPFormer on the MPI-INF-3DHP test set after training with our mixed additional datasets combined with H36M (train subjects S1,5,6,7,8). We use 2D-HPE (DWPose) outputs as input. Dataset naming is consistent with Fig. 2. Table 1 shows the error rates under different generator train-ing conditions and filtering strategies. Without filtering, the pre-trained generator’s outputs have high 2D errors ( ∼54–88 px), far above those on real data (H36M: 25.14 px, PMR: 16.63 px). Applying our 10% keypoint-error filtering or fine-tuning the generator on H36M/PMR reduces the errors to around 17–27 px (filtered) or 20–24 px (fine-tuned), which is comparable to the real-data baseline. The error distribu-tion for generated samples is heavy-tailed, with most frames around 20–30 px and a long tail of outliers beyond 30 px; filtering effectively removes these outliers. For efficiency, we adopt the filtering strategy by default rather than gener-ator fine-tuning. Hence, all subsequent experiments use the filtered generated dataset. 
+
+3.3. Cross-scenario and Cross-dataset Evaluation 
+
+We augment the H36M training set with various generated datasets and train KTPFormer; results are shown in Fig. 2. Key observations are: (1) adding our generated data yields small gains on the original H36M test set (improvement of 
+
+≈3 mm MPJPE under 2D-HPE input) but substantial gains on cross-dataset tests (3DPW: ≈4–7 mm; MPI-INF-3DHP: 
+
+≈15–20 mm), demonstrating improved generalization; (2) different fusion strategies (e.g., PMR/H36M vs. H36M/PMR) produce similar improvements, indicating the robustness of our augmentation pipeline. Qualitative examples (Fig. 3) show improved local joint accuracy when training includes generated samples. Moreover, models trained with our aug-Table 2 . MPJPE (mm) on MPI-INF-3DHP test set under different Train/Test 2D settings. All models are trained on 
+
+H36M + (additional data listed below) .                               
+
+> Additional data Train 2D / Test 2D GT–GT HPE–GT GT–HPE HPE–HPE PMR 77.07 104.16 144.50 127.00
+> PMR/PMR (Gen.) 70.72 106.29 145.53 132.50 PMR/H36M (Gen.) 67.76 110.61 143.43 133.79 H36M/PMR (Gen.) 79.37 106.21 150.46 132.60 H36M/H36M (Gen.) 88.54 111.39 150.98 135.86
+> Definitions. GT/HPE indicate whether ground-truth 2D keypoints or
+> detector-estimated 2D keypoints (DWPose) are used as the 3D lifter input.
+> Gen. denotes generated videos; “A/B (Gen.)” means using scene from A
+> and pose from B .
+
+mented data exhibit consistently lower velocity errors, indi-cating smoother motion. For instance, the average velocity error on H36M, 3DPW, and 3DHP improves by 1.19, 1.03, and 2.50 mm/frame, respectively, compared to training with-out augmentation. This suggests that our synthetic videos help the model predict more temporally coherent pose se-quences, while our filtering step effectively culls samples with potential generative artifacts. 
+
+3.4. Effect of 2D Lifting Source (Training vs. Testing) 
+
+Unlike prior pose-only augmentation methods [9, 10, 19, 20, 21], our approach can be trained and tested using either ground-truth 2D poses (GT) or 2D pose estimates (HPE), yielding four possible combinations (GT–GT, GT–HPE, HPE–GT, HPE–HPE). Table 2 reports KTPFormer’s MPJPE on 3DHP [6] under these different training/testing setups (with various H36M+generated training sets). We observe the following error ordering: 
+
+(GT , GT) < (HPE , GT) < (HPE , HPE) < (GT , HPE) ,
+
+(6) 
+
+i.e. , using GT 2D poses for both training and testing yields the lowest error, but in realistic settings where only detec-tor outputs are available, the HPE–HPE setup (matching training and testing distributions) performs best , while the GT–HPE mismatch gives the worst performance. This find-ing supports using generated RGB data to provide consistent 2D-HPE inputs in both training and testing. Notably, prior DG approaches for 3D-HPE that rely on pose-level augmentation cannot train on detector outputs, and thus they face a GT–HPE mismatch at test time. This lim-itation is inherent: pose-level DG methods augment 2D/3D poses without generating corresponding RGB videos, so they cannot expose the 2D detector (and thus the lifter) to appearance-induced errors during training. For example, under the same 3DHP evaluation proto-col as in Table 2, PoseAug [9] and the Dual-Augmentor framework [10] obtain 142.2 mm and 140.4 mm MPJPE, respectively, in the GT–HPE setting. By contrast, our method achieves 132.5–135.9 mm MPJPE in the fully HPE–HPE setting, despite relying on detector outputs during both train-ing and testing. These results indicate that our generative video augmentation better aligns the training distribution with realistic test-time inputs, thereby improving robustness to detector-induced noise and domain shift. 
+
+4. CONCLUSION 
+
+We presented a generative data augmentation approach that expands existing 3D-HPE datasets by cross-fusing samples within and across domains via controllable video generation. Extensive experiments show that the synthesized videos are high-quality, effective for training, and substantially improve model performance on unseen scenarios and datasets. By op-erating on video data (with varied appearance and camera per-spectives), our method complements existing 3D-HPE pose augmentation techniques and can be applied to other vision tasks. Overall, our results highlight the promise of video-level, appearance-aware augmentation for closing the domain gap in 3D-HPE and related fields. 
+
+5. REFERENCES 
+
+[1] Nitin Saini, Eric Price, Rahul Tallamraju, Raffi Enfici-aud, Roman Ludwig, Igor Martinovic, Aamir Ahmad, and Michael J Black, “Markerless outdoor human mo-tion capture using multiple autonomous micro aerial ve-hicles,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2019, pp. 823–832. [2] Wonhui Kim, Manikandasriram Srinivasan Ra-managopal, Charles Barto, Ming-Yuan Yu, Karl Rosaen, Nick Goumas, Ram Vasudevan, and Matthew Johnson-Roberson, “Pedx: Benchmark dataset for metric 3-d pose estimation of pedestrians in complex urban intersections,” IEEE Robotics and Automation Letters , vol. 4, no. 2, pp. 1940–1947, 2019. [3] Mei Wang and Weihong Deng, “Deep visual domain adaptation: A survey,” Neurocomputing , vol. 312, pp. 135–153, 2018. [4] Sicheng Zhao, Xiangyu Yue, Shanghang Zhang, Bo Li, Han Zhao, Bichen Wu, Ravi Krishna, Joseph E. Gon-zalez, Alberto L. Sangiovanni-Vincentelli, Sanjit A. Se-shia, and Kurt Keutzer, “A review of single-source deep unsupervised visual domain adaptation,” IEEE Trans-actions on Neural Networks and Learning Systems , vol. 33, no. 2, pp. 473–493, 2022. [5] Catalin Ionescu, Dragos Papava, Vlad Olaru, and Cris-tian Sminchisescu, “Human3.6m: Large scale datasets and predictive methods for 3d human sensing in natural environments,” IEEE Transactions on Pattern Analysis and Machine Intelligence , vol. 36, no. 7, pp. 1325–1339, 2014. [6] Dushyant Mehta, Helge Rhodin, Dan Casas, Pascal Fua, Oleksandr Sotnychenko, Weipeng Xu, and Christian Theobalt, “Monocular 3d human pose estimation in the wild using improved cnn supervision,” in 2017 Interna-tional Conference on 3D Vision (3DV) , 2017, pp. 506– 516. [7] Timo Von Marcard, Roberto Henschel, Michael J Black, Bodo Rosenhahn, and Gerard Pons-Moll, “Recovering accurate 3d human pose in the wild using imus and a moving camera,” in Proceedings of the European con-ference on computer vision (ECCV) , 2018, pp. 601–617. [8] Yichen Wang, Yiyi Zhang, Xinhao Hu, Li Niu, Jianfu Zhang, Yasushi Makihara, Yasushi Yagi, Pai Peng, Wen-long Liao, Tao He, Junchi Yan, and Liqing Zhang, “Pedestrian motion reconstruction: A large-scale bench-mark via mixed reality rendering with multiple perspec-tives and modalities,” in The Thirteenth International Conference on Learning Representations , 2025. [9] Jianfeng Zhang, Kehong Gong, Xinchao Wang, and Ji-ashi Feng, “Learning to augment poses for 3d human pose estimation in images and videos,” IEEE Transac-tions on Pattern Analysis and Machine Intelligence , vol. 45, no. 8, pp. 10012–10026, 2023. [10] Qucheng Peng, Ce Zheng, and Chen Chen, “A dual-augmentor framework for domain generalization in 3d human pose estimation,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 2240–2249. [11] Jonathan Ho, Ajay Jain, and Pieter Abbeel, “Denoising diffusion probabilistic models,” Advances in neural in-formation processing systems , vol. 33, pp. 6840–6851, 2020. [12] Zhongcong Xu, Jianfeng Zhang, Jun Hao Liew, Han-shu Yan, Jia-Wei Liu, Chenxu Zhang, Jiashi Feng, and Mike Zheng Shou, “Magicanimate: Temporally consis-tent human image animation using diffusion model,” in 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 1481–1490. [13] Li Hu, Xin Gao, Peng Zhang, Ke Sun, Bang Zhang, and Liefeng Bo, “Animate anyone: Consistent and control-lable image-to-video synthesis for character animation,” 
+
+arXiv preprint arXiv:2311.17117 , 2023. [14] Zak Murez, Soheil Kolouri, David Kriegman, Ravi Ra-mamoorthi, and Kyungnam Kim, “Image to image translation for domain adaptation,” in Proceedings of the IEEE conference on computer vision and pattern recog-nition , 2018, pp. 4500–4509. [15] Yun-Chun Chen, Yen-Yu Lin, Ming-Hsuan Yang, and Jia-Bin Huang, “Crdoco: Pixel-level domain transfer with cross-domain consistency,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2019, pp. 1791–1800. [16] Jihua Peng, Yanghong Zhou, and PY Mok, “Ktpformer: Kinematics and trajectory prior knowledge-enhanced transformer for 3d human pose estimation,” in Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 1123–1132. [17] Wenkang Shan, Zhenhua Liu, Xinfeng Zhang, Zhao Wang, Kai Han, Shanshe Wang, Siwei Ma, and Wen Gao, “Diffusion-based 3d human pose estimation with multi-hypothesis aggregation,” in Proceedings of the IEEE/CVF International Conference on Computer Vi-sion , 2023, pp. 14761–14771. [18] Bruce XB Yu, Zhi Zhang, Yongxu Liu, Sheng-hua Zhong, Yan Liu, and Chang Wen Chen, “Gla-gcn: Global-local adaptive graph convolutional network for 3d human pose estimation from monocular video,” in 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, pp. 8818–8829. [19] Haolun Li and Chi-Man Pun, “Cee-net: complementary end-to-end network for 3d human pose generation and estimation,” in Proceedings of the AAAI Conference on Artificial Intelligence , 2023, vol. 37, pp. 1305–1313. [20] Shannan Guan, Haiyan Lu, Linchao Zhu, and Gengfa Fang, “Posegu: 3d human pose estimation with novel human pose generator and unbiased learning,” Com-puter Vision and Image Understanding , vol. 233, pp. 103715, 2023. [21] Linzhi Huang, Jiahao Liang, and Weihong Deng, “Dh-aug: Dh forward kinematics model driven augmentation for 3d human pose estimation,” in European Conference on Computer Vision . Springer, 2022, pp. 436–453. [22] Zhendong Yang, Ailing Zeng, Chun Yuan, and Yu Li, “Effective whole-body pose estimation with two-stages distillation,” in Proceedings of the IEEE/CVF Inter-national Conference on Computer Vision (ICCV) Work-shops , October 2023, pp. 4210–4220. [23] Sheng Jin, Lumin Xu, Jin Xu, Can Wang, Wentao Liu, Chen Qian, Wanli Ouyang, and Ping Luo, “Whole-body human pose estimation in the wild,” 2020.

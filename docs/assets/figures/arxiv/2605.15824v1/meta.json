@@ -1,0 +1,134 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-001.webp",
+      "caption": "Figure 15: Additional visualizations for interactive multi-garment video customization using our FashionChameleon.",
+      "page": 21,
+      "index": 1,
+      "width": 808,
+      "height": 445
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-002.webp",
+      "caption": "Figure 16: Additional visualizations for interactive multi-garment video customization using our FashionChameleon.",
+      "page": 21,
+      "index": 2,
+      "width": 808,
+      "height": 447
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-003.webp",
+      "caption": "Table 1: Quantitative comparison of different methods for short (81 frames) video customized generation. The best results are highlighted in bold and the second best are underlined. Note that the frames per second (FPS) of all methods are evaluated on an H200 GPU.",
+      "page": 7,
+      "index": 3,
+      "width": 814,
+      "height": 213
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-004.webp",
+      "caption": "Figure 18: Additional long video extrapolation visualizations of our FashionChameleon.",
+      "page": 22,
+      "index": 4,
+      "width": 804,
+      "height": 455
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-005.webp",
+      "caption": "Figure 17: Additional long video extrapolation visualizations of our FashionChameleon.",
+      "page": 22,
+      "index": 5,
+      "width": 804,
+      "height": 448
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-006.webp",
+      "caption": "Figure 8: The high-quality data curation pipeline of FashionChameleon. It consists of four stages: (1) General Coarse-to-Fine Video Filtering, (2) Static-Dynamic Video Captioning, (3) Fine-Grained Garment Image Extraction, and (4) Adaptive Reference Image Construction.",
+      "page": 14,
+      "index": 6,
+      "width": 802,
+      "height": 344
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-007.webp",
+      "caption": "Figure 5: Qualitative comparison of our FashionChameleon with other baselines. Due to space limitations, we omit the input prompts here; please refer to the Appendix for details.",
+      "page": 8,
+      "index": 7,
+      "width": 804,
+      "height": 518
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-008.webp",
+      "caption": "Figure 6: Additional applications of FashionChameleon. It supports both long-video extrapolation and interactive multi-garment customization. We omit prompts for brevity; see Appendix for details.",
+      "page": 8,
+      "index": 8,
+      "width": 808,
+      "height": 448
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-009.webp",
+      "caption": "Figure 3: Overall pipeline of FashionChameleon: Teacher Model with In-Context Learning, Streaming Distillation with In-Context Learning, and Training-Free KV Cache Rescheduling.",
+      "page": 4,
+      "index": 9,
+      "width": 804,
+      "height": 320
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-010.webp",
+      "caption": "Figure 12: Additional qualitative comparison between our FashionChameleon and other baselines.",
+      "page": 19,
+      "index": 10,
+      "width": 804,
+      "height": 516
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-011.webp",
+      "caption": "Figure 11: Additional qualitative comparison between our FashionChameleon and other baselines.",
+      "page": 19,
+      "index": 11,
+      "width": 804,
+      "height": 518
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-012.webp",
+      "caption": "Figure 10: Quantitative results of the human evaluation. We compare our FashionChameleon with other baselines across four key dimensions: ID Consistency, Garment Consistency, Temporal Coherence, and Visual Quality. Our FashionChameleon achieves superior human preference rates.",
+      "page": 17,
+      "index": 12,
+      "width": 797,
+      "height": 299
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-013.webp",
+      "caption": "Figure 7: Qualitative ablation of Gradient-Reweighted Distribution Matching Distillation (DMD) and Reference KV Disentangle. Gradient-Reweighted DMD alleviates motion collapse during extrapolation, while Reference KV Disentangle further enhances consistency during garment switching.",
+      "page": 9,
+      "index": 13,
+      "width": 802,
+      "height": 291
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-014.webp",
+      "caption": "Figure 14: Additional results for short video customization using our FashionChameleon.",
+      "page": 20,
+      "index": 14,
+      "width": 804,
+      "height": 451
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-015.webp",
+      "caption": "Figure 13: Additional results for short video customization using our FashionChameleon.",
+      "page": 20,
+      "index": 15,
+      "width": 804,
+      "height": 454
+    },
+    {
+      "url": "assets/figures/arxiv/2605.15824v1/fig-016.webp",
+      "caption": "Figure 9: Data analysis and representative samples of HGC-Bench. (a) A word cloud generated from the input prompts, illustrating the diversity of scenarios and semantic content. (b) The distribution of garment categories, showing the proportions of different garment types. (c) Representative samples from HGC-Bench, each comprising a reference image, a garment image, and an input prompt.",
+      "page": 16,
+      "index": 16,
+      "width": 811,
+      "height": 401
+    }
+  ]
+}
