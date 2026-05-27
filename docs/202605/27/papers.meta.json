@@ -1,0 +1,54 @@
+{
+  "label": "2026-05-27",
+  "date": "2026-05-27",
+  "generated_at": "2026-05-27T20:47:17",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202605/27/2605.26244v1-longav-compass-towards-unified-evaluation-of-minute-scale-audio-visual-generation-across-t2av-i2av-and-v2av",
+      "section": "deep",
+      "title_en": "LongAV-Compass: Towards Unified Evaluation of Minute-Scale Audio-Visual Generation Across T2AV, I2AV, and V2AV",
+      "authors": "Tengfei Liu, Yang Shi, Xuanyu Zhu, Jiafu Tang, Liu Yang, Qixun Wang, Zhuoran Zhang, Yuqi Tang, Fengxiang Wang, Yuhao Dong, Xinlong Chen, Bozhou Li, Bohan Zeng, Yue Ding, Xiaohan Zhang, Jialu Chen, Haotian Wang, Yuanxing Zhang, Pengfei Wan, Leye Wang",
+      "date": "2026-05-25",
+      "pdf": "https://arxiv.org/pdf/2605.26244v1",
+      "score": "9.0",
+      "evidence": "针对分钟级视听生成的统一评估基准，覆盖多种条件",
+      "tldr": "现有音视频生成评估局限于短片段，缺乏对分钟级长时生成的统一评测。本文提出LongAV-Compass基准，包含284个测试用例，覆盖文本/图像/视频到音视频三种条件，从段内质量、跨段一致性、全局叙事连贯性等多维度评估20余个指标。实验表明该基准能有效诊断当前模型在长时生成中的语义对齐与时间一致性缺陷。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Audio-visual generation is rapidly advancing from short clips to minute-long content, while existing evaluation protocols remain largely confined to short-form settings. Existing benchmarks primarily focus on 5--10 second text-conditioned generation and rarely support unified evaluation across text, image, and video conditioning modalities. Moreover, they provide limited insight into how identity consistency, narrative coherence, and audio-visual alignment degrade over extended temporal horizons. To bridge this gap, we introduce LongAV-Compass, a systematic benchmark for minute-long audio-visual generation. LongAV-Compass contains 284 curated test cases spanning text-to-audio-video (T2AV), image-to-audio-video (I2AV), and video-to-audio-video (V2AV), organized by application scenario and generation complexity. The benchmark combines taxonomy-guided benchmark construction with a unified evaluation framework that integrates MLLM-assisted assessment with complementary perceptual and multimodal metrics, including DINO-v2, ArcFace, CLIP, and ImageBind. The framework evaluates more than 20 fine-grained dimensions covering within-segment quality, cross-segment consistency, global narrative coherence, semantic alignment, and audio-visual synchronization. Through experiments on 11 representative models together with human-alignment validation, LongAV-Compass provides a diagnostic testbed for analyzing the limitations of current systems in sustaining coherent, semantically aligned, and temporally consistent minute-scale audio-visual generation across diverse input modalities.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/27/2605.19382v1-prism-a-benchmark-for-programmatic-spatial-temporal-reasoning",
+      "section": "quick",
+      "title_en": "PRISM: A Benchmark for Programmatic Spatial-Temporal Reasoning",
+      "authors": "Qiran Zhang, Yuheng Wang, Runde Yang, Lin Wu, Jingru Fan, Shu Yao, Jie Zhang, Tianle Zhou, Huatao Li, Ruijie Shi, Yihan Li, Chen Qian",
+      "date": "2026-05-19",
+      "pdf": "https://arxiv.org/pdf/2605.19382v1",
+      "score": "7.0",
+      "evidence": "面向程序化视频生成的基准，包含空间推理等评价指标",
+      "tldr": "现有程序化视频生成评估仅关注代码可执行性，忽略空间正确性。本文提出PRISM基准，包含10372个指令-代码对及四指标漏斗评估框架。对7种主流LLM评估发现，执行成功率到空间通过率平均下降41%，存在显著执行-空间差距。PRISM为空间连贯代码生成提供了更全面的评估基准。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Programmatic video generation through code offers geometric precision and temporal coherence beyond pixel-level diffusion models, yet rigorously evaluating whether language models can produce spatially correct animated outputs remains an open problem. We introduce PRISM, a large-scale benchmark of 10,372 human-calibrated instruction-code pairs (20 times larger than prior programmatic video generation benchmarks), grounded in real-world knowledge visualization scenarios across English and Chinese and spanning 437 subject categories. We further propose a funnel-style evaluation framework with four complementary metrics: Code-Level Reliability for executability, Spatial Reasoning for layout correctness over full animation sequences, and Prompt-Aware Dynamic Visual Complexity (PADVC) and Temporal Density (TD) for diagnosing dynamic expression and temporal activity. Systematic evaluation of seven mainstream LLMs reveals a striking Execution-Spatial Gap: the average drop from execution success rate to spatial pass rate is approximately 41%, showing that runnable code does not necessarily yield spatially coherent visual output. These findings show that programmatic video generation evaluation should go beyond executability. PRISM provides a principled benchmark for advancing spatially coherent code generation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/27/2605.23903v1-geo-align-video-generation-alignment-via-metric-geometry-reward",
+      "section": "quick",
+      "title_en": "Geo-Align: Video Generation Alignment via Metric Geometry Reward",
+      "authors": "Zizun Li, Haoyu Guo, Runzhe Teng, Chunhua Shen, Tong He",
+      "date": "2026-05-22",
+      "pdf": "https://arxiv.org/pdf/2605.23903v1",
+      "score": "6.0",
+      "evidence": "用于视频生成对齐的度量几何奖励",
+      "tldr": "相机控制视频生成依赖合成数据导致泛化差，无法精确对齐物理尺度与轨迹。提出Geo-Align，首个基于强化学习的视频重渲染框架，通过度量3D估计器提取轨迹并设计真实视频与合成目标轨迹的数据管道，显著提升相机可控性和视觉保真度，超越监督学习基线。该方法首次将强化学习引入该任务，消除配对数据依赖。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Camera-controlled video generation has achieved remarkable progress in recent years. However, existing video-to-video re-rendering methods primarily rely on Supervised Fine-Tuning using synthetic datasets. At present, there is an extreme scarcity of synchronized, multi-view real-world video data. Consequently, the prevailing paradigm often exhibits limited generalization when processing out-of-distribution real-world videos, with models struggling to accurately adhere to physical scales and camera trajectories. To bridge this gap, we propose Geo-Align, the first Reinforcement Learning framework specifically designed for camera-controlled video re-rendering. Built upon a pretrained model, we optimize the model through a scale-aware perceptual reward mechanism. Specifically, we introduce a metric 3D estimator to extract precise camera trajectories from generated videos, explicitly penalizing deviations in rotation and translation. Furthermore, we meticulously designed a data pipeline strategy based on real-world conditioning videos and target camera trajectories derived from synthetic data, eliminating the reliance on paired data. Extensive experiments demonstrate that Geo-Align consistently outperforms existing supervised learning baselines in both precise camera controllability and visual fidelity, indicating the effectiveness of our method.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

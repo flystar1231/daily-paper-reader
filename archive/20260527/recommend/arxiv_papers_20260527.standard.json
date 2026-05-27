@@ -1,0 +1,158 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-27T20:44:46.963175+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2605.26244v1",
+      "source": "arxiv",
+      "title": "LongAV-Compass: Towards Unified Evaluation of Minute-Scale Audio-Visual Generation Across T2AV, I2AV, and V2AV",
+      "abstract": "Audio-visual generation is rapidly advancing from short clips to minute-long content, while existing evaluation protocols remain largely confined to short-form settings. Existing benchmarks primarily focus on 5--10 second text-conditioned generation and rarely support unified evaluation across text, image, and video conditioning modalities. Moreover, they provide limited insight into how identity consistency, narrative coherence, and audio-visual alignment degrade over extended temporal horizons. To bridge this gap, we introduce LongAV-Compass, a systematic benchmark for minute-long audio-visual generation. LongAV-Compass contains 284 curated test cases spanning text-to-audio-video (T2AV), image-to-audio-video (I2AV), and video-to-audio-video (V2AV), organized by application scenario and generation complexity. The benchmark combines taxonomy-guided benchmark construction with a unified evaluation framework that integrates MLLM-assisted assessment with complementary perceptual and multimodal metrics, including DINO-v2, ArcFace, CLIP, and ImageBind. The framework evaluates more than 20 fine-grained dimensions covering within-segment quality, cross-segment consistency, global narrative coherence, semantic alignment, and audio-visual synchronization. Through experiments on 11 representative models together with human-alignment validation, LongAV-Compass provides a diagnostic testbed for analyzing the limitations of current systems in sustaining coherent, semantically aligned, and temporally consistent minute-scale audio-visual generation across diverse input modalities.",
+      "authors": [
+        "Tengfei Liu",
+        "Yang Shi",
+        "Xuanyu Zhu",
+        "Jiafu Tang",
+        "Liu Yang",
+        "Qixun Wang",
+        "Zhuoran Zhang",
+        "Yuqi Tang",
+        "Fengxiang Wang",
+        "Yuhao Dong",
+        "Xinlong Chen",
+        "Bozhou Li",
+        "Bohan Zeng",
+        "Yue Ding",
+        "Xiaohan Zhang",
+        "Jialu Chen",
+        "Haotian Wang",
+        "Yuanxing Zhang",
+        "Pengfei Wan",
+        "Leye Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.MM",
+        "cs.SD"
+      ],
+      "published": "2026-05-25T18:12:09+00:00",
+      "link": "https://arxiv.org/pdf/2605.26244v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "unified evaluation benchmark for minute-scale audio-visual generation across multiple conditions",
+      "llm_evidence_cn": "针对分钟级视听生成的统一评估基准，覆盖多种条件",
+      "llm_evidence": "针对分钟级视听生成的统一评估基准，覆盖多种条件",
+      "canonical_evidence": "针对分钟级视听生成的统一评估基准，覆盖多种条件",
+      "llm_tldr_en": "Introduces LongAV-Compass, a systematic benchmark for minute-long audio-visual generation evaluation across text, image, and video conditioning, enabling assessment of identity consistency and coherence over time.",
+      "llm_tldr_cn": "现有评估协议多局限于短视频，缺乏对长时视听生成的统一评估。本文提出LongAV-Compass基准，包含284个测试用例，覆盖文本、图像、视频条件到音视频生成，系统评估身份一致性、叙事连贯性和跨模态对齐随时间退化的情况，填补了长时生成评估的空白。",
+      "llm_tldr": "现有评估协议多局限于短视频，缺乏对长时视听生成的统一评估。本文提出LongAV-Compass基准，包含284个测试用例，覆盖文本、图像、视频条件到音视频生成，系统评估身份一致性、叙事连贯性和跨模态对齐随时间退化的情况，填补了长时生成评估的空白。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.19382v1",
+      "source": "arxiv",
+      "title": "PRISM: A Benchmark for Programmatic Spatial-Temporal Reasoning",
+      "abstract": "Programmatic video generation through code offers geometric precision and temporal coherence beyond pixel-level diffusion models, yet rigorously evaluating whether language models can produce spatially correct animated outputs remains an open problem. We introduce PRISM, a large-scale benchmark of 10,372 human-calibrated instruction-code pairs (20 times larger than prior programmatic video generation benchmarks), grounded in real-world knowledge visualization scenarios across English and Chinese and spanning 437 subject categories. We further propose a funnel-style evaluation framework with four complementary metrics: Code-Level Reliability for executability, Spatial Reasoning for layout correctness over full animation sequences, and Prompt-Aware Dynamic Visual Complexity (PADVC) and Temporal Density (TD) for diagnosing dynamic expression and temporal activity. Systematic evaluation of seven mainstream LLMs reveals a striking Execution-Spatial Gap: the average drop from execution success rate to spatial pass rate is approximately 41%, showing that runnable code does not necessarily yield spatially coherent visual output. These findings show that programmatic video generation evaluation should go beyond executability. PRISM provides a principled benchmark for advancing spatially coherent code generation.",
+      "authors": [
+        "Qiran Zhang",
+        "Yuheng Wang",
+        "Runde Yang",
+        "Lin Wu",
+        "Jingru Fan",
+        "Shu Yao",
+        "Jie Zhang",
+        "Tianle Zhou",
+        "Huatao Li",
+        "Ruijie Shi",
+        "Yihan Li",
+        "Chen Qian"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-19T05:28:54+00:00",
+      "link": "https://arxiv.org/pdf/2605.19382v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "benchmark for programmatic video generation with spatial-temporal reasoning metrics",
+      "llm_evidence_cn": "面向程序化视频生成的基准，包含空间推理等评价指标",
+      "llm_evidence": "面向程序化视频生成的基准，包含空间推理等评价指标",
+      "canonical_evidence": "面向程序化视频生成的基准，包含空间推理等评价指标",
+      "llm_tldr_en": "PRISM is a large-scale benchmark for programmatic video generation via code, with 10,372 instruction-code pairs and a funnel-style evaluation framework including Code-Level Reliability and Spatial Reasoning metrics.",
+      "llm_tldr_cn": "程序化视频生成通过代码提供精度和一致性，但缺乏严格评估方法。本文提出PRISM基准，包含10,372个人工校准指令-代码对和漏斗型评估框架，涵盖代码级可靠性、空间推理和提示感知动态可视化指标，用于评估语言模型生成动画的空间正确性。实验表明该基准能有效区分不同模型的能力。",
+      "llm_tldr": "程序化视频生成通过代码提供精度和一致性，但缺乏严格评估方法。本文提出PRISM基准，包含10,372个人工校准指令-代码对和漏斗型评估框架，涵盖代码级可靠性、空间推理和提示感知动态可视化指标，用于评估语言模型生成动画的空间正确性。实验表明该基准能有效区分不同模型的能力。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.23903v1",
+      "source": "arxiv",
+      "title": "Geo-Align: Video Generation Alignment via Metric Geometry Reward",
+      "abstract": "Camera-controlled video generation has achieved remarkable progress in recent years. However, existing video-to-video re-rendering methods primarily rely on Supervised Fine-Tuning using synthetic datasets. At present, there is an extreme scarcity of synchronized, multi-view real-world video data. Consequently, the prevailing paradigm often exhibits limited generalization when processing out-of-distribution real-world videos, with models struggling to accurately adhere to physical scales and camera trajectories. To bridge this gap, we propose Geo-Align, the first Reinforcement Learning framework specifically designed for camera-controlled video re-rendering. Built upon a pretrained model, we optimize the model through a scale-aware perceptual reward mechanism. Specifically, we introduce a metric 3D estimator to extract precise camera trajectories from generated videos, explicitly penalizing deviations in rotation and translation. Furthermore, we meticulously designed a data pipeline strategy based on real-world conditioning videos and target camera trajectories derived from synthetic data, eliminating the reliance on paired data. Extensive experiments demonstrate that Geo-Align consistently outperforms existing supervised learning baselines in both precise camera controllability and visual fidelity, indicating the effectiveness of our method.",
+      "authors": [
+        "Zizun Li",
+        "Haoyu Guo",
+        "Runzhe Teng",
+        "Chunhua Shen",
+        "Tong He"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-22T17:59:43+00:00",
+      "link": "https://arxiv.org/pdf/2605.23903v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "metric geometry reward for video generation alignment",
+      "llm_evidence_cn": "用于视频生成对齐的度量几何奖励",
+      "llm_evidence": "用于视频生成对齐的度量几何奖励",
+      "canonical_evidence": "用于视频生成对齐的度量几何奖励",
+      "llm_tldr_en": "Proposes Geo-Align, a reinforcement learning framework for camera-controlled video re-rendering using a scale-aware perceptual reward, which can serve as a metric for evaluating video generation.",
+      "llm_tldr_cn": "针对相机控制视频重渲染中泛化性差、无法准确遵循物理尺度和相机轨迹的问题，提出Geo-Align，首个专为相机控制视频重渲染设计的强化学习框架。通过尺度感知感知奖励机制优化预训练模型，该奖励可作为评估视频生成对齐质量的指标。实验证明该方法提升了生成视频的几何准确性。",
+      "llm_tldr": "针对相机控制视频重渲染中泛化性差、无法准确遵循物理尺度和相机轨迹的问题，提出Geo-Align，首个专为相机控制视频重渲染设计的强化学习框架。通过尺度感知感知奖励机制优化预训练模型，该奖励可作为评估视频生成对齐质量的指标。实验证明该方法提升了生成视频的几何准确性。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
