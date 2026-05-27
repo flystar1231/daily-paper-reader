@@ -1,0 +1,515 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-27T05:06:18.086332+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 8,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2605.18984v1",
+      "source": "arxiv",
+      "title": "Artifact-Bench: Evaluating MLLMs on Detecting and Assessing the Artifacts of AI-Generated Videos",
+      "abstract": "Recent video generative models have greatly improved the realism of AI-generated videos, yet their outputs still exhibit artifacts such as temporal inconsistencies, structural distortions, and semantic incoherence. While Multimodal Large Language Models (MLLMs) show strong visual understanding capabilities, their ability to perceive and reason about such artifacts remains unclear. Existing benchmarks often lack systematic evaluation of artifact-aware perception and fine-grained diagnostic reasoning, especially across diverse AI-generated video domains beyond photorealistic content. To address this gap, we introduce Artifact-Bench, a comprehensive benchmark for evaluating MLLMs on AI-generated video artifact detection and analysis. We first establish a three-level hierarchical taxonomy of realism artifacts, covering photorealistic, animated, and CG-style videos. Based on this taxonomy, Artifact-Bench defines three complementary tasks: real vs. AI-generated video classification, pairwise realism comparison, and fine-grained artifact identification. Experiments on 19 leading MLLMs reveal substantial limitations in artifact perception and reasoning, with many models approaching random or even below-random performance in challenging settings. We further observe significant misalignment between MLLM judgments and human perceptual preferences, highlighting their limited reliability as general evaluators for AI-generated video realism.",
+      "authors": [
+        "Yuqi Tang",
+        "Yang Shi",
+        "Zhuoran Zhang",
+        "Qixun Wang",
+        "Xuehai Bai",
+        "Yue Ding",
+        "Ruizhe Chen",
+        "Bohan Zeng",
+        "Xinlong Chen",
+        "Xuanyu Zhu",
+        "Bozhou Li",
+        "Yuran Wang",
+        "Yifan Dai",
+        "Chengzhuo Tong",
+        "Xinyu Liu",
+        "Yiyan Ji",
+        "Yujie Wei",
+        "Yuhao Dong",
+        "Shilin Yan",
+        "Fengxiang Wang",
+        "Yi-Fan Zhang",
+        "Haotian Wang",
+        "Yuanxing Zhang",
+        "Pengfei Wan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-18T18:04:54+00:00",
+      "link": "https://arxiv.org/pdf/2605.18984v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "benchmark for evaluating artifacts in AI-generated videos",
+      "llm_evidence_cn": "评估AI生成视频伪影的基准",
+      "llm_evidence": "评估AI生成视频伪影的基准",
+      "canonical_evidence": "评估AI生成视频伪影的基准",
+      "llm_tldr_en": "Artifact-Bench introduces a comprehensive benchmark for evaluating MLLMs on detecting and assessing artifacts in AI-generated videos, covering temporal inconsistencies, structural distortions, and semantic incoherence.",
+      "llm_tldr_cn": "Artifact-Bench针对AI生成视频中的伪影检测与评估，首次提出了一个系统化的基准。该基准涵盖了时间不一致性、结构扭曲和语义不连贯等典型伪影类型，并包含来自多种生成模型的视频样本，覆盖真实感与非真实感内容。通过设计多层次的评估任务，包括伪影检测、定位和细粒度诊断，全面考察多模态大模型的伪影感知与推理能力。实验揭示了现有MLLMs在伪影感知上的显著不足，为视频生成质量评估提供了标准化评测工具和改进方向。",
+      "llm_tldr": "Artifact-Bench针对AI生成视频中的伪影检测与评估，首次提出了一个系统化的基准。该基准涵盖了时间不一致性、结构扭曲和语义不连贯等典型伪影类型，并包含来自多种生成模型的视频样本，覆盖真实感与非真实感内容。通过设计多层次的评估任务，包括伪影检测、定位和细粒度诊断，全面考察多模态大模型的伪影感知与推理能力。实验揭示了现有MLLMs在伪影感知上的显著不足，为视频生成质量评估提供了标准化评测工具和改进方向。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment metrics for generative models",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.20183v1",
+      "source": "arxiv",
+      "title": "MSAVBench: Towards Comprehensive and Reliable Evaluation of Multi-Shot Audio-Video Generation",
+      "abstract": "Video generation is rapidly evolving from single-shot synthesis to complex multi-shot audio-video (MSAV) narratives to meet real-world demands. However, evaluating such frontier models remains a fundamental challenge. Existing benchmarks are limited in scope and data diversity, and rely on rigid evaluation pipelines, preventing systematic and reliable assessment of modern MSAV models. To bridge these gaps, we introduce MSAVBench, the first comprehensive benchmark and adaptive hybrid evaluation framework for multi-shot audio-video generation. Our benchmark spans four key dimensions, video, audio, shot, and reference, covering diverse task settings, varying shot counts of up to 15, and challenging non-realistic scenarios. Our evaluation framework improves robustness through an adaptive self-correction mechanism for shot segmentation, instance-wise rubrics for subjective metrics, and tool-grounded evidence extraction for complex judgments. Furthermore, MSAVBench achieves high alignment with human judgments, reaching a Spearman rank correlation of 91.5%. Our systematic evaluation of 19 state-of-the-art closed- and open-source models shows that current systems still struggle with director-level control and fine-grained audio-visual synchronization, while modular or agentic generation pipelines offer a promising path toward narrowing the gap between open- and closed-source models. We will release the benchmark data and evaluation code to facilitate future research.",
+      "authors": [
+        "Yujie Wei",
+        "Yujin Han",
+        "Zhekai Chen",
+        "Yongming Li",
+        "Kaixun Jiang",
+        "Zhihang Liu",
+        "Quanhao Li",
+        "Zhiwu Qing",
+        "Xiang Wang",
+        "Zhen Xing",
+        "Ruihang Chu",
+        "Lingyi Hong",
+        "Yefei He",
+        "Junjie Zhou",
+        "Junqiu Yu",
+        "Yang Shi",
+        "Difan Zou",
+        "Kai Zhu",
+        "Shiwei Zhang",
+        "Yingya Zhang",
+        "Yu Liu",
+        "Xihui Liu",
+        "Hongming Shan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-19T17:59:33+00:00",
+      "link": "https://arxiv.org/pdf/2605.20183v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "comprehensive evaluation benchmark for video generation",
+      "llm_evidence_cn": "视频生成的综合评估基准",
+      "llm_evidence": "视频生成的综合评估基准",
+      "canonical_evidence": "视频生成的综合评估基准",
+      "llm_tldr_en": "MSAVBench is the first comprehensive benchmark and adaptive hybrid evaluation framework for multi-shot audio-video generation, covering video, audio, shot, and reference dimensions.",
+      "llm_tldr_cn": "MSAVBench是首个针对多镜头音视频生成的综合评估基准和自适应混合评估框架。现有基准在范围和多样性上有限，评估流程僵化。该框架覆盖视频、音频、镜头和参考四个维度，支持最多15个镜头及非真实场景，提供更可靠和系统的评估。",
+      "llm_tldr": "MSAVBench是首个针对多镜头音视频生成的综合评估基准和自适应混合评估框架。现有基准在范围和多样性上有限，评估流程僵化。该框架覆盖视频、音频、镜头和参考四个维度，支持最多15个镜头及非真实场景，提供更可靠和系统的评估。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.23271v1",
+      "source": "arxiv",
+      "title": "EvalVerse: Pipeline-Aware and Expert-Calibrated Benchmarking for Professional Cinematic Video Generation",
+      "abstract": "The rapid evolution of generative video foundation models has propelled the field toward professional-grade cinematic synthesis. To achieve such demanding quality, the community transitions towards Reinforcement Learning (RL) and agentic workflows. However, reliable evaluation has emerged as a critical bottleneck. Existing benchmarks predominantly evaluate ''whether it is right'' (basic prompt-following) while fundamentally neglecting ''whether it is good'' (cinematic quality, acting, and aesthetics). Furthermore, current automated metrics lack the domain-specific rigor required to provide trustworthy signals, creating a severe credibility gap between human aesthetic perception and machine scoring. To bridge this gap, we introduce EvalVerse, a comprehensive, pipeline-aware, and expert-calibrated evaluation framework. We treat video generation assessment not merely as an engineering task, but as a core scientific problem: the systematic digitization of subjective cinematic expertise. First, we organize domain knowledge into an evaluation taxonomy aligned with the professional filmmaking workflow (pre-production, production, and post-production). Second, we distill human expert judgments into a curated dataset with large-scale human annotations. Third, we inject this knowledge into Vision-Language Models (VLMs) through an expert-calibrated fine-tuning strategy, enabling the VLM to perform explicit Chain-of-Thought reasoning. Compared to previous works, EvalVerse not only retains compatibility with foundational ''rightness'' metrics, but also significantly expands the criteria to ''goodness'' and broaden the task coverage to complex multi-shot sequencing and audio-visual integration. Consequently, by providing granular diagnostic signals, EvalVerse transcends a static leaderboard and establishes a fundamental infrastructure for future work, such as reward models and evaluator agent.",
+      "authors": [
+        "Songlin Yang",
+        "Haobin Zhong",
+        "Ruilin Zhang",
+        "Xiaotong Zhao",
+        "Shuai Li",
+        "Kai Zheng",
+        "Xuyi Yang",
+        "Zhe Wang",
+        "Zhenchen Tang",
+        "Yang Li",
+        "Bohai Gu",
+        "Zhengwei Peng",
+        "Yidan Huang",
+        "Mengzhou Luo",
+        "Yihang Bo",
+        "Dalu Feng",
+        "Yujia Zhang",
+        "Juntao Ma",
+        "Ruiqi Wang",
+        "Lvmin Zhang",
+        "Yuwei Guo",
+        "Frank Guan",
+        "Maneesh Agrawala",
+        "Hongbo Fu",
+        "Alan Zhao",
+        "Anyi Rao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-22T06:22:21+00:00",
+      "link": "https://arxiv.org/pdf/2605.23271v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "benchmark for cinematic video generation with automated metrics",
+      "llm_evidence_cn": "面向电影视频生成的基准，包含自动化指标",
+      "llm_evidence": "面向电影视频生成的基准，包含自动化指标",
+      "canonical_evidence": "面向电影视频生成的基准，包含自动化指标",
+      "llm_tldr_en": "EvalVerse introduces a pipeline-aware and expert-calibrated benchmark for professional cinematic video generation, addressing the credibility gap between human perception and automated metrics by incorporating domain-specific quality dimensions and human alignment.",
+      "llm_tldr_cn": "现有视频生成基准主要评估提示遵循性，忽略电影质量、表演和美学等专业维度。EvalVerse提出了一个流水线感知、专家校准的基准，通过结合领域特定的质量维度和人类对齐，弥合了人类审美感知与机器评分之间的可信度差距。该基准采用强化学习和智能体工作流进行评估，为专业级电影视频生成提供可靠信号。",
+      "llm_tldr": "现有视频生成基准主要评估提示遵循性，忽略电影质量、表演和美学等专业维度。EvalVerse提出了一个流水线感知、专家校准的基准，通过结合领域特定的质量维度和人类对齐，弥合了人类审美感知与机器评分之间的可信度差距。该基准采用强化学习和智能体工作流进行评估，为专业级电影视频生成提供可靠信号。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.18365v1",
+      "source": "arxiv",
+      "title": "GeoFlow: Enforcing Implicit Geometric Consistency in Video Generation",
+      "abstract": "Generating geometrically consistent videos remains an open challenge: text-to-video diffusion models trained on web-scale data treat geometry only implicitly, leading to object deformation, texture drift, and non-rigid backgrounds under camera motion. Existing solutions either improve consistency as a byproduct, apply only to static scenes or realign the latent space of the model completely. We introduce a geometry-consistency reward that directly measures whether motion in a generated video is compatible with a coherent scene. Our key insight is that in physically consistent videos, background motion should be explainable by rigid camera-induced flow, while independently moving objects should preserve appearance identity along motion trajectories. We operationalize this using optical flow, depth--pose predictions, and feature-based correspondence to separate rigid and dynamic regions and evaluate their respective consistency. Integrating this reward with reinforcement fine-tuning transforms geometric consistency from an emergent property into an explicit optimization objective for video generators. The approach is model agnostic and applies to diverse dynamic scenes containing both camera and object motion. Experiments show substantial reductions in temporal geometric artifacts over strong baselines while preserving perceptual quality. Code and model weights are published.",
+      "authors": [
+        "Jan Ackermann",
+        "Shengqu Cai",
+        "Boyang Deng",
+        "Zhengfei Kuang",
+        "Songyou Peng",
+        "Gordon Wetzstein"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-18T13:17:08+00:00",
+      "link": "https://arxiv.org/pdf/2605.18365v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Proposes a geometry-consistency reward to directly measure geometric quality of generated videos",
+      "llm_evidence_cn": "提出几何一致性奖励直接度量生成视频的几何质量",
+      "llm_evidence": "提出几何一致性奖励直接度量生成视频的几何质量",
+      "canonical_evidence": "提出几何一致性奖励直接度量生成视频的几何质量",
+      "llm_tldr_en": "GeoFlow introduces a geometry-consistency reward that measures whether motion in generated videos is compatible with a coherent scene, enabling training-free consistency enforcement.",
+      "llm_tldr_cn": "文本到视频扩散模型生成的视频常出现物体变形和纹理漂移，几何一致性不足。GeoFlow提出几何一致性奖励函数，通过评估背景运动是否可解释为刚体相机流、独立物体是否沿运动轨迹保持外观一致性，来直接度量生成视频的几何质量。该方法无需训练即可提升几何一致性，为生成视频质量评估提供了新指标。",
+      "llm_tldr": "文本到视频扩散模型生成的视频常出现物体变形和纹理漂移，几何一致性不足。GeoFlow提出几何一致性奖励函数，通过评估背景运动是否可解释为刚体相机流、独立物体是否沿运动轨迹保持外观一致性，来直接度量生成视频的几何质量。该方法无需训练即可提升几何一致性，为生成视频质量评估提供了新指标。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.20016v1",
+      "source": "arxiv",
+      "title": "FGSVQA: Frequency-Guided Short-form Video Quality Assessment",
+      "abstract": "Short-form video poses new challenges to the quality assessment of user-generated content (UGC) due to its complex generation pipeline, rapid content variation, and mixed distortions. To address this challenge, we propose an end-to-end video quality assessment (VQA) framework that employs a dense visual encoder based on CLIP, and incorporates compression priors derived from the frequency domain to generate artifact- and structure-aware weight maps for feature aggregation. By explicitly decomposing artifact, structure, and original visual feature branches and adaptively fusing them over time through a learned gating module, the proposed method achieves accurate and efficient quality prediction. Experimental results show that our method achieves strong performance on short-form video datasets in terms of average rank and linear correlation (SRCC: 0.736, PLCC: 0.787), while maintaining efficient inference runtime. The code and additional results are available at: https://github.com/xinyiW915/FGSVQA.",
+      "authors": [
+        "Xinyi Wang",
+        "Angeliki Katsenou",
+        "Junxiao Shen",
+        "David Bull"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-05-19T15:44:45+00:00",
+      "link": "https://arxiv.org/pdf/2605.20016v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "End-to-end video quality assessment framework for short-form videos",
+      "llm_evidence_cn": "针对短视频的端到端质量评估框架",
+      "llm_evidence": "针对短视频的端到端质量评估框架",
+      "canonical_evidence": "针对短视频的端到端质量评估框架",
+      "llm_tldr_en": "FGSVQA proposes a frequency-guided VQA framework with artifact- and structure-aware weight maps, achieving accurate quality prediction for short-form videos.",
+      "llm_tldr_cn": "短视频因复杂生成流程和混合失真给质量评估带来新挑战。FGSVQA提出基于CLIP的密集视觉编码器，并融合频域压缩先验生成伪影和结构感知权重图，通过自适应门控融合实现准确高效的质量预测。实验表明该方法在多个基准上表现优异，为短视频质量评估提供了新方案。",
+      "llm_tldr": "短视频因复杂生成流程和混合失真给质量评估带来新挑战。FGSVQA提出基于CLIP的密集视觉编码器，并融合频域压缩先验生成伪影和结构感知权重图，通过自适应门控融合实现准确高效的质量预测。实验表明该方法在多个基准上表现优异，为短视频质量评估提供了新方案。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.21130v1",
+      "source": "arxiv",
+      "title": "VersusQ: Pairwise Margin Reasoning for Generalizable Video Quality Assessment",
+      "abstract": "Large Multimodal Models (LMMs) have shown promise for video quality assessment, but most methods still predict an absolute score for each video. Such pointwise supervision often mixes perceptual quality with dataset-specific calibration, including annotation protocols, rating habits, and score distributions. As a result, the learned scoring rule may work well within a benchmark but transfer poorly across unseen domains. We argue that relative comparisons alleviate the absolute-scale calibration bias by focusing purely on perceptual differences rather than dataset-specific rating habits. Consequently, we propose \\textbf{VersusQ}, a pairwise margin reasoning framework driven entirely by direct comparisons. Specifically, VersusQ performs LMM-based comparison between two videos, reasons about their visual and temporal quality differences, and predicts a signed continuous margin that captures both the preferred choice and the degree of difference. Furthermore, to align interpretable comparison rationales with fine-grained numerical differences, we introduce Margin-Coupled GRPO, which jointly optimizes rollout-based relational reasoning and continuous margin regression. Extensive experiments on multiple public VQA benchmarks demonstrate that VersusQ achieves state-of-the-art performance, strong cross-domain generalization, and reliable fine-grained ranking under heterogeneous evaluation scenarios.",
+      "authors": [
+        "Shibei Meng",
+        "Binxin Yang",
+        "Yuan Liu",
+        "Jiexuan Zhang",
+        "Zhengyao Lv",
+        "Hubery Yin",
+        "Qiang Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-20T13:03:17+00:00",
+      "link": "https://arxiv.org/pdf/2605.21130v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes pairwise margin reasoning for generalizable video quality assessment using LMMs",
+      "llm_evidence_cn": "提出基于LMM的成对边界推理以实现可泛化的视频质量评估",
+      "llm_evidence": "提出基于LMM的成对边界推理以实现可泛化的视频质量评估",
+      "canonical_evidence": "提出基于LMM的成对边界推理以实现可泛化的视频质量评估",
+      "llm_tldr_en": "VersusQ uses pairwise margin reasoning with LMMs for video quality assessment, focusing on relative comparisons to avoid dataset-specific calibration, achieving better generalization.",
+      "llm_tldr_cn": "针对现有视频质量评估方法受数据集校准偏差影响、跨域泛化能力弱的问题，提出VersusQ框架，利用大多模态模型进行成对边界推理，通过直接比较视频对的感知差异预测质量分数，避免了绝对评分中的数据集特定偏差，在多个基准上提升了泛化性能。该方法为生成视频的质量评估提供了新的范式。",
+      "llm_tldr": "针对现有视频质量评估方法受数据集校准偏差影响、跨域泛化能力弱的问题，提出VersusQ框架，利用大多模态模型进行成对边界推理，通过直接比较视频对的感知差异预测质量分数，避免了绝对评分中的数据集特定偏差，在多个基准上提升了泛化性能。该方法为生成视频的质量评估提供了新的范式。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment metrics for generative models",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.24652v1",
+      "source": "arxiv",
+      "title": "AVBench: Human-Aligned and Automated Evaluation Benchmark for Audio-Video Generative Models",
+      "abstract": "Rapid advances in audio-video (AV) generation have enabled high-fidelity synthesis with synchronized sound, particularly for human-related scenarios involving speech and interactions. Yet evaluation for AV generation remains at an early stage, with only a few coarse-grained benchmarks for human-related scenarios and relying on limited preset evaluations with generic multimodal LLMs, leading to inaccurate assessments of model capabilities. To address these issues, we introduce AVBench, a fully automated benchmark tailored for human-centric AV generation. AVBench is built on two key designs for comprehensive and accurate evaluation: (i) Human-centric and fine-grained metrics. AVBench integrates ten evaluation dimensions designed for human-centered real-world scenarios, covering visual quality, audio quality, and multi-level consistency across modalities. These practical metrics capture human-related details that existing benchmarks often overlook. (ii) Specialized evaluators via preference learning. To address the lack of specialized training data, we construct large-scale supervision by transforming real-world videos into diverse training pairs with controlled perturbations. After fine-tuning on this high-quality dataset, the evaluators learn to reliably detect subtle cross-modal inconsistencies. Crucially, instead of producing discrete textual judgment, AVBench derives continuous evaluation scores from the model's prediction confidence on binary decisions. This probabilistic scoring mechanism enables a more reliable assessment than traditional VQA-style evaluation and aligns closely with human judgment. Taken together, AVBench offers automated evaluation for AV generation, demonstrates strong potential for data filtering, and serves as a differentiable reward signal for Reinforcement Learning from Human Feedback (RLHF).",
+      "authors": [
+        "Jialiang Yang",
+        "Bin Xia",
+        "Ruihang Chu",
+        "Dingdong Wang",
+        "Wanke Xia",
+        "Zhun Mou",
+        "Tianyang Zhong",
+        "Yiting Zhao",
+        "Wenming Yang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV",
+        "cs.MM",
+        "cs.SD"
+      ],
+      "published": "2026-05-23T16:42:39+00:00",
+      "link": "https://arxiv.org/pdf/2605.24652v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "automated benchmark for audio-video generation with fine-grained metrics",
+      "llm_evidence_cn": "包含细粒度指标的自动音视频生成基准",
+      "llm_evidence": "包含细粒度指标的自动音视频生成基准",
+      "canonical_evidence": "包含细粒度指标的自动音视频生成基准",
+      "llm_tldr_en": "AVBench is a fully automated benchmark for human-centric audio-video generation evaluation, integrating ten fine-grained evaluation dimensions designed to capture speech, interaction, and synchronization quality, surpassing generic multimodal LLM-based assessments.",
+      "llm_tldr_cn": "现有音视频生成评估仅依赖粗粒度基准和通用多模态大模型，导致评估不准确。AVBench是一个面向人类中心音视频生成的自动基准，整合了十个细粒度评估维度，专门针对语音、交互和同步质量设计。实验证明AVBench能更准确反映模型能力，为音视频生成领域提供了可靠的评估框架。",
+      "llm_tldr": "现有音视频生成评估仅依赖粗粒度基准和通用多模态大模型，导致评估不准确。AVBench是一个面向人类中心音视频生成的自动基准，整合了十个细粒度评估维度，专门针对语音、交互和同步质量设计。实验证明AVBench能更准确反映模型能力，为音视频生成领域提供了可靠的评估框架。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.19382v1",
+      "source": "arxiv",
+      "title": "PRISM: A Benchmark for Programmatic Spatial-Temporal Reasoning",
+      "abstract": "Programmatic video generation through code offers geometric precision and temporal coherence beyond pixel-level diffusion models, yet rigorously evaluating whether language models can produce spatially correct animated outputs remains an open problem. We introduce PRISM, a large-scale benchmark of 10,372 human-calibrated instruction-code pairs (20 times larger than prior programmatic video generation benchmarks), grounded in real-world knowledge visualization scenarios across English and Chinese and spanning 437 subject categories. We further propose a funnel-style evaluation framework with four complementary metrics: Code-Level Reliability for executability, Spatial Reasoning for layout correctness over full animation sequences, and Prompt-Aware Dynamic Visual Complexity (PADVC) and Temporal Density (TD) for diagnosing dynamic expression and temporal activity. Systematic evaluation of seven mainstream LLMs reveals a striking Execution-Spatial Gap: the average drop from execution success rate to spatial pass rate is approximately 41%, showing that runnable code does not necessarily yield spatially coherent visual output. These findings show that programmatic video generation evaluation should go beyond executability. PRISM provides a principled benchmark for advancing spatially coherent code generation.",
+      "authors": [
+        "Qiran Zhang",
+        "Yuheng Wang",
+        "Runde Yang",
+        "Lin Wu",
+        "Jingru Fan",
+        "Shu Yao",
+        "Jie Zhang",
+        "Tianle Zhou",
+        "Huatao Li",
+        "Ruijie Shi",
+        "Yihan Li",
+        "Chen Qian"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-19T05:28:54+00:00",
+      "link": "https://arxiv.org/pdf/2605.19382v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Proposes benchmark and evaluation metrics for programmatic video generation",
+      "llm_evidence_cn": "为程序化视频生成提出基准和评估指标",
+      "llm_evidence": "为程序化视频生成提出基准和评估指标",
+      "canonical_evidence": "为程序化视频生成提出基准和评估指标",
+      "llm_tldr_en": "PRISM is a large-scale benchmark for evaluating programmatic video generation, with four complementary metrics assessing executability, spatial reasoning, and prompt-awareness.",
+      "llm_tldr_cn": "程序化视频生成通过代码实现精确几何和时序连贯性，但缺乏系统性评估基准。PRISM基准包含10,372个指令-代码对，覆盖437个主题类别，并提出漏斗式评估框架，包含代码可靠性、空间推理和动态视觉等四个互补指标。实验验证了基准的有效性，为程序化视频生成提供了标准化评估工具。",
+      "llm_tldr": "程序化视频生成通过代码实现精确几何和时序连贯性，但缺乏系统性评估基准。PRISM基准包含10,372个指令-代码对，覆盖437个主题类别，并提出漏斗式评估框架，包含代码可靠性、空间推理和动态视觉等四个互补指标。实验验证了基准的有效性，为程序化视频生成提供了标准化评估工具。",
+      "llm_tags": [
+        "query:vgen-metrics:composite"
+      ],
+      "matched_query_tag": "query:vgen-metrics:composite",
+      "matched_query_text": "Papers central to 视频生成的相关评价指标, especially work that connects or combines: transparent video generation evaluation; evaluating quality of generated videos; metrics for alpha channel in video generation; metrics for evaluating video generation models; quality of transparent videos in generation; video quality assessment metrics for generative models; What evaluation metrics are suitable for transparent video generation?; How to measure the quality of alpha channels in generated videos?; Are there any established metrics for video generation with transparency?; evaluation metrics for video generation models.",
+      "matched_requirement_id": "req-composite-vgen-metrics",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.26064v1",
+      "source": "arxiv",
+      "title": "Paris 2.0: A Decentralized Diffusion Model for Video Generation",
+      "abstract": "We present Paris 2.0, the first video generation model pre-trained through decentralized computation. Its training recipe builds upon Paris 1.0 (arXiv:2510.03434), the first ever open-weight Decentralized Diffusion Model (DDM), which showed that image generation can be trained without a monolithic GPU cluster. However, temporally coherent video generation had remained an open problem under decentralized training, and Paris 2.0 closes it.   In low-resolution text-to-video training, against a monolithic model trained on the same data under a matched total compute budget, Paris 2.0 cuts Frechet Video Distance (FVD) from 561.04 to 279.01, a ~2.0x improvement, and lifts CLIP text-video similarity and aesthetic score.",
+      "authors": [
+        "Ali Rouzbayani",
+        "Bidhan Roy",
+        "Marcos Villagra",
+        "Zhiying Jiang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-05-25T17:27:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.26064v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses FVD and CLIP to evaluate generated video quality",
+      "llm_evidence_cn": "使用FVD和CLIP评估生成视频质量",
+      "llm_evidence": "使用FVD和CLIP评估生成视频质量",
+      "canonical_evidence": "使用FVD和CLIP评估生成视频质量",
+      "llm_tldr_en": "Paris 2.0 is the first decentralized diffusion model for video generation, evaluated with FVD and CLIP metrics, showing improved video quality.",
+      "llm_tldr_cn": "Paris 2.0是首个通过去中心化计算预训练的视频扩散模型，解决了去中心化训练中的时序连贯性问题。在低分辨率文本到视频任务上，使用FVD和CLIP评估，相比单体模型FVD从561.04降至279.01，提升约2倍，同时提高文本-视频相似度和美学分数。",
+      "llm_tldr": "Paris 2.0是首个通过去中心化计算预训练的视频扩散模型，解决了去中心化训练中的时序连贯性问题。在低分辨率文本到视频任务上，使用FVD和CLIP评估，相比单体模型FVD从561.04降至279.01，提升约2倍，同时提高文本-视频相似度和美学分数。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.25940v1",
+      "source": "arxiv",
+      "title": "How Accurate are Video Quality Models for Diffusion-Based Video Super-Resolution?",
+      "abstract": "Recent video super-resolution (VSR) approaches use deep neural networks to enhance low-quality input videos and recover visual detail, with diffusion-based methods in particular showing promising results. In this paper, we investigate whether existing video quality models can be used to assess the performance of these diffusion-based VSR methods, by comparing model predictions with results from a subjective test. The study compares six upscaling methods (Lanczos, Rhea, SCST, DOVE, SeedVR2, Starlight Mini) applied to both compressed (AV1 and DCVC-RT) and uncompressed low-resolution videos considering the play-out on a UHD-1/4K screen. A range of full- and no-reference quality models are used to assess their applicability to this new type of quality degradation, focusing on within-sequence performance. The results highlight that CNN-based full-reference models, such as LPIPS, DISTS, and CVQA-FR show significantly higher correlation coefficients than both conventional full- as well as the tested no-reference models. Most overestimate the overly sharp results of SCST, with VMAF mainly failing due to spatial inconsistencies introduced by Starlight Mini. None of the tested video quality models reach sufficient accuracy so as to replace complementary subjective testing. The reference, degraded and upscaled videos, as well as the user ratings and model scores are made available with the paper at https://github.com/Telecommunication-Telemedia-Assessment/AVT-VQDB-UHD-1-VSR as open data.",
+      "authors": [
+        "Benjamin Herb",
+        "Steve Göring",
+        "Alexander Raake",
+        "Rakesh Rao Ramachandra Rao"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-05-25T15:18:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.25940v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "investigates accuracy of video quality models for diffusion-based video super-resolution",
+      "llm_evidence_cn": "研究了视频质量模型在扩散视频超分辨率中的准确性",
+      "llm_evidence": "研究了视频质量模型在扩散视频超分辨率中的准确性",
+      "canonical_evidence": "研究了视频质量模型在扩散视频超分辨率中的准确性",
+      "llm_tldr_en": "This paper evaluates existing video quality models on diffusion-based VSR outputs via subjective tests, revealing their accuracy and limitations for assessing generative video quality.",
+      "llm_tldr_cn": "针对扩散视频超分辨率（VSR）方法的质量评估需求，本文通过主观实验检验了多种全参考和无参考视频质量模型在评估扩散VSR输出时的准确性。实验比较了六种上采样方法，发现现有模型在生成视频上的表现与主观感知存在差异，揭示了评估生成视频质量的挑战和未来方向。",
+      "llm_tldr": "针对扩散视频超分辨率（VSR）方法的质量评估需求，本文通过主观实验检验了多种全参考和无参考视频质量模型在评估扩散VSR输出时的准确性。实验比较了六种上采样方法，发现现有模型在生成视频上的表现与主观感知存在差异，揭示了评估生成视频质量的挑战和未来方向。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment metrics for generative models",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2605.23699v1",
+      "source": "arxiv",
+      "title": "CRONOS: Benchmarking Counterfactual Physical Consistency in Video Models",
+      "abstract": "Video prediction is increasingly viewed as a path toward generalizable world models, yet it remains unclear whether these systems learn underlying causal structure or merely exploit superficial visual correlations for future prediction. We introduce CRONOS, an intervention-based benchmark designed to evaluate counterfactual physical consistency: whether a model's predictions of physical events respond appropriately to controlled changes in the visual input, such as variations of scene context, viewpoint, object appearance, and object category. Built in a photorealistic Unreal Engine environment, CRONOS enables controlled, high-fidelity generation of videos across diverse scenes and dynamics. In contrast to previous benchmarks, CRONOS systematically intervenes on four key factors - viewpoint, scene, object category, and object appearance - while keeping the underlying physical event type, such as a collision, occlusion, or fall, fixed. Our evaluation of recent open-source video generators reveals substantial failures in counterfactual physical consistency: prediction quality for the same physical event type is affected by appearance, environment, and, particularly by viewpoint changes. CRONOS provides a controlled and reproducible testbed for diagnosing how the quality of generated videos changes for different interventions, establishing a concrete target for developing models that perform consistently across changes of multiple conditions. The dataset and code are available at our project page.",
+      "authors": [
+        "León Begiristain",
+        "Olaf Dünkel",
+        "Adam Kortylewski"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-22T14:51:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.23699v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "benchmark for evaluating physical consistency in video models",
+      "llm_evidence_cn": "评估视频模型物理一致性的基准",
+      "llm_evidence": "评估视频模型物理一致性的基准",
+      "canonical_evidence": "评估视频模型物理一致性的基准",
+      "llm_tldr_en": "CRONOS is an intervention-based benchmark for evaluating counterfactual physical consistency in video prediction models, using photorealistic Unreal Engine scenes to test if models respond correctly to controlled changes in scene context, viewpoint, object appearance, and category.",
+      "llm_tldr_cn": "视频预测模型是否学习到因果结构尚不明确。CRONOS是一个基于干预的基准，用于评估视频模型的反事实物理一致性。它利用虚幻引擎构建逼真场景，通过控制场景上下文、视角、物体外观和类别等变化，系统测试模型预测是否对干预做出正确响应。该基准揭示了现有模型在因果推理方面的不足。",
+      "llm_tldr": "视频预测模型是否学习到因果结构尚不明确。CRONOS是一个基于干预的基准，用于评估视频模型的反事实物理一致性。它利用虚幻引擎构建逼真场景，通过控制场景上下文、视角、物体外观和类别等变化，系统测试模型预测是否对干预做出正确响应。该基准揭示了现有模型在因果推理方面的不足。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment metrics for generative models",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
