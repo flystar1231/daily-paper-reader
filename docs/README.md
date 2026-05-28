@@ -6,29 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-27
-- 运行时间：2026-05-27 20:47:13 UTC
+- 最新运行日期：2026-05-28
+- 运行时间：2026-05-28 21:54:50 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：1
+- 本次总论文数：2
+- 精读区：0
 - 速读区：2
 
 ### 今日简报（AI）
-今日精读1篇高分论文《LongAV-Compass》，聚焦分钟级音视频生成统一评估；速读涵盖程序化时空推理基准PRISM与几何奖励视频对齐。建议关注音视频生成评估标准的最新进展，以及空间推理在视频生成中的应用潜力。
-- 详情：[/202605/27/README](/202605/27/README)
+今日日报涵盖2篇速读论文，聚焦多说话人视听生成中的表现力诊断及视频物理合理性提升。  
+值得关注的是：多模态生成需平衡角色表现力与交互自然性，而“自评分+推理优化”方法可有效改善生成内容的物理合理性。  
+后续建议：若对媒体生成感兴趣，可优先精读这两篇7分论文，重点关注其失败案例分析与改进思路。
+- 详情：[/202605/28/README](/202605/28/README)
 
 ### 精读区论文标签
-1. [LongAV-Compass: Towards Unified Evaluation of Minute-Scale Audio-Visual Generation Across T2AV, I2AV, and V2AV](/202605/27/2605.26244v1-longav-compass-towards-unified-evaluation-of-minute-scale-audio-visual-generation-across-t2av-i2av-and-v2av)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：针对分钟级视听生成的统一评估基准，覆盖多种条件
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [PRISM: A Benchmark for Programmatic Spatial-Temporal Reasoning](/202605/27/2605.19382v1-prism-a-benchmark-for-programmatic-spatial-temporal-reasoning)  
+1. [MTAVG-Bench 2.0: Diagnosing Failure Modes of Cinematic Expressiveness in Multi-Talker Audio-Video Generation](/202605/28/2605.28035v1-mtavg-bench-20-diagnosing-failure-modes-of-cinematic-expressiveness-in-multi-talker-audio-video-generation)  
    标签：评分：7.0/10、query:vgen-metrics
-   evidence：面向程序化视频生成的基准，包含空间推理等评价指标
-2. [Geo-Align: Video Generation Alignment via Metric Geometry Reward](/202605/27/2605.23903v1-geo-align-video-generation-alignment-via-metric-geometry-reward)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：用于视频生成对齐的度量几何奖励
+   evidence：提出用于多说话人视频生成电影表现力评估的基准
+2. [Proprio: Latent Self-Scoring and Inference-Time Refinement for Physically Plausible Video Generation](/202605/28/2605.28230v1-proprio-latent-self-scoring-and-inference-time-refinement-for-physically-plausible-video-generation)  
+   标签：评分：7.0/10、query:vgen-metrics
+   evidence：提出自评分方法评估生成视频的物理合理性
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,39 @@
+{
+  "label": "2026-05-28",
+  "date": "2026-05-28",
+  "generated_at": "2026-05-28T21:54:57",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202605/28/2605.28035v1-mtavg-bench-20-diagnosing-failure-modes-of-cinematic-expressiveness-in-multi-talker-audio-video-generation",
+      "section": "quick",
+      "title_en": "MTAVG-Bench 2.0: Diagnosing Failure Modes of Cinematic Expressiveness in Multi-Talker Audio-Video Generation",
+      "authors": "Haitian Li, Yanghao Zhou, Heyan Huang, Liangji Chen, YiMing Cheng, Xu Liu, Dian Jin, Jiajun Xu, Jingyun Liao, Tian Lan, Ziqin Zhou, Yueying Liu, Yu Bai, Changsen Yuan, Jinxing Zhou, Xian-Ling Mao, Xuefeng Chen, Yousheng Feng",
+      "date": "2026-05-27",
+      "pdf": "https://arxiv.org/pdf/2605.28035v1",
+      "score": "7.0",
+      "evidence": "提出用于多说话人视频生成电影表现力评估的基准",
+      "tldr": "多说话人音视频生成（MTAVG）模型在基础音画同步指标上表现良好，但缺乏对场景级电影表现力的评估。为此，提出MTAVG-Bench 2.0，构建涵盖表演、叙事、氛围和音画语言的高层失败分类法，并创建超1万问答实例及短剧级和时间定位子集。实验表明，商业模型Gemini表现最佳，但复杂失败仍难诊断。该基准为电影级生成中的失败诊断提供了系统性工具。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "In recent years, Multi-Talker Audio-Video Generation (MTAVG) models have shown promising performance on fundamental metrics such as lip-sync and audio-visual alignment. However, these metrics remain insufficient for assessing cinematic expressiveness in scene-level generation. In multi-character scenes, generation models must go beyond audio-visual realism to convey coherent character performance and other higher-level cinematic qualities. To fill this gap, we introduce MTAVG-Bench 2.0, a benchmark for diagnosing failure modes of cinematic expressiveness in multi-talker audio-video generation. Unlike prior settings that mainly focus on the quality of basic multi-turn dialogue, MTAVG-Bench 2.0 targets short-drama and scene-level generation, and establishes a high-level failure taxonomy spanning acting, narrative, atmosphere, and audio-visual language. Based on this taxonomy, we construct more than 10,000 question-answering evaluation instances, together with subsets for short-drama-level assessment and temporal localization of failure modes, to systematically evaluate the ability of omni large language models to diagnose high-level audio-visual failures. Experimental results show that commercial omni models such as Gemini substantially outperform other evaluators, yet even the strongest models continue to struggle with complex failures in our benchmark. These results demonstrate that MTAVG-Bench 2.0 provides a systematic benchmark for failure diagnosis in cinematic multi-talker audio-video generation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/28/2605.28230v1-proprio-latent-self-scoring-and-inference-time-refinement-for-physically-plausible-video-generation",
+      "section": "quick",
+      "title_en": "Proprio: Latent Self-Scoring and Inference-Time Refinement for Physically Plausible Video Generation",
+      "authors": "Mariam Hassan, Kaouther Messaoud, Wuyang Li, Alexandre Alahi",
+      "date": "2026-05-27",
+      "pdf": "https://arxiv.org/pdf/2605.28230v1",
+      "score": "7.0",
+      "evidence": "提出自评分方法评估生成视频的物理合理性",
+      "tldr": "视频生成模型虽视觉逼真但常违反物理规律。Proprio无需训练，利用冻结生成器在潜空间扰动下的流残差大小和稳定性作为自评分信号，结合动态时空掩码聚焦运动区域，进行best-of-N搜索或梯度精炼。在多个基准上显著提升物理合理性，Physics-IQ提升16.5%，VideoPhy2-hard提升20.6%，人类偏好率达三分之二。表明冻结生成器内部信号可用于自我改进物理合理性，优于外部评分模型。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Modern video generative models produce visually impressive results, yet frequently violate basic physical principles. We propose Proprio, a training-free framework that enables a frozen video generator to assess and improve the physical plausibility of its own outputs. Inspired by proprioception, the biological sense of one's own movement, Proprio treats the model's flow residual under controlled latent perturbations as a self-scoring signal. Samples that are better explained by the generator's learned dynamics induce smaller and more stable residuals. We aggregate this signal across timesteps and perturbations, focus it on motion-relevant regions with a dynamic spatiotemporal mask, and use it for best-of-N search, gradient-based self-refinement, or both. Across text-to-video and image-to-video benchmarks, Proprio consistently improves physical plausibility, outperforming VLM-based scoring, and external world-model baselines in several settings. With TurboWan2.2, Proprio improves Physics-IQ from 32.2 to 37.5 (+16.5%) and VideoPhy2-hard physical commonsense from 45.6 to 55.0 (+20.6%). Human evaluation further shows that raters prefer Proprio-selected or refined videos for physical plausibility in roughly two-thirds of comparisons. These results suggest that frozen video generators contain actionable internal signals for evaluating and improving the physical plausibility of their own outputs.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
