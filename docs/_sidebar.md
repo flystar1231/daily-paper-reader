@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-05-29 <!--dpr-date:20260529-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/29/2605.30090v1-directorbench-diagnosing-long-form-video-generation-with-personalized-multi-agent-evaluation" data-sidebar-item="{&quot;title&quot;: &quot;DirectorBench: Diagnosing Long-Form Video Generation with Personalized Multi-Agent Evaluation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.30090v1-directorbench-diagnosing-long-form-video-generation-with-personalized-multi-agent-evaluation&quot;, &quot;score&quot;: &quot;9.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;vgen-metrics&quot;}], &quot;evidence&quot;: &quot;提出DirectorBench，一个针对长视频生成的多智能体诊断基准&quot;}">DirectorBench: Diagnosing Long-Form Video Generation with Personalized Multi-Agent Evaluation</a>
   * 2026-05-28 <!--dpr-date:20260528-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/28/2605.28035v1-mtavg-bench-20-diagnosing-failure-modes-of-cinematic-expressiveness-in-multi-talker-audio-video-generation" data-sidebar-item="{&quot;title&quot;: &quot;MTAVG-Bench 2.0: Diagnosing Failure Modes of Cinematic Expressiveness in Multi-Talker Audio-Video Generation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.28035v1-mtavg-bench-20-diagnosing-failure-modes-of-cinematic-expressiveness-in-multi-talker-audio-video-generation&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;vgen-metrics&quot;}], &quot;evidence&quot;: &quot;提出用于多说话人视频生成电影表现力评估的基准&quot;}">MTAVG-Bench 2.0: Diagnosing Failure Modes of Cinematic Expressiveness in Multi-Talker Audio-Video Generation</a>

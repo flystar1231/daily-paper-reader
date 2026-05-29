@@ -1,0 +1,24 @@
+{
+  "label": "2026-05-29",
+  "date": "2026-05-29",
+  "generated_at": "2026-05-29T21:26:31",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/29/2605.30090v1-directorbench-diagnosing-long-form-video-generation-with-personalized-multi-agent-evaluation",
+      "section": "deep",
+      "title_en": "DirectorBench: Diagnosing Long-Form Video Generation with Personalized Multi-Agent Evaluation",
+      "authors": "Jiamin Chen, Qianben Chen, Jiawen Zhang, Yidi Wu, Yuchen Li, Xiaokun Zhang, Wangchunshu Zhou, Chen Ma",
+      "date": "2026-05-28",
+      "pdf": "https://arxiv.org/pdf/2605.30090v1",
+      "score": "9.0",
+      "evidence": "提出DirectorBench，一个针对长视频生成的多智能体诊断基准",
+      "tldr": "长视频生成评估面临缺乏诊断性和个性化的问题。DirectorBench提出多智能体诊断基准，包含80元数据、7用户画像和40检查点，覆盖脚本、视觉、音频、跨模态和稳定性五维度。评估发现跨单元过渡质量仅0.256，提示级用户需求满足度0.71，工作流间差异显著。该基准揭示了聚合分数隐藏的失败模式，强调诊断和画像感知评估的重要性。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Long-form video generation is rapidly moving from short, single-scene synthesis toward minute-long, multi-shot creation with narrative structure, cinematic control, audio, and cross-modal synchronization. However, evaluating such videos remains challenging, since existing benchmarks largely focus on local visual quality, short-horizon temporal consistency, or generic prompt alignment, and provide limited diagnosis of workflow failures and user-dependent preferences. We introduce DirectorBench, a personalized multi-agent diagnostic benchmark for long-form video generation. DirectorBench evaluates generated videos with respect to 80 structured metadata entries, 7 user profiles, and 40 checkpoint criteria across 5 dimensions: script, visual, audio, cross-modal, and stability. Instead of reducing quality to a single aggregate score, DirectorBench localizes checkpoint-level bottlenecks and supports profile-aware evaluation. We evaluate 4 long-form video generation workflows, 6 base LLMs, and 7 user profiles. Across workflows, DirectorBench reveals a between-unit bottleneck: transition quality averages only 0.256 and reaches 0.356 for the best workflow, while prompt-level user demand fulfillment averages 0.71. We further conduct human evaluation with 14 annotators to validate the alignment between DirectorBench and human judgment. The results show that DirectorBench captures human-perceptible quality differences and reveals workflow- and profile-dependent failure modes that are hidden by aggregate scoring. These findings highlight the importance of diagnostic and profile-aware benchmarking for long-form video generation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

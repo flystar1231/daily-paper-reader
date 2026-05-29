@@ -1,0 +1,59 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-29T21:25:08.354221+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2605.30090v1",
+      "source": "arxiv",
+      "title": "DirectorBench: Diagnosing Long-Form Video Generation with Personalized Multi-Agent Evaluation",
+      "abstract": "Long-form video generation is rapidly moving from short, single-scene synthesis toward minute-long, multi-shot creation with narrative structure, cinematic control, audio, and cross-modal synchronization. However, evaluating such videos remains challenging, since existing benchmarks largely focus on local visual quality, short-horizon temporal consistency, or generic prompt alignment, and provide limited diagnosis of workflow failures and user-dependent preferences. We introduce DirectorBench, a personalized multi-agent diagnostic benchmark for long-form video generation. DirectorBench evaluates generated videos with respect to 80 structured metadata entries, 7 user profiles, and 40 checkpoint criteria across 5 dimensions: script, visual, audio, cross-modal, and stability. Instead of reducing quality to a single aggregate score, DirectorBench localizes checkpoint-level bottlenecks and supports profile-aware evaluation. We evaluate 4 long-form video generation workflows, 6 base LLMs, and 7 user profiles. Across workflows, DirectorBench reveals a between-unit bottleneck: transition quality averages only 0.256 and reaches 0.356 for the best workflow, while prompt-level user demand fulfillment averages 0.71. We further conduct human evaluation with 14 annotators to validate the alignment between DirectorBench and human judgment. The results show that DirectorBench captures human-perceptible quality differences and reveals workflow- and profile-dependent failure modes that are hidden by aggregate scoring. These findings highlight the importance of diagnostic and profile-aware benchmarking for long-form video generation.",
+      "authors": [
+        "Jiamin Chen",
+        "Qianben Chen",
+        "Jiawen Zhang",
+        "Yidi Wu",
+        "Yuchen Li",
+        "Xiaokun Zhang",
+        "Wangchunshu Zhou",
+        "Chen Ma"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.CV"
+      ],
+      "published": "2026-05-28T15:35:34+00:00",
+      "link": "https://arxiv.org/pdf/2605.30090v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes DirectorBench, a multi-agent diagnostic benchmark for long-form video generation evaluation",
+      "llm_evidence_cn": "提出DirectorBench，一个针对长视频生成的多智能体诊断基准",
+      "llm_evidence": "提出DirectorBench，一个针对长视频生成的多智能体诊断基准",
+      "canonical_evidence": "提出DirectorBench，一个针对长视频生成的多智能体诊断基准",
+      "llm_tldr_en": "DirectorBench introduces a personalized multi-agent diagnostic benchmark for evaluating long-form video generation across 5 dimensions, addressing gaps in current evaluation methods.",
+      "llm_tldr_cn": "长视频生成的评估面临挑战，现有基准仅关注局部质量和短期一致性。DirectorBench提出多智能体诊断框架，覆盖80个结构化元数据、7个用户画像和40个检查点，从剧本、画面、音频等5个维度评测，同时支持个性化偏好。该工作直接服务于视频生成评估，但未涉及透明视频。",
+      "llm_tldr": "长视频生成的评估面临挑战，现有基准仅关注局部质量和短期一致性。DirectorBench提出多智能体诊断框架，覆盖80个结构化元数据、7个用户画像和40个检查点，从剧本、画面、音频等5个维度评测，同时支持个性化偏好。该工作直接服务于视频生成评估，但未涉及透明视频。",
+      "llm_tags": [
+        "query:vgen-metrics:composite"
+      ],
+      "matched_query_tag": "query:vgen-metrics:composite",
+      "matched_query_text": "Papers central to 视频生成的相关评价指标, especially work that connects or combines: transparent video generation evaluation; evaluating quality of generated videos; metrics for alpha channel in video generation; metrics for evaluating video generation models; quality of transparent videos in generation; video quality assessment metrics for generative models; What evaluation metrics are suitable for transparent video generation?; How to measure the quality of alpha channels in generated videos?; Are there any established metrics for video generation with transparency?; evaluation metrics for video generation models.",
+      "matched_requirement_id": "req-composite-vgen-metrics",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
