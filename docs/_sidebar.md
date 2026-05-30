@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-05-30 <!--dpr-date:20260530-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/30/2605.30090v1-directorbench-diagnosing-long-form-video-generation-with-personalized-multi-agent-evaluation" data-sidebar-item="{&quot;title&quot;: &quot;DirectorBench: Diagnosing Long-Form Video Generation with Personalized Multi-Agent Evaluation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.30090v1-directorbench-diagnosing-long-form-video-generation-with-personalized-multi-agent-evaluation&quot;, &quot;score&quot;: &quot;9.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;vgen-metrics&quot;}], &quot;evidence&quot;: &quot;提出了包含评估标准的诊断基准，用于视频生成质量评估&quot;}">DirectorBench: Diagnosing Long-Form Video Generation with Personalized Multi-Agent Evaluation</a>
   * 2026-05-29 <!--dpr-date:20260529-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/29/2605.30090v1-directorbench-diagnosing-long-form-video-generation-with-personalized-multi-agent-evaluation" data-sidebar-item="{&quot;title&quot;: &quot;DirectorBench: Diagnosing Long-Form Video Generation with Personalized Multi-Agent Evaluation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.30090v1-directorbench-diagnosing-long-form-video-generation-with-personalized-multi-agent-evaluation&quot;, &quot;score&quot;: &quot;9.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;vgen-metrics&quot;}], &quot;evidence&quot;: &quot;提出DirectorBench，一个针对长视频生成的多智能体诊断基准&quot;}">DirectorBench: Diagnosing Long-Form Video Generation with Personalized Multi-Agent Evaluation</a>
