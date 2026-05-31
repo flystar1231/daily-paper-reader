@@ -6,21 +6,19 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-30
-- 运行时间：2026-05-30 20:34:39 UTC
+- 最新运行日期：2026-05-31
+- 运行时间：2026-05-31 20:46:43 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：1
+- 本次总论文数：0
+- 精读区：0
 - 速读区：0
 
 ### 今日简报（AI）
-今日精读高分论文《DirectorBench》，聚焦长视频生成诊断与个性化多智能体评估方法。该研究提出一种新框架，通过多智能体协作精准剖析长视频生成中的不足。建议普通读者关注视频生成评估指标演进，尤其是面向长视频的细粒度诊断工具。
-- 详情：[/202605/30/README](/202605/30/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202605/31/README](/202605/31/README)
 
 ### 精读区论文标签
-1. [DirectorBench: Diagnosing Long-Form Video Generation with Personalized Multi-Agent Evaluation](/202605/30/2605.30090v1-directorbench-diagnosing-long-form-video-generation-with-personalized-multi-agent-evaluation)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：提出了包含评估标准的诊断基准，用于视频生成质量评估
+- 本次无精读推荐。
 
 ### 速读区论文标签
 - 本次无速读推荐。
