@@ -1,0 +1,1057 @@
+{
+  "top_k": 200,
+  "generated_at": "2026-06-01T03:46:22.221385+00:00",
+  "papers": [
+    {
+      "id": "openreview-neurips-2025-56c0n6zspc",
+      "source": "NeurIPS-2025-Accepted",
+      "title": "MJ-Video: Benchmarking and Rewarding Video Generation with Fine-Grained Video Preference",
+      "abstract": "Recent advancements in video generation have significantly improved the ability to synthesize videos from text instructions. However, existing models still struggle with key challenges such as instruction misalignment, content hallucination, safety concerns, and generation bias. To address these limitations, we introduce MJ-BENCH-VIDEO, a large-scale video preference benchmark designed to evaluate video generation across five critical aspects: Alignment, Safety, Fineness, Coherence & Consistency, and Bias & Fairness. This benchmark further incorporates 28 fine-grained criteria to provide a comprehensive evaluation of video preference. Building upon this dataset, we propose MJ-VIDEO, a Mixture-of-Experts (MoE)-based video reward model designed to deliver fine-grained reward. MJ-VIDEO can dynamically select relevant experts to accurately judge the preference based on the input text-video pair. This architecture enables more precise and adaptable preference judgments. Through extensive benchmarking on MJ-BENCH-VIDEO, we analyze the limitations of existing video reward models and demonstrate the superior performance of MJ-VIDEO in video preference assessment, achieving 17.58% and 15.87% improvements in overall and fine-grained preference judgments, respectively. Additionally, MJ-VIDEO is able to improve the alignment performance in video generation via preference fine-tuning.",
+      "authors": [
+        "Haibo Tong",
+        "Zhaoyang Wang",
+        "Zhaorun Chen",
+        "Haonian Ji",
+        "Shi Qiu",
+        "Siwei Han",
+        "Kexin Geng",
+        "Zhongkai Xue",
+        "Yiyang Zhou",
+        "Peng Xia",
+        "Mingyu Ding",
+        "Rafael Rafailov",
+        "Chelsea Finn",
+        "Huaxiu Yao"
+      ],
+      "primary_category": "Benchmark",
+      "categories": [
+        "Benchmark",
+        "Video Preference",
+        "RLHF",
+        "Reward Model"
+      ],
+      "published": "2025-09-18T17:32:49.381+00:00",
+      "link": "https://openreview.net/forum?id=56C0n6zSpC",
+      "pdf_url": null,
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ]
+    },
+    {
+      "id": "openreview-neurips-2025-jzozkxa8wd",
+      "source": "NeurIPS-2025-Accepted",
+      "title": "Stable Cinemetrics : Structured Taxonomy and Evaluation for Professional Video Generation",
+      "abstract": "Recent advances in video generation have enabled high-fidelity video synthesis from user provided prompts. However, existing models and benchmarks fail to capture the complexity and requirements of professional video generation. Towards that goal, we introduce Stable Cinemetrics, a structured evaluation framework that formalizes filmmaking controls into four disentangled, hierarchical taxonomies: Setup, Event, Lighting, and Camera. Together, these taxonomies define 76 fine-grained control nodes grounded in industry practices. Using these taxonomies, we construct a benchmark of prompts aligned with professional use cases and develop an automated pipeline for prompt categorization and question generation, enabling independent evaluation of each control dimension. We conduct a large-scale human study spanning 10+ models and 20K videos, annotated by a pool of 80+ film professionals. Our analysis, both coarse and fine-grained reveal that even the strongest current models exhibit significant gaps, particularly in Events and Camera-related controls. To enable scalable evaluation, we train an automatic evaluator, a vision-language model aligned with expert annotations that outperforms existing zero-shot baselines. SCINE is the first approach to situate professional video generation within the landscape of video generative models, introducing taxonomies centered around cinematic controls and supporting them with structured evaluation pipelines and detailed analyses to guide future research.",
+      "authors": [
+        "Agneet Chatterjee",
+        "Rahim Entezari",
+        "Maksym Zhuravinskyi",
+        "Maksim Lapin",
+        "Reshinth Adithyan",
+        "Amit Raj",
+        "Chitta Baral",
+        "Yezhou Yang",
+        "Varun Jampani"
+      ],
+      "primary_category": "Video Generation",
+      "categories": [
+        "Video Generation",
+        "Professional Controls",
+        "Evaluations"
+      ],
+      "published": "2025-09-18T17:29:01.232+00:00",
+      "link": "https://openreview.net/forum?id=JzOZkxa8Wd",
+      "pdf_url": null,
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ]
+    },
+    {
+      "id": "openreview-neurips-2025-msin7i0byh",
+      "source": "NeurIPS-2025-Accepted",
+      "title": "Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion",
+      "abstract": "We introduce Self Forcing, a novel training paradigm for autoregressive video diffusion models. It addresses the longstanding issue of exposure bias, where models trained on ground-truth context must generate sequences conditioned on their own imperfect outputs during inference. Unlike prior methods that denoise future frames based on ground-truth context frames, Self Forcing conditions each frame's generation on previously self-generated outputs by performing autoregressive rollout with key-value (KV) caching during training. This strategy enables supervision through a holistic loss at the video level that directly evaluates the quality of the entire generated sequence, rather than relying solely on traditional frame-wise objectives. To ensure training efficiency, we employ a few-step diffusion model along with a stochastic gradient truncation strategy, effectively balancing computational cost and performance. We further introduce a rolling KV cache mechanism that enables efficient autoregressive video extrapolation. Extensive experiments demonstrate that our approach achieves real-time streaming video generation with sub-second latency on a single GPU, while matching or even surpassing the generation quality of significantly slower and non-causal diffusion models.",
+      "authors": [
+        "Xun Huang",
+        "Zhengqi Li",
+        "Guande He",
+        "Mingyuan Zhou",
+        "Eli Shechtman"
+      ],
+      "primary_category": "Video generation",
+      "categories": [
+        "Video generation",
+        "Autoregressive models",
+        "Diffusion models",
+        "World models"
+      ],
+      "published": "2025-09-18T17:28:32.032+00:00",
+      "link": "https://openreview.net/forum?id=mSiN7i0BYH",
+      "pdf_url": null,
+      "tags": [
+        "keyword:vgen-metrics"
+      ]
+    },
+    {
+      "id": "openreview-neurips-2025-sbpwnxhwjq",
+      "source": "NeurIPS-2025-Accepted",
+      "title": "Emergent Temporal Correspondences from Video Diffusion Transformers",
+      "abstract": "Recent advancements in video diffusion models based on Diffusion Transformers (DiTs) have achieved remarkable success in generating temporally coherent videos. Yet, a fundamental question persists: how do these models internally establish and represent temporal correspondences across frames?  We introduce DiffTrack, the first quantitative analysis framework designed to answer this question. DiffTrack constructs a dataset of prompt-generated video with pseudo ground-truth tracking annotations and proposes novel evaluation metrics to systematically analyze how each component within the full 3D attention mechanism of DiTs (e.g., representations, layers, and timesteps) contributes to establishing temporal correspondences. Our analysis reveals that query-key similarities in specific (but not all) layers play a critical role in temporal matching, and that this matching becomes increasingly prominent throughout denoising. We demonstrate practical applications of DiffTrack in zero-shot point tracking, where it achieves state-of-the-art performance compared to existing vision foundation and self-supervised video models. Further, we extend our findings to motion-enhanced video generation with a novel guidance method that improves temporal consistency of generated videos without additional training. We believe our work offers crucial insights into the inner workings of video DiTs and establishes a foundation for further research and applications leveraging their temporal understanding.",
+      "authors": [
+        "Jisu Nam",
+        "Soowon Son",
+        "Dahyun Chung",
+        "Jiyoung Kim",
+        "Siyoon Jin",
+        "Junhwa Hur",
+        "Seungryong Kim"
+      ],
+      "primary_category": "Video Generative Models",
+      "categories": [
+        "Video Generative Models",
+        "Video Diffusion Models",
+        "Temporal Correspondence"
+      ],
+      "published": "2025-09-18T17:38:21.923+00:00",
+      "link": "https://openreview.net/forum?id=SBPWnXhwjq",
+      "pdf_url": null,
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ]
+    },
+    {
+      "id": "openreview-neurips-2025-c9eamyypov",
+      "source": "NeurIPS-2025-Accepted",
+      "title": "Inference-Time Text-to-Video Alignment with Diffusion Latent Beam Search",
+      "abstract": "The remarkable progress in text-to-video diffusion models enables the generation of photorealistic videos, although the content of these generated videos often includes unnatural movement or deformation, reverse playback, and motionless scenes. Recently, an alignment problem has attracted huge attention, where we steer the output of diffusion models based on some measure of the content's goodness. Because there is a large room for improvement of perceptual quality along the frame direction, we should address which metrics we should optimize and how we can optimize them in the video generation. In this paper, we propose diffusion latent beam search with lookahead estimator, which can select a better diffusion latent to maximize a given alignment reward at inference time. We then point out that improving perceptual video quality with respect to alignment to prompts requires reward calibration by weighting existing metrics. This is because when humans or vision language models evaluate outputs, many previous metrics to quantify the naturalness of video do not always correlate with the evaluation. We demonstrate that our method improves the perceptual quality evaluated on the calibrated reward, VLMs, and human assessment, without model parameter update, and outputs the best generation compared to greedy search and best-of-N sampling under much more efficient computational cost. The experiments highlight that our method is beneficial to many capable generative models, and provide a practical guideline: we should prioritize the inference-time compute allocation into enabling the lookahead estimator and increasing the search budget, rather than expanding the denoising steps.",
+      "authors": [
+        "Yuta Oshima",
+        "Masahiro Suzuki",
+        "Yutaka Matsuo",
+        "Hiroki Furuta"
+      ],
+      "primary_category": "Inference-Time Search",
+      "categories": [
+        "Inference-Time Search",
+        "Text-to-Video Generation",
+        "Diffusion Models",
+        "Alignment"
+      ],
+      "published": "2025-09-18T17:37:21.826+00:00",
+      "link": "https://openreview.net/forum?id=c9EAmyYPOv",
+      "pdf_url": null,
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ]
+    },
+    {
+      "id": "openreview-neurips-2025-hibojlcyeo",
+      "source": "NeurIPS-2025-Accepted",
+      "title": "Physics-Driven Spatiotemporal Modeling for AI-Generated Video Detection",
+      "abstract": "AI-generated videos have achieved near-perfect visual realism (e.g., Sora), urgently necessitating reliable detection mechanisms. However, detecting such videos faces significant challenges in modeling high-dimensional spatiotemporal dynamics and identifying subtle anomalies that violate physical laws. In this paper, we propose a physics-driven AI-generated video detection paradigm based on probability flow conservation principles. Specifically, we propose a statistic called Normalized Spatiotemporal Gradient (NSG), which quantifies the ratio of spatial probability gradients to temporal density changes, explicitly capturing deviations from natural video dynamics. Leveraging pre-trained diffusion models, we develop an NSG estimator through spatial gradients approximation and motion-aware temporal modeling without complex motion decomposition while preserving physical constraints. Building on this, we propose an NSG-based video detection method (NSG-VD) that computes the Maximum Mean Discrepancy (MMD) between NSG features of the test and real videos as a detection metric. Last, we derive an upper bound of NSG feature distances between real and generated videos, proving that generated videos exhibit amplified discrepancies due to distributional shifts. Extensive experiments confirm that NSG-VD outperforms state-of-the-art baselines by 16.00\\% in Recall and 10.75\\% in F1-Score,  validating the superior performance of NSG-VD. The source code is available at \\url{https://github.com/ZSHsh98/NSG-VD}.",
+      "authors": [
+        "Shuhai Zhang",
+        "ZiHao Lian",
+        "Jiahao Yang",
+        "Daiyuan Li",
+        "Guoxuan Pang",
+        "Feng Liu",
+        "Bo Han",
+        "Shutao Li",
+        "Mingkui Tan"
+      ],
+      "primary_category": "AI-Generated Video Detection;  Diffusion Models; Maximum Mean Discrepancy",
+      "categories": [
+        "AI-Generated Video Detection;  Diffusion Models; Maximum Mean Discrepancy"
+      ],
+      "published": "2025-09-18T17:31:25.883+00:00",
+      "link": "https://openreview.net/forum?id=HiBoJLCyEo",
+      "pdf_url": null,
+      "tags": [
+        "keyword:vgen-metrics"
+      ]
+    },
+    {
+      "id": "openreview-neurips-2025-y0srr9xglz",
+      "source": "NeurIPS-2025-Accepted",
+      "title": "Hierarchical Fine-grained Preference Optimization for Physically Plausible Video Generation",
+      "abstract": "Recent advancements in video generation have enabled the creation of high-quality, visually compelling videos. However, generating videos that adhere to the laws of physics remains a critical challenge for applications requiring realism and accuracy. In this work, we propose **PhysHPO**, a novel framework for Hierarchical Cross-Modal Direct Preference Optimization, to tackle this challenge by enabling fine-grained preference alignment for physically plausible video generation. PhysHPO optimizes video alignment across four hierarchical granularities: a) ***Instance Level***, aligning the overall video content with the input prompt; b) ***State Level***, ensuring temporal consistency using boundary frames as anchors; c) ***Motion Level***, modeling motion trajectories for realistic dynamics; and d) ***Semantic Level***, maintaining logical consistency between narrative and visuals. Recognizing that real-world videos are the best reflections of physical phenomena, we further introduce an automated data selection pipeline to efficiently identify and utilize *\"good data\"* from existing large-scale text-video datasets, thereby eliminating the need for costly and time-intensive dataset construction. Extensive experiments on both physics-focused and general capability benchmarks demonstrate that PhysHPO significantly improves physical plausibility and overall video generation quality of advanced models. To the best of our knowledge, this is the first work to explore fine-grained preference alignment and data selection for video generation, paving the way for more realistic and human-preferred video generation paradigms.",
+      "authors": [
+        "Harold Haodong Chen",
+        "Haojian Huang",
+        "Qifeng Chen",
+        "Harry Yang",
+        "Ser-Nam Lim"
+      ],
+      "primary_category": "Direct Preference Optimization",
+      "categories": [
+        "Direct Preference Optimization",
+        "Video Generation"
+      ],
+      "published": "2025-09-18T17:29:00.524+00:00",
+      "link": "https://openreview.net/forum?id=y0SRR9XGlZ",
+      "pdf_url": null,
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ]
+    },
+    {
+      "id": "openreview-neurips-2025-nfmq9z7mdq",
+      "source": "NeurIPS-2025-Rejected-Public",
+      "title": "Reliable Image Quality Evaluation and Mitigating Quality Bias in Generative Models",
+      "abstract": "Discrepancies in generation quality across demographic groups pose a substantial and critical challenge in image generative models. However, the Fréchet Inception Distance (FID) score, which is widely used as an image quality evaluation metric for generative models, introduces unintended bias when assessing quality across sensitive attributes. This undermines the reliability of the evaluation procedure. This paper addresses this limitation by introducing the Difference in Quality Assessment (DQA) score, a novel approach that quantifies the reliability of existing evaluation metrics, e.g. FID. DQA assesses discrepancies in evaluated quality across demographic groups under strictly controlled conditions to effectively gauge metric reliability. Our findings reveal that traditional quality evaluation metrics can yield biased assessments across groups due to inappropriate reference set selection and inherent biases in image encoder in FID. Furthermore, we propose DQA-Guidance within diffusion model sampling to reduce quality disparities across groups. Experimental results demonstrate the utility of the DQA score in identifying biased evaluation metrics and present effective strategies to mitigate these biases. This work contributes to the development of reliable and fair evaluation metrics for generative models and provides actionable methods to address quality disparities in image generation across groups.",
+      "authors": [
+        "Hoin Jung",
+        "Shenyu Lu",
+        "De Wang",
+        "Xiaoqian Wang"
+      ],
+      "primary_category": "Image Generation",
+      "categories": [
+        "Image Generation",
+        "Image Quality",
+        "Fairness",
+        "Reliability"
+      ],
+      "published": "2025-05-06T21:18:23.201+00:00",
+      "link": "https://openreview.net/forum?id=nFmq9z7Mdq",
+      "pdf_url": null,
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ]
+    },
+    {
+      "id": "openreview-neurips-2025-nhkg4yc7sp",
+      "source": "NeurIPS-2025-Accepted",
+      "title": "Improving Video Generation with Human Feedback",
+      "abstract": "Video generation has achieved significant advances through rectified flow techniques, but issues like unsmooth motion and misalignment between videos and prompts persist. In this work, we develop a systematic pipeline that harnesses human feedback to mitigate these problems and refine the video generation model. Specifically, we begin by constructing a large-scale human preference dataset focused on modern video generation models, incorporating pairwise annotations across multi-dimensions. We then introduce VideoReward, a multi-dimensional video reward model, and examine how annotations and various design choices impact its rewarding efficacy. From a unified reinforcement learning perspective aimed at maximizing reward with KL regularization, we introduce three alignment algorithms for flow-based models. These include two training-time strategies: direct preference optimization for flow (Flow-DPO) and reward weighted regression for flow (Flow-RWR), and an inference-time technique, Flow-NRG, which applies reward guidance directly to noisy videos. Experimental results indicate that VideoReward significantly outperforms existing reward models, and Flow-DPO demonstrates superior performance compared to both Flow-RWR and supervised fine-tuning methods. Additionally, Flow-NRG lets users assign custom weights to multiple objectives during inference, meeting personalized video quality needs.",
+      "authors": [
+        "Jie Liu",
+        "Gongye Liu",
+        "Jiajun Liang",
+        "Ziyang Yuan",
+        "Xiaokun Liu",
+        "Mingwu Zheng",
+        "Xiele Wu",
+        "Qiulin Wang",
+        "Menghan Xia",
+        "Xintao Wang",
+        "Xiaohong Liu",
+        "Fei Yang",
+        "Pengfei Wan",
+        "Di ZHANG",
+        "Kun Gai",
+        "Yujiu Yang",
+        "Wanli Ouyang"
+      ],
+      "primary_category": "video generation",
+      "categories": [
+        "video generation",
+        "human feedback",
+        "flow matching"
+      ],
+      "published": "2025-09-18T17:37:53.949+00:00",
+      "link": "https://openreview.net/forum?id=nHkg4yc7SP",
+      "pdf_url": null,
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "type": "intent_query",
+      "tag": "vgen-metrics",
+      "paper_tag": "query:vgen-metrics",
+      "query_text": "Are there any established metrics for video generation with transparency?",
+      "sim_scores": {
+        "openreview-neurips-2025-nfmq9z7mdq": {
+          "score": 0.009615384615384616,
+          "rank": 44
+        },
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.00909090909090909,
+          "rank": 50
+        }
+      },
+      "ranked": [
+        {
+          "paper_id": "openreview-neurips-2025-jzozkxa8wd",
+          "score": 1.0,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-56c0n6zspc",
+          "score": 1.0,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-nhkg4yc7sp",
+          "score": 0.9586435070306036,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-c9eamyypov",
+          "score": 0.8057498057498057,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-y0srr9xglz",
+          "score": 0.7703788748564866,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-sbpwnxhwjq",
+          "score": 0.7703788748564866,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-hibojlcyeo",
+          "score": 0.5495495495495496,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-nfmq9z7mdq",
+          "score": 0.49392712550607265,
+          "star_rating": 3
+        },
+        {
+          "paper_id": "openreview-neurips-2025-msin7i0byh",
+          "score": 0.3433395872420263,
+          "star_rating": 3
+        }
+      ]
+    },
+    {
+      "type": "intent_query",
+      "tag": "vgen-metrics",
+      "paper_tag": "query:vgen-metrics",
+      "query_text": "How to measure the quality of alpha channels in generated videos?",
+      "sim_scores": {
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.012048192771084338,
+          "rank": 23
+        },
+        "openreview-neurips-2025-nhkg4yc7sp": {
+          "score": 0.011363636363636364,
+          "rank": 28
+        },
+        "openreview-neurips-2025-56c0n6zspc": {
+          "score": 0.010869565217391304,
+          "rank": 32
+        },
+        "openreview-neurips-2025-c9eamyypov": {
+          "score": 0.00980392156862745,
+          "rank": 42
+        },
+        "openreview-neurips-2025-nfmq9z7mdq": {
+          "score": 0.009708737864077669,
+          "rank": 43
+        }
+      },
+      "ranked": [
+        {
+          "paper_id": "openreview-neurips-2025-nfmq9z7mdq",
+          "score": 1.0,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-hibojlcyeo",
+          "score": 0.9586435070306036,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-c9eamyypov",
+          "score": 0.9586435070306036,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-jzozkxa8wd",
+          "score": 0.9185999185999183,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-msin7i0byh",
+          "score": 0.7703788748564866,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-56c0n6zspc",
+          "score": 0.73604826546003,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-y0srr9xglz",
+          "score": 0.702712746191007,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-nhkg4yc7sp",
+          "score": 0.6388587937883712,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-sbpwnxhwjq",
+          "score": 0.23371647509578536,
+          "star_rating": 3
+        }
+      ]
+    },
+    {
+      "type": "intent_query",
+      "tag": "vgen-metrics",
+      "paper_tag": "query:vgen-metrics",
+      "query_text": "What evaluation metrics are suitable for transparent video generation?",
+      "sim_scores": {
+        "openreview-neurips-2025-nfmq9z7mdq": {
+          "score": 0.012345679012345678,
+          "rank": 21
+        },
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.010416666666666666,
+          "rank": 36
+        },
+        "openreview-neurips-2025-56c0n6zspc": {
+          "score": 0.01020408163265306,
+          "rank": 38
+        },
+        "openreview-neurips-2025-jzozkxa8wd": {
+          "score": 0.009259259259259259,
+          "rank": 48
+        }
+      },
+      "ranked": [
+        {
+          "paper_id": "openreview-neurips-2025-nfmq9z7mdq",
+          "score": 1.0,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-jzozkxa8wd",
+          "score": 1.0,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-c9eamyypov",
+          "score": 0.9586435070306036,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-56c0n6zspc",
+          "score": 0.9586435070306036,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-sbpwnxhwjq",
+          "score": 0.8798076923076922,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-y0srr9xglz",
+          "score": 0.8798076923076922,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-nhkg4yc7sp",
+          "score": 0.8422090729783037,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-msin7i0byh",
+          "score": 0.8422090729783037,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-hibojlcyeo",
+          "score": 0.6703296703296702,
+          "star_rating": 4
+        }
+      ]
+    },
+    {
+      "type": "intent_query",
+      "tag": "vgen-metrics",
+      "paper_tag": "query:vgen-metrics",
+      "query_text": "evaluation metrics for video generation models",
+      "sim_scores": {
+        "openreview-neurips-2025-sbpwnxhwjq": {
+          "score": 0.016129032258064516,
+          "rank": 4
+        },
+        "openreview-neurips-2025-c9eamyypov": {
+          "score": 0.015873015873015872,
+          "rank": 6
+        },
+        "openreview-neurips-2025-nhkg4yc7sp": {
+          "score": 0.015384615384615385,
+          "rank": 11
+        },
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.014285714285714285,
+          "rank": 16
+        },
+        "openreview-neurips-2025-56c0n6zspc": {
+          "score": 0.012048192771084338,
+          "rank": 29
+        },
+        "openreview-neurips-2025-jzozkxa8wd": {
+          "score": 0.011235955056179775,
+          "rank": 35
+        },
+        "openreview-neurips-2025-nfmq9z7mdq": {
+          "score": 0.010416666666666666,
+          "rank": 42
+        }
+      },
+      "ranked": [
+        {
+          "paper_id": "openreview-neurips-2025-jzozkxa8wd",
+          "score": 1.0,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-56c0n6zspc",
+          "score": 1.0,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-nfmq9z7mdq",
+          "score": 0.9586435070306036,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-nhkg4yc7sp",
+          "score": 0.9586435070306036,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-sbpwnxhwjq",
+          "score": 0.9185999185999183,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-neurips-2025-c9eamyypov",
+          "score": 0.8798076923076922,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-msin7i0byh",
+          "score": 0.6703296703296702,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-y0srr9xglz",
+          "score": 0.578503688092729,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-neurips-2025-hibojlcyeo",
+          "score": 0.11772814998621459,
+          "star_rating": 3
+        }
+      ]
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "evaluating quality of generated videos",
+      "sim_scores": {
+        "openreview-neurips-2025-56c0n6zspc": {
+          "score": 0.014084507042253521,
+          "rank": 11
+        },
+        "openreview-neurips-2025-nfmq9z7mdq": {
+          "score": 0.013333333333333334,
+          "rank": 15
+        },
+        "openreview-neurips-2025-nhkg4yc7sp": {
+          "score": 0.012987012987012988,
+          "rank": 17
+        },
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.01282051282051282,
+          "rank": 18
+        },
+        "openreview-neurips-2025-c9eamyypov": {
+          "score": 0.01098901098901099,
+          "rank": 31
+        },
+        "openreview-neurips-2025-jzozkxa8wd": {
+          "score": 0.01,
+          "rank": 40
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "metrics for alpha channel in video generation",
+      "sim_scores": {
+        "openreview-neurips-2025-nhkg4yc7sp": {
+          "score": 0.015625,
+          "rank": 4
+        },
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.013333333333333334,
+          "rank": 15
+        },
+        "openreview-neurips-2025-56c0n6zspc": {
+          "score": 0.011235955056179775,
+          "rank": 29
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "metrics for evaluating video generation models",
+      "sim_scores": {
+        "openreview-neurips-2025-nhkg4yc7sp": {
+          "score": 0.015384615384615385,
+          "rank": 5
+        },
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.014084507042253521,
+          "rank": 11
+        },
+        "openreview-neurips-2025-jzozkxa8wd": {
+          "score": 0.012345679012345678,
+          "rank": 21
+        },
+        "openreview-neurips-2025-56c0n6zspc": {
+          "score": 0.011904761904761904,
+          "rank": 24
+        },
+        "openreview-neurips-2025-nfmq9z7mdq": {
+          "score": 0.010416666666666666,
+          "rank": 36
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "quality of transparent videos in generation",
+      "sim_scores": {
+        "openreview-neurips-2025-nfmq9z7mdq": {
+          "score": 0.012195121951219513,
+          "rank": 22
+        },
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.009174311926605505,
+          "rank": 49
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "transparent video generation",
+      "sim_scores": {}
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "transparent video generation evaluation",
+      "sim_scores": {
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.01020408163265306,
+          "rank": 38
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "transparent video quality",
+      "sim_scores": {}
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "video generation evaluation",
+      "sim_scores": {
+        "openreview-neurips-2025-56c0n6zspc": {
+          "score": 0.01639344262295082,
+          "rank": 1
+        },
+        "openreview-neurips-2025-jzozkxa8wd": {
+          "score": 0.016129032258064516,
+          "rank": 2
+        },
+        "openreview-neurips-2025-msin7i0byh": {
+          "score": 0.015873015873015872,
+          "rank": 3
+        },
+        "openreview-neurips-2025-sbpwnxhwjq": {
+          "score": 0.014492753623188406,
+          "rank": 9
+        },
+        "openreview-neurips-2025-c9eamyypov": {
+          "score": 0.011627906976744186,
+          "rank": 26
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "video generation metrics",
+      "sim_scores": {
+        "openreview-neurips-2025-c9eamyypov": {
+          "score": 0.015625,
+          "rank": 4
+        },
+        "openreview-neurips-2025-hibojlcyeo": {
+          "score": 0.015384615384615385,
+          "rank": 5
+        },
+        "openreview-neurips-2025-sbpwnxhwjq": {
+          "score": 0.014925373134328358,
+          "rank": 7
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "video quality assessment",
+      "sim_scores": {
+        "openreview-neurips-2025-c9eamyypov": {
+          "score": 0.015151515151515152,
+          "rank": 6
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "vgen-metrics",
+      "paper_tag": "keyword:vgen-metrics",
+      "query_text": "video quality assessment metrics for generative models",
+      "sim_scores": {
+        "openreview-neurips-2025-nfmq9z7mdq": {
+          "score": 0.01639344262295082,
+          "rank": 1
+        },
+        "openreview-neurips-2025-nhkg4yc7sp": {
+          "score": 0.015151515151515152,
+          "rank": 6
+        },
+        "openreview-neurips-2025-c9eamyypov": {
+          "score": 0.012658227848101266,
+          "rank": 19
+        },
+        "openreview-neurips-2025-y0srr9xglz": {
+          "score": 0.011363636363636364,
+          "rank": 28
+        },
+        "openreview-neurips-2025-jzozkxa8wd": {
+          "score": 0.010101010101010102,
+          "rank": 39
+        }
+      }
+    }
+  ],
+  "global_candidate_ids": [
+    "openreview-neurips-2025-vmycnhs8av",
+    "openreview-neurips-2025-mbqpksve1d",
+    "openreview-neurips-2025-wk5b5w5oho",
+    "openreview-neurips-2025-ig4unfun0r",
+    "openreview-neurips-2025-bwpmtkrreo",
+    "openreview-neurips-2025-53q9bobbnk",
+    "openreview-neurips-2025-upelg2ouo3",
+    "openreview-neurips-2025-cdkfnjsg4g",
+    "openreview-neurips-2025-qixdi207nq",
+    "openreview-neurips-2025-fzfyoup8f1",
+    "openreview-neurips-2025-1bo9widyka",
+    "openreview-neurips-2025-56c0n6zspc",
+    "openreview-neurips-2025-jzozkxa8wd",
+    "openreview-neurips-2025-bxpc81pufp",
+    "openreview-neurips-2025-nlqrra0olh",
+    "openreview-neurips-2025-qmk40wmlsc",
+    "openreview-neurips-2025-nfmq9z7mdq",
+    "openreview-neurips-2025-ny6ypsxcoy",
+    "openreview-neurips-2025-qi64pcxnxn",
+    "openreview-neurips-2025-kzn7tdol4j",
+    "openreview-neurips-2025-ynqyfnsoy6",
+    "openreview-neurips-2025-wpu17d1l7r",
+    "openreview-neurips-2025-t62tyof8r3",
+    "openreview-neurips-2025-gmvrmyunw4",
+    "openreview-neurips-2025-y0srr9xglz",
+    "openreview-neurips-2025-szdfup9kzy",
+    "openreview-neurips-2025-mbmgncfc75",
+    "openreview-neurips-2025-hfogywcq8j",
+    "openreview-neurips-2025-apusekbw3h",
+    "openreview-neurips-2025-12z8klmqjd",
+    "openreview-neurips-2025-byf7gvv0s0",
+    "openreview-neurips-2025-jceqp4apmb",
+    "openreview-neurips-2025-noiiyik3hh",
+    "openreview-neurips-2025-q39uzc6rso",
+    "openreview-neurips-2025-be6u40gq0y",
+    "openreview-neurips-2025-izy3zgohrd",
+    "openreview-neurips-2025-c9eamyypov",
+    "openreview-neurips-2025-uglqgghnfb",
+    "openreview-neurips-2025-nhkg4yc7sp",
+    "openreview-neurips-2025-bcyfsmmpv1",
+    "openreview-neurips-2025-lf6sharvmg",
+    "openreview-neurips-2025-gy9yogyb48",
+    "openreview-neurips-2025-yqbikztft8",
+    "openreview-neurips-2025-q7ynqrewlq",
+    "openreview-neurips-2025-gxw10t7uom",
+    "openreview-neurips-2025-3ishlkiykj",
+    "openreview-neurips-2025-tsehifv2lm",
+    "openreview-neurips-2025-liqh1mocms",
+    "openreview-neurips-2025-bkls9imrnz",
+    "openreview-neurips-2025-irni27kaep",
+    "openreview-neurips-2025-7vlxvvethh",
+    "openreview-neurips-2025-u8aoixg1a4",
+    "openreview-neurips-2025-h1pllbfvww",
+    "openreview-neurips-2025-plrg87mp0f",
+    "openreview-neurips-2025-iqu63cyi3z",
+    "openreview-neurips-2025-nw6kx91j48",
+    "openreview-neurips-2025-bpbjc1jfbv",
+    "openreview-neurips-2025-qejosm3qks",
+    "openreview-neurips-2025-sbpwnxhwjq",
+    "openreview-neurips-2025-cwxyudqfqw",
+    "openreview-neurips-2025-bdzpnjic1y",
+    "openreview-neurips-2025-j8jcf64aen",
+    "openreview-neurips-2025-xtwwkmxy1x",
+    "openreview-neurips-2025-icgozzc10r",
+    "openreview-neurips-2025-wd9y1c3kxs",
+    "openreview-neurips-2025-lsmugstxby",
+    "openreview-neurips-2025-tdt6hf7jk5",
+    "openreview-neurips-2025-wq5g71w7zx",
+    "openreview-neurips-2025-ug8krtngei",
+    "openreview-neurips-2025-02qdhz1lu0",
+    "openreview-neurips-2025-jpisagi8av",
+    "openreview-neurips-2025-n8avxkccer",
+    "openreview-neurips-2025-i0hrn2hmeh",
+    "openreview-neurips-2025-htla6ao0jg",
+    "openreview-neurips-2025-pwzcprikp8",
+    "openreview-neurips-2025-lhw93lkauk",
+    "openreview-neurips-2025-e8pm93koqu",
+    "openreview-neurips-2025-jsc7hd7mpj",
+    "openreview-neurips-2025-l1m5124snq",
+    "openreview-neurips-2025-dxip59z81m",
+    "openreview-neurips-2025-wlpf0vg4yu",
+    "openreview-neurips-2025-qazxgwlbgo",
+    "openreview-neurips-2025-fvgnp5whxx",
+    "openreview-neurips-2025-z0bgfl1frv",
+    "openreview-neurips-2025-6otjcntkua",
+    "openreview-neurips-2025-rpp15rha6j",
+    "openreview-neurips-2025-fs3fzdrfz7",
+    "openreview-neurips-2025-lkap7dknxf",
+    "openreview-neurips-2025-1curnmriee",
+    "openreview-neurips-2025-ciosjynx6b",
+    "openreview-neurips-2025-fs1ojmtvmf",
+    "openreview-neurips-2025-5xpvwat3ix",
+    "openreview-neurips-2025-yfa7eulien",
+    "openreview-neurips-2025-aqtvpwl0gi",
+    "openreview-neurips-2025-qcftezc4x9",
+    "openreview-neurips-2025-0enwkxv3sx",
+    "openreview-neurips-2025-kqanoaayio",
+    "openreview-neurips-2025-mj8vn4myro",
+    "openreview-neurips-2025-msin7i0byh",
+    "openreview-neurips-2025-qeivjh0g2j",
+    "openreview-neurips-2025-cx45act9lg",
+    "openreview-neurips-2025-hibojlcyeo",
+    "openreview-neurips-2025-6fhvr5hjdd",
+    "openreview-neurips-2025-dogxkbl7ie",
+    "openreview-neurips-2025-9oymsbuzl5",
+    "openreview-neurips-2025-9xcyufsm1h",
+    "openreview-neurips-2025-e9b2npqanb",
+    "openreview-neurips-2025-1dgskx8l63",
+    "openreview-neurips-2025-i4qafv04rz",
+    "openreview-neurips-2025-r9mufuxg2o",
+    "openreview-neurips-2025-ul683x8lpk",
+    "openreview-neurips-2025-qdm3fplydw",
+    "openreview-neurips-2025-csjryswwao",
+    "openreview-neurips-2025-gylmytyqzg",
+    "openreview-neurips-2025-bl8h1axr0i",
+    "openreview-neurips-2025-exo6g7bmoa",
+    "openreview-neurips-2025-hfxozjhytg",
+    "openreview-neurips-2025-pjowq77mul",
+    "openreview-neurips-2025-njodganhwb",
+    "openreview-neurips-2025-noc9ht7kf7"
+  ],
+  "global_pool_lane_top_k": 30,
+  "global_pool_limit": 120,
+  "global_pool_guaranteed_per_lane": 2,
+  "global_pool_effective_size": 120,
+  "reranked_at": "2026-06-01T03:47:33.934519+00:00",
+  "llm_ranked": [
+    {
+      "paper_id": "openreview-neurips-2025-56c0n6zspc",
+      "score": 9.0,
+      "evidence_en": "introduces a benchmark and reward model for fine-grained video generation evaluation",
+      "evidence_cn": "提出了一个细粒度视频生成评估的基准和奖励模型",
+      "canonical_evidence": "提出了一个细粒度视频生成评估的基准和奖励模型",
+      "tldr_en": "Presents MJ-BENCH-VIDEO, a large-scale benchmark with 28 fine-grained criteria for evaluating video generation, and MJ-VIDEO, an MoE-based reward model for preference learning.",
+      "tldr_cn": "针对视频生成模型在指令对齐、幻觉、安全性和偏见等方面的不足，本文构建了MJ-BENCH-VIDEO基准，涵盖对齐、安全、精细度、连贯一致性和偏见公平性五个关键维度及28条细粒度标准。基于此数据集，提出了MJ-VIDEO混合专家视频奖励模型，用于优化生成质量和偏好对齐。该工作为视频生成评估提供了系统化的指标体系和可训练的奖励模型。",
+      "title_zh": "MJ-Video：通过细粒度视频偏好进行视频生成的基准测试与奖励建模",
+      "motivation_cn": "现有视频生成模型存在指令对齐差、幻觉、安全风险和偏见等问题，缺乏细粒度评估体系。",
+      "method_cn": "构建了包含28条细粒度标准的大规模视频偏好基准，并提出基于混合专家的视频奖励模型。",
+      "result_cn": "所提基准和奖励模型能有效评估和区分视频生成模型的性能，在偏好学习任务中表现出色。",
+      "conclusion_cn": "细粒度的视频评估基准和奖励模型是提升视频生成质量的关键工具。",
+      "matched_requirement_id": "req-composite-vgen-metrics",
+      "matched_query_tag": "query:vgen-metrics:composite",
+      "matched_query_text": "Papers central to 视频生成的相关评价指标, especially work that connects or combines: transparent video generation evaluation; evaluating quality of generated videos; metrics for alpha channel in video generation; metrics for evaluating video generation models; quality of transparent videos in generation; video quality assessment metrics for generative models; What evaluation metrics are suitable for transparent video generation?; How to measure the quality of alpha channels in generated videos?; Are there any established metrics for video generation with transparency?; evaluation metrics for video generation models."
+    },
+    {
+      "paper_id": "openreview-neurips-2025-c9eamyypov",
+      "score": 8.0,
+      "evidence_en": "discusses which metrics to optimize for video generation alignment",
+      "evidence_cn": "讨论了哪些指标可用于优化视频生成对齐",
+      "canonical_evidence": "讨论了哪些指标可用于优化视频生成对齐",
+      "tldr_en": "Proposes diffusion latent beam search with lookahead estimator to select better latents for text-to-video alignment, explicitly addressing metric selection for improving perceptual quality.",
+      "tldr_cn": "针对文本到视频扩散模型中生成视频内容存在的不自然运动、变形等问题，本文提出了一种推理时的对齐方法。该方法使用扩散潜在波束搜索与前瞻估计器，在生成过程中选择更优的潜变量以最大化给定的对齐奖励。实验表明，该方法能有效提升视频生成的质量和与文本的一致性。该工作为视频生成中的指标优化提供了新思路。",
+      "title_zh": "基于扩散潜在波束搜索的推理时文本到视频对齐",
+      "motivation_cn": "现有文本到视频模型生成的视频常出现运动不自然、反向播放等问题，需要优化对齐指标。",
+      "method_cn": "提出扩散潜在波束搜索与前瞻估计器，在推理时选择更好的扩散潜变量以最大化对齐奖励。",
+      "result_cn": "该方法有效提升了视频生成质量和对齐度，优于基线方法。",
+      "conclusion_cn": "推理时对齐是提升视频生成质量的有效手段，指标选择至关重要。",
+      "matched_requirement_id": "req-4",
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models"
+    },
+    {
+      "paper_id": "openreview-neurips-2025-jzozkxa8wd",
+      "score": 8.0,
+      "evidence_en": "structured evaluation framework for video generation",
+      "evidence_cn": "视频生成的结构化评估框架",
+      "canonical_evidence": "视频生成的结构化评估框架",
+      "tldr_en": "Stable Cinemetrics introduces a comprehensive taxonomy and benchmark for evaluating professional video generation, directly addressing video quality assessment metrics.",
+      "tldr_cn": "该论文针对现有视频生成评估缺乏专业性的问题，提出了Stable Cinemetrics评估框架。该框架将电影制作控制分解为四个层次化分类（场景、事件、灯光、相机），定义76个细粒度控制节点，并构建了对应的基准测试和自动化评估管线。该工作为视频生成质量评估提供了系统化的指标和工具，直接匹配用户对视频生成评估指标的需求。",
+      "title_zh": "Stable Cinemetrics：专业视频生成的结构化分类与评估",
+      "motivation_cn": "现有视频生成评估无法覆盖专业制作的复杂性，需要结构化评测框架。",
+      "method_cn": "定义四层分类体系（场景、事件、灯光、相机），含76个控制节点，并构建自动评估管线。",
+      "result_cn": "该框架能有效区分不同模型在专业控制上的表现。",
+      "conclusion_cn": "提供了一个可复用的视频生成评估基准，对指标研究有直接贡献。",
+      "matched_requirement_id": "req-4",
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models"
+    },
+    {
+      "paper_id": "openreview-neurips-2025-nhkg4yc7sp",
+      "score": 8.0,
+      "evidence_en": "VideoReward: a multi-dimensional reward model for video generation quality",
+      "evidence_cn": "VideoReward：视频生成质量的多维奖励模型",
+      "canonical_evidence": "VideoReward：视频生成质量的多维奖励模型",
+      "tldr_en": "VideoReward is a multi-dimensional human-aligned reward model for evaluating video generation quality, directly serving as a metric for video generation models.",
+      "tldr_cn": "论文针对视频生成模型存在的运动不流畅、图文不对齐等问题，构建了大规模人类偏好数据集，并提出了多维奖励模型VideoReward，用于评估视频生成质量。通过强化学习将奖励模型用于模型对齐，显著提升了生成质量。该工作直接为视频生成评估提供了可用的度量工具，与用户对评估指标的需求高度契合。",
+      "title_zh": "利用人类反馈改进视频生成",
+      "motivation_cn": "现有视频生成模型存在运动不流畅和图文不对齐，需要有效的质量评估工具。",
+      "method_cn": "构建人类偏好数据集，训练多维视频奖励模型VideoReward，并用强化学习对齐生成模型。",
+      "result_cn": "使用VideoReward对齐的模型在多项指标上优于基线。",
+      "conclusion_cn": "VideoReward可作为视频生成质量评估的通用指标，直接满足用户对评估度量的需求。",
+      "matched_requirement_id": "req-4",
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models"
+    },
+    {
+      "paper_id": "openreview-neurips-2025-sbpwnxhwjq",
+      "score": 8.0,
+      "evidence_en": "proposes novel evaluation metrics for video diffusion transformers",
+      "evidence_cn": "提出了用于视频扩散变换器的新的评估指标",
+      "canonical_evidence": "提出了用于视频扩散变换器的新的评估指标",
+      "tldr_en": "Proposes DiffTrack, a framework with novel metrics to analyze temporal correspondences in video diffusion transformers, revealing how attention components contribute to coherence.",
+      "tldr_cn": "本文针对视频扩散变换器（DiTs）中时间对应如何建立的问题，提出DiffTrack定量分析框架。该框架构建提示生成视频数据集并引入新评估指标，系统分析3D注意机制中每个组件（表示、层、时间步）对时间对应的贡献。分析揭示了查询-键相似性的关键作用，为理解生成视频时间一致性提供了新视角。",
+      "title_zh": "从视频扩散变换器中涌现的时间对应",
+      "motivation_cn": "现有视频扩散模型虽能生成时间一致视频，但缺乏对内部时间对应建立机制的理解。",
+      "method_cn": "提出DiffTrack框架，包括构建提示生成视频数据集和伪真实跟踪标注，以及设计评估指标来分析3D注意机制。",
+      "result_cn": "实验揭示了查询-键相似性在3D注意中的关键作用，不同层和时间步贡献不同。",
+      "conclusion_cn": "该框架为理解和改进视频扩散模型的时间一致性提供了新工具。",
+      "matched_requirement_id": "req-4",
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models"
+    },
+    {
+      "paper_id": "openreview-neurips-2025-msin7i0byh",
+      "score": 8.0,
+      "evidence_en": "video-level loss directly evaluates quality of entire generated sequence",
+      "evidence_cn": "视频级损失直接评估整个生成序列的质量",
+      "canonical_evidence": "视频级损失直接评估整个生成序列的质量",
+      "tldr_en": "Self Forcing bridges the train-test gap in autoregressive video diffusion by training on self-generated outputs and using a holistic video-level loss that evaluates the quality of the entire sequence, providing a principled evaluation signal for generated videos.",
+      "tldr_cn": "自回归视频扩散模型存在暴露偏差问题，Self Forcing 通过在训练中使用自生成输出进行自回归展开，并引入视频级整体损失来直接评估整个生成序列的质量，从而缓解该问题。该方法不仅提高了生成质量，还提供了一种原理性的视频质量评估信号，适用于评估生成视频的整体一致性。",
+      "title_zh": "Self Forcing：弥合自回归视频扩散中的训练-测试差距",
+      "motivation_cn": "自回归视频扩散模型在训练时使用真实上下文，推理时却依赖自身输出，导致暴露偏差。",
+      "method_cn": "提出 Self Forcing 训练范式，在训练时进行自回归展开并缓存键值，使用视频级损失评估整个序列。",
+      "result_cn": "在多个视频生成基准上，Self Forcing 提升了生成质量和时间一致性。",
+      "conclusion_cn": "Self Forcing 提供了一种有效的训练策略，其视频级损失可作为生成视频质量的评估依据。",
+      "matched_requirement_id": "req-2",
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos"
+    },
+    {
+      "paper_id": "openreview-neurips-2025-nfmq9z7mdq",
+      "score": 6.0,
+      "evidence_en": "proposes DQA score for evaluating reliability of image quality metrics, transferable to video generation",
+      "evidence_cn": "提出DQA分数评估图像质量度量可靠性，可迁移到视频生成评估",
+      "canonical_evidence": "提出DQA分数评估图像质量度量可靠性，可迁移到视频生成评估",
+      "tldr_en": "Proposes DQA score to quantify reliability of existing image quality metrics (e.g., FID) and mitigate bias across demographic groups; method could extend to video generation evaluation.",
+      "tldr_cn": "该论文针对图像生成模型中质量评估指标（如FID）存在的人群偏差问题，提出了差异质量评估（DQA）分数，通过严格可控条件下评估不同人群间的质量差异来衡量指标可靠性。实验表明DQA能有效揭示指标偏差，为更公平的生成模型评估提供了新工具。该方法有望推广至视频生成评估领域。",
+      "title_zh": "可靠图像质量评估与生成模型中的质量偏差缓解",
+      "motivation_cn": "现有图像生成质量指标（如FID）在评估不同人群时存在偏差，影响评估可靠性。",
+      "method_cn": "提出DQA分数，通过严格控制条件比较不同人群间的质量评估差异来量化指标可靠性。",
+      "result_cn": "实验证实了DQA能有效检测指标偏差，并帮助缓解生成模型中的质量不公平问题。",
+      "conclusion_cn": "DQA为生成模型的质量评估提供了可靠性度量，是现有指标的重要补充。",
+      "matched_requirement_id": "req-10",
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models"
+    },
+    {
+      "paper_id": "openreview-neurips-2025-y0srr9xglz",
+      "score": 4.0,
+      "evidence_en": "fine-grained preference optimization for video generation quality",
+      "evidence_cn": "视频生成质量的细粒度偏好优化",
+      "canonical_evidence": "视频生成质量的细粒度偏好优化",
+      "tldr_en": "PhysHPO uses hierarchical preference optimization to improve physical plausibility in generated videos, indirectly relevant to quality evaluation.",
+      "tldr_cn": "虽然PhysHPO主要关注物理合理性，但其分层偏好优化方法可间接用于视频生成质量评估，反映了对生成视频质量的关注。论文提出了一个分层跨模态直接偏好优化框架，通过实例、状态、运动和物理四个粒度对齐来增强物理合理性。实验表明该方法能生成更符合物理规律的视频，但并未直接提出评估指标。",
+      "title_zh": "面向物理合理视频生成的分层细粒度偏好优化",
+      "motivation_cn": "现有视频生成方法缺乏物理合理性，需要更好的质量评估方法。",
+      "method_cn": "提出分层跨模态直接偏好优化（PhysHPO），在四个粒度层级上对齐视频内容。",
+      "result_cn": "生成的视频在物理合理性上显著优于基线。",
+      "conclusion_cn": "偏好优化可作为提升视频质量的有效手段，但与评估指标直接相关度较低。",
+      "matched_requirement_id": "req-10",
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models"
+    },
+    {
+      "paper_id": "openreview-neurips-2025-hibojlcyeo",
+      "score": 4.0,
+      "evidence_en": "spatiotemporal metric for detecting AI-generated videos",
+      "evidence_cn": "AI生成视频检测的时空度量",
+      "canonical_evidence": "AI生成视频检测的时空度量",
+      "tldr_en": "NSG statistic detects AI-generated videos by quantifying spatiotemporal gradient anomalies, relevant as a video quality assessment metric.",
+      "tldr_cn": "论文针对AI生成视频检测问题，提出了基于概率流守恒的归一化时空梯度统计量（NSG），用于量化视频中违反物理规律的异常。虽然检测任务与生成评估不同，但NSG作为一种视频质量度量，可迁移至生成视频的质量评估。该工作为视频质量评估指标提供了新思路。",
+      "title_zh": "物理驱动时空建模用于AI生成视频检测",
+      "motivation_cn": "AI生成视频日益逼真，需要可靠检测方法，其中涉及对视频质量的评估。",
+      "method_cn": "提出归一化时空梯度（NSG）统计量，基于物理守恒原理检测异常。",
+      "result_cn": "在多个AI视频检测基准上达到优异性能。",
+      "conclusion_cn": "NSG可作为视频自然度评估的有效指标，与生成质量评估间接相关。",
+      "matched_requirement_id": "req-6",
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment metrics for generative models"
+    }
+  ],
+  "llm_ranked_at": "2026-06-01T03:48:31.159768+00:00",
+  "display_min_score": 4.0,
+  "pruned_at": "2026-06-01T03:48:31.199884+00:00"
+}
