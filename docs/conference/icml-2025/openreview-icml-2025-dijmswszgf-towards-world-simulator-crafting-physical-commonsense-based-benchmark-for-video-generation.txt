@@ -1,0 +1,1198 @@
+Title: Towards World Simulator:  Crafting Physical Commonsense-Based Benchmark for Video Generation
+
+URL Source: https://openreview.net/pdf?id=dIjMswSzgF
+
+Number of Pages: 26
+
+Markdown Content:
+## Towards World Simulator: Crafting Physical Commonsense-Based Benchmark for Video Generation 
+
+Fanqing Meng * 1 2 Jiaqi Liao * 2 Xinyu Tan 2 Quanfeng Lu 1 2 Wenqi Shao 2 Kaipeng Zhang 2 Yu Cheng 3
+
+Dianqi Li Ping Luo 2 4 
+
+Abstract 
+
+Text-to-video (T2V) models like Sora have made significant strides in visualizing complex prompts, which is increasingly viewed as a promising path towards constructing the universal world simula-tor. Cognitive psychologists believe that the foun-dation for achieving this goal is the ability to un-derstand intuitive physics. However, the capacity of these models to accurately represent intuitive physics remains largely unexplored. To bridge this gap, we introduce PhyGenBench , a compre-hensive Phy sics Gen eration Bench mark designed to evaluate physical commonsense correctness in T2V generation. PhyGenBench comprises 160 carefully crafted prompts across 27 distinct phys-ical laws, spanning four fundamental domains, which could comprehensively assess models’ un-derstanding of physical commonsense. Alongside 
+
+PhyGenBench , we propose a novel evaluation framework called PhyGenEval . This framework employs a hierarchical evaluation structure utiliz-ing appropriate advanced vision-language mod-els and large language models to assess physical commonsense. Through PhyGenBench and Phy-GenEval , we can conduct large-scale automated assessments of T2V models’ understanding of physical commonsense, which aligns closely with human feedback. Our evaluation results and in-depth analysis demonstrate that current models struggle to generate videos that comply with phys-ical commonsense. Moreover, simply scaling up models or employing prompt engineering tech-niques is insufficient to fully address the chal-lenges presented by PhyGenBench (e.g., dynamic physical phenomenons). We hope this study will           
+
+> *Equal contribution 1Shanghai Jiao Tong University 2Shanghai AI Laboratory 3The Chinese University of Hong Kong 4The University of Hong Kong. Correspondence to: Wenqi Shao
+> <shaowenqi@pjlab.org.cn >, Ping Luo <pluo@cs.hku.hk >.
+> Proceedings of the 42 nd International Conference on Machine Learning , Vancouver, Canada. PMLR 267, 2025. Copyright 2025 by the author(s).
+
+inspire the community to prioritize the learning of physical commonsense in these models beyond entertainment applications. We release the data and codes at https://github.com/OpenGVLab/ PhyGenBench 
+
+1. Introduction 
+
+Text-to-video (T2V) models such as Sora have made signifi-cant strides in visualizing complex ideas and scenes based on textual input (Yang et al., 2024; Wang et al., 2023). These advancements are increasingly viewed as a promising path towards constructing universal simulators of the physical world, which holds immense promise for video generation (Zhu et al., 2024), autonomous driving (Gao et al., 2024), and the development of embodied agents (Mazzaglia et al., 2024). Cognitive psychology posits that intuitive physics, which is demonstrated even by human infants (Wood et al., 2024; Battaglia et al., 2013), is essential for achieving this goal. Intuitive physics emphasizes rendered scenes should be visually and interactively natural to humans, rather than adhere to strict physical accuracy. Consequently, on the path towards developing a world simulator (Xiang et al., 2024), video generation should first be capable of accurately reproducing simple yet fundamental physical phenomenons. However, even state-of-the-art models trained on vast re-sources (Tan et al., 2024) encounter difficulties in correctly generating seemingly trivial physical phenomenons, as de-picted in Figure 1, the model fails to understand that the stone should sink in water. This clear pitfall shows a sub-stantial gap between current video generation models’ and human’s understanding of basic physics. It reveals how far these models are from being true world simulators. Given this context, it becomes important to assess the extent to which current T2V models can capture intuitive physics in their generated outputs. This requires the development of comprehensive evaluation frameworks that beyond tradi-tional metrics. While numerous Text-to-Video (T2V) evalu-ation benchmarks have emerged (Sun et al., 2024; Huang et al., 2024), they primarily focus on various qualities of generated videos (e.g., motion smoothness, background 1PhyGenBench Gravity                 
+
+> Abottle of juice is slowly poured out in
+> the space station ,releasing the liquid
+> into the surrounding area
+
+Buoyancy    
+
+> Astone is gently placed on the surface of
+> a pool filled with water .
+
+Elasticity                
+
+> Avibrant, elastic basketball is thrown
+> forcefully towards the ground ,capturing
+> its dynamic interaction with the surface
+> upon impact .
+
+Mechanics 
+
+Reflection          
+
+> Aplane is gliding over astill and crystal -
+> clear river .
+
+Refraction Interference & Diffraction    
+
+> A large number of soap bubbles are
+> floating in the air under the sunlight .
+
+Optics 
+
+Sublimation                 
+
+> Atimelapse captures the transformation
+> of dry ice as it is exposed to agradually
+> increasing temperature at room
+> temperature
+
+Melting               
+
+> Atimelapse captures the gradual
+> transformation of ice cream as the
+> temperature rises significantly above
+> 100 degree Celsius
+
+Boiling 
+
+Thermal 
+
+Hardness                 
+
+> Adelicate, fragile egg is hurled with
+> significant force towards arugged,
+> solid rock surface, where it collides
+> upon impact
+
+Solubility    
+
+> A clear glass of juice is gently poured
+> into a glass of water .
+
+Dehydration property              
+
+> Atimelapse captures the reaction as
+> concentrated sulfuric acid is poured
+> onto apiece of bread .
+
+Mat er ial 
+
+Properties                     
+
+> Ablue marker is used to write on the
+> white surface of awhiteboard ,
+> showcasing the interaction between the
+> marker and the whiteboard surface .
+
+Friction                       
+
+> Aclear plastic straw is slowly inserted
+> into aglass of crystal -clear water ,
+> revealing the visual changes that occur as
+> the straw interacts with the liquid .
+
+Liquefaction                 
+
+> Atimelapse captures the transformation
+> as water vapor in ahumid environment
+> comes into contact with acool glass
+> surface .
+
+Flame Reaction              
+
+> Apiece of copper is ignited ,emitting a
+> vivid and unique flame as it burns
+> steadily .
+
+Tyndall Effect                    
+
+> Aray of light generated by a projector is
+> passing through a dark room with fine dust
+> particles.
+> Atimelapse captures the transformation
+> of tea in ateapot as the temperature
+> rapidly rises above 10 0degree Celsius
+
+Figure 1: Samples of videos generated by Kling or Gen-3 in PhyGenBench with 4 different aspects. The results show that current T2V models struggle to generate videos that align with physical commonsense (e.g., the lack of a plane’s reflection in water in the first video of the second row). consistency) or spatial relationships, failing to address the critical issue of whether the generated videos adhere to fundamental physical laws. Although some studies have explored the alignment of generated videos with dynamic motions naturalness (Bansal et al., 2024), their benchmarks fail to succinctly capture fundamental physical laws or pro-pose sufficiently robust evaluation methods. Therefore, the development of benchmarks and evaluation methodologies specifically tailored to assess intuitive physics in generated videos remains a critical yet largely unexplored frontier. There are two challenges impeding the evaluation of physi-cal commonsense in T2V models. On one hand, there is a lack of benchmarks focused on evaluating physical common-sense. This requires selecting semantically simple physical phenomenons that exhibit clear physical phenomena, allow-ing for accurate assessment by either humans or machines. On the other hand, there is a lack of corresponding evalu-ation metrics. Traditional metrics like FVD (Unterthiner et al., 2018) exhibit limitations in detecting implausible mo-tions (Brooks et al., 2022) and necessitate reference videos, which are often challenging to procure for novel scenes. Recent studies have used video-based VLMs for compre-hensive video evaluation (He et al., 2024b; Sun et al., 2024). However, they often struggle to correctly assess physical commonsense. This limitation stems from their inadequate understanding of physical laws (Jassim et al., 2023) and the fact that these methods are not specifically designed to evaluate physical laws. To address these challenges, we propose PhyGenBench and 
+
+PhyGenEval to automate the evaluation of physical com-monsense understanding capability from T2V models. Phy-GenBench is designed to evaluate physical commonsense based on fundamental physical laws in text-to-video gen-eration. Inspired by (Halliday et al., 2013), we categorize physical commonsense in the world into four main areas: mechanics, optics, thermal, and material properties. Then principle physical laws and easily observable physical phe-nomenons are identified for each category, resulting in com-prehensive 27 physical laws and 160 validated prompts in the proposed benchmark. Through brainstorming, we con-struct prompts that easily reflect physical laws using sources like textbooks (Harjono et al., 2020). This process results in a comprehensive but simple set of prompts reflecting physi-cal commonsense, which are sufficiently clear for evaluation. As shown in Figure 1, the correctness of physical common-sense in PhyGenBench can be observed through clear phe-nomena (e.g., plane should have reflections in water ) On the other hand, benefiting from the simple yet clear physi-cal phenomena in PhyGenBench prompts, we can propose 
+
+PhyGenEval , which is a novel video evaluation framework for assessing physical commonsense correctness in PhyGen-Bench . PhyGenEval first uses GPT-4o 1 to analyze physical laws in text, addressing the poor understanding of physical common sense in video-based VLMs. Moreover, consid-ering that previous evaluation metrics did not specifically 
+
+1The version is gpt4o-0806 
+
+2PhyGenBench 
+
+target physical correctness, we propose a three-tier hierar-chical evaluation strategy for this aspect, transitioning from image-based to comprehensive video analysis: single image, multiple images, and full video stages. Each stage employs distinct VLMs along with custom instructions generated by GPT-4o to form judgments. By combining PhyGenBench 
+
+and PhyGenEval , we can efficiently evaluate different T2V models’ understanding of physical commonsense at scale, producing results highly consistent with human feedback. The contributions of our work are three-fold. i): We pro-posed PhyGenBench , which compasses a wide range of clear physical phenomenons and explicit physical laws. This benchmark can comprehensively measure whether T2V models understand intuitive physics and indirectly assess their gap from world simulator capabilities ii): Along with the benchmark, we propose an automated evaluation frame-work - PhyGenEval , which overcomes the challenges of assessing the correctness of physical commonsense with other metrics and demonstrates high consistency with hu-man feedback on PhyGenBench , enabling users to conduct large-scale automated testing of various T2V models. iii): 
+
+We conduct extensive evaluations of popular T2V models, even the best-performing model, Gen-3, scores only 0.51 .This indicates that current models are still far from function-ing as world simulators. Based on our evaluation results, we conduct an in-depth analysis and discover that addressing issues such as dynamics is still challenging through prompt engineering or simply scaling up model. We hope this work inspires the community to focus on the learning of physi-cal commonsense in T2V models, rather than merely using them as tools for entertainment. 
+
+2. Related work 
+
+2.1. Benchmarks for text-to-video generation 
+
+The rapid advancement of text-to-video (T2V) generation models has necessitated various benchmarks for accurate assessment. Traditional works in video generation, such as FVD (Unterthiner et al., 2018), rely on datasets like UCF-101 (Soomro, 2012) and Kinetics-400 (Kay et al., 2017), which are limited in scope. Recent benchmarks, includ-ing VBench (Huang et al., 2024) and EvalCrafter (Liu et al., 2024c), aim to comprehensively evaluate general video qual-ity across multiple dimensions. In contrast, some studies focus on fine-grained evaluation of text-to-video (T2V) mod-els from specific aspects. For instance, T2V-CompBench (Sun et al., 2024) assesses compositional generation capa-bilities, while DEVIL (Liao et al., 2024) evaluates dynamic characteristics of generated videos. Although some research like VideoPhy (Bansal et al., 2024) efforts address the dy-namic motions naturalness of video generation, their bench-marks fail to succinctly capture fundamental physical laws. Consequently, most existing works overlook this crucial aspect, which forms the foundation for realizing a world simulator. To address this gap, we introduce PhyGenBench ,a benchmark designed to comprehensively measure T2V models’ understanding of physical commonsense. We pro-vide more releated works in Appendix A 
+
+3. PhyGenBench 
+
+Inspired by (Swartz, 1985), we first define the following terms: “Physical Commonsense:” Basic intuitive under-standing of how physical objects and actions behave in ev-eryday life; “Physical Laws:” Universal scientific principles that describe consistent behaviors in nature; “Physical Phe-nomenon:” Observable events or processes caused by the interaction of physical laws. The purpose of PhyGenBench 
+
+is to evaluate whether T2V models understand physical com-monsense, while each prompt in PhyGenBench presents a clear physical phenomenon and an underlying physical law. 
+
+Overview. As illustrated in Figure 2 (a), PhyGenBench 
+
+encompasses four major categories of physical common-sense: “Mechanics” , “Optics” , “Thermal” , and “Material Properties” . It incorporates 27 physical phenomena with intrinsic physical laws reflected by the corresponding de-signed 160 prompts: 1. “Mechanics” covers 7 common mechanical laws: gravity, buoyancy, solid pressure, atmospheric pressure, elasticity, friction, and surface tension, with 40 validated prompts. For example, we use “A piece of iron is gently placed on the surface of the water in a tank filled with water” to test T2V model’s understanding of Buoyancy, where the iron should sink due to its higher density compared to water. 2. “Optics” categorizes 6 aspects based on light phenomena: reflection, refraction, scattering, dispersion, interference 
+
+& diffraction, and straight-line propagation, yielding 50 
+
+prompts. A prompt like “a kite soaring above a smooth and tranquil pond” is used to test reflection. 3. “Thermal” considers 6 phase transitions: Solidification, Melting, Liquefaction, Boiling, deposition, Sublimation, comprising 30 prompts. Inspired by ChronoMagicBench (Yuan et al., 2024), the vaporization process is evaluated by the prompt “a timelapse capturing the transformation of water as the temperature rapidly rises above 100 ◦C”.4. “Material Properties” includes 5 physical properties (color, hardness, solubility, combustibility, and flame reac-tion) and 3 chemical properties (acidity, redox potential, and dehydrating properties), resulting in 40 prompts. We reflect material properties, e.g., “hardness” , through the prompts with expected phenomena, e.g., “an egg being hurled with significant force towards a rock” , where the egg should break while the rock remains intact. Multiple physical laws could be included in a single prompt, which may bring confusion to the evaluation of physical 3PhyGenBench Gravity  ， Buoyancy  ， Solid Pressure  ， Atmospheric Pressure,                       
+
+> Elasticity, Friction, Surface Tension, Reflection, Refraction,
+> Dispersion, Scattering, Linear Propagation, Interference &
+> Diffraction, Melting, Boiling, Solidification, Liquefaction,
+> Deposition, Sublimation, Color, Flame Reaction, Solubility,
+> Hardness, Combustibility, Redox, Dehydration
+
+4 Physical Knowledge  27 Physical Laws  160 Prompts                          
+
+> A piece of white
+> chalk is used to
+> write on the rough,
+> dark surface of a
+> blackboard…
+> A kite is soaring
+> above a smooth and
+> tranquil pond
+> a delicate, fragile, raw
+> egg is hurled with
+> significant force
+> towards a rugged, solid
+> rock…
+> A cup of water is
+> slowly poured out in
+> the space station
+> without gravity ,
+> releasing the
+> liquid …
+> A vibrant, elastic
+> basketball is thrown
+> forcefully towards
+> the ground …
+> Atimelapse captures
+> the transformation of a
+> clean and smooth piece
+> of iron in a humid
+> environment over
+> decades…
+> Material Properties
+> (25%)
+> Optics (31%) Mechanics (25%)
+> Thermal (19%)
+
+# ... 
+
+(a)  The overview of the  PhyGenBench 
+
+Prompt Engineering      
+
+> Prompt
+> Prompt :
+> anegg collid es with astone
+> Physical law:
+> Hardness of egg is lower than rock Mechanics
+> (40 samples )
+> Material
+> Properties
+> (40 samples)
+> Optics
+> (50 samples )
+> Thermal
+> (30 samples)
+
+Conceptualization 
+
+Prompt Augmentation                  
+
+> Detailed Prompts
+> Detailed Prompt :
+> Adelicate, fragile egg is hurled with
+> significant force towards arugged,
+> solid rock surface, where it collides
+> upon impact .
+
+Diversity Enhancement            
+
+> Replace Object
+> Object :
+> egg ->vase, glass bottle, glass cup …
+> Object :
+> rock ->wall, metal, wooden table …
+
+Quality Control 
+
+> Review Criteria
+> Prompt:
+> 1.Implication
+> 2.Simplicity
+> 3.Diversity
+> 4.Completeness
+> Physical Law:
+> 1.Correctness
+> 2.Completeness
+> 3.Correspondence
+> 4.Expressiveness
+
+(b)  The data construction pipeline of the  PhyGenBench    
+
+> Key Physical Phenomena Detection :
+
+A retrieval prompt for locating , QAs based on a
+
+single image                            
+
+> Physics Order Verification :
+> Aretrieval prompt ;Two ideal descriptions based on
+> frame pairs ;The explicit description of whole process
+> Overall Naturalness Evaluation :
+> 4–level descriptions :Completely Fantastical ;
+> Clearly Unrealistic
+> Slightly Unrealistic ;Almost Realistic
+> Requirements
+
+Questions Generation 
+
+> Generated
+> Questions:
+> …
+
+Figure 2: (a) is the overview of the proposed PhyGenBench . (b) is the PhyGenBench data pipeline, which covers four physics categories. We select key physical laws and manually craft initial prompts that reflect the corresponding physical phenomena. GPT-4o adds details and enhances diversity by varying objects. Then, we generate different questions for scoring in each evaluation stage. After manual review, we obtain 160 T2V prompts. common sense in video generation, even for human annota-tors. To avoid this, we carefully curate prompts to ensure a one-to-one correspondence for each physical phenomenon it reflects, with clear physical law inside. By incorporating physical laws from four distinct physical categories, Phy-GenBench offers a thorough assessment of current T2V models’ understanding of physical commonsense. 
+
+Benchmark Construction. As shown in Figure 2 (b), we develop a comprehensive approach to create PhyGenBench .The methodology encompasses five steps: 1) Conceptual-ization: Following (Halliday et al., 2013), We first iden-tify key physical commonsense from four major categories of physics. For each category, we select specific physical laws from textbooks (Harjono et al., 2020), which can be widely recognized and can be easily demonstrated through clear, observable physical phenomenon. 2) Prompt En-gineering: For each physical law, we manually craft the initial T2V prompts to clearly depict the underlying phys-ical phenomenon 3) Prompt Augmentation: To enhance the model’s video generation capabilities, we augment the initial T2V prompts by adding additional details, such as more precise descriptions of objects and actions (Yang et al., 2024). This augmentation process is carefully designed to avoid revealing the expected physical phenomenon. 4) Di-versity Enhancement: Following T2V-CompBench (Sun et al., 2024), we employ GPT-4o to perform object substi-tution on the augmented prompts. This step increases the diversity of the benchmark. 5) Question Generation: Con-sidering that understanding the physical principles implied in prompts increases the evaluation difficulty, following the method of (Singh & Zheng, 2023). For each prompt in Phy-GenBench , we leverage the world knowledge of LLMs to generate different questions for scoring for different eval-uation stage in PhyGenEval that reflect physical correct-ness. These questions are manually reviewed, filtered, and then incorporated into the benchmark. 6) Quality Control: 
+
+We conduct a thorough review of the prompts, questions and their associated physical laws to ensure accuracy and relevance. Specifically, we ensure that they are clear and accurate. We then randomly use the current T2V model to check if the prompts are simple enough for the model to generate semantically accurate videos. In this process, we focus on the most fundamental physical laws, the most common scenarios, and rigorous quality standards. We find that excessive prompts are unnecessary: even the most basic 4PhyGenBench 
+
+physical laws and scenarios are sufficient to reveal signif-icant issues in current models and effectively distinguish between different models. For more detailed information can be referred to the Appendix B. 
+
+4. PhyGenEval 
+
+PhyGenEval aims to assess whether the physical phenomena in the generated videos conform to the corresponding phys-ical laws. To obtain a clear judgment, we decompose the evaluation into semantic alignment (SA) and physical com-monsense alignment (PCA). While SA evaluates whether the semantic meaning inferred by the generated video and the input prompt are matched, PCA measures whether the evaluated physical laws are grounded in the videos. For example, for the scene “an egg collides with a stone” , SA requires a video containing the egg, the stone, and the colli-sion action. PCA necessitates a video for the whole physical motions in which the egg hits a stone and then breaks, while the stone remains intact. Following (He et al., 2024b), we convert both SA and PCA to a four-point scale, as well as the human ratings. 
+
+4.1. Semantic Alignment Evaluation 
+
+Directly asking the Vision-Language Model(VLM) to align the semantic meaning between videos and input prompts are difficult, as prompts usually are mixed with semantic entities and physical phenomena, and the intermediate out-comes are subtly implied by the videos. For example, in a prompt like “A timelapse captures the transformation of soup as the temperature rises above 100°C” , a possible video generation would appear like “The video shows a soup, but there is no transformation of the soup” . To ad-dress the challenge, we first employ GPT-4o to extract object and action from the original text prompt, we then utilize GPT-4o to sequentially determine the presence of extracted objects in the video and verify the occurrence of specified actions. This decomposition provides more fine-grained captures and prevents the model from confusing semantic and physical correctness during evaluation. Experimental results demonstrate that our automated evaluation method aligns more closely with human judgment and outperforms previous methods (He et al., 2024b; Sun et al., 2024) in 
+
+PhyGenBench (Appendix C.1). In this process, we ensure that GPT-4o’s API is configured without randomness, e.g., setting the temperature to 0, to guarantee the reproducibility of the results. 
+
+4.2. Physical Commonsense Evaluation 
+
+To evaluate physical correctness in the video, we evaluated multiple common evaluation metrics comparing human as-sessments 2. Experimental results in Table 1 demonstrate that these methods struggle to generalize to the assessment of physical commonsense correctness on PhyGenBench ,e.g., VideoScore (He et al., 2024b) has only a spearman correlation of 0.19 on PhyGenBench , which is most cor-related with human assessments except PhyGenEval . We attribute it to the main factor: Directly using video-based VLMs fails to comprehend the embedded physical com-monsense (Jassim et al., 2023), as current methods are not designed with physical commonsense as a foundation. To fully understand the physical commonsense in the video, there are three key factors need to solve: i): Physical pro-cesses typically exhibit clear key phenomena depicted by the input prompt (e.g., “the egg breaks upon hitting the rock.” ). It is necessary to identify these key physical phe-nomena and detect their presence in videos. ii): Physical processes are characterized by causality, manifested in the correct sequence of critical events(e.g., “The egg touchs the rock first, then breaks.” ). The correct sequence order vali-dates the correctness of physical processes. iii): Physical processes need to possess overall naturalness, which repre-sents the realistic of the overall process. To address these factors, we design a progressive strategy that starts with key physical phenomena, then moves through the sequence of several key phenomena, and finally evaluates the overall naturalness of the entire video. In addition, we use the cus-tomized questions designed for each phase in the section 3 to conduct evaluations with different VLMs at each stage. This hierarchical and refined approach reduces the difficulty compared to existing methods that directly uses VLMs to evaluate physical commonsense, enabling PhyGenEval to achieve results closely aligned with human judgements. In this process, we ensure that GPT-4o’s API and the infer-ence code of VLMs is configured without randomness, to guarantee the reproducibility of the results. 
+
+Key Physical Phenomena Detection. This stage aims to detect whether the key physical phenomena occur in the video . Here we define the key phenomena as an observable and distinctive occurrence (e.g., a specific frame) within a physical process that can directly reveal the corresponding physical law, like deformations or color changes. During the process of constructing the benchmark, for each input prompt in PhyGenBench , we craft a retrieval prompt pr
+
+and a set of physics-related questions Q, where the retrieval prompt is used to locate the key phenomena frame, and physical-related questions are utilized to check whether the expected physics phenomena are present in the keyframe. As illustrated in Figure 3 (a), we first obtained both Q
+
+and Pr by prompting GPT-4o with the input T2V prompt and corresponding physical law. Following (Hessel et al., 
+
+> 2Annotators are asked to score the correctness of physical com-monsense in the video. Details refer to Section 5 and Appendix D.1
+
+5PhyGenBench CLIP  Retrieval                                                                                                                                                                                       
+
+> Key Frames
+> Consider nearby frames
+> Each Key frame
+> CLIP Retrieval
+> Consider nearby frames
+> VLM Question
+> Single Image
+> VLM Retrieval
+> Single Image
+> VLM Question2
+> Multiple Images
+> First Frame Last Frame
+> Each Key(R) -Last pair
+> VLM Retrieval
+> Single Image
+> Each Key(R) frame Ques1 ,Ques2, Ques3
+> Each First -Key(i -2:i) pair
+> Each Key(i:i+2) -Last pair
+> First -All Keys(i -2:i+2) -Last
+> VLM Detailed Grading
+> The whole video images
+> All Frames
+> Key Physical Phenomena Detection Physics Order Verification Overall Naturalness Evaluation
+> Retrieval Prompt :The egg hits the stone
+> heavily
+> Question :Is the egg broken? (Key Frame)
+> Right_Statement :The egg breaks
+> Wrong_Statement :The egg does not
+> break .
+> Retrieval Prompt :The egg touches the stone slightly
+> Question 1:The egg does not break ,the stone remains unchanged
+> (First -to -Key Frames)
+> Question 2:The egg breaks and the stone remains unchanged
+> (Key -to -Last Frames)
+> Question 3:the stone remains unchanged ,but the egg shatters …
+> (All Frames)
+> Prompt :Adelicate, fragile egg is hurled with significant force towards arugged, solid rock surface …Physical Law :The hardness of the stone is high and the hardness of the raw egg is low …
+> Completely Fantastical The egg bounces off
+> unharmed ...
+> Clearly Unrealistic The egg impacts the rock without
+> breaking but deforms like rubber ...
+> Slightly Unrealistic egg breaks but some irregularities ...
+> Almost Realistic The egg shatters into numerous
+> piece ...
+> ii + 1 i + 2 i-2i-1
+> S𝑘𝑒𝑦 =max 𝑖 −2≤𝑗 ≤𝑖 +2𝑉𝐿𝑀 𝐼 𝑗 ,𝑃 𝑟 +𝑉𝐿𝑀 𝐼 𝑗 ,𝑄
+> Key Frames
+> ii + 1 i + 2 i-2i-1
+> 𝑆 𝑎𝑓𝑡𝑒𝑟 =max
+> 𝑖 ≤𝑗 ≤𝑖 +2𝑉𝐿𝑀 𝐼 𝑗 ,𝑝 𝑟 +𝑉𝐿𝑀 𝐼 𝑗 ,𝐼 −1,𝑞 2𝑆 𝑛𝑎𝑡𝑢𝑟𝑎𝑙 =𝑉𝐿𝑀 𝐼 0:−1,𝑔 𝑠𝑝𝑒𝑐 ,𝑝 ,𝑙
+> Generated
+> Questions in
+> PhyGenBench
+> Three -Tier
+> Evaluation in
+> PhyGenEval
+> (a) Key Physical Phenomena Detection (b) Physics Order Verification (using Question 2 as an example) (c) Overall Naturalness Evaluation
+
+Figure 3: An overview of the proposed PhyGenEval . PhyGenEval is divided into three parts: Key Physical Phenomena Detection, Physics Order Verification, and Overall Naturalness Evaluation. Each part uses an appropriate VLM in combination with physical-based customized questions generated by GPT-4o. The final score is the combined result of the three parts. For the example in the figure, the three-stage scores are 0, 1 (only Question 1 is correct), and 0. The final score is calculated as 0 according to Overall Score calculation in Section 4.2. 2021), a keyframe Ii from the video based on the retrieval prompt, where Ii is the i-th frame in the video. By us-ing the keyframe, we define a confidence score of the key phenomena in the video:. 
+
+Skey = X
+
+q∈Q
+
+max 
+
+i−2≤j≤i+2 (VLM( Ij , q ) + VLM( Ij , p r )) ,
+
+where VLM( Ij , q ) reflects the presence of physical phenom-ena in Ij for each related question q from Q. VLM( Ij , p r )
+
+checks whether Ij matches the retrieval prompt, which en-sures key phenomena occur at the correct frame. Since videos may contain semantic errors, it’s also important for determining if key physical phenomena occur (e.g., an egg shouldn’t break in mid-air before hitting a rock). We consider adjacent 5 frames near the keyframe to enhance the robustness. For example, the egg may not be cracked just when it first contacts the stone. We instantiate VLM-based evaluator VLM( ·) with VQAScore (Lin et al., 2024), which has been shown promising evaluation results on vi-sual question-answering. 
+
+Physics Order Verification. In this stage, we verify 
+
+whether key physical phenomena occur in the correct order .The correct physical sequence is an ordered series of events in a physical process that reflects causality, which repre-sents the necessary prerequisites and temporal order of key physical phenomena. As an example, the egg should first touch the stone and then crack. Considering current models in PhyGenBench generally maintain outcome consistency (Huang et al., 2024) (e.g., the egg would not reassemble itself after it is broken). we approach this direction by inves-tigating the order correctness from the keyframes (Figure 3 (b)), e.g., the keyframe of the egg hits the stone should be ahead of the keyframe of the broken egg. Similar to the Key Physical Phenomena Detection evalua-tion, we use a retrieval prompt pr and three physical-related questions (q1, q 2, q 3) in PhyGenBench . pr is used to locate the keyframe (e.g., the moment the egg slightly touches the stone.). While q1, q2, and q3 are questions to check the order correctness from the first frame to the keyframe, from the keyframe to the last frame, and from the first frame to the last frame, respectively. Similarly, we first use CLIPScore to locate the key frame Ii, then the order correctness scores of Sbefore and Safter are defined as: 
+
+Sbefore = max 
+
+i−2≤j≤i (VLM( I0, I j , q 1) + VLM( Ij , p r )) Safter = max 
+
+i≤j≤i+2 (VLM( Ij , I −1, q 2) + VLM( Ij , p r )) 
+
+q3 assesses the overall physical sequence coherence of the video. The score of answering q3 is defined as by 
+
+Sall = VLM( I0, I i−2: i+2 , I −1, q 3), which evaluates the overall sequence (similar to the input video but using man-ually selected key frames). Here we employ GPT-4o or LLaVA-Interleave (Li et al., 2024) as the VLM-based evalu-ator VLM( ·), as they demonstrate exceptional multi-image comprehension capabilities. The overall score of whole physical order evaluation can be formulated as Sorder =Sbefore + S after + S all 
+
+6PhyGenBench 
+
+Overall Naturalness Evaluation. This stage aims to eval-uate the overall naturalness of the video . we define nat-uralness as the dynamic progression that aligns with real-world physical phenomenons (Liao et al., 2024). During the construction of PhyGenBench , we generate 4 different levels of descriptions gspec for each pair of prompts and their corresponding physical laws. As shown in Figure 3 (c), we require the VLM to score based on p, l, gspec , and the corresponding video denoted by I0: −1. Formally, we define the overall naturalness score as: 
+
+Snatural = VLM( I0: −1, p, l, g spec )
+
+We implement the VLM-based evaluator VLM( ·) using InternVideo2 (Wang et al., 2024) and GPT-4o, both of which have promising results in video understanding. 
+
+Overall Score. We first discretize Skey , Sorder , and 
+
+Snatural from the three stages into a 4-point scale, then take their average and apply floor rounding as the final score. For robust purposes, we evaluate Sorder with both GPT4o and LLaVA-Interleave and Snatural with both GPT4o and Intern-Video2. The final score is calculated as the ensemble of two methods. Detailed calculation are provided in Appendix C. 
+
+5. Experiment 
+
+Experiments Setup. We evaluate 8 open-source models, as well as 6 proprietary models Kling (kli, 2024), Pika (Pik, 2023), Sora (Sor, 2024), Vidu (Vid, 2024), Hailuo (Hai, 2024), and Gen-3 (gen, 2024). We compare our pro-posed metric with existing metrics or benchmarks: Video-phy (Bansal et al., 2024), VideoScore (He et al., 2024b) and DEVIL (Liao et al., 2024) More Detailed information is provided in Appendix D. For human evaluation, we compared the results across 8 ran-domly selected different T2V models. We randomly select 
+
+64 prompts from PhyGenBench and generate 64 videos for each T2V model. We ask three annotators to provide se-mantic and physical scores for each video 3. Each annotator will give an integer score of 0-3 for the semantic and phys-ical scores, and the final score is the average of the three scores and rounded up. Finally, we calculate the correlation between the human scores and automatic evaluation scores using Kendall’s τ and Spearman’s ρ. we put more detailed information about human evaluation in Appendix D.1. 
+
+Human Evaluation. As shown in Table 1, current video generation evaluation metrics largely overlook physical cor-rectness. In contrast, PhyGenEval implements a detailed design for evaluating physical correctness, demonstrating strong correlations with human judgments across all cat-egories. Its overall correlation coefficient reaches 0.81 ,
+
+> 3
+
+Note that we ask the annotators to focus on the correctness of the physical phenomena for physical scores. 
+
+Table 1: PCA correlation results with proposed Phy-GenEval in video generation on PhyGenBench . Phy-GenEval is significantly closer to human feedback on Phy-GenBench compared to other metrics.                                                            
+
+> Metric Mechanics Optics Thermal Material Overall
+> τ(↑)ρ(↑)τ(↑)ρ(↑)τ(↑)ρ(↑)τ(↑)ρ(↑)τ(↑)ρ(↑)DEVIL (Liao et al., 2024) 0.16 0.16 0.03 0.03 0.10 0.11 0.27 0.29 0.17 0.18
+> VideoPhy (Bansal et al., 2024) 0.00 −0.03 −0.15 −0.14 0.08 0.08 0.13 0.14 0.03 0.04
+> VideoScore (He et al., 2024b) 0.18 0.20 0.07 0.08 0.14 0.15 0.14 0.15 0.17 0.19
+> PhyGenEval 0.72 0.75 0.76 0.77 0.73 0.75 0.81 0.84 0.78 0.81
+
+indicating that PhyGenEval serves as an effective human-aligned physical commonsense correctness evaluator for 
+
+PhyGenBench . we provide more details in Appendix D.1. We conduct several case studies to illustrate the differences between various metrics more clearly. As shown in Figure 4, (a) and (f) reveal that VideoScore and DEVIL are prone to misclassifying videos that have smooth and consistent motion but violate fundamental physical laws. Specifically, as for (a), when “an egg exhibits rubber-like elasticity upon impact with a rock instead of breaking,” these metrics incor-rectly evaluate it as physically correct. VideoPhy exhibits similar limitations. In (c), it incorrectly assesses “a rock floating on water instead of sinking” as physically correct. Furthermore, our analysis reveals a major flaw in these three methodologies: they cannot incorporate domain-specific physical commonsense. As illustrated in (e), where “the flame from burning copper appears red instead of green,” 
+
+these metrics fail to identify the mistake. This indicates their inability to incorporate domain-specific physical com-monsense. In contrast, PhyGenEval demonstrates a robust integration of physical commonsense and comprehensive video content analysis, resulting in more accurate and phys-ically consistent evaluations in PhyGenBench .
+
+Quantitative Evaluation. We conduct extensive experi-ments on a wide range of popular video generation models. As illustrated in Table 2, even the best-performing model, Gen-3, only attains a PCA score of 0.51 on PhyGenBench .This indicates that even for prompts containing obvious physical commonsense, current T2V models struggle to generate videos that comply with intuitive physics. It indi-rectly reflects that these models are still far from achieving the world simulator. Furthermore, we identify the following key observations: 
+
+1): Across various categories of physical commonsense, all models consistently demonstrate superior performance in the domain of optics compared to other areas. Notably, Vchi-tect2.0 and CogVideoX-5b achieve a PCA score in the optics domain comparable to that of closed-source models. We posit that this superior performance in the optics domain can be attributed to the abundant and explicit representation of optical knowledge in pre-training datasets, thereby enhanc-ing the model’s comprehension in this area. 2): Sora and 7PhyGenBench A delicate, fragile egg is hurled                                                                                                       
+
+> with significant force towards a
+> rugged, solid rock surface,
+> where it collides upon impact
+> Text Prompt
+> Physical Law
+> Stone is harder than egg
+> Phy sGen Eval VideoPhy VideoScore DEVIL
+> 0033
+> Astone is gently placed on the
+> surface of apool filled with
+> water .
+> Text Prompt
+> Physical Law
+> Buoyancy
+> VideoPhy VideoScore DEVIL
+> 0223
+> Acup of oil is slowly poured
+> out in the space station,
+> releasing the liquid into the
+> surrounding area
+> Text Prompt
+> Physical Law
+> Lack of Gravity
+> VideoPhy VideoScore DEVIL
+> 0223
+> Atimelapse captures the
+> reaction as concentrated
+> sulfuric acid is poured onto a
+> piece of bread .
+> Text Prompt
+> Physical Law
+> Dehydration property
+> VideoPhy VideoScore DEVIL
+> 0132
+> Apiece of copper is ignited,
+> emitting avivid and unique
+> flame as it burns steadily .
+> Text Prompt
+> Physical Law
+> Flame Reaction
+> VideoPhy VideoScore DEVIL
+> 1333
+> Akite is soaring above a
+> smooth and tranquil pond .
+> Text Prompt
+> Physical Law
+> Reflection of Light
+> VideoPhy VideoScore DEVIL
+> 1223
+> (a)
+> (c)
+> (e)
+> (b)
+> (d)
+> (f)
+> Phy sGen Eval
+> Phy sGen Eval
+> Phy sGen Eval
+> Phy sGen Eval
+> Phy sGen Eval
+
+Figure 4: Different video generation evaluation metric in PhyGenBench . Except for the proposed PhyGenEval , the current methods cannot reasonably assess the correctness of physical commonsense in videos from PhyGenBench .Table 2: Evaluation results of PCA with the proposed PhyGenEval in videos generated by several models . The results reveal that all models score very low in physical commonsense accuracy. The scores are normalized to a range of 0-1. 
+
+Model Size Mechanics (↑) Optics (↑) Thermal (↑) Material (↑) Average (↑)CogVideoX (Yang et al., 2024) 2B 0.38 0.43 0.34 0.39 0.39 
+
+CogVideoX (Yang et al., 2024) 5B 0.39 0.55 0.40 0.42 0.45 
+
+Open-Sora V1.2 (Zheng et al., 2024a) 1.1B 0.43 0.50 0.44 0.37 0.44 
+
+Lavie (Wang et al., 2023) 860M 0.30 0.44 0.38 0.32 0.36 
+
+Vchitect 2.0 (Wang et al., 2023) 2B 0.41 0.56 0.44 0.37 0.45 
+
+Hunyuan (Kong et al., 2024) 13B 0.44 0.53 0.38 0.39 0.47 
+
+Pyramid Flow (flux) (Jin et al., 2024) 2B 0.37 0.50 0.47 0.37 0.43 
+
+Pyramid Flow (sd3) (Jin et al., 2024) 2B 0.42 0.49 0.36 0.45 0.41 
+
+Pika1.0 (Pik, 2023) - 0.35 0.56 0.43 0.39 0.44 
+
+Gen-3 (gen, 2024) - 0.45 0.57 0.49 0.51 0.51 
+
+Kling (kli, 2024) - 0.45 0.58 0.50 0.40 0.49 
+
+Sora (Sor, 2024) - 0.50 0.66 0.56 0.46 0.55 
+
+Vidu (Vid, 2024) - 0.48 0.63 0.52 0.50 0.54 
+
+Hailuo (Hai, 2024) - 0.49 0.67 0.50 0.50 0.55 
+
+Hailuo exhibit significantly higher performance compared to other models. Specifically, they demonstrate a robust understanding of material properties, achieving a score of 
+
+0.55 , which substantially surpasses other models. Kling performs particularly well in thermal, attaining the highest score of 0.50 in this domain. 3): Among open-source mod-els, Hunyuan and CogVideoX 5b perform comparatively well, both exceeding the performance level of Pika. In con-trast, Lavie consistently exhibits lower physical correctness. We provide qualitative analysis in Appendix D.3 
+
+Ablation Study. We conduct a detailed robustness analy-sis, Experimental results demonstrate that the key designs of PhyGenEval are essential, and even when only using open-source models, PhyGenEval maintains high effec-tiveness . Detailed results are provided in Appendix D.4. 
+
+6. Discussion 
+
+To explore potential solutions for the challenges posed by PhyGenBench , We focus on widely used and proven-effective methods such as scaling laws (Kaplan et al., 2020), prompt engineering (Fu et al., 2024), and some method like Venhancer (He et al., 2024a) aimed to improve general video quality (Huang et al., 2024). More detailed results are in Appendix E. 
+
+Rewriting prompt. We aim to explore whether GPT-augmented prompts can address the PhyGenBench chal-lenges. Specifically, we rewrite the original prompts using GPT, adding expected physical outcomes and processes. For example, after “A bottle of juice is slowly poured out in the space station, releasing the liquid into the surrounding area” , we add “The liquid forms floating globules, spread-ing out and moving randomly through the air.” in the end. As shown in Table 3, we use CogVideoX 5b and Kling as representative models for open-source and closed-source systems, respectively, to conduct tests. The results indi-cate that prompt rewriting does help the models generate images aligned with physical laws, but it is still far from resolving the issues highlighted by PhyGenBench . Both CogVideoX 5b and Kling exhibit some growth, but even for Kling, it only achieves a score of 0.56. This demon-strates that current models still severely lack the ability to 8PhyGenBench 
+
+Table 3: Evaluation results of PCA using the proposed PhyGenEval after rewriting prompts . The results indicate that although using rewritten prompts leads to some improvement, it is still insufficient to address the challenges highlighted by 
+
+PhyGenBench . The scores are normalized to a range of 0-1. 
+
+Model Size Mechanics (↑) Optics (↑) Thermal (↑) Material (↑) Average (↑)
+
+Before Rewriting Prompt 
+
+CogVideoX (Yang et al., 2024) 5B 0.39 0.55 0.40 0.42 0.45 
+
+Kling - 0.45 0.58 0.50 0.40 0.49 
+
+After Rewriting Prompt 
+
+CogVideoX (Yang et al., 2024) 5B 0.39 0.62 0.53 0.52 0.52 
+
+Kling - 0.50 0.64 0.61 0.48 0.56 
+
+Table 4: PCA evaluation results with proposed PhyGenEval in videos after VEnhancer . The results indicate that employing VEnhancer fails to enhance the model’s comprehension of physical commonsense. The scores are normalized to a range of 0-1. 
+
+Model Size Mechanics (↑) Optics (↑) Thermal (↑) Material (↑) Average (↑)Vchitect 2.0 2B 0.41 0.56 0.44 0.37 0.45 
+
+Vchitect 2.0 (Venhancer) 2B 0.41 0.56 0.42 0.38 0.45 
+
+accurately render physical scenes, and this deficiency can-not be easily resolved through simple prompt rewriting. To illustrate this issue more clearly, as shown in Figure 10, our qualitative analysis shows that rewriting prompts can only address simple issues (e.g., flame color reactions), but remains ineffective for more complex physical processes (e.g., egg breaking, stone sinking). 
+
+The robustness of PhyGenBench and PhyGenEval .
+
+VEnhancer (He et al., 2024a) is a generative space-time enhancement framework that improves existing videos by adding spatial details and synthetic motion in the temporal domain. After enhancement by VEnhancer, Vchitect2.0 shows significant improvement on VBench, even surpass-ing Kling. However, VEnhancer only enhances the visual quality of videos (e.g., making them more coherent and clear) without addressing the model’s poor understanding of physical commonsense. As shown in Table 4, Vchitect enhanced by VEnhancer still scores similarly to the original version on PhyGenBench .We calculate a high Spearman coefficient of 0.86 between model scores on PhyGenBench before and after VEnhancer enhancement. This indicates that PhyGenEval primarily fo-cuses on physical correctness and is robust to other factors affecting visual quality. Furthermore, it demonstrates that even if a model can generate videos with better general qual-ity (e.g., ranking higher on VBench), it doesn’t necessarily imply a better understanding of physical common sense. This highlights the distinction between PhyGenBench and benchmarks like VBench that evaluate video quality. 
+
+7. Conclusion 
+
+In this paper, we explore the gap between current T2V mod-els’ understanding of physical commonsense and their role as world simulators. To achieve this, we introduce PhyGen-Bench and PhyGenEval . PhyGenBench is a benchmark specifically designed to assess models’ understanding of physical commonsense, featuring various physical laws and simple, clear physical phenomenons. Alongside PhyGen-Bench , we propose a novel evaluation framework called 
+
+PhyGenEval to automate the evaluation process. Experi-mental and analytical results show that current T2V models struggle to generate videos that align with physical common-sense, highlighting a significant gap from world simulation. 
+
+Impact Statement 
+
+This work contributes to the long-term vision of advancing video generation models toward more physics-consistent world simulators. From an ethical perspective, while strict physical consistency evaluation may reveal current model limitations, it also opens new directions for improving mod-els’ physical understanding, data synthesis, and evaluation frameworks. The future societal impact includes enhancing the reliability of video generation technology in scientific simulation, education, and filmmaking. 9PhyGenBench 
+
+Acknowledgements 
+
+This paper is partially supported by the National Key R&D Program of China No.2022ZD0161000. 
+
+References 
+
+Pika, 2023. URL https://www.pika.art/ .Hailuo, 2024. URL https://hailuoai.video/ .Sora, 2024. URL https://sora.com/ .Hailuo, 2024. URL https://www.vidu.com/ .Gen-3, 2024. URL https://runwayml.com/blog/ introducing-gen-3-alpha/ .Kling, 2024. URL https://kling.kuaishou.com/ .Achiam, J., Adler, S., Agarwal, S., Ahmad, L., Akkaya, I., Aleman, F. L., Almeida, D., Altenschmidt, J., Altman, S., Anadkat, S., et al. Gpt-4 technical report. arXiv preprint arXiv:2303.08774 , 2023. Bansal, H., Lin, Z., Xie, T., Zong, Z., Yarom, M., Bitton, Y., Jiang, C., Sun, Y., Chang, K.-W., and Grover, A. Videophy: Evaluating physical commonsense for video generation. arXiv preprint arXiv:2406.03520 , 2024. Battaglia, P. W., Hamrick, J. B., and Tenenbaum, J. B. Sim-ulation as an engine of physical scene understanding. 
+
+Proceedings of the National Academy of Sciences , 110 (45):18327–18332, 2013. Bear, D. M., Wang, E., Mrowca, D., Binder, F. J., Tung, H.-Y. F., Pramod, R., Holdaway, C., Tao, S., Smith, K., Sun, F.-Y., et al. Physion: Evaluating physical prediction from vision in humans and machines. arXiv preprint arXiv:2106.08261 , 2021. Brooks, T., Hellsten, J., Aittala, M., Wang, T.-C., Aila, T., Lehtinen, J., Liu, M.-Y., Efros, A., and Karras, T. Generating long videos of dynamic scenes. Advances in Neural Information Processing Systems , 35:31769– 31781, 2022. Chow*, W., Mao*, J., Li, B., Seita, D., Guizilini, V. C., and Wang, Y. Physbench: Benchmarking and enhancing vision-language models for physical world understanding. In International Conference on Learning Representations ,2025. Fu, X., He, M., Lu, Y., Wang, W. Y., and Roth, D. Commonsense-t2i challenge: Can text-to-image genera-tion models understand commonsense? arXiv preprint arXiv:2406.07546 , 2024. Gao, S., Yang, J., Chen, L., Chitta, K., Qiu, Y., Geiger, A., Zhang, J., and Li, H. Vista: A generalizable driving world model with high fidelity and versatile controllabil-ity. arXiv preprint arXiv:2405.17398 , 2024. Halliday, D., Resnick, R., and Walker, J. Fundamentals of physics . John Wiley & Sons, 2013. Harjono, A., Gunawan, G., Adawiyah, R., and Herayanti, L. An interactive e-book for physics to improve students’ conceptual mastery. International Journal of Emerging Technologies in Learning (iJET) , 15(5):40–49, 2020. He, J., Xue, T., Liu, D., Lin, X., Gao, P., Lin, D., Qiao, Y., Ouyang, W., and Liu, Z. Venhancer: Generative space-time enhancement for video generation. arXiv preprint arXiv:2407.07667 , 2024a. He, X., Jiang, D., Zhang, G., Ku, M., Soni, A., Siu, S., Chen, H., Chandra, A., Jiang, Z., Arulraj, A., et al. Mantiss-core: Building automatic metrics to simulate fine-grained human feedback for video generation. arXiv preprint arXiv:2406.15252 , 2024b. Hessel, J., Holtzman, A., Forbes, M., Bras, R. L., and Choi, Y. Clipscore: A reference-free evaluation metric for im-age captioning. arXiv preprint arXiv:2104.08718 , 2021. Huang, Z., He, Y., Yu, J., Zhang, F., Si, C., Jiang, Y., Zhang, Y., Wu, T., Jin, Q., Chanpaisit, N., et al. Vbench: Compre-hensive benchmark suite for video generative models. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 21807–21818, 2024. Jassim, S., Holubar, M., Richter, A., Wolff, C., Ohmer, X., and Bruni, E. Grasp: A novel benchmark for eval-uating language grounding and situated physics under-standing in multimodal language models. arXiv preprint arXiv:2311.09048 , 2023. Jin, Y., Sun, Z., Li, N., Xu, K., Jiang, H., Zhuang, N., Huang, Q., Song, Y., Mu, Y., and Lin, Z. Pyramidal flow matching for efficient video generative modeling. arXiv preprint arXiv:2410.05954 , 2024. Kaplan, J., McCandlish, S., Henighan, T., Brown, T. B., Chess, B., Child, R., Gray, S., Radford, A., Wu, J., and Amodei, D. Scaling laws for neural language models. 
+
+arXiv preprint arXiv:2001.08361 , 2020. Kay, W., Carreira, J., Simonyan, K., Zhang, B., Hillier, C., Vijayanarasimhan, S., Viola, F., Green, T., Back, T., Natsev, P., et al. The kinetics human action video dataset. 
+
+arXiv preprint arXiv:1705.06950 , 2017. Kong, W., Tian, Q., Zhang, Z., Min, R., Dai, Z., Zhou, J., Xiong, J., Li, X., Wu, B., Zhang, J., et al. Hunyuan-video: A systematic framework for large video generative models. arXiv preprint arXiv:2412.03603 , 2024. 10 PhyGenBench 
+
+Li, F., Zhang, R., Zhang, H., Zhang, Y., Li, B., Li, W., Ma, Z., and Li, C. Llava-next-interleave: Tackling multi-image, video, and 3d in large multimodal models. arXiv preprint arXiv:2407.07895 , 2024. Li, Z., Wang, X., Stengel-Eskin, E., Kortylewski, A., Ma, W., Van Durme, B., and Yuille, A. L. Super-clevr: A vir-tual benchmark to diagnose domain robustness in visual reasoning. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 14963–14973, June 2023. Liao, M., Lu, H., Zhang, X., Wan, F., Wang, T., Zhao, Y., Zuo, W., Ye, Q., and Wang, J. Evaluation of text-to-video generation models: A dynamics perspective. arXiv preprint arXiv:2407.01094 , 2024. Lin, Z., Pathak, D., Li, B., Li, J., Xia, X., Neubig, G., Zhang, P., and Ramanan, D. Evaluating text-to-visual generation with image-to-text generation. arXiv preprint arXiv:2404.01291 , 2024. Liu, H., Li, C., Wu, Q., and Lee, Y. J. Visual instruction tun-ing. Advances in neural information processing systems ,36, 2024a. Liu, S., Ren, Z., Gupta, S., and Wang, S. Physgen: Rigid-body physics-grounded image-to-video generation. In 
+
+European Conference on Computer Vision ECCV , 2024b. Liu, Y., Cun, X., Liu, X., Wang, X., Zhang, Y., Chen, H., Liu, Y., Zeng, T., Chan, R., and Shan, Y. Evalcrafter: Benchmarking and evaluating large video generation models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 22139– 22149, 2024c. Mazzaglia, P., Verbelen, T., Dhoedt, B., Courville, A., and Rajeswar, S. Multimodal foundation world mod-els for generalist embodied agents. arXiv preprint arXiv:2406.18043 , 2024. Reid, M., Savinov, N., Teplyashin, D., Lepikhin, D., Lilli-crap, T., Alayrac, J.-b., Soricut, R., Lazaridou, A., Firat, O., Schrittwieser, J., et al. Gemini 1.5: Unlocking multi-modal understanding across millions of tokens of context. 
+
+arXiv preprint arXiv:2403.05530 , 2024. Salimans, T., Goodfellow, I., Zaremba, W., Cheung, V., Radford, A., and Chen, X. Improved techniques for training gans. Advances in neural information processing systems , 29, 2016. Singh, J. and Zheng, L. Divide, evaluate, and refine: Eval-uating and improving text-to-image alignment with it-erative vqa feedback. Advances in Neural Information Processing Systems , 36:70799–70811, 2023. Soomro, K. Ucf101: A dataset of 101 human actions classes from videos in the wild. arXiv preprint arXiv:1212.0402 ,2012. Sun, K., Huang, K., Liu, X., Wu, Y., Xu, Z., Li, Z., and Liu, X. T2v-compbench: A comprehensive benchmark for compositional text-to-video generation. arXiv preprint arXiv:2407.14505 , 2024. Swartz, N. The concept of physical law . Cambridge Univer-sity Press, 1985. Tan, Z., Yang, X., Qin, L., and Li, H. Vidgen-1m: A large-scale dataset for text-to-video generation. arXiv preprint arXiv:2408.02629 , 2024. Unterthiner, T., Van Steenkiste, S., Kurach, K., Marinier, R., Michalski, M., and Gelly, S. Towards accurate generative models of video: A new metric & challenges. arXiv preprint arXiv:1812.01717 , 2018. Wang, J., Ma, A., Cao, K., Zheng, J., Zhang, Z., Feng, J., Liu, S., Ma, Y., Cheng, B., Leng, D., et al. Wisa: World simulator assistant for physics-aware text-to-video generation. arXiv preprint arXiv:2503.08153 , 2025. Wang, Y., Chen, X., Ma, X., Zhou, S., Huang, Z., Wang, Y., Yang, C., He, Y., Yu, J., Yang, P., et al. Lavie: High-quality video generation with cascaded latent diffusion models. arXiv preprint arXiv:2309.15103 , 2023. Wang, Y., Li, K., Li, X., Yu, J., He, Y., Chen, G., Pei, B., Zheng, R., Xu, J., Wang, Z., et al. Internvideo2: Scaling video foundation models for multimodal video understanding. arXiv preprint arXiv:2403.15377 , 2024. Wood, J. N., Ullman, T. D., Wood, B. W., Spelke, E. S., and Wood, S. M. Object permanence in newborn chicks is robust against opposing evidence. arXiv preprint arXiv:2402.14641 , 2024. Xiang, J., Liu, G., Gu, Y., Gao, Q., Ning, Y., Zha, Y., Feng, Z., Tao, T., Hao, S., Shi, Y., et al. Pandora: Towards general world model with natural language actions and video states. arXiv preprint arXiv:2406.09455 , 2024. Yang, Z., Teng, J., Zheng, W., Ding, M., Huang, S., Xu, J., Yang, Y., Hong, W., Zhang, X., Feng, G., et al. Cogvideox: Text-to-video diffusion models with an ex-pert transformer. arXiv preprint arXiv:2408.06072 , 2024. Yuan, S., Huang, J., Xu, Y., Liu, Y., Zhang, S., Shi, Y., Zhu, R., Cheng, X., Luo, J., and Yuan, L. Chronomagic-bench: A benchmark for metamorphic evaluation of text-to-time-lapse video generation. arXiv preprint arXiv:2406.18522 ,2024. 11 PhyGenBench 
+
+Zheng, Z., Peng, X., Yang, T., Shen, C., Li, S., Liu, H., Zhou, Y., Li, T., and You, Y. Open-sora: Democratizing efficient video production for all, March 2024a. URL 
+
+https://github.com/hpcaitech/Open-Sora .Zheng, Z., Yan, X., Chen, Z., Wang, J., Lim, Q. Z. E., Tenen-baum, J. B., and Gan, C. Contphy: Continuum physi-cal concept learning and reasoning from videos. arXiv preprint arXiv:2402.06119 , 2024b. Zhu, Z., Wang, X., Zhao, W., Min, C., Deng, N., Dou, M., Wang, Y., Shi, B., Wang, K., Zhang, C., et al. Is sora a world simulator? a comprehensive survey on general world models and beyond. arXiv preprint arXiv:2405.03520 , 2024. 12 PhyGenBench 
+
+A. Related work 
+
+A.1. Benchmarks For Physical Understanding 
+
+Recent benchmarks such as SuperCLEVR-Physics (Li et al., 2023), ContPhy (Zheng et al., 2024b), and Physion (Bear et al., 2021) have significantly advanced the evaluation of AI’s physical reasoning, focusing on understanding and predictive tasks. SuperCLEVR-Physics emphasizes reasoning about dynamic properties like velocity and collisions in 4D scenes, ContPhy expands the evaluation scope to include diverse physical properties, such as mass and density, within continuum settings. It underscores the limitations of existing AI models in handling soft-body dynamics. And Physion evaluates models’ ability to predict physical phenomena like collisions and motion while benchmarking against human behavior. However, these works primarily target understanding or prediction rather than generative capabilities. In contrast, our work introduces PhyGenBench, a comprehensive benchmark designed to evaluate whether Text-to-Video (T2V) models can generate videos that adhere to physical commonsense. Unlike existing benchmarks, our work highlights the generative challenges in intuitive physics, revealing critical gaps in current T2V models and underscoring the need to advance physical commonsense for applications beyond entertainment. 
+
+A.2. Evaluation metrics for text-to-video generation 
+
+Conventional approaches to video quality assessment often employ metrics such as FVD (Unterthiner et al., 2018) and IS (Salimans et al., 2016). However, the detection of unrealistic motions is difficult for them (Brooks et al., 2022), and FVD requires a reference video that is hard to obtain for novel scenes, making it challenging to evaluate the correctness of physical commonsense. Recent studies have explored the use of advanced vision-language models (VLMs) as evaluators. For instance, VideoScore (He et al., 2024b) leverages human feedback to train models for video quality assessment, while T2V-CompBench (Sun et al., 2024) utilizes powerful models like LLaVA (Liu et al., 2024a) to evaluate the correctness of spatial relationships. Although a few works demonstrate improved alignment with human judgments, they fall short in generalizing to assessments of physical commonsense correctness. To address this limitation, we introduce PhyGenEval , a novel method designed to evaluate physical commonsense correctness on PhyGenBench . We validate the efficacy of our approach through comprehensive human correlation studies. 
+
+B. PhyGenBench Details 
+
+B.1. Detailed Overview 
+
+Table 5: Details of PhyGenBench 
+
+Statistic Number 
+
+Physical Laws 27 Domains 4Optics 50 Mechanics 40 Thermal 30 Material Properties 40 Total Captions 160 Total T2V Models 14 Total Generated Videos 2240 Unique Objects 165 Unique Actions 42 Average Length of Caption 18.75 A fine-grained analysis of the dataset is essential for a comprehensive understanding of the benchmark. As shown in Table 5, PhyGenBench 
+
+covers 4 major domains in physics, encompassing 27 representative physical laws, which enables it to provide a more comprehensive and fine-grained evaluation of models’ physical capabilities. We evaluate 
+
+14 advanced models including Sora, Vidu, and etc. Additionally, our captions encompass totally 165 unique objects and 42 unique actions with an average length of 18 .75 words. 
+
+B.2. Construction 
+
+we provide additional details about the Questions Generation and Quality Control processes described in Section 3. 
+
+Questions Generation. Considering that a single prompt cannot fully reflect expected physical laws—such as placing a wooden block on water, where buoyancy should cause it to float rather than sink—direct evaluation of videos by VLMs (Vision-Language Models) using prompts alone is challenging. Research indicates that VLMs struggle to directly comprehend physical laws inherent in videos (Chow* et al., 2025). Therefore, we leverage the extensive world knowledge of LLMs (Large Language Models) to parse prompts and generate physics-informed questions for different stages of evaluation (as detailed in PhyGenEval ). This approach enables 13 PhyGenBench 
+
+VLMs to accurately determine the physical correctness of videos. We have provided the complete prompt and code in our anonymous link. Specifically, for different stage in PhyGenEval , we generate different questions for scoring. In Key Physical Phenomena Detection: At this stage, we detect key frames that contain the expected physical phenomena. For each input prompt in PhyGenBench , we design a retrieval prompt pr and a set of physics-related questions Q. The retrieval prompt is used to locate the key frame, while the questions are used to verify whether the expected physical phenomena are present in the identified frame. For example, when parsing the prompt ”an egg colliding with a stone,” we use GPT-4o with the prompt: ”Propose 1-2 questions with answers based on the given prompt and physical laws. Include a retrieval prompt for identifying the key frame, and ensure the question focuses on a single image.”. In Physics Order Verification: 
+
+This stage examines whether the sequence of physical events is correct, e.g., whether the egg hits the stone before breaking. We evaluate this by checking the order correctness between key frames (Figure 3 (b)). For example, the frame showing the egg hitting the stone should precede the frame showing the broken egg. Similarly, we prompt GPT-4o to generate a retrieval prompt pr and three physics-related questions (q1, q 2, q 3). The retrieval prompt identifies the key frame, while 
+
+q1, q2, and q3 verify the order correctness from the first frame to the key frame, from the key frame to the last frame, and from the first frame to the last frame, respectively. The GPT-4o prompt we use is: ”Provide the retrieval prompt and two ideal descriptions based on the selected frame pairs (first-retrieval and last-retrieval) as well as a complete description of the process.” In Overall Naturalness Evaluation: This stage evaluates the overall physical correctness of the dynamic process. For each prompt-physical law pair, we require GPT-4o to generate four levels of descriptions reflecting increasing correctness: Completely Fantastical, Clearly Unrealistic, Slightly Unrealistic, and Almost Realistic. The GPT-4o prompt we use is: ”Evaluation Standards: Completely Fantastical: Entirely detached from reality, featuring elements of fantasy or surrealism. Clearly Unrealistic: Contains significant and sustained violations of physical laws, such as implausibly large objects or scenes. Slightly Unrealistic: Features minor or brief distortions, such as unnatural facial expressions or textures that are difficult to notice. Almost Realistic: No noticeable distortions; fully consistent with reality.” 
+
+Quality Control. This process is primarily conducted through manual checks. Specifically, we perform detailed evaluations during the benchmark construction process, including verifying the correctness of prompts and their associated physical laws, assessing the semantic simplicity of prompts, and ensuring the accuracy of generated questions. Five senior undergraduate students are recruited, with each question assigned to all five annotators for evaluation. For each prompt, annotators first verify the correctness of the prompt and its corresponding physical law, cross-checking the information using online resources and tools. Next, for semantic simplicity, we refine the benchmark by removing overly complex prompts that current models cannot reasonably handle. Annotators also assess whether the T2V-generated videos are semantically reasonable to ensure they support effective evaluation. Finally, for the questions generated in Section 3 used for scoring, annotators assess the physical correctness of each GPT-generated question. For the Overall Naturalness Evaluation stage, the criteria require that each level of description shows progressive improvements in correctness and distinguishability. Through this process, we optimize the dataset quality based on annotator feedback, producing a high-quality dataset that includes prompts, their corresponding physical laws, and the questions used for scoring during evaluation. 
+
+B.3. Difference between Videophy and Ours 
+
+VIDEOPHY (Bansal et al., 2024) comprises 688 curated simple prompts that focus on interactions between three types of physical materials: solid-solid, solid-fluid, and fluid-fluid, but lack annotations of physical laws. The dataset is designed to evaluate a model’s understanding of physical commonsense, featuring a limited range of physical phenomenons such as rigid body interactions, fluid dynamics, and contact forces. We are better suited than Videophy for evaluating physical commonsense due to two significant differences. First As shown in Figure 2, PhyGenBench includes 160 carefully crafted prompts across 27 distinct physical laws, spanning four fundamental domains, which comprehensively assess a model’s understanding of physical commonsense. While Videophy primarily focuses on interactions between solid-fluid, solid-solid, and fluid-fluid, limiting its coverage and overlooking common physical laws such as phase transitions and basic material properties. What’ more, Videophy lacks annotations of physical laws making it hard for VLM model to evaluate. Second, as shown in Table 6, the average SA score of PhyGenBench (0.80 ) significantly outperforms that of Videophy ( 0.63 ). This indicates that PhyGenBench prompts are well-suited and easy for T2V models to generate high-quality, well-aligned videos, which benefits evaluation of physical correctness. In contrast, as shown in Figure 5, We find that prompts from Videophy pose challenges for T2V models in generating text-aligned and high-quality videos for two main reasons: 1. The prompts lack detail and specificity. For 14 PhyGenBench 
+
+instance, “A tissue blots a tear from an eye” is overly simplistic (without augmentation). Modern T2V models, such as CogVideo5B (Yang et al., 2024), are typically trained with longer and more descriptive captions, which enhance their ability to comprehend and generate content based on prompts. 2. The scenes are often complex and unrealistic. For example, “The wristwatch knob winds the inner spring tightly” describes a process involving intricate internal mechanisms that are not visible externally. As a result, it is exceedingly difficult for T2V models to generate such scenes accurately. Text Prompt  
+
+> A tissue soaking up a teardrop.
+> Text Prompt
+> The wristwatch knob winds the
+> inner spring tightly.
+> Text Prompt
+> A tissue blots a tear from an
+> eye..
+> Vchitect Kling Cogvideo5b
+
+Figure 5: Samples of videos generated by Kling, Vchitect, and Cogvideo5b in Videophy. All T2V models struggle to achieve proper text alignment and produce high-quality videos, making it meaningless to evaluate physical correctness in Videophy. Table 6: Comparison of SA results for video generation between Videophy and PhyGenBench . We randomly select 64 prompts from both Videophy and PhyGenBench , use different T2V models to generate videos, and then ask annotators to score based on our cretiera in Figure 11. The results show that PhyGenBench ’s SA scores significantly outperform Videophy. 
+
+Model Size Videophy (↑) PhyGenBench (↑)CogVideoX (Yang et al., 2024) 5B 0.48 0.78 
+
+Vchitect 2.0 2B 0.63 0.84 
+
+Kling - 0.77 0.89 
+
+Average - 0.63 0.80 
+
+C. PhyGenEval Details 
+
+C.1. Semantic alignment details 
+
+To reduce the complexity for VLM models to evaluate sementic correctness of generated videos between prompts, we adopt a two-stage strategy. Initially, we employ GPT-4o to extract objects and actions from the original text prompt. Subsequently, we employ GPT-4o to determine whether the extracted objects are present in the video and to verify the occurrence of specified actions. For each video, GPT-4o first assesses the presence of the objects mentioned in the prompt (e.g., “egg” )within the video frames. This evaluation is performed according to Question 1 (Q1), where GPT-4o assigns a score from 0 to 2 based on the completeness of object presence: a score of 2 is given if all the objects are present, 1 if some of the objects are missing, and 0 if none of the objects appear in the video. After determining object presence, GPT-4o moves on to Question 2 (Q2) to check if the specified action (e.g., “pour out” ) is performed in the video. It assigns a binary score (0 or 1) depending on whether the action is present (1) or absent (0). Finally, these scores are combined to form the overall semantic alignment score. we put more details about other metric baselines in Appendix D.1. In this process, we ensure that GPT-4o’s API is configured without randomness, e.g., setting the temperature to 0, to guarantee the reproducibility of the results. 
+
+15 PhyGenBench 
+
+C.2. Physical Commonsense alignment details 
+
+In this section, we use the same notation as in Section 4.2 and provide a more detailed description of the calculation and design of the method. In this process, we ensure that GPT-4o’s API and the inference code of VLMs is configured without randomness, e.g., setting the temperature to 0, to guarantee the reproducibility of the results. Key Physical Phenomena Detection. We categorize the T2V prompts into monotonic processes (eg. “melting with increasing temperature” ) and non-monotonic processes (eg. “an egg hitting a rock” ) based on the physical phenomena they represent. For prompt with monotonic processes, we only consider using the “Last Frame” as the retrieval prompt, resulting in a single question. We can directly calculate VLM(Img j , Q ), where the score for the corresponding video of this prompt ranges from 0 to 1. For prompt with non-monotonic processes, we consider both the intermediate key frames and the Last Frame, resulting in two questions. For the intermediate key frames, we calculate VLM(Img j , Q ) + VLM(Img j , P r ), which ranges from 0-2. Consequently, the score range for videos corresponding to this prompt is 0 to 3. For specific calculatation, we need to calculate VLM(I j , p r ) and VLM(I j , q ), where Img j is the j-th frame in the video. For VLM(I j , p r ), the calculation involves assessing the matching degree between the key frame and the retrieval prompt, which can be directly obtained using the original calculation method in (Lin et al., 2024). For VLM(I j , q ), we follow the computation approach from ChronoMagicBench (Yuan et al., 2024), we derive VLM(I j , q ) by determining the ratio of the VQAScore for the affirmative statement to the combined VQAScores for both the affirmative and negative statements. We perform the calculations of VLM(I j , p r ) and VLM(I j , q ) for each key frame within the specified range to obtain the physical correctness score for the problem. 
+
+Physics Order Verification. For this stage, which we’ve primarily introduced in Section 4, we focus on key calcu-lation points. The score calculation formula for q1 is Sbefore = max i−2≤j≤i (VLM(I 0, Ij , q 1) + VLM(I j , p r )) . Here, 
+
+VLM(I j , p r ) determines if the retrieved key frame satisfies the retrieval prompt,as the physical phenomenon should occur in the keyframe primarily located in Key Phenomena Detection, which is crucial for Key Sequence Verification (e.g.the expected physical phenomenon of egg cracking should occur in the keyframe when the egg hits the stone, rather than other frames when the egg is in the air or else). VLM(I 0, Ij , q 1) assesses the correctness of the Key Sequence order in the video. Notably, we calculate VLM(I j , p r ) using VQAScore, yielding a decimal between 0 and 1, while VLM(I 0, Ij , q 1) employs VLM (GPT-4V or LLaVA-Interleave) for question-answering, scoring 1 or 0 based on the model’s Yes or No response. 
+
+Overall Naturalness Evaluation. Here we mainly explain how to get the score of this part based on the evaluation results under the two-stage strategy described in Section 4. Specifically, we ask the video-based VLM to select the most appropriate option for the video according to the detailed scoring criteria generated by the LLM, and then we map the options to scores (Completely Fantastical to Almost Realistic corresponds to 0-3 points) 
+
+Overall Score. We detail the discretization and calculation process of the scores here. In the stage of key phenomena detection, we categorize the prompts into monotonic and non-monotonic processes based on the physical phenomena they represent. For monotonic processes, the score range is 0-1, which we directly discretize by averaging into integer values from 0-3. Specifically, for non-monotonic processes with a score range of 0-3, we discretize the scores to [1 , 1.5, 2.25] . This is because no points should be awarded if the physical phenomena are incorrect ( VLM(I j , p r ) = 1 and VLM(I j , q ) = 0 ), even with accurate retrieval. (e.g., The egg hits the stone and does not break) In the stage of key sequence verification, we have three multi-image problems. One point is awarded for each correct answer, resulting in a final integer score from 0-3. Similar to the stage, of key phenomena detection we need to consider both the accuracy of key frame retrieval and the physical question answering. Therefore, we design the following: for Q1, when 
+
+max i−2≤j≤i (VLM(I 0, Ij , q 1) + VLM(I j , p r )) and VLM(I j , p r ) > 0.5, the question is considered correct. The process for q2 is similar. For q3, it is marked correct when VLM(I 0, Ii−2: i+2 , I−1, q 3).In the stage of overall naturalness evaluation, as we require video-based direct option selection, choosing Completely Fantastical, Clearly Unrealistic, Slightly Unrealistic, and Almost Realistic is scored as 0, 1, 2, and 3 points respectively. Finally, we average all scores and round down to obtain the final score. For the ensamble operation, in order to reduce the bias caused by using a single VLM at a certain stage, we ensemble the results of PhyGenEval using open source models or closed source models. Specifically, we average the two results and round them down. 16 PhyGenBench 
+
+D. Experiment 
+
+D.1. Experiments Setup T2V model Implementation details. Open-Sora 1.2 (Zheng et al., 2024a) is an open-source project with the goal of reproducing Sora. CogVideoX 2b (Yang et al., 2024) and CogVideoX 5b are large-scale diffusion transformer models for text-to-video generation, incorporating a 3D Variational Autoencoder (VAE) for efficient video compression and an expert transformer with Expert Adaptive LayerNorm to improve text-video alignment. LaVie (Wang et al., 2023) is a cascaded video latent diffusion model. Vchitect2.0 (Wang et al., 2023), developed by the Shanghai AI Lab, is an advanced video generation model featuring a Parallel Transformer architecture to scale up video diffusion models and empower video creation. Hunyuan (Kong et al., 2024) is the largest open-source T2V model. Pyramid Flow is a T2V model with autoregressive architecture. Sora (Sor, 2024), Pika1.0 (Pik, 2023), Gen-3 (gen, 2024), Kling (kli, 2024), Vidu (Vid, 2024), and Hailuo (Hai, 2024) are the most popular closed-source models. 
+
+Evaluation Metrics details. We compare our proposed PhyGenEval with some evaluation metrics from previous methods like VideoPhy (Bansal et al., 2024) and VideoScore (He et al., 2024b). VideoPhy fine-tunes a VLM with the VIDEOPHY dataset proposed by themselves, which includes human feed back about the semantic alignment and dynamic motion correctness about videos. VideoScore is trained on the VIDEOFEEDBACK dataset proposed by themselves, Initialized from the Mantis model. VideoScore provides automatic assessments of video quality based on human scoring criteria. To compare with PhyGenEval on SA and PCA, We only choose the text alignment and fact consistency criteria. Specifically, for the semantic alignment evaluation, we compare the Grid-LLaVA method proposed by T2V-CompBench, which extends the LLaVA (Liu et al., 2024a) model to handle multi-frame inputs by sampling 6 frames uniformly from a video to create an image grid. For the physical commonsense alignment evaluation, we also compare with DEVIL (Liao et al., 2024), which uses Gemini 1.5 Pro (Reid et al., 2024) to assess the overall naturalness of videos and applies the same scoring standard prompt to all videos. Furthermore, to evaluate the effectiveness of our PhyGenEval designs, we conduct a large amount of ablation studies and pue more details in Appendix D.4. 
+
+Human evaluation details. Here, we provide a detailed explanation of the human evaluation described in Section 5. Specifically, we require annotators to score based on the standards outlined in Figure 11, covering both semantic alignment and physical commonsense alignment. For example, as for the video shown in Figure 11, The egg bounces off the rock like a rubber ball, completely violating physical laws like dynamics, the annotator gives a score of 0 for physical commonsense alignment. However, since the video fully includes the egg, the rock, and the collision action, the annotator gives a score of 
+
+3 for semantic alignment. 
+
+D.2. Quantitative Evaluation Comparison result about semantic alignment. Here we design a new baseline PhyGenEval (Grid-LLaVA) to illustrate the superiority of the method, which uses the two-stage strategy proposed in PhyGenEval from Appendix C.1, but replaces the VLM with Grid-LLaVA proposed in T2V-CompBench (Sun et al., 2024). As shown in Table 8, PhyGenEval achieves the highest correlation scores across all categories, demonstrating its effectiveness as a human-aligned semantic commonsense correctness evaluator for PhyGenBench . Compared to other methods, PhyGenEval consistently outperforms previous baselines like VideoPhy, VideoScore, and Grid-LLaVA. Specifically, PhyGenEval obtains an overall Kendall’s τ of 0.53 
+
+and a Spearman’s ρ of 0.56 , surpassing the Grid-LLaVA ( τ : 0.35 , ρ: 0.39 ). The results clearly show that our PhyGenEval 
+
+design provides a more accurate and reliable semantic commonsense evaluation in PhyGenBench .
+
+Quantitative result about semantic alignment. As shown in Table 9 , nearly all models achieve relatively high SA scores, whether evaluated by machines or humans. This suggests that the scenarios in PhyGenBench are relatively straightforward, making it easier to assess physical commonsense. Among all the models, Kling achieved the highest SA score, with a human evaluation score of 0.89 , reflecting its strong instruction understanding and video generation capabilities. 
+
+D.3. Qualitative Evaluation. 
+
+The different video cases for 4 physical commonsense categories are illustrated in Figure 6. Our main observations are as follows: In mechanics, the models struggle to generate simple physically accurate phenomenons. As shown in Figure 6, 17 PhyGenBench 
+
+Table 7: Details about evaluation models. The table shows duration, FPS, and resolution for each model. 
+
+Model Duration (s) FPS Resolution 
+
+Open-Sora 1.2 (Zheng et al., 2024a) 4 24 1280 × 720 CogVideoX 2b 6 8 720 × 480 CogVideoX 5b 6 8 640 × 360 Lavie 4 8 512 × 320 Vchitect2.0 5 8 768 × 432 Hunyuan 5 24 1280 × 720 Pyramid Flow(flux) 24 8 640 × 384 Pyramid Flow(sd3) 24 8 640 × 384 Pika (Pik, 2023) 3 24 1280 × 720 Gen-3 (gen, 2024) 11 24 1280 × 768 Kling (kli, 2024) 5 30 1280 × 720 Vidu (Vid, 2024) 5 30 1280 × 720 Hailuo (Hai, 2024) 5 30 1280 × 720 Sora (Sor, 2024) 5 30 1280 × 720 Table 8: SA correlation results with proposed PhyGenEval in video generation . A higher score indicates better performance for a category. Bold stands for the best score, 
+
+Metric Mechanics Optics Thermal Material Overall 
+
+τ (↑) ρ(↑) τ (↑) ρ(↑) τ (↑) ρ(↑) τ (↑) ρ(↑) τ (↑) ρ(↑)VideoPhy (Bansal et al., 2024) 0.20 0.25 0.03 0.03 0.20 0.24 0.18 0.22 0.13 0.17 
+
+VideoScore (He et al., 2024b) 0.14 0.16 −0.13 −0.14 0.23 0.02 0.02 0.02 0.05 0.05 
+
+Grid-LLaVA (Sun et al., 2024) 0.39 0.43 0.45 0.49 0.30 0.33 0.22 0.26 0.35 0.39 
+
+PhyGenEval (Grid-LLaVA) 0.35 0.38 0.46 0.48 0.41 0.44 0.42 0.45 0.42 0.44 
+
+PhyGenEval 0.48 0.52 0.64 0.67 0.46 0.49 0.47 0.50 0.53 0.56 
+
+all models fail to depict the glass ball sinking in water. As for (b), instead showing it floating on the surface, OpenSora and Gen-3 even produce videos where the ball is suspended. Additionally, the models do not capture special physical phenomenonss, such as the state of water in zero gravity, as seen in (a). In optics, the models perform relatively better. (c) and (d) show the models handling reflections of balloons in water and colorful bubbles, though OpenSora and CogVideoX still produce reflections with noticeable distortions in (d). In thermal, the models fail to generate accurate videos of phase transitions. For the melting phenomenon in (e), most models show incorrect results, with CogVideoX even producing a video where the ice cream increases in size. Similar errors appear in the sublimation process in (f), with only Gen-3 showing partial understanding. Regarding material properties, (g) shows all models failing to recognize that an egg should break when hitting a rock, with Kling displaying the egg bouncing like a rubber ball. For simple chemical reactions, such as the black bread experiment in (h), none of the models demonstrate an accurate understanding of the expected reaction. 
+
+D.4. Ablation study The Component in PhyGenEval on physical commonsense alignment evaluation. We conduct a series of ablation studies to demonstrate the necessity of our method design by examining its correlation with human evaluation results, similar to those described in Section 5. Specifically, we compare: 1) ) The effect of the various stages of PhyGenEval , as proposed in Section 4.2; 2) Performance differences when using various VLMs and their ensembles in PhyGenEval , as outlined in Section 4.2. 3) The larger open models in PhyGenEval. Notice that PhyGenEval for physical commnonsense alignment evaluation consists of three stages: key phenomena Detection, key sequence verification, and overall naturalness evaluation. 18 PhyGenBench 
+
+Table 9: SA evaluation results with proposed PhyGenEval in video generation . Both machine and human evaluations indicate that most models achieve good semantic scores on PhyGenBench . This suggests that the scenarios in PhyGenBench 
+
+are simple enough to clearly reflect physical phenomena. The scores are normalized to a range of 0-1. 
+
+Model Size Mechanics (↑) Optics (↑) Thermal (↑) Material (↑) Average (↑)CogVideoX (Yang et al., 2024) 2B 0.63 0.67 0.61 0.63 0.64 
+
+CogVideoX (Yang et al., 2024) 5B 0.78 0.88 0.78 0.64 0.78 
+
+Open-Sora V1.2 (Zheng et al., 2024a) 1.1B 0.73 0.85 0.82 0.73 0.79 
+
+Lavie (Wang et al., 2023) 860M 0.47 0.63 0.73 0.53 0.58 
+
+Vchitect 2.0 (Wang et al., 2023) 2B 0.92 0.89 0.77 0.74 0.84 
+
+Hunyuan (Kong et al., 2024) 13B 0.75 0.83 0.81 0.75 0.79 
+
+Pyramid Flow (flux) (Jin et al., 2024) 2B 0.71 0.83 0.75 0.63 0.68 
+
+Pyramid Flow (sd3) (Jin et al., 2024) 2B 0.71 0.82 0.83 0.56 0.75 
+
+Pika (Pik, 2023) - 0.63 0.81 0.73 0.69 0.72 
+
+Gen-3 (gen, 2024) - 0.84 0.93 0.82 0.78 0.85 
+
+Kling (kli, 2024) - 0.88 0.91 0.87 0.74 0.85 
+
+Sora (Sor, 2024) - 0.85 0.83 0.86 0.77 0.84 
+
+Vidu (Vid, 2024) - 0.88 1.00 0.92 0.88 0.92 
+
+Hailuo (Hai, 2024) - 0.94 0.98 0.86 0.79 0.87 Te xt Pr ompt                                                               
+
+> Acup of oil is slowly poured out in the space station , releasing the liquid into the surrounding area.
+> Op en-So raV1 .2Co gVideo x5b Ge n-3Kl ing
+> Te xtPr ompt
+> A balloon is floating over a serene and mirror-like ocean.
+> Te xtPr ompt
+> Asolid glass ball is gently placed on the surface of a bathtub filled with water .
+> Te xtPr ompt
+> Alarge number of soap bubbles are floating in the air under the sunlight.
+> Te xtPr ompt
+> Atimelapse captures the gradual transformation of
+> ice cream as the
+> temperature rises significantly above 100 ˚C .
+> Te xtPr ompt
+> Atimelapse captures the transformation of dry ice as it is exposed to a significantly increasing temperature at room temperature.
+> Te xtPr ompt
+> Atimelapse captures the reaction as concentrated
+> sulfuric acid is poured onto apiece of bread .
+> Te xtPr ompt
+> Adelicate, fragile egg is hurled with significant force towards a rugged, solid rock
+> surface, where it collides upon impact
+> （a）（b）（c）（d）（e）（f）（g）（h）
+
+Figure 6: Qualitative comparisons of four categories. Current models perform relatively well in generating optical phenomenons but are weaker in mechanics, thermal, and material properties. And We denote them as PhyGenEval -S, PhyGenEval -M, and PhyGenEval -V based on the VLM they used. 1) PhyGenEval for physical commnonsense alignment evaluation consists of three stages. We investigate the contribution of each stage to the final performance. Table 11 presents results using one or two stages (employing ensemble strategies 19 PhyGenBench 
+
+Table 10: Retrieval success rates for some different models. 
+
+Model Force ( ↑) Light ( ↑) Heat ( ↑) Material ( ↑) Overall ( ↑)
+
+Cogvideo 5B 0.7618 0.9013 0.8046 0.7815 0.8193 Gen3 0.8353 0.9077 0.8627 0.8114 0.8577 Pika 0.7829 0.8777 0.7825 0.7736 0.8107 Lavie 0.7064 0.8328 0.7537 0.7219 0.7596 Vchitect2 0.8078 0.9034 0.8317 0.7668 0.8327 Keling 0.8375 0.9018 0.8319 0.7978 0.8470 Opensora 0.8166 0.8755 0.8528 0.7707 0.8310 Cogvideo 2B 0.7924 0.8255 0.7886 0.7719 0.7971 when multiple VLMs are applicable). We find that optimal performance is achieved only when all three stages are used concurrently, demonstrating the rationale behind PhyGenEval ’s design. 2) Given potential biases in single models and the costs associated with closed-source models, we offer two PhyGenEval 
+
+computation methods: using GPT-4o or alternative open-source models (LLaVA-Interleave (Li et al., 2024) and InternVideo2 (Wang et al., 2024)). Table 12 shows that even using only small scale open-source models achieves a high correlation coefficient of 0.66 . Notably, ensembling both methods yields the best results. Considering PhyGenBench ’s relatively small size, we find this computational cost acceptable. Therefore we recommend users ensemble these methods. 3) We explore the performance of larger open-source models. Specifically, we replace GPT-4o used in the Physics Order Verification stage of PhyGenEval with InternVL2-Pro (78B), denoted as PhyGenEval (Open-L). Additionally, when we use smaller open-source model like llava-next-interleave 7B, we denote it as PhyGenEval (Open-S). We denote the original 
+
+PhyGenEval with closed-source model like GPT-4o as PhyGenEval (Closed) Results show that compared to smaller open-source models, the overall alignment coefficient with larger open-source models improves from 0.66 to 0.72 , indicating that the method remains reproducible even when using exclusively open-source models. We believe that as open-source models continue to advance, they can achieve even better performance within 
+
+PhyGenEval on PhyGenBench .
+
+The robustness of retrieval operations in PhyGenEval In PhyGenEval ’s Key Physical Phenomena Detection and Physics Order Verification, retrieval operations are required to detect key physical phenomena and their order in videos. Since retrieval may not always capture the target frames, we incorporate a regularization term V LM (Ij , p r ) into the calculations of Skey and Sorder . VQAScore is used to evaluate the scores of retrieved frames and retrieval prompts, improving the robustness of retrieval operations. (Note: when the retrieval prompt is ”Last Frame” or ”Middle Frame,” the default value is set to 1.) Additionally, since PhyGenBench is intentionally designed with simple and common scenarios, retrieval operations achieve a relatively high success rate. We report the average V LM (Ij , P r ) scores for different models in Table 10, showing that even Lavie achieves a retrieval score above 0.75, indicating generally high retrieval accuracy. 
+
+The Component in PhyGenEval on semantic alignment evaluation. we also perform necessary ablation experiments to validate the necessity of our SA evaluation design. Specifically, we compare: 1) VLM Model Selection: We leverage GPT-4o (Achiam et al., 2023) as a more robust VLM model for SA evaluation. 2) Effectiveness of our two-stage evaluation method proposed in Appendix C.1 1) As shown in Table 8, using GPT-4o in PhyGenEval is much better than using LLaVA, which achieve a higher Kendall’s 
+
+τ of 0.53 compared to 0.42 , and a higher Spearman’s ρ of 0.56 versus 0.44 . This indicates a stronger alignment between GPT-4o’s evaluations and human annotations compared to open-source vlm models like Grid-LLaVA (Sun et al., 2024), justifying its selection as the preferred VLM model in the SA evaluation design. Since PhyGenBench includes a limited number of prompts, we believe that the cost of using GPT-4o is acceptable relative to the improvement in performance. 2) To validate the effectiveness of the two-stage strategy, we compare it with the method in T2V-CompBench (Sun et al., 2024), which directly uses Grid-LLaVA to apply the same scoring standard prompt for semantic alignment evaluation across all videos. For fairness, we also use Grid-LLaVA but implement the two-stage strategy proposed in Appendix C.1. As shown 20 PhyGenBench 
+
+Table 11: Comparison of PCA correlation results using each stage in PhyGenEval 
+
+Metric Mechanics Optics Thermal Material Overall 
+
+τ (↑) ρ(↑) τ (↑) ρ(↑) τ (↑) ρ(↑) τ (↑) ρ(↑) τ (↑) ρ(↑)
+
+PhyGenEval -S 0.50 0.54 0.43 0.45 0.50 0.54 0.72 0.77 0.56 0.61 
+
+PhyGenEval -M 0.46 0.49 0.49 0.53 0.55 0.59 0.53 0.57 0.55 0.60 
+
+PhyGenEval -V 0.26 0.30 0.44 0.47 0.33 0.35 0.48 0.52 0.42 0.46 
+
+PhyGenEval -SM 0.58 0.61 0.47 0.50 0.58 0.62 0.66 0.70 0.60 0.64 
+
+PhyGenEval -SV 0.56 0.59 0.41 0.43 0.58 0.60 0.70 0.74 0.59 0.62 
+
+PhyGenEval -MV 0.50 0.53 0.50 0.53 0.53 0.57 0.60 0.64 0.57 0.61 
+
+PhyGenEval 0.72 0.75 0.76 0.77 0.73 0.75 0.81 0.84 0.78 0.81 
+
+Table 12: Comparison of PCA correlation results using different models such as GPT-4o or open-sourced models in 
+
+PhyGenEval 
+
+Metric Mechanics Optics Thermal Material Overall 
+
+τ (↑) ρ(↑) τ (↑) ρ(↑) τ (↑) ρ(↑) τ (↑) ρ(↑) τ (↑) ρ(↑)
+
+PhyGenEval (Open-S) 0.54 0.57 0.59 0.62 0.55 0.58 0.65 0.69 0.62 0.66 
+
+PhyGenEval (Open-L) 0.58 0.62 0.63 0.65 0.62 0.64 0.70 0.73 0.67 0.72 
+
+PhyGenEval (Closed) 0.72 0.75 0.76 0.77 0.73 0.75 0.81 0.84 0.78 0.81 
+
+in Table 8, PhyGenEval -Grid-LLaVA outperforms Grid-LLaVA, achieving a higher Kendall’s τ score of 0.42 compared to 0.35, and a higher Spearman’s ρ score of 0.44 versus 0.39. This result demonstrates the effectiveness of our Two Stage Evaluation Method. By decomposing the evaluation into object detection and action detection, we effectively reduces the complexity of the task for VLMs in evaluating the sementic correctness of videos. Text Prompt                                                                                                                                 
+
+> Physical Law
+> Lack of gravity Phy Gen Eval VideoPhy VideoScore DEVIL
+> 1332
+> Human
+> Acup of oil is slowly poured out in
+> the space station, releasing the
+> liquid into the surrounding area
+> 0
+> Text Prompt
+> Physical Law
+> The color of the litmus solution will
+> change from purple to red
+> Phy Gen Eval VideoPhy VideoScore DEVIL
+> 1223
+> Human
+> Atimelapse captures the
+> transformation as hydrochloric acid
+> is poured into aglass of purple litmus
+> solution .
+> 0
+> Text Prompt
+> Physical Law
+> Due to dehydration property of sulfuric acid,
+> the bread will shrink, carbonize and turn
+> black, releasing large amounts of acidic gas
+> Phy Gen Eval VideoPhy VideoScore DEVIL
+> 1222
+> Human
+> Atimelapse captures the reaction as
+> concentrated sulfuric acid is poured
+> onto apiece of bread .
+> 0
+> Text Prompt
+> Physical Law
+> Due to friction, there will be apen mark on
+> the notebook
+> Phy Gen Eval VideoPhy VideoScore DEVIL
+> 1233
+> Human
+> Ablack pen is used to write on the
+> smooth, white surface of anotebook,
+> showcasing the interaction between
+> the pen and the notebook surface
+> 0
+> (a) (b)
+> (c) (d)
+
+Figure 7: Visualization of some PhyGenEval error cases. 
+
+Use real videos as reference We agreed that using real videos as references might have provided more reference information. However, considering several difficulties: 1. It is challenging to collect real videos for each prompt. 2. Physical processes are diverse, making it difficult to collect unique real videos. 21 PhyGenBench 
+
+3. Due to differences in frame rates and other factors, video-to-video comparison is also challenging and might require training separate models. Here, we adopted an alternative approach to incorporate real videos into the PhyGenEval framework. Specifically, we extracted fifty Video-Caption pairs from WISA (Wang et al., 2025), belonging to mechanics, optics, and thermodynamics categories (WISA did not include physical property categories). We parsed the corresponding video captions into prompt and question formats as in PhyGenBench, and used PhysGenEval for evaluation. The results showed that real videos achieved extremely high scores under PhyGenEval, demonstrating the robustness of the framework. Mechanics (17 samples) Optics (17) Thermal (16) Score 0.93 0.95 0.93 We also tested the performance of open-source models on these 50 prompts, using machine scores and machine scores / machine scores of real videos (the latter serving as reference scores after error elimination), obtaining the following table: Mechanics Optics Thermal Avg CogVideoX2B 0.36(0.37) 0.44(0.49) 0.33(0.41) 0.39(0.39) CogVideoX5B 0.36(0.36) 0.52(0.57) 0.47(0.53) 0.46(0.50) Opensora V1.2 0.36(0.38) 0.49(0.52) 0.39(0.39) 0.43(0.45) Lavie 0.23(0.27) 0.42(0.45) 0.36(0.40) 0.36(0.38) Vchitect 2.0 0.41(0.43) 0.52(0.57) 0.42(0.44) 0.47(0.50) Hunyuan 0.46(0.49) 0.53(0.55) 0.39(0.40) 0.48(0.51) Pyramid Flow (Flux) 0.33(0.37) 0.50(0.54) 0.44(0.50) 0.44(0.48) Pyramid Flow (Sd3) 0.43(0.54) 0.46(0.52) 0.33(0.40) 0.42(0.49) The Spearman coefficient of model rankings calculated by these two methods is 0.90 , indicating that the current evaluation framework can achieve robust results. 
+
+E. Discussion 
+
+Error case analysis. As shown in Figure 7, we visualize some error cases where both PhyGenEval and competing methods like DEVIL fail to correctly identify the physical realism of the videos. These error cases are often caused by confusing but iconic physical phenomena in the videos that do not align with the correct progression of physical processes (e.g., in the erroneous case of the ”burnt bread” experiment, black coloration appears but does not align with the expected phenomenon), leading to misjudgments. However, even in these cases, PhyGenEval remains closer to human ratings compared to other methods. 
+
+The Impact of Scaling on Physical Commonsense in Video Generation. Scaling laws have been extensively validated in video generation models (Kaplan et al., 2020). We investigate their efficacy in addressing the challenges of physical commonsense presented in PhyGenBench . As shown in Table 2, CogVideo 5B demonstrates improvements over CogVideo 2B, albeit with limited progress in the Mechanics category. Our qualitative analysis, illustrated in Figure 8, reveals significant advancements in static scenes with CogVideo 5B. It accurately captures complex phenomena such as colorful bubbles resulting from interference and diffraction, and oxidation-induced rusting of iron. In thermal, despite imperfections, CogVideo 5B generates more realistic boiling simulations compared to its predecessor. However, both models struggle with simple motion dynamics, exemplified by their inability to accurately depict a bouncing football. We posit that while scaling up enhances the model’s capacity to generate videos that align with physical commonsense for individual objects, it may be insufficient for physical phenomenons involving dynamic physical laws. Addressing these challenges likely requires extensive training on carefully curated synthetic data, as suggested by (Liu et al., 2024b). This approach could potentially bridge the gap in the model’s grasp of fundamental physical laws. 
+
+The robustness of low-quality videos. Although we deliberately select simple scenarios when constructing PhyGenBench 
+
+to make it easier for models to generate videos that align with prompts while exposing physical errors, certain T2V models 22 PhyGenBench Scale up 
+
+Text Prompt               
+
+> Avibrant, elastic football is
+> thrown forcefully towards the
+> ground, capturing its dynamic
+> interaction with the surface
+> upon impact .
+
+Mechanics 
+
+Scale up 
+
+Text Prompt         
+
+> Asoap bubble floating in the air
+> under the sunlight .
+
+Optics 
+
+Scale up 
+
+Text Prompt 
+
+> .
+
+Thermal               
+
+> Atimelapse captures the
+> transformation of soup in a
+> saucepan as the temperature
+> rapidly rises above 100
+> degree Celsius
+
+Scale up 
+
+Text Prompt 
+
+> .
+
+Material 
+
+Property                
+
+> Atimelapse captures the
+> transformation of aclean and
+> smooth piece of steel in ahumid
+> environment over decades .
+
+Scale up 
+
+Text Prompt                
+
+> Acup of water is slowly poured
+> out in the space station, releasing
+> the liquid into the surrounding
+> area
+
+Mechanics 
+
+Figure 8: The qualitative comparison of CogVideoX 2B and CogVideoX 5B. The result shows that simply scaling up can solve some issues, but dynamic physical phenomenons involving the design of motion patterns remain challenging. may still perform poorly on specific prompts. In this regard, PhyGenEval demonstrates a degree of robustness. We select 100 low-quality videos and calculated their average PCA Score, which is 0.14 , significantly lower than the average PCA Score in Table 2. Figure 9 provides visualizations of some low-quality videos, most of which fail to meet the prompt requirements, resulting in very low physical scores. 
+
+The effect of fine-tuningect of fine-tuning. WISA fine-tunes CogVideo using real text-video pairs and tests it on PhyGenBench. The results show that the score increases from 0.41 to 0.43. Although there is some improvement, it is not significant. Therefore, it is still necessary to design fine-tuning methods that explicitly incorporate physical laws, or to use more powerful video generation model backbones. A tennis ball is gently placed 
+
+on the surface of a bucket 
+
+filled with water. 
+
+Text Prompt 
+
+Physical Law 
+
+Buoyancy 
+
+(a) 
+
+0
+
+PhyGenEval 
+
+A glass ball is gently placed on 
+
+the surface of a bathtub 
+
+filled with water. 
+
+Text Prompt 
+
+Physical Law 
+
+Buoyancy 
+
+(a) 
+
+A vibrant, elastic tennis ball is 
+
+thrown forcefully towards the 
+
+ground, capturing its dynamic 
+
+interaction with the surface 
+
+upon impact. 
+
+Text Prompt 
+
+Physical Law 
+
+Elasticity 
+
+(a) 
+
+A ray of light is shining 
+
+diagonally on a plastic cup in 
+
+the dark, with the shadow of 
+
+the plastic cup appearing at 
+
+the bottom. 
+
+Text Prompt 
+
+Physical Law 
+
+Light travels in a straight line 
+
+(a) 
+
+0
+
+PhyGenEval 
+
+0
+
+PhyGenEval 
+
+0
+
+PhyGenEval 
+
+Figure 9: Visualization of some low quality videos and their PCA score. 23 PhyGenBench 
+
+Table 13: Resource consumption of models used in PhyGenEval. Model Batch Size Resources Times Memory Utilization Per GPU GPT-4o(stage2) 8 USD 1.4 5min -GPT-4o(stage3) 8 USD 3.1 5min -LLaVA-Next-Interleave-7B 1 1 x A100-80GB 2min 20408MiB VQAScore 3 1 x A100-80GB 10min 72726MiB InternVideo 1 1 x A100-80GB 1min 7766MiB 
+
+F. Computaional Resources 
+
+Although our method involves different stages, it remains straightforward. Table 13 provides a summary of the resource consumption, showing that the entire evaluation process can be completed quickly and at low cost. 24 PhyGenBench Text Prompt 
+
+A piece of copper is ignited, emitting a vivid and unique flame as it burns steadily . A piece of copper is ignited, emitting a vivid and unique flame as it burns steadily . The 
+
+copper heats up, undergoing combustion, which results in the emission of light and 
+
+produces a green color in the flame 
+
+Rewritten Prompt 
+
+Rewrite 
+
+Expected Phenomenon 
+
+The flame should be green 
+
+due to flame reaction of 
+
+copper 
+
+Text Prompt 
+
+A delicate, fragile egg is hurled with significant force towards a rugged, solid rock 
+
+surface, where it collides upon impact .
+
+A delicate, fragile, raw egg is hurled with significant force towards a rugged, solid 
+
+rock surface, where it collides upon impact . Upon collision, the egg shatters, 
+
+breaking apart . Fragments of the egg shell scatter and the inner contents spill out .
+
+Rewritten Prompt 
+
+Rewrite 
+
+Expected Phenomenon 
+
+The egg will break while 
+
+the stone will remain intact 
+
+because stone is harder 
+
+than egg 
+
+Text Prompt 
+
+A stone is gently placed on the surface of a pool filled with water . A stone is gently placed on the surface of a pool filled with water . The stone will 
+
+sink, transitioning from the surface to the bottom of the pool , gradually displacing 
+
+water as it descends .
+
+Rewritten Prompt 
+
+Rewrite 
+
+Expected Phenomenon 
+
+The stone will sink to the 
+
+bottom of the pool 
+
+Text Prompt 
+
+A timelapse captures the reaction as concentrated sulfuric acid is poured onto a slice 
+
+of apple . A timelapse captures the reaction as concentrated sulfuric acid is poured onto a slice 
+
+of apple . The apple will shrink, carbonize, and turn black, releasing large amounts of 
+
+acidic gas 
+
+Rewritten Prompt 
+
+Rewrite 
+
+Expected Phenomenon 
+
+The apple will shrink 、
+
+carbonize and turn black ,
+
+releasing large amounts of 
+
+acidic gas 
+
+Figure 10: The qualitative comparison of effects before and after using rewritten prompts. The results indicate that rewriting prompts addresses only a few basic issues (such as flame color reactions), while the majority of problems remain unsolved. 25 PhyGenBench Te xt Prompt
+
+A delicate, fragile egg is hurled with significant force towards a rugged, solid rock surface, where it collides upon impact. 
+
+Ph ys ic al Law 
+
+Stone is harder than egg, the egg should crack 
+
+Se mant ic Evaluation Criterion
+
+0: None of the objects involved in the interaction are present. 
+
+1: Some of the objects involved in the interaction are missing. 
+
+2: All the objects involved in the interaction are present, but the interaction is not presented. 
+
+3: All the objects involved in the interaction are present, and the interaction is presented. 
+
+Ph ys ic al Eval uat io n Crit er io n
+
+0: Entirely Unrealistic: Complete Departure from Physical Laws The video presents situations entirely disconnected from physical common sense, with clearly impossible phenomena occurring throughout. 
+
+1: Significantly Unrealistic: Significant Violation of Physical Laws The video shows large-scale or prolonged deviations from general physical laws, such as scenarios that contradict basic principles of energy, or matter behavior. 
+
+2: Slightly Unrealistic: Minor Inconsistencies with Physical Laws The video includes small or brief moments where physical laws are slightly distorted, but the overall scene mostly adheres to common physical processes. 
+
+3: Almost Realistic: Near-Perfect Adherence to Physical Laws The video exhibits no obvious violations of physical laws, closely matching real-world physical processes in every aspect. 
+
+Se mantic Fully Adherence
+
+0 1 2 3
+
+Se mantic Fully Viol ation 
+
+Al most Real isti c
+
+0 1 2 3
+
+En tirely Unrealistic
+
+Sc or e
+
+Sc or e
+
+Figure 11: Detailed diagram of the human evaluation process. We ask the annotators to score the semantic alignment and physical commonsense alignment of the video according to the scoring criteria in the figure. 26

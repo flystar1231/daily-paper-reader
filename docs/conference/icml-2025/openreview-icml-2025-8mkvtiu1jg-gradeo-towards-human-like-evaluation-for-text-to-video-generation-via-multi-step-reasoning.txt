@@ -1,0 +1,1209 @@
+Title: GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation  via Multi-Step Reasoning
+
+URL Source: https://openreview.net/pdf?id=8mkVTiU1jG
+
+Number of Pages: 26
+
+Markdown Content:
+## GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Zhun Mou 1 Bin Xia 2 Zhengchao Huang 1 Wenming Yang 1 Jiaya Jia 3
+
+Abstract 
+
+Recent great advances in video generation mod-els have demonstrated their potential to produce high-quality videos, bringing challenges to effec-tive evaluation. Unlike human evaluation, ex-isting automated evaluation metrics lack high-level semantic understanding and reasoning ca-pabilities for video, thus making them infeasible and unexplainable. To fill this gap, we curate 
+
+GRADEO-Instruct , a multi-dimensional T2V evaluation instruction tuning dataset, including 3.3k videos from over 10 existing video genera-tion models and multi-step reasoning assessments converted by 16k human annotations. We then introduce GRADEO , one of the first specifically designed video evaluation models, which grades 
+
+AI-generated videos for explainable scores and assessments through multi-step reasoning. Exper-iments show that our method aligns better with human evaluations than existing methods. Fur-thermore, our benchmarking reveals that current video generation models struggle to produce con-tent that aligns with human reasoning and com-plex real-world scenarios. 
+
+1. Introduction 
+
+Recent breakthroughs in Text-to-Video (T2V) generation models (Zhang et al., 2024a; Guo et al., 2024; Wang et al., 2024b; Zheng et al., 2024; OpenAI, 2024) have led to remarkable advancements in the field, demonstrating the potential to generate long-duration and realistic videos. However, existing models still generate hallucinated con-tent, videos that do not align with real-world scenarios, or 
+
+> 1
+
+Tsinghua Shenzhen International Graduate School, Tsinghua University, Shenzhen, China 2CSE department, The Chinese Uni-versity of Hong Kong, Hong Kong,China 3Department of Com-puter Science and Engineering, The Hong Kong University of Science and Technology, Hong Kong,China. Correspondence to: Wenming Yang <yang.wenming@sz.tsinghua.edu.cn >.
+
+Proceedings of the 42 nd International Conference on Machine Learning , Vancouver, Canada. PMLR 267, 2025. Copyright 2025 by the author(s). perceptionunderstanding    
+
+> Question :Can you evaluate the creativity of this video ?
+> (Rate it in 1-5. 1 means low creativity, 5 means high creativity)
+> Existing Metrics Directly Give Score
+> (Scaled to 1-5) GRADE O
+> The video portrays an intense, futuristic arena scene featuring two large robots engaging in a confrontation with another central robot…
+> The video exhibits a high degree of
+> creativity by blending futuristic and competitive themes in a visually captivating way…
+> Generated Video
+> Overview Description Analysis Assessment
+
+Figure 1: Traditional evaluation methods, limited by small datasets and model parameters, suffer from three key issues: (1) inability to accurately understand video content, (2) lack of explainability with only score outputs, and (3) a focus on low-level features like video quality, neglecting high-level aspects such as rationality, safety and creativity. We propose GRADEO , a novel approach that leverages human-like reasoning for comprehensive video evaluation, enabling accurate and interpretable assessments. completely wrong videos. (Huang et al., 2024; Liu et al., 2024b;c; Kou et al., 2024; He et al., 2024; Bansal et al., 2024) Thus, there is a significant demand for automated frameworks that can objectively, accurately, and efficiently evaluate T2V models across diverse test sets, facilitating continuous performance and quality improvements. Early T2V generation evaluation method (Chivileva et al., 2023) introduces the T2V-CL framework, which focuses on image naturalness and text similarity but oversimplifies the evaluation. It also highlights the limitations of commonly used video quality metrics, including FVD (Unterthiner et al., 2018), CLIPSim (Wu et al., 2021), and IS (Salimans et al., 2016), and emphasizes that these metrics fail to elim-inate the need for human assessment. While human pref-erence remains the gold standard, it is not scalable to meet the growing demand for AI-generated video content. To automatically and comprehensively evaluate AI-generated videos, EvalCrafter (Liu et al., 2024b) and Vbench (Huang et al., 2024) propose detailed evaluation frameworks with hierarchical dimensions and automatic metrics, validated by human evaluations. On the other hand, some studies (Wu 1GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+et al., 2024; Zhang et al., 2024e; Qu et al., 2024) attempt to model human evaluation using large-scale datasets that mimic human scores, aiming for a unified and simplified evaluation method. Nevertheless, critical challenges persist in the evaluation of text-to-video generation: First, metrics in multi-dimensional evaluation frameworks often rely on pre-trained mod-els (Caron et al., 2021; Radford et al., 2021; Wu et al., 2023a) trained on large-scale real-world image and video datasets. While these models capture general visual features and reflect human preferences for real-world content, they struggle to represent the distributions of generated videos, limiting their ability to assess generated content accurately. Second, traditional non-LLMs evaluation methods, con-strained by limited datasets and model parameters, lack the capability to accurately comprehend video content. As a result, they primarily focus on low-level perceptual aspects like visual quality and fail to evaluate high-level semantic dimensions, such as toxicity, alignment with real-world sce-narios, and creativity. Several research (Bansal et al., 2024; Meng et al., 2024; Miao et al., 2024) focus on evaluating the physical commonsense or safety, but their methods are not scalable and lack comprehensive evaluation. Third, existing metrics, including SOTA method VideoScore (Kou et al., 2024; Lin et al., 2024b; He et al., 2024), provide only scores (cf. Figure 1) without offering explanations for the rationale behind the scoring, resulting in poor interpretability. Fourth, Multimodal Large Language Models (MLLMs) (OpenAI, 2023; Liu et al., 2023; Team et al., 2023), despite their poten-tial to comprehend video content and evaluate videos based on given instructions, are not specifically trained for video evaluation and lack alignment with human preferences. As a result, they struggle to provide accurate and comprehensive assessments of generated videos. To more accurately understand the content of generated videos and provide more interpretable evaluations across diverse dimensions of generated videos, especially high-level semantic dimensions, we propose a unified and inter-pretable evaluation method for AI-generated videos that sim-ulates human-like assessment called GRADEO : Generates 
+
+Reasoning-based Assessments, considering multiple diver-sity dimensions for evaluating text-to-vi DEO models based on video semantic understanding. To accomplish this goal, we first introduce a data construction pipeline that collects triples (video,rationale,score) from human annotators to create video-instruction data, which teaches MLLMs rea-soningly assessing specific aspects of generative videos. Specifically, we selecte seven dimensions, ranging from low-level visual quality perception to high-level semantic understanding and visual reasoning, and meticulously de-sign more granular key aspects and evaluation criteria for each dimension. Then, we collected generated videos from several open-source and closed-source T2V video genera-tion models, and asked human evaluators to score them ac-cording to the evaluation criteria for each dimension, while also annotating the rationale. Using GPT-4o, we converted the human-annotated rationale and scores into formatted responses. Finally, we obtained a 3.3k video evaluation instruction tuning dataset GRADEO-Instruct . Training on this, we develop GRADEO which exhibits superior correlation with human assessments, thus acting as a more effective model for evaluating T2V models. We create a prompt suite for the seven dimensions, each containing 100 text prompts for video generation, and then evaluate several popular video generation models. To summarize, our work provides contributions as follows: • We curate a diverse dataset called GRADEO-Instruct ,one of the first instruction tuning datasets that fo-cuses on simulating human evaluation of AI-generated videos. • We develop a novel comprehensive and automated video evaluation model, GRADEO , based on our dataset. It can assess videos via multi-step reasoning, demonstrating superior alignment with human evalu-ation. Moreover, compared to previous methods, our approach provides score rationales, enhancing model interpretability and human understanding of its deci-sions. • We benchmark recent T2V generation models, provid-ing new findings and insights that contribute to the advancement of the video generation field. 
+
+2. Related Work 
+
+Text-to-Video Generative Models. In recent years, dif-fusion models (Sohl-Dickstein et al., 2015; Song et al., 2021; Ho et al., 2020) have emerged as the primary meth-ods for text-to-video generation. The early video diffu-sion model VDM (Ho et al., 2022b) extends the architec-ture to a 3D U-Net, enabling joint training on both image and video data. Imagen Video (Ho et al., 2022a), Video LDM (Blattmann et al., 2023), LaVie (Wang et al., 2024b), and Show-1 (Zhang et al., 2024a) leverage multi-stage mod-els for high-resolution video generation. Some training-free methods (Khachatryan et al., 2023; Zhang et al., 2024d) modify only the inference process to generate videos but face issues with frame inconsistency. AnimateDiff (Guo et al., 2024) trains a plug-and-play motion module that can be integrated into any text-to-image model, enabling broad community applications. After the emergence of Sora (OpenAI, 2024), many models pre-trained on large-scale video datasets have been made open-source, includ-ing Open-sora (Zheng et al., 2024), Open-sora-plan (Lin et al., 2024a), and Mochi-1 (Team, 2024). Despite their im-pressive generation performance, closed-source commercial 2GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning Dataset Construction 
+
+Prompt Collection      
+
+> WebVid VidProM
+> VBench EvalCrafter
+> T2VQA -DB FETV
+> T2V-Combench TC -Bench
+> SafeSora
+> open source
+> dataset  manually write
+> GPT synthesis
+
+Video Collection   
+
+> Filter Video on
+> Appropriate
+> Dynamicity
+
+Human Annotation         
+
+> Quality (clarity,arti
+> facts,texture /deta
+> il,naturalness ), Aest
+> hetic (content,comp
+> osition,color,lightin
+> g), Consistency ……
+> More than 50% same score
+> And range does not exceed 2
+> 1. Score
+> 2. Reason
+
+LLMs Summary  
+
+> Overview
+> Description
+> Analysis
+> Analysis
+> Human Verify
+> Evaluation Process
+
+You are an expert in evaluating AI-generated videos. Dimension: quality , Criteria: …(1-5) 
+
+GRADEO-
+
+Instruct 
+
+> Instruct ion  tuning
+
+GRADE O                           
+
+> …I will begin with a detailed description …conduct an analysis …
+> aspects such as clarity, artifacts, texture/detail, and
+> naturalness …provide a final assessment score …
+> …shows a park-like setting with green grass and trees. There are
+> several signs with text, but the text is not clear and appears to
+> be distorted or blurred …
+> …The blurring and distortion of the text on the signs make it
+> nearly impossible to read …the presence of noticeable artifacts is
+> evident …disrupt the harmony between the background and the
+> main subjects …These flaws collectively impact the viewing
+> experience, making it below average in quality .
+> Overview Description Analysis
+> Final Assessment
+> Evaluation
+> Dimension
+> Creativity
+> Safety
+> Rationality
+> Alignment
+> Consistency
+> Aesthetic
+> Quality
+
+You are an expert in evaluating AI-generated videos. Dimension: rationality , Criteria: …(1-5) 
+
+Prompt: A child seeing snow for the first time Theme: Emotional Responses                  
+
+> …I will first analyze the given prompt and infer its logical
+> outcomes based on human common sense ... conduct a detailed
+> analysis …provide an assessment score …
+> …When a child sees snow for the first time, what can we logically
+> expect? Snow is a new and intriguing phenomenon for someone
+> unfamiliar with it .... The child's eyes might widen in wonder, and
+> their face could break into a joyful grin …
+> …Upon reviewing the video, we observe the child ‘s reaction to
+> seeing snow for the first time …This aligns well with our
+> expectation of a novel sensory experience provoking wonder …the
+> child's face breaks into a joyful grin, reflecting the happiness and
+> excitement ... These visual cues are consistent with the inferred
+> emotional outcomes …
+> Overview
+> Commonsense
+> Reasoning Analysis
+> Final Assessment
+> Generated Video
+> Generated Video
+> High -Level
+> Understanding
+> Low -Level
+> Perception
+
+Figure 2: An overview of GRADEO. a)Dataset Construction Pipeline. First, we source (prompt,video) data, and collect human annotations. Then, we convert them to instruction tuning datasets. b)Evaluation Process Pipeline. GRADEO 
+
+generates assessment score after multi-step reasoning. models (OpenAI, 2024; Runway, 2024; Lab, 2024; Kling, 2024; Zhipu, 2024) exhibit significantly stronger perfor-mance. However, these models fail to align with human evaluations in areas such as simulating real-world scenarios and ensuring safety. To address these limitations, we incor-porate multimodal reasoning large models to assess these dimensions more effectively. 
+
+Multimodal LLMs Reasoning. Built upon Large Lan-guage Models (LLMs) (OpenAI, 2022; Achiam et al., 2023; Bai et al., 2023; Touvron et al., 2023a;b) and vision en-coders (Radford et al., 2021; He et al., 2022), Multimodal Large Language Models (MLLMs) (OpenAI, 2023; Liu et al., 2023; Team et al., 2023) exhibit artificial general intelligence, excelling in open-world vision tasks such as understanding, instruction following, and conversational abilities. In-Context Learning (ICL) (Brown et al., 2020) enable LLMs excellent reasoning capability by provid-ing samples and context. Additionally, Chain-of-Thought (CoT) (Wei et al., 2022) further strengthens multi-step rea-soning by generating intermediate reasoning steps to solve complex problems. Extensions of CoT, such as Multimodal-CoT (Zhang et al., 2023), VCoT (Rose et al., 2023), and Visual CoT (Shao et al., 2024), explore visual reasoning in Multimodal Large Language Models (MLLMs). Recent works (Hao et al., 2024; Wang et al., 2024c) apply CoT to the video understanding domain. LLava-CoT and Marco-o1 (Xu et al., 2024; Zhao et al., 2024) integrate CoT into the model training process, utilizing organized tags to enable a systematic and structured reasoning process. Inspired by these work, we aim to explore the potential of reasoning MLLMs in text-to-video evaluation. 
+
+Text-to-Video Generation Benchmarks. With text-to-video models show exceptional performance on high res-olution video generation, there is increasing interest in evaluating text-to-video models. Fr ´echet Video Distance (FVD) (Unterthiner et al., 2018), Inception Score (IS) (Sali-mans et al., 2016) and CLIP-Similarity (Radford et al., 2021) are most commonly automatic video quality assessment met-rics. However, there are concerns about correlation between them and the evaluation of humans. VBench (Huang et al., 2024) introduces multi-dimensional and multi-categorical benchmark suite for evaluating video generation model per-formance. EvalCrafter (Liu et al., 2024b) construct their metrics by human alignment. Some recent studies(Bansal et al., 2024; Sun et al., 2024; Meng et al., 2024) prompt MLLMs to assess video quality or other performance di-mension of generative models. VideoScore (He et al., 2024) shows models that were not trained on video evaluation task did not correlate well with human assessments. Evaluation Agent (Zhang et al., 2024b) introduces a dynamic, agent-based framework with hierarchical assessments but raises fairness concerns in evaluating diverse models while it lacks 3GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+human annotations. We propose a comprehensive bench-mark suite including seven dimensions from video low-level perception to high-level video semantic understanding and common sense reasoning. Also, we introduce an automatic model for fine-grained evaluating text-to-video models. 
+
+3. GRADEO 
+
+In this section, we introduce our framework to teach MLLMs to evaluate AI-generated videos. In Sec. 3.1, we first elaborate seven evaluation dimensions, as well as each dimension’s key aspects we focus on. We then detail the process of dataset construction pipeline, and propose our 
+
+GRADEO-Instruct dataset which we plan to release in Sec. 3.2. Finally, we describe how to build GRADEO and how the evaluator works in the evaluation process (See Sec. 3.3). 
+
+3.1. GRADEO Evaluation Dimensions 
+
+Table 1: Key Aspects of Evaluation Dimensions. Dimension Key Aspects Quality clarity, artifacts, naturalness, texture and detail Aesthetic content, composition, color, lighting Consistency main subject, background Alignment object, count, color, style, spatial, temporal, action, camera Rationality human common sense Safety illegality, harmfulness, offensiveness, discrimination, misinformation, sensitivity Creativity diversity, narrativity, monotony Existing methods (Liu et al., 2024b; Huang et al., 2024; Kou et al., 2024) typically focus on assessing low-level dimensions, primarily video quality, with relatively less attention given to higher-level semantic evaluations. In addition to retaining the primary dimensions of assessment from previous methods, we include evaluations on whether the video complies with human common sense, whether it is safe, and whether it possesses creativity. As a result, we develop a bottom-up benchmark that spans from low-level visual perception to high-level visual understanding and reasoning. As shown in Table 1, we also define key aspects for each dimension with fine granularity. Further details are provided in Appendix A.1. 
+
+3.2. GRADEO-Instruct Dataset Construction 
+
+We first introduce the dimensional prompt sources, followed by the model used to generate the video. Next, we obtain the triples (video, rationale, score) from human annotations, and finally, we convert this data into a CoT instruction tuning dataset, GRADEO-Instruct .
+
+Prompt Collection To construct a comprehensive prompt dataset for text-to-video evaluation, we ensured broad cov-erage across the dimensions of Quality , Aesthetics , Con-sistency , and Alignment . This was achieved by collect-
+
+Figure 3: Human score distribution for datasets across di-mensions in GRADEO-Instruct .ing and sampling from large-scale text-to-video pretrain-ing dataset WebVid (Bain et al., 2021), real user-generated prompt dataset VidProM (Wang & Yang, 2024), and existing open-source text-to-video benchmark datasets (Liu et al., 2024b; Huang et al., 2024; Sun et al., 2024; Feng et al., 2024; Liu et al., 2024c; Kou et al., 2024). Additionally, the Safety dimension prompts are curated from specialized safety-focused dataset SafeSora (Dai et al., 2024). Inspired by recent studies (Bansal et al., 2024; Fu et al., 2024; Meng et al., 2024) on evaluating text-to-visual generation based on physical laws, we define thematic categories ( e.g. , Physical Laws, Emotional Responses, Weather Conditions, Chemical Laws, see more themes and prompt examples in Appendix A.2) that encompass human commonsense knowledge and manually craft multiple examples for each category in Ratio-nality dimension. These examples guide the GPT-assisted generation of additional prompts. For Creativity dimension, we collect prompts from the video generation community to ensure diverse and imaginative inputs, while also generating additional creative prompts based on community examples. At the same time, we include simpler, less creative prompts (e.g. , a bird flying in the sky, a child playing with a ball) to maintain a balanced dataset. 
+
+Video Collection For the dimensions of Quality , Aes-thetics , Consistency , Alignment , and Rationality , we leverage a range of open-source models, including Open-Sora (Zheng et al., 2024), VideoCrafter-1 (Chen et al., 2023), VideoCrafter-2 (Chen et al., 2024a), Latte (Ma et al., 2024), LaVie (Wang et al., 2024b), and ZeroScope-576w (Cer-spense, 2024), to generate videos. Moreover, we collect pre-generated videos from the VidProM dataset, ensuring a diverse set of examples. For the Safety dimension, we sam-ple malicious videos from the SafeSora dataset and integrate benign videos from VidProM. For the Creativity dimension, we use the Kling 1.0 and Kling 1.5 models (Kling, 2024) to generate videos with varying creativity levels, enhancing the diversity of the dataset. Finally, We filter out videos with unsuitable dynamics to ensure they meet the required motion quality, and crop those with watermarks to elimi-nate model-specific characteristics. Details are shown in 4GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Appendix A.2. 
+
+Human Annotation We establish evaluation criteria for each dimension as outlined in Sec. 3.1. Five annotators as-sess scores for each dimension, which is rated on a 1-5 scale. Inspired by the slow thinking process in human evaluation (cf. Figure 1), which involves multiple steps of reasoning and analysis, we recognize that this approach is essential for ensuring the accuracy and interpretability of video as-sessments. In addition to assigning scores (cf. Figure 3), annotators must provide rationales for their assessments, ensuring a thorough evaluation. To maintain consistency and reliability, we require that more than 50% of annotators agree on the score, with a maximum 2-point difference be-tween scores. For each dimension, annotators are instructed to focus on key aspects and provide detailed rationales. 
+
+Extend CoT Response To create an instruction tuning dataset that enables multimodal large models to learn human evaluation of AI-generated videos, we define an assessing Chain-of-Thought process with four steps: 
+
+<Overview> , <Description> , <Analysis> , and 
+
+<Assessment> . The overview step involves planning the overall reasoning process for the subsequent stages. The description step provides detailed descriptions of the video content. The analysis step emulates the slow thinking and reasoning process in human evaluation, systematically elab-orating on the rationale behind the scores. Finally, the assessment step generates the evaluation score based on the reasoning and analysis. We designed a GPT-assisted CoT response construction pipeline, where we feed three keyframes from the video, evaluation criteria, and human annotators’ assessment rationales into GPT-4o (Hurst et al., 2024) to generate CoT data consisting of four steps. If the generated score in the evaluation step does not align with the human-assigned score, we discard the CoT data and regenerate it. For chains with correct scores, we manually verified that the reasoning steps were consistent with human logic. 
+
+3.3. GRADEO Evaluation Process 
+
+Fine-tuning on train split dataset GRADEO-Instruct we collet in Sec. 3.2, we develop a MLLM evaluator called 
+
+GRADEO . The formulation of the loss function is as fol-lows: 
+
+L(θ) = − 
+
+> N−1
+
+X
+
+> i=1
+
+log p(Ri|Q, V, R <i ; θ)−log p(S|Q, V, R ; θ)
+
+(1) where Q is question containing dimension instruction and assessment criteria (See Appendix C.1), V is the video being assessed, R is the rationale and reasoning process, S is final assessment score, N is the length of whole answer. Referring to Figure 2, GRADEO divides the an-swer into four parts: <Overview> , <Description> ,
+
+<Analysis> , <Assessment> . In <Overview> 
+
+stage, based on the questions and the evaluation criteria for each dimension, it plans the reasoning steps to reach the final score assessment. For most dimension, it generates video description in <Description> . Instead, it decom-poses the prompt text into several key aspects for alignment dimension, and engages in human common-sense reason-ing for rationality in this stage. Then, in <Analysis> ,incorporating the information obtained previously and the video itself, it conducts a thorough analysis and thoughtful reasoning in accordance with the assessment criteria for this dimension. In <Assessment> stage, it assesses the final score based on the previous reasoning process. To evaluation text-to-video model G, outside the dataset 
+
+GRADEO-Instruct , we generate 100 prompts for each dimension we represent the symbols as {Pi} ∈ D, totaling 700 prompts, as the benchmark prompt suite GRADEO-BENCH . See Appendix D.1 for further elaboration. 
+
+4. Experiments 
+
+4.1. Experimental Setup Datasets and Metrics. To thoroughly assess the corre-lation between model predictions and human evaluations, we perform experimental comparisons on both the test set and the constructed pairwise dataset. We extract 340 sam-ples from the collected dataset GRADEO-Instruct to serve as the test set. On this dataset, we employ Spearman’s rank correlation coefficient (SROCC) , Pearson’s linear correlation coefficient (PLCC) , and Mean Absolute Er-ror ( ¯∆) as test metrics, calculating each dimension sepa-rately. SROCC evaluates rank correlation, while PLCC as-sesses the linear relationship, with higher values indicating stronger alignment with human evaluations, and a lower ¯∆
+
+signifying a closer proximity between predicted and actual scores. To further validate the effectiveness of the model, we collect paired human preference data from open-source datasets. T2VQA-DB (Kou et al., 2024) is a Text-to-Video quality assessment Database, which contains 10000 gener-ation videos by different T2V models using 1000 prompts. GenAI-Bench-Video (Li et al., 2024) collected 1.6k prompts from professional designers, generated videos by four T2V models, and hired three trained human annotators to rate each video for how well these videos align with prompts. TVGE (Wu et al., 2024) collected 2.5k videos generated by five generation models and human ratings on the quality and alignment perspectives. For T2VQA-DB, GenAI-Bench-Video, TVGE-Quality and TVGE-Alignment, we sample 200 prompts randomly, and for each prompt, select two videos, with a total of 1600 videos for pairwise compar-isons. For each pair, one video has a higher score than 5GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Table 2: The correlation between Metrics/MLLMs and human evaluation. MLLMs baselines are divided into Image MLLMs and Video MLLMs, with our method demonstrating superior performance in aligning with human evaluations in terms of Spearman’s rank-order correlation coefficient ( ρsrocc ), Pearson’s linear correlation coefficient ( ρplcc ), and Mean Absolute Error ( ¯∆).                                                                                                                              
+
+> Model Quality Aesthetic Consistency Alignment Rationality Safety Creativity
+> ρsrocc (↑)/ ρplcc (↑)/ ¯∆(↓)ρsrocc (↑)/ ρplcc (↑)/ ¯∆(↓)ρsrocc (↑)/ ρplcc (↑)/ ¯∆(↓)ρsrocc (↑)/ ρplcc (↑)/ ¯∆(↓)ρsrocc (↑)/ ρplcc (↑)/ ¯∆(↓)ρsrocc (↑)/ ρplcc (↑)/ ¯∆(↓)ρsrocc (↑)/ ρplcc (↑)/ ¯∆(↓)
+> Automatic Metrics
+> PIQE (N et al., 2015) 0.053/-0.040/1.123 -0.071/-0.259/1.123 0.045/-0.142/ 1.545 0.145/0.004/1.544 -0.124/-0.254/1.460 0.078/-0.154/1.440 0.361/0.305/1.208 BRISQUE (Mittal et al., 2012) 0.079/-0.049/1.193 0.021/-0.327/1.509 0.019/-0.338/1.750 0.085/-0.085/1.772 -0.063/-0.188/1.240 0.234/0.009/0.720 0.335/0.029/1.250 CLIP-Score (Hessel et al., 2021) 0.180/0.088/1.070 0.464/0.377/1.211 0.276/0.177/1.432 0.201/0.051/1.404 0.181/0.063/1.160 0.331/0.147/1.080 0.396/0.342/1.000
+> Image MLLMs
+> LLaVA-1.5-7B (Liu et al., 2023) 0.563/0.176/0.684 0.544/0.199/0.518 0.273/0.194/0.705 0.405/-0.256/0.589 0.273/0.137/1.041 0.493/0.280/1.400 0.607/0.566/0.958 LLaVA-1.6-7B (Liu et al., 2024a) 0.514/0.132/0.667 0.567/0.434/0.500 0.334/0.103/0.591 0.421/0.182/2.036 0.137/-0.096/3.612 0.663/0.568/1.360 0.700/0.581/0.875 GLM-4v (GLM et al., 2024) 0.543/0.429/0.895 0.412/0.305/0.964 0.381/0.237/1.068 0.333/0.070/0.893 0.580/0.480/1.080 0.584/0.496/1.280 0.445/0.380/1.292 GPT-4-Turbo 0.462/0.371/1.000 0.626/0.602/0.482 0.314/0.239/0.750 0.508/ 0.582 /0.839 0.335/0.107/1.633 0.461/0.388/1.500 0.379/0.221/1.208 GPT-4o 0.403/0.327/0.737 0.656/0.601/0.596 0.421/0.204/1.932 0.496/0.428/0.842 0.415/0.384/1.440 0.469/0.377/1.620 0.438/0.363/1.042
+> Video MLLMs
+> InternVL2.5-8B (Chen et al., 2024b) 0.242/0.145/1.105 0.393/0.302/0.911 0.192/-0.061/1.091 0.194/0.030/2.054 0.322/0.306/1.255 0.563/0.547/1.080 0.528/0.381/1.208 LLaVA-NeXT-Video-7B (Zhang et al., 2024c) 0.585/0.441/0.825 0.260/0.036/0.930 0.290/-0.012/0.795 0.070/-0.127/0.895 0.350/0.137/1.204 0.602/0.038/1.900 0.523/0.291/1.167 Qwen2-VL-7B (Wang et al., 2024a) 0.590/0.424/0.649 0.648/0.599/0.667 0.491/0.310/0.682 0.233/-0.022/1.000 0.461/0.225/1.060 0.559/0.244/2.320 0.606/0.593/1.083 Gemini-1.5-Flash (Team et al., 2023) 0.617/0.510/0.825 0.663/0.604/0.518 0.322/0.000/0.791 0.163/0.048/1.446 0.071/-0.033/1.449 0.348/0.255/1.380 0.026/-0.035/1.375 Gemini-1.5-Pro (Team et al., 2023) 0.538/0.454/0.614 0.589/0.556/0.526 0.401/0.238/0.886 0.488/0.283/1.161 0.288/0.227/1.469 0.619/0.44/1.700 0.792/0.721/0.792 VideoScore-v1.1 (He et al., 2024) 0.365/-0.108/0.789 -0.575/0.386/0.545 0.484/0.287/0.649 0.297/0.070/0.780 --
+> Ours
+> GRADEO 0.743 /0.715 /0.404 0.717 /0.719 /0.351 0.634 /0.641 /0.341 0.601 /0.418/ 0.439 0.606 /0.515 /0.560 0.747 /0.762 /0.360 0.797 /0.759 /0.542
+
+the other. The accuracy of preference judgments, i.e., cor-rectly identifying the higher-scoring video, is used as the evaluation metric. 
+
+Baselines. On the test dataset, we primarily selecte current state-of-the-art image and video multimodal large language models. On the pairwise dataset, we additionally selecte some automatic evaluation metrics as baselines. 1) Image MLLMs: LLaVa-1.5 (Liu et al., 2023), LLaVa-1.6 (Liu et al., 2024a), GLM-4v (GLM et al., 2024), GPT-4-Turbo, GPT-4o (Achiam et al., 2023). 2) Video MLLMs: InternVL-2.5 (Chen et al., 2024b), LLaVA-NeXT-Video (Zhang et al., 2024c), Qwen2-VL-7B (Wang et al., 2024a), Gemini-1.5-Flash, Gemini-1.5-Pro (Team et al., 2023), VideoScore-1.1 (He et al., 2024). 3)Automatic Metrics: PIQE (N et al., 2015), BRISQUE (Mittal et al., 2012), CLIP-Score (Hes-sel et al., 2021), ImageReward (Xu et al., 2023), HPS-2.1 (Wu et al., 2023b). For MLLMs, with the exception of VideoScore, the input text for the other models are con-sistent with those of GRADEO , comprising task-specific instructions and dimensional evaluation criteria. For the dimensions of alignment and rationality, additional text prompts are incorporated to further guide the evaluation process. For automatic metrics, we use keyframes as in-put to calculate the scores, which are then scaled to a 1-5 range to align with the evaluation criteria. For VideoScore, we map visual quality, temporal consistency, text-to-video alignment, and factual consistency to the four dimensions of quality, consistency, alignment, and rationality, respectively. The scores from 1 to 4 are then scaled to a 1-5 range and rounded to the nearest level. More details are shown in Appendix C. 
+
+Training Details. We adopt Qwen2-VL-7B (Wang et al., 2024a) as our base model, which has proven its perception and understanding capabilities for multimodal data, par-ticularly videos, across various open-source datasets and downstream tasks. To enhance the model’s ability to as-sess generated videos in a manner similar to human evalu-ations, while preserving its original instruction-following and reasoning capabilities, we apply the LoRA fine-tuning method (Hu et al., 2021). The learning rate is set to 1×10 −5,and the model is trained for 10 epochs on 4 RTX 3090 (24G) GPUs. Table 3: Pairwise comparison accuracy. Our model demonstrates superior accuracy across all datasets, outper-forming other models consistently.                                                   
+
+> Model T2VQA-DB GenAI-Bench-Video TVGE
+> Video Fidelity Video Preference Text-Video Aligenment Video Quality
+> Automatic Metrics
+> PIQE (N et al., 2015) 0.300 0.220 0.305 0.185 BRISQUE (Mittal et al., 2012) 0.420 0.240 0.360 0.295 CLIP-Score (Hessel et al., 2021) 0.370 0.445 0.590 0.425 ImageReward-v1.0 (Xu et al., 2023) 0.490 0.640 0.730 0.605 HPS-v2.1 (Wu et al., 2023b) 0.475 0.730 0.660 0.625
+> MLLMs
+> LLaVA-1.6-7B (Liu et al., 2024a) 0.450 0.440 0.295 0.590 GLM-4v (GLM et al., 2024) 0.320 0.350 0.435 0.370 GPT-4o 0.450 0.360 0.335 0.470 Gemini-1.5-Flash (Team et al., 2023) 0.470 0.720 0.620 0.460 VideoScore-v1.1 (He et al., 2024) 0.790 0.760 0.690 0.795
+> Ours
+> GRADEO 0.815 0.790 0.780 0.840
+
+4.2. Experimental Results Quantitative Results We present a comparison of various state-of-the-art MLLMs and our model in terms of human correlation on the test set in Table 2, and show the pairwise results on four AI-generated video assessment datasets in Table 3. Based on the data presented in these two Table, our model GRADEO demonstrates the highest alignment with human assessment across all evaluation dimensions. We ob-serve that video MLLMs do not outperform image MLLMs in this evaluation task. In comparison to open-source mod-els, closed-source models show higher consistency with human evaluations. For evaluation dimensions involving high-level semantics, only MLLMs are effective. Auto-mated evaluation metrics can perceive videos but cannot understand their content, let alone perform reasoning. As a result, they are ineffective in evaluation dimensions that re-6GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning Rating Score: 1 
+
+You are an expert in evaluating AI -generated videos. 
+
+Your task is to assess the specific dimension of the video: 
+
+creativity , and provide a score for this dimension. 
+
+Prompt: 
+
+An old, leather -bound book on a 
+
+wooden table. 
+
+Rating criteria:… 
+
+To assess the video effectively, I will begin with a comprehensive 
+
+and thorough description of its content. Following this, I will 
+
+conduct a detailed, criterion -specific analysis, evaluating the 
+
+video against the provided rating criteria. Finally, I will 
+
+synthesize these insights to determine and present the final 
+
+assessment score. 
+
+The video features an open book 
+
+with handwritten text on a 
+
+wooden table. The book's cover is 
+
+worn and aged, suggesting it has 
+
+been well -used over time. 
+
+Firstly, the video's visual elements are straightforward and common. The open book with handwritten 
+
+text is a familiar sight, lacking any unique or imaginative visual techniques. The worn cover, while 
+
+adding a sense of age and history, does not introduce any novel visual elements that would elevate the 
+
+video's creativity. 
+
+Secondly, the narrative aspect of the video is minimal. The book itself does not convey any story or 
+
+message through its content, relying solely on the visual presentation of the text. This absence of 
+
+narrative depth further diminishes the video's creative impact. 
+
+Then, considering the overall content, it becomes evident that the video fails to spark the viewer's 
+
+imagination or curiosity. The lack of innovative storytelling and visual expression means that the 
+
+content is dull and does not meet the basic expectations of a creative video. 
+
+So, when evaluating against the rating criteria, the video clearly does not exhibit the characteristics of a 
+
+high or even basic level of creativity. It lacks the unique and imaginative visual elements, innovative 
+
+narrative techniques, and engaging content that would warrant a higher rating. 
+
+But one might ask, does the video have any redeeming qualities? While the worn cover adds a touch of 
+
+authenticity and history, it does not compensate for the overall monotonous and common nature of the 
+
+video. The content remains static and fails to break away from the norm, making it difficult to find any 
+
+significant depth or novelty. 
+
+Therefore, the video's creativity is significantly limited, aligning it closely with the lowest rating criteria. 
+
+Generated Video 
+
+Based on the images provided, it is not possible to 
+
+evaluate the creativity of an AI -generated video as the 
+
+image shows a physical object, specifically an open 
+
+book, rather than a video. 
+
+To evaluate the creativity of a video, one would need to 
+
+watch the video and analyze its visual elements, 
+
+narrative techniques, and overall content. 
+
+Llava -1.6 -7b 
+
+Based on the image 
+
+provided, I would rate the 
+
+creativity of the video as 
+
+a 3 . The visual elements 
+
+and narrative techniques 
+
+are not overly ordinary, but 
+
+there is room for 
+
+improvement in terms of 
+
+depth and novelty. The 
+
+content is not dull, but it 
+
+does not fully break away 
+
+from the norm. 
+
+Llava -NeXT -Video -7b 
+
+I would give the video a creativity score of 2. 
+
+The video shows a static shot of an antique book. While 
+
+the book itself is visually interesting due to its age and 
+
+leather binding, the video lacks any creative visual 
+
+elements or narrative techniques. There's no movement, 
+
+editing, or special effects. 
+
+It's simply a prolonged still image. The content is not 
+
+engaging or thought -provoking beyond the potential 
+
+interest in the book's age and possible historical 
+
+significance. There's no attempt to tell a story or 
+
+convey a message beyond a simple visual presentation of 
+
+the object. While the subject matter could be used 
+
+creatively, this video does not do so. 
+
+Gemini -1.5 -Flash 
+
+Creativity: 3 
+
+Gemini -1.5 -Pro 
+
+GPT -4o 
+
+InternVL -2.5 -8b 
+
+I'm unable to evaluate the creativity of the video based on images. If you can describe the video's elements and 
+
+narrative or provide more context, I'd be happy to help assess its creativity within the given criteria. 
+
+This video does not fully meet the criteria for creativity as it presents a static image of a leather -bound 
+
+book on a table. While the book may evoke curiosity about its contents, there isn't much dynamic visual 
+
+storytelling or innovative techniques involved. Thus, while it may be considered slightly original, it doesn't 
+
+push the boundaries of creativity significantly. Score : 3 
+
+Figure 4: Qualitative Results for Creativity Dimension. MLLMs baselines may refuse to provide a score or give a score before presenting the evaluation reasoning. In contrast, our approach generates detailed reasoning steps prior to assigning a final score, resulting in higher consistency with human assessments. quire semantic understanding. On the other hand, MLLMs, due to their ability to follow instructions and understand visual content, can score according to evaluation standards. Their understanding and reasoning capabilities help ensure consistency with human assessments. 
+
+Qualitative Results In addition to quantitative results, we also present qualitative results in Figure 4, 5. It can be observed that our model leverages multi-step reasoning ca-pabilities to achieve interpretable score evaluations across multiple dimensions. We have found that some MLLMs oc-casionally refuse to answer or provide very brief responses, which often leads to evaluation failures or errors. LLava-1.5-7b and Gemini-1.5 only output scores in a large number of examples, which is insufficient to meet our goal of provid-ing a more interpretable evaluation using MLLMs. GPT-4o refuses to evaluate in some examples, which also affects the evaluation results. Models like Llava-NeXT-Video-7b typically respond with a score first, which leads to the eval-uation rationale being generated based on that score, rather than utilizing reasoning capabilities to improve the evalu-ation results. For video Rationality evaluation, MLLMs without instruction tuning exhibit a higher susceptibility to prompt-induced hallucinations, where generated responses are disproportionately influenced by the input prompts rather than grounded in the visual content. 
+
+4.3. Ablation Study 
+
+We perform an ablation study on both the integration of Chain-of-Thought fine-tuning and the completeness of rea-soning steps in the chain. We exclude the final scoring component from the CoT and input the remaining reasoning steps, along with the evaluation prompt, into the base model, which was found to improve overall alignment with human evaluations. The absence of <Description> impairs the understanding of the original video content, resulting in a substantial decline in overall evaluation metrics. Without 
+
+<Overview> , the model struggles to establish a logical reasoning steps for evaluation, significantly reducing its precision. We also experiment by removing all reasoning steps and retaining only the score as the model’s output. However, this approach neither enhances consistency with human evaluations nor maintains interpretability. We further introduce a simple CNN-based video scoring model trained from scratch for comparison (See more details in Appendix C.2). As shown in Table 4, this baseline performs signif-icantly worse than our LLM-based method, highlighting that large language models leverage their rich pre-trained knowledge to understand video content. Table 4: Ablation study on the impact of multi-step reason-ing and CoT integrating fine-tuning. 
+
+Fine-tuning w <Description> w <Overview> w CoT Human Correlation 
+
+¯ρsrocc (↑)/ ¯ρplcc (↑)/ ¯∆(↓)
+
+× × × × 0.512/0.339/1.066 
+
+× × × ✓ 0.572/0.432/1.023 
+
+✓ × × × 0.538/0.424/0.642 
+
+✓ ✓ × × 0.588/0.462/0.610 
+
+✓ ✓ ✓ ✓ 0.692 /0.647 /0.428 
+
+Basic CNN Video Scoring Model 0.302/0.186/0.910 7GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning Rating Score: 1 
+
+You are an expert in evaluating AI -generated videos. 
+
+Your task is to assess the specific dimension of the video: 
+
+rationality , and provide a score for this dimension. 
+
+Prompt: 
+
+A rarely watered lawn 
+
+The theme of human common sense: 
+
+Biological Laws 
+
+Rating criteria:… 
+
+To assess the video, I will first analyze 
+
+the given prompt , "A rarely watered 
+
+lawn," and infer its logical outcomes 
+
+based on human common sense, 
+
+particularly focusing on the theme of 
+
+biological laws . Next, I will conduct a 
+
+detailed, criterion -specific analysis of the 
+
+video content in relation to these inferred 
+
+effects. Finally, I will provide an 
+
+assessment score based on how well the 
+
+video aligns with real -world expectations 
+
+and common sense reasoning. 
+
+The prompt "A rarely watered lawn" inherently 
+
+suggests a scenario where the lawn receives minimal 
+
+water, leading to a lack of greenery and possibly dry 
+
+patches. This is rooted in biological laws, particularly the 
+
+need for water to sustain plant life. One might ask, 
+
+"What would a lawn look like if it's rarely watered?" The 
+
+expected outcome would be a lawn that appears dry, 
+
+with patches of brown or yellow grass, reflecting the 
+
+natural consequence of insufficient water. This aligns 
+
+with common sense knowledge about the relationship 
+
+between water and plant health. 
+
+Upon examining the video, it becomes evident that the lawn is consistently green and lush, which 
+
+directly contradicts the inferred effect of a rarely watered lawn. The video does not depict any signs 
+
+of dryness or brown patches, which are typically associated with insufficient watering. Ok, the lawn 
+
+looks healthy and vibrant, but this contradicts the expected outcome based on the prompt. Then, 
+
+considering the theme of biological laws, the video fails to represent the logical consequence of rare 
+
+watering. So, how does this align with real -world expectations? Clearly, it does not. The video's depiction 
+
+of a lush, green lawn does not reflect the natural outcome of a rarely watered lawn, leading to a 
+
+noticeable deviation from common sense reasoning. 
+
+Generated Video 
+
+Based on the prompt "A rarely watered lawn" 
+
+the theme of human common sense reflected is 
+
+"Biological Laws." 
+
+To evaluate the rationality of the video, I 
+
+would consider the following: 
+
+1. The prompt suggests that a lawn that is 
+
+rarely watered will be in poor condition, which 
+
+is consistent with real -world expectations. 
+
+2. The expected effect of a rarely watered 
+
+lawn is that it will become dry, discolored, and 
+
+potentially develop patches of dead grass. 
+
+3. The video should show a lawn that appears 
+
+dry, discolored, and possibly with patches of 
+
+dead grass. Given the information provided, I 
+
+would rate the rationality of the video as: 4: 
+
+High rationality . The prompt aligns with real -
+
+world expectations and logical consistency in 
+
+common sense knowledge and reasoning, with 
+
+only minor lapses. The video should closely 
+
+follow these expectations, showing a lawn in 
+
+poor condition due to lack of watering. 
+
+Llava -1.6 -7b 
+
+The video shows a lawn that appears dry and somewhat sparse, which is consistent with a rarely watered 
+
+lawn. The color is a slightly dull, yellowish -green, suggesting a lack of moisture. There are no obvious 
+
+signs of lushness or healthy growth. 
+
+Therefore, I would rate the rationality of the video as 4: High rationality. The video's depiction aligns 
+
+well with the real -world expectation of a rarely watered lawn. While the visual quality isn't extremely 
+
+high -definition, the overall visual representation of the dryness and less -than -optimal health of the grass 
+
+is sufficient and plausible. There are no noticeable inconsistencies or illogical elements. 
+
+Gemini -1.5 -Flash 
+
+Gemini -1.5 -Pro 
+
+Based on the provided criteria, I
+
+would rate the rationality of the 
+
+video as a 3 . The video follows 
+
+basic real -world expectations and 
+
+logical consistency in common sense 
+
+knowledge and reasoning, but with 
+
+occasional lapses. For example, the 
+
+prompt "A rarely watered lawn" 
+
+suggests that a lack of watering 
+
+would lead to a dry and unhealthy 
+
+lawn, which is a common -sense 
+
+observation. However, the video 
+
+does not provide any information on 
+
+how to address the issue of a 
+
+rarely watered lawn, which is a 
+
+logical inconsistency. Additionally, 
+
+the theme of "Biological Laws" is 
+
+not directly related to the prompt, 
+
+which is about a rarely watered 
+
+lawn, which is another lapse in 
+
+logical consistency. 
+
+Llava -NeXT -Video -7b 
+
+Rationality Score: 4 Rationality Assessment : The video presents a lawn that appears to be dry and has patches of brown, which aligns with the 
+
+description of a rarely watered lawn. However, the lawn still appears to be mostly green, which may not perfectly match the e xpe cted effect of rare 
+
+watering. Overall, the video is acceptable in terms of rationality, with a minor lapse in fully representing the effects of i nfr equent watering. 
+
+Figure 5: Qualitative Results for Rationality Dimension. MLLMs baselines either fail to assess the rationality of the video accurately, or are misled by the prompt and generate hallucinations. Our model, by faithfully adhering to the video content and reasoning according to the prompt, effectively compares the observed scenes with real-world expectations. 
+
+5. Benchmarking recent T2V models 
+
+5.1. Benchmark Setup 
+
+We adopt 8 open-source SOTA Text-to-Video models, in-cluding Hotshot-XL (Mullan et al., 2023), Lavie (Wang et al., 2024b), Latte (Ma et al., 2024), ModelScope (Wang et al., 2023), ZeroScope (Cerspense, 2024), VideoCrafter-1 (Chen et al., 2023), VideoCrafter-2 (Chen et al., 2024a), Open-Sora (Zheng et al., 2024). We evaluate models on 
+
+GRADEO-B ENCH using GRADEO , and the scores ob-tained for each dimension are averaged and scaled to a percentage. Further details are provided in Appendix D. 
+
+5.2. Benchmark Results 
+
+Table 5 presents the evaluation results of T2V models across seven dimensions. Among these models, VideoCrafter2 demonstrates the best overall performance, while the rel-atively outdated ModelScope model exhibits the weakest results. Scores for the Consistency dimension are notably high, likely because this dimension emphasizes the absence of distortions in the subject and background rather than fine-grained pixel-level details. Given the short-duration videos produced by current models, significant distortions are less likely to occur. Hotshot-XL, which generates 1-second GIFs at 8 FPS, achieves the highest score in this dimension, likely due to the simplicity of maintaining consistency in such short outputs. However, beyond Consistency and Align-ment , most models perform poorly in other dimensions, particularly Creativity . This is to be expected, as videos with science fiction or fantasy themes are rarely represented in the training datasets of these models. Furthermore, the low scores in the Rationality dimension highlight the diffi-culty of generating videos that conform to real-world prin-ciples, underscoring the inherent challenges in producing high-quality, semantically meaningful content aligned with human conceptual standards. 
+
+5.3. Insights High-quality video generation and high alignment are prerequisites for producing videos that are consistent with real-world scenarios. In our designed rationality prompts, most prompts depict real-world scenarios that can be visualized through human common sense. In these sce-narios, events involve actions performed by humans or ob-jects, which align with common sense. Reasoning about the consequences of these events constitutes commonsense reasoning. To achieve high rationality scores, a model must first construct a realistic scenario, generate the key elements to perform activities, and subsequently produce the conse-quences of these activities. However, current models fail to construct such scenarios for certain prompts, are unable to generate realistic and high-quality key elements, and there-fore cannot lead to accurate behavioral outcomes. 
+
+Effective generation of key elements and logical coher-ence in video timelines is essential for creating videos that accurately reflect the narrative described in the text prompt. When the text prompt is longer, it often 8GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Table 5: Benchmarking results of recent T2V models on GRADEO-B ENCH for each dimension. All scores are scaled from 0 to 100, and the average value across each dimension is taken as the final score. Higher score indicates better performance for a dimension.                                                                
+
+> T2V Models Quality Aesthetic Consistency Alignment Rationality Safety Creativity
+> Hotshot-XL 42.2 58.2 70.2 62.5 48.0 47.0 27.8 Lavie 44.0 62.8 67.0 63.5 42.5 48.0 33.2 Latte 40.8 56.0 67.2 62.2 38.5 44.0 31.5 ModelScope 25.8 48.5 56.5 56.2 37.2 49.8 26.0 ZeroScope 38.5 54.5 65.5 62.0 41.5 44.5 30.5 VideoCrafter-1 31.5 54.2 60.0 56.5 39.0 45.2 34.0 VideoCrafter-2 40.2 65.0 63.8 65.0 48.8 48.8 35.0 Open-Sora 32.2 51.2 65.0 60.2 39.8 44.5 28.5
+
+contains richer scene elements, forming a coherent story narrative. The model needs to effectively generate the key elements described in the prompt while ensuring that the temporal and spatial order of the overall elements is logical. However, videos generated by existing models exhibit sev-eral issues, such as elements blending together, resulting in overly chaotic scenes; grand but overly simplistic settings lacking details; and elements appearing over time but with no logical coherence in the video. 
+
+Models with strong instruction-following capabilities and extensive training data are more prone to gener-ating unsafe content. Through our evaluation of several advanced video generation models, we observe that models with high instruction-following fidelity tend to more strictly adhere to prompt specifications, even when such prompts imply or explicitly request unsafe, unethical, or harmful content. This suggests that as instruction tuning and model capabilities improve, the potential risks associated with mis-use or adversarial prompting also increase. Notably, these models often lack robust safety constraints or alignment mechanisms to reject or sanitize unsafe inputs, making them susceptible to generating content that violates ethical or safety norms. This highlights the urgent need for future research on adversarial robustness, jailbreak prevention, and the development of safety-aware training frameworks in video generation models. 
+
+6. Conclusion 
+
+Our work represents a meaningful step towards improving video evaluation methodologies for AI-generated content. By proposing GRADEO , a video evaluation model trained on human-labeled data and capable of performing multi-step reasoning, we bridge the gap between machine assessments and human evaluations. From low-level quality metrics to high-level semantic reasoning, we introduce a comprehen-sive evaluation framework encompassing seven dimensions with well-defined criteria. Our systematic dataset construc-tion pipeline guides MLLMs to assess generative videos through structured multi-stage reasoning. Extensive experi-ments demonstrate that GRADEO achieves high alignment with human scores, surpassing state-of-the-art models like GPT-4o, Gemini 1.5 Pro, and VideoScore. Through bench-marking current T2V models on our prompt suite, we reveal that existing models struggle to generate videos that adhere to real-world knowledge and human commonsense. We hope our insights inspire further exploration into building more reliable and human-aligned video evaluation systems. 
+
+Acknowledgements 
+
+We would like to thank the anonymous reviewers for their insightful comments and suggestions, which helped im-prove the quality of this paper. This work was partly sup-ported by the National Natural Science Foundation of China (Nos.62311530100&62171251) and the Special Founda-tions for the Development of Strategic Emerging Industries of Shenzhen (No.KJZD20231023094700001). 
+
+Impact Statement 
+
+This paper presents a novel evaluator and benchmark for evaluating video generation models. The development of 
+
+GRADEO-Instruct and GRADEO fills a crucial gap in assessing AI-generated video content, establishing a foun-dation for future research in this field. By introducing new evaluation strategies, we aim to influence future benchmark-ing practices, which may promote the development of T2V models. Our evaluation framework can help uncover the po-tential of current video generation models to produce unsafe, unethical, or harmful content. However, the advancement of T2V models also brings potential negative impacts, in-cluding the risk of misuse to create realistic but misleading video content, such as deepfakes, which could contribute to misinformation and societal harm. We therefore urge the research community to prioritize the development of robust video generation detection systems to identify and mitigate the spread of harmful synthetic content. At the same time, we emphasize the importance of incorporating safety-aware design principles into the development of video generation models to minimize the risk of misuse from the outset. 9GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+References 
+
+Achiam, J., Adler, S., Agarwal, S., Ahmad, L., Akkaya, I., Aleman, F. L., Almeida, D., Altenschmidt, J., Altman, S., Anadkat, S., et al. Gpt-4 technical report. arXiv preprint arXiv:2303.08774 , 2023. Bai, J., Bai, S., Chu, Y., Cui, Z., Dang, K., Deng, X., Fan, Y., Ge, W., Han, Y., Huang, F., Hui, B., Ji, L., Li, M., Lin, J., Lin, R., Liu, D., Liu, G., Lu, C., Lu, K., Ma, J., Men, R., Ren, X., Ren, X., Tan, C., Tan, S., Tu, J., Wang, P., Wang, S., Wang, W., Wu, S., Xu, B., Xu, J., Yang, A., Yang, H., Yang, J., Yang, S., Yao, Y., Yu, B., Yuan, H., Yuan, Z., Zhang, J., Zhang, X., Zhang, Y., Zhang, Z., Zhou, C., Zhou, J., Zhou, X., and Zhu, T. Qwen technical report, 2023. Bain, M., Nagrani, A., Varol, G., and Zisserman, A. Frozen in time: A joint video and image encoder for end-to-end retrieval. In IEEE International Conference on Computer Vision , 2021. Bansal, H., Lin, Z., Xie, T., Zong, Z., Yarom, M., Bitton, Y., Jiang, C., Sun, Y., Chang, K.-W., and Grover, A. Videophy: Evaluating physical commonsense for video generation. arXiv preprint arXiv:2406.03520 , 2024. Blattmann, A., Rombach, R., Ling, H., Dockhorn, T., Kim, S. W., Fidler, S., and Kreis, K. Align your latents: High-resolution video synthesis with latent diffusion models. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 22563–22575, 2023. Brown, T., Mann, B., Ryder, N., Subbiah, M., Kaplan, J. D., Dhariwal, P., Neelakantan, A., Shyam, P., Sastry, G., Askell, A., et al. Language models are few-shot learners. 
+
+Advances in neural information processing systems , 33: 1877–1901, 2020. Caron, M., Touvron, H., Misra, I., J ´egou, H., Mairal, J., Bojanowski, P., and Joulin, A. Emerging properties in self-supervised vision transformers. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , pp. 9650–9660, 2021. Cerspense. Zeroscope. https://huggingface.co/ cerspense/zeroscope_v2_576w , 2024. Chen, H., Xia, M., He, Y., Zhang, Y., Cun, X., Yang, S., Xing, J., Liu, Y., Chen, Q., Wang, X., Weng, C., and Shan, Y. Videocrafter1: Open diffusion models for high-quality video generation, 2023. Chen, H., Zhang, Y., Cun, X., Xia, M., Wang, X., Weng, C., and Shan, Y. Videocrafter2: Overcoming data limitations for high-quality video diffusion models, 2024a. Chen, Z., Wu, J., Wang, W., Su, W., Chen, G., Xing, S., Zhong, M., Zhang, Q., Zhu, X., Lu, L., et al. Internvl: Scaling up vision foundation models and aligning for generic visual-linguistic tasks. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 24185–24198, 2024b. Chivileva, I., Lynch, P., Ward, T. E., and Smeaton, A. F. Measuring the quality of text-to-video model outputs: Metrics and dataset. arXiv preprint arXiv:2309.08009 ,2023. Dai, J., Chen, T., Wang, X., Yang, Z., Chen, T., Ji, J., and Yang, Y. Safesora: Towards safety alignment of text2video generation via a human preference dataset. 
+
+arXiv preprint arXiv:2406.14477 , 2024. Feng, W., Li, J., Saxon, M., Fu, T.-j., Chen, W., and Wang, W. Y. Tc-bench: Benchmarking temporal compositional-ity in text-to-video and image-to-video generation. arXiv preprint arXiv:2406.08656 , 2024. Fu, X., He, M., Lu, Y., Wang, W. Y., and Roth, D. Commonsense-t2i challenge: Can text-to-image genera-tion models understand commonsense? arXiv preprint arXiv:2406.07546 , 2024. GLM, T., Zeng, A., Xu, B., Wang, B., Zhang, C., Yin, D., Rojas, D., Feng, G., Zhao, H., Lai, H., Yu, H., Wang, H., Sun, J., Zhang, J., Cheng, J., Gui, J., Tang, J., Zhang, J., Li, J., Zhao, L., Wu, L., Zhong, L., Liu, M., Huang, M., Zhang, P., Zheng, Q., Lu, R., Duan, S., Zhang, S., Cao, S., Yang, S., Tam, W. L., Zhao, W., Liu, X., Xia, X., Zhang, X., Gu, X., Lv, X., Liu, X., Liu, X., Yang, X., Song, X., Zhang, X., An, Y., Xu, Y., Niu, Y., Yang, Y., Li, Y., Bai, Y., Dong, Y., Qi, Z., Wang, Z., Yang, Z., Du, Z., Hou, Z., and Wang, Z. Chatglm: A family of large language models from glm-130b to glm-4 all tools, 2024. Guo, Y., Yang, C., Rao, A., Liang, Z., Wang, Y., Qiao, Y., Agrawala, M., Lin, D., and Dai, B. Animatediff: Animate your personalized text-to-image diffusion models without specific tuning. In The Twelfth International Conference on Learning Representations , 2024. Hao, F., Shengqiong, W., Wei, J., Hanwang, Z., Meishan, Z., Mong-Li, L., and Wynne, H. Video-of-thought: Step-by-step video reasoning from perception to cognition. In 
+
+Proceeding of the ICML , 2024. He, K., Chen, X., Xie, S., Li, Y., Doll ´ar, P., and Girshick, R. Masked autoencoders are scalable vision learners. In 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pp. 16000–16009, 2022. He, X., Jiang, D., Zhang, G., Ku, M., Soni, A., Siu, S., Chen, H., Chandra, A., Jiang, Z., Arulraj, A., et al. Videoscore: 10 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Building automatic metrics to simulate fine-grained hu-man feedback for video generation. In Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing , pp. 2105–2123, 2024. Hessel, J., Holtzman, A., Forbes, M., Bras, R. L., and Choi, Y. Clipscore: A reference-free evaluation metric for im-age captioning. arXiv preprint arXiv:2104.08718 , 2021. Ho, J., Jain, A., and Abbeel, P. Denoising diffusion proba-bilistic models. Advances in neural information process-ing systems , 33:6840–6851, 2020. Ho, J., Chan, W., Saharia, C., Whang, J., Gao, R., Gritsenko, A., Kingma, D. P., Poole, B., Norouzi, M., Fleet, D. J., et al. Imagen video: High definition video generation with diffusion models. arXiv preprint arXiv:2210.02303 ,2022a. Ho, J., Salimans, T., Gritsenko, A., Chan, W., Norouzi, M., and Fleet, D. J. Video diffusion models. Advances in Neural Information Processing Systems , 35:8633–8646, 2022b. Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., and Chen, W. Lora: Low-rank adaptation of large language models. arXiv preprint arXiv:2106.09685 ,2021. Huang, Z., He, Y., Yu, J., Zhang, F., Si, C., Jiang, Y., Zhang, Y., Wu, T., Jin, Q., Chanpaisit, N., et al. Vbench: Compre-hensive benchmark suite for video generative models. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 21807–21818, 2024. Hurst, A., Lerer, A., Goucher, A. P., Perelman, A., Ramesh, A., Clark, A., Ostrow, A., Welihinda, A., Hayes, A., Radford, A., et al. Gpt-4o system card. arXiv preprint arXiv:2410.21276 , 2024. Khachatryan, L., Movsisyan, A., Tadevosyan, V., Henschel, R., Wang, Z., Navasardyan, S., and Shi, H. Text2video-zero: Text-to-image diffusion models are zero-shot video generators. In Proceedings of the IEEE/CVF Interna-tional Conference on Computer Vision , pp. 15954–15964, 2023. Kling, K. Kling. https://klingai.com/ , 2024. Kou, T., Liu, X., Zhang, Z., Li, C., Wu, H., Min, X., Zhai, G., and Liu, N. Subjective-aligned dataset and metric for text-to-video quality assessment. In Proceedings of the 32nd ACM International Conference on Multimedia , pp. 7793–7802, 2024. Lab, P. Pika. https://pika.art/ , 2024. Li, B., Lin, Z., Pathak, D., Li, J., Fei, Y., Wu, K., Ling, T., Xia, X., Zhang, P., Neubig, G., et al. Genai-bench: Evaluating and improving compositional text-to-visual generation. arXiv preprint arXiv:2406.13743 , 2024. Lin, B., Ge, Y., Cheng, X., Li, Z., Zhu, B., Wang, S., He, X., Ye, Y., Yuan, S., Chen, L., et al. Open-sora plan: Open-source large video generation model. arXiv preprint arXiv:2412.00131 , 2024a. Lin, Z., Pathak, D., Li, B., Li, J., Xia, X., Neubig, G., Zhang, P., and Ramanan, D. Evaluating text-to-visual generation with image-to-text generation. arXiv preprint arXiv:2404.01291 , 2024b. Liu, H., Li, C., Wu, Q., and Lee, Y. J. Visual instruction tuning. arXiv preprint arXiv:2304.08485 , 2023. Liu, H., Li, C., Li, Y., Li, B., Zhang, Y., Shen, S., and Lee, Y. J. Llava-next: Improved reasoning, ocr, and world knowledge. https://llava-vl.github. io/blog/2024-01-30-llava-next/ , 2024a. Liu, Y., Cun, X., Liu, X., Wang, X., Zhang, Y., Chen, H., Liu, Y., Zeng, T., Chan, R., and Shan, Y. Evalcrafter: Benchmarking and evaluating large video generation models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 22139– 22149, 2024b. Liu, Y., Li, L., Ren, S., Gao, R., Li, S., Chen, S., Sun, X., and Hou, L. Fetv: A benchmark for fine-grained evaluation of open-domain text-to-video generation. Advances in Neural Information Processing Systems , 36, 2024c. Ma, X., Wang, Y., Jia, G., Chen, X., Liu, Z., Li, Y.-F., Chen, C., and Qiao, Y. Latte: Latent diffusion transformer for video generation. arXiv preprint arXiv:2401.03048 ,2024. Meng, F., Liao, J., Tan, X., Shao, W., Lu, Q., Zhang, K., Cheng, Y., Li, D., Qiao, Y., and Luo, P. To-wards world simulator: Crafting physical commonsense-based benchmark for video generation. arXiv preprint arXiv:2410.05363 , 2024. Miao, Y., Zhu, Y., Dong, Y., Yu, L., Zhu, J., and Gao, X.-S. T2vsafetybench: Evaluating the safety of text-to-video generative models. arXiv preprint arXiv:2407.05965 ,2024. Mittal, A., Moorthy, A. K., and Bovik, A. C. No-reference image quality assessment in the spatial domain. IEEE Transactions on Image Processing , 21(12):4695–4708, 2012. doi: 10.1109/TIP.2012.2214050. Mullan, J., Crawbuck, D., and Sastry, A. Hotshot-xl. https://github.com/hotshotco/ hotshot-xl , 2023. 11 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+N, V., D, P., Bh, M. C., Channappayya, S. S., and Medasani, S. S. Blind image quality evaluation using perception based features. In 2015 Twenty First National Conference on Communications (NCC) , pp. 1–6, 2015. doi: 10.1109/ NCC.2015.7084843. OpenAI. Chatgpt. https://openai.com/blog/ chatgpt , 2022. OpenAI. Gpt-4v(ision) system card. https://openai. com/research/gpt-4v-system-card , 2023. OpenAI. Sora. https://openai.com/sora/ , 2024. Qu, B., Liang, X., Sun, S., and Gao, W. Exploring aigc video quality: A focus on visual harmony, video-text consistency and domain distribution gap. arXiv preprint arXiv:2404.13573 , 2024. Radford, A., Kim, J. W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A., Mishkin, P., Clark, J., et al. Learning transferable visual models from natural language supervision. In International conference on machine learning , pp. 8748–8763. PMLR, 2021. Rose, D., Himakunthala, V., Ouyang, A., He, R., Mei, A., Lu, Y., Saxon, M., Sonar, C., Mirza, D., and Wang, W. Y. Visual chain of thought: bridging logical gaps with multi-modal infillings. arXiv preprint arXiv:2305.02317 , 2023. Runway. Runway gen-2. https://runwayml.com/ research/gen-2 , 2024. Salimans, T., Goodfellow, I., Zaremba, W., Cheung, V., Radford, A., and Chen, X. Improved techniques for training gans. Advances in neural information processing systems , 29, 2016. Shao, H., Qian, S., Xiao, H., Song, G., Zong, Z., Wang, L., Liu, Y., and Li, H. Visual cot: Unleashing chain-of-thought reasoning in multi-modal language models. 
+
+arXiv preprint arXiv:2403.16999 , 2024. Sohl-Dickstein, J., Weiss, E., Maheswaranathan, N., and Ganguli, S. Deep unsupervised learning using nonequi-librium thermodynamics. In International conference on machine learning , pp. 2256–2265. PMLR, 2015. Song, Y., Sohl-Dickstein, J., Kingma, D. P., Kumar, A., Er-mon, S., and Poole, B. Score-based generative modeling through stochastic differential equations. In International Conference on Learning Representations , 2021. Sun, K., Huang, K., Liu, X., Wu, Y., Xu, Z., Li, Z., and Liu, X. T2v-compbench: A comprehensive benchmark for compositional text-to-video generation. arXiv preprint arXiv:2407.14505 , 2024. Team, G. Mochi 1. https://github.com/ genmoai/models , 2024. Team, G., Anil, R., Borgeaud, S., Wu, Y., Alayrac, J.-B., Yu, J., Soricut, R., Schalkwyk, J., Dai, A. M., Hauth, A., et al. Gemini: a family of highly capable multimodal models. 
+
+arXiv preprint arXiv:2312.11805 , 2023. Touvron, H., Lavril, T., Izacard, G., Martinet, X., Lachaux, M.-A., Lacroix, T., Rozi `ere, B., Goyal, N., Hambro, E., Azhar, F., Rodriguez, A., Joulin, A., Grave, E., and Lam-ple, G. Llama: Open and efficient foundation language models, 2023a. Touvron, H., Martin, L., Stone, K., Albert, P., Almahairi, A., Babaei, Y., Bashlykov, N., Batra, S., Bhargava, P., Bhosale, S., Bikel, D., Blecher, L., Ferrer, C. C., Chen, M., Cucurull, G., Esiobu, D., Fernandes, J., Fu, J., Fu, W., Fuller, B., Gao, C., Goswami, V., Goyal, N., Hartshorn, A., Hosseini, S., Hou, R., Inan, H., Kardas, M., Kerkez, V., Khabsa, M., Kloumann, I., Korenev, A., Koura, P. S., Lachaux, M.-A., Lavril, T., Lee, J., Liskovich, D., Lu, Y., Mao, Y., Martinet, X., Mihaylov, T., Mishra, P., Molybog, I., Nie, Y., Poulton, A., Reizenstein, J., Rungta, R., Saladi, K., Schelten, A., Silva, R., Smith, E. M., Subramanian, R., Tan, X. E., Tang, B., Taylor, R., Williams, A., Kuan, J. X., Xu, P., Yan, Z., Zarov, I., Zhang, Y., Fan, A., Kambadur, M., Narang, S., Rodriguez, A., Stojnic, R., Edunov, S., and Scialom, T. Llama 2: Open foundation and fine-tuned chat models, 2023b. Unterthiner, T., Van Steenkiste, S., Kurach, K., Marinier, R., Michalski, M., and Gelly, S. Towards accurate generative models of video: A new metric & challenges. arXiv preprint arXiv:1812.01717 , 2018. Wang, J., Yuan, H., Chen, D., Zhang, Y., Wang, X., and Zhang, S. Modelscope text-to-video technical report. 
+
+arXiv preprint arXiv:2308.06571 , 2023. Wang, P., Bai, S., Tan, S., Wang, S., Fan, Z., Bai, J., Chen, K., Liu, X., Wang, J., Ge, W., Fan, Y., Dang, K., Du, M., Ren, X., Men, R., Liu, D., Zhou, C., Zhou, J., and Lin, J. Qwen2-vl: Enhancing vision-language model’s perception of the world at any resolution. arXiv preprint arXiv:2409.12191 , 2024a. Wang, W. and Yang, Y. Vidprom: A million-scale real prompt-gallery dataset for text-to-video diffusion models. 2024. Wang, Y., Chen, X., Ma, X., Zhou, S., Huang, Z., Wang, Y., Yang, C., He, Y., Yu, J., Yang, P., et al. Lavie: High-quality video generation with cascaded latent diffusion models. IJCV , 2024b. 12 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Wang, Y., Zeng, Y., Zheng, J., Xing, X., Xu, J., and Xu, X. Videocot: A video chain-of-thought dataset with active annotation tool. arXiv preprint arXiv:2407.05355 , 2024c. Wei, J., Wang, X., Schuurmans, D., Bosma, M., Xia, F., Chi, E., Le, Q. V., Zhou, D., et al. Chain-of-thought prompting elicits reasoning in large language models. Advances in neural information processing systems , 35:24824–24837, 2022. Wu, C., Huang, L., Zhang, Q., Li, B., Ji, L., Yang, F., Sapiro, G., and Duan, N. Godiva: Generating open-domain videos from natural descriptions. arXiv preprint arXiv:2104.14806 , 2021. Wu, H., Zhang, E., Liao, L., Chen, C., Hou, J. H., Wang, A., Sun, W. S., Yan, Q., and Lin, W. Exploring video quality assessment on user generated contents from aesthetic and technical perspectives. In International Conference on Computer Vision (ICCV) , 2023a. Wu, J. Z., Fang, G., Wu, H., Wang, X., Ge, Y., Cun, X., Zhang, D. J., Liu, J.-W., Gu, Y., Zhao, R., et al. Towards a better metric for text-to-video generation. arXiv preprint arXiv:2401.07781 , 2024. Wu, X., Hao, Y., Sun, K., Chen, Y., Zhu, F., Zhao, R., and Li, H. Human preference score v2: A solid benchmark for evaluating human preferences of text-to-image synthesis. 
+
+arXiv preprint arXiv:2306.09341 , 2023b. Xu, G., Jin, P., Hao, L., Song, Y., Sun, L., and Yuan, L. Llava-o1: Let vision language models reason step-by-step. arXiv preprint arXiv:2411.10440 , 2024. Xu, J., Liu, X., Wu, Y., Tong, Y., Li, Q., Ding, M., Tang, J., and Dong, Y. Imagereward: Learning and evaluating human preferences for text-to-image generation, 2023. Zhang, D. J., Wu, J. Z., Liu, J.-W., Zhao, R., Ran, L., Gu, Y., Gao, D., and Shou, M. Z. Show-1: Marrying pixel and latent diffusion models for text-to-video generation. 
+
+IJCV , 2024a. Zhang, F., Tian, S., Huang, Z., Qiao, Y., and Liu, Z. Evaluation agent: Efficient and promptable evaluation framework for visual generative models. arXiv preprint arXiv:2412.09645 , 2024b. Zhang, Y., Li, B., Liu, h., Lee, Y. j., Gui, L., Fu, D., Feng, J., Liu, Z., and Li, C. Llava-next: A strong zero-shot video understanding model. https://llava-vl.github.io/blog/ 2024-04-30-llava-next-video/ , 2024c. Zhang, Y., Wei, Y., Jiang, D., ZHANG, X., Zuo, W., and Tian, Q. Controlvideo: Training-free controllable text-to-video generation. In The Twelfth International Confer-ence on Learning Representations , 2024d. Zhang, Z., Zhang, A., Li, M., Zhao, H., Karypis, G., and Smola, A. Multimodal chain-of-thought reasoning in lan-guage models. arXiv preprint arXiv:2302.00923 , 2023. Zhang, Z., Sun, W., Li, X., Jia, J., Min, X., Zhang, Z., Li, C., Chen, Z., Wang, P., Sun, F., Jui, S., and Zhai, G. Benchmarking multi-dimensional aigc video quality assessment: A dataset and unified model. arXiv preprint arXiv:2407.21408 , 2024e. Zhao, Y., Yin, H., Zeng, B., Wang, H., Shi, T., Lyu, C., Wang, L., Luo, W., and Zhang, K. Marco-o1: Towards open reasoning models for open-ended solutions. arXiv preprint arXiv:2411.14405 , 2024. Zheng, Z., Peng, X., Yang, T., Shen, C., Li, S., Liu, H., Zhou, Y., Li, T., and You, Y. Open-sora: Democratizing efficient video production for all. https://github. com/hpcaitech/Open-Sora , 2024. Zhipu. Qing ying. https://chatglm.cn/video ,2024. 13 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+A. More Details on Dataset 
+
+A.1. Dimensions Definitions Quality Dimension. evaluates the overall visual fidelity of AI-generated videos by examining key aspects such as clarity, artifacts, naturalness, texture and detail, and temporal consistency. (1) Clarity focuses on whether the video is sharp and free from blurriness, ensuring that objects and features are well-defined and easy to discern. (2) Artifacts refers to visual anomalies in AI-generated videos, such as distortions, motion artifacts, or unnatural shadows. (3) Naturalness assesses the plausibility of object shapes, movements, and the harmony of the scene, ensuring alignment with human intuition about the real world. (4) Texture and detail measure the richness and accuracy of surface characteristics, identifying issues like overly smooth surfaces or repetitive patterns. (Examples see Figure 6) Uninteresting Content Advanced Composition          
+
+> Attractive Colors Excellent Lighting
+> Blur Artifacts
+> Lack of Detail Low Naturalness
+> (a) Qulaity Examples (b) Aesthetic Examples
+
+Figure 6: Examples that align with the definitions of quality and aesthetic dimensions. 
+
+Aesthetic Dimension. evaluates the overall artistic and visual appeal of AI-generated videos by considering content, composition, color, and lighting as key aspects. (1) Content assesses the relevance and engagement level of the subject matter, ensuring that it captures interest and aligns with the video’s purpose. (2) Composition evaluates the arrangement of visual elements, focusing on balance, focal points, and intentionality to create a cohesive and visually pleasing layout. (3) Color examines the vibrancy, harmony, and appropriateness of the palette, ensuring it enhances rather than detracts from the visual experience. (4) Lighting considers how illumination contributes to mood, depth, and clarity, ensuring it supports the overall aesthetic quality of the video. Together, these aspects determine the video’s ability to deliver a visually engaging and artistically refined experience. (Examples see Figure 6) (b) Confusion and distortion of multiple subject elements.      
+
+> (c) Complete distortion of the subject and background.
+> (a) Single subject elements distortion.
+> (d) Strong temporal consistency .
+
+Figure 7: Examples of temporal consistency dimension: (a), (b), and (c) exhibit low consistency with distortions, while (d) shows high consistency. 14 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Consistency Dimension. evaluates the stability and coherence of AI-generated videos, focusing on the continuity of main subjects and background elements across frames. High consistency ensures that the subjects and scenes maintain their identity throughout the video. Low consistency introduces distortions, warping, or fluctuations. (Examples see Figure 7) 
+
+Alignment Dimension. evaluates the degree to which AI-generated videos correspond to the provided prompt across key aspects: objects, count, color, style, spatial, temporal, action, and camera. Object alignment examines whether the depicted subjects match those described in the prompt, while Count ensures the correct number of elements is represented. Color 
+
+checks for consistency with the colors of Object, and Style assesses whether the video reflects the specific style. Spatial 
+
+verifies the arrangement and positioning of elements, while Temporal alignment ensures that the sequence and timing of events match the description. Action focuses on the accuracy of behaviors or movements, and Camera alignment evaluates whether the angles and camera movements align with the described perspective. Together, these aspects determine how effectively the video realizes the intended prompt, ensuring a clear and faithful representation. 
+
+Rationality Dimension. evaluates the degree to which AI-generated videos align with real-world expectations and adhere to logical consistency based on common sense. This dimension focuses on the plausibility of events, interactions, and the behavior of objects and characters, ensuring they correspond to human intuition and knowledge of the physical world. (Examples see Figure 8) (a) A pot of boiling water should produce steam, so the video demonstrates high rationality .          
+
+> <Physical Laws>
+> Apot of boiling
+> water on a cold day.
+> <Weather Conditions>
+> Ablizzard hitting
+> atown.
+> (b) A blizzard hitting a town reduces visibility, with buildings covered in snow, making the video rational .
+> <Chemical Laws>
+> Phenolphthalein
+> indicator changing color
+> in basic solution.
+> (c) Phenolphthalein turns pink in alkaline solutions, so this video is irrational .
+> <Biological Laws >
+> A wheat field in the
+> spring.
+> (d) The wheat fields in spring are green, and only mature wheat turns yellow, so this video content is unrealistic .
+
+Figure 8: Examples of rationality dimension: Whether it aligns with human common sense and the real world is the core focus of the rationality dimension. 
+
+Safety Dimension. evaluates the potential risks or harmful elements present in AI-generated videos, ensuring they adhere to safety standards and avoid controversial or sensitive content. High safety indicates the absence of such risks, presenting content that is universally acceptable and contextually appropriate. Lower safety scores reflect the presence of elements that could raise concerns, such as provocative, graphic, or sensitive material, even if not overtly harmful. 
+
+Creativity Dimension. evaluates the originality and imaginative quality of AI-generated videos, focusing on the novelty of visual elements and narrative techniques. Exceptional creativity is marked by unique, thought-provoking, and innovative content that captivates the viewer and breaks away from conventional norms. Average creativity reflects a mix of standard techniques with occasional innovative elements. Lower creativity indicates a lack of novelty, with predictable or monotonous visuals and narratives. 
+
+A.2. Data Collection Details Prompts. For the Rationality dimension, we primarily generate corresponding prompts based on commonsense knowledge from different themes. In the Table 6, we present some example prompts, each representing a commonsense event related 15 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+to its respective theme. For the creativity dimension, we created some routine prompts with little creativity, while also collecting more creative prompts from the community. Using these, we leveraged GPT-4o to generate additional creative prompts.(See Table 7)            
+
+> Theme Examples Percent Theme Examples Percent
+> Physical Laws An uncapped water bottle turning upside down A pebble in the water A sundae untouched for several hours 16.33 Emotional Responses A child seeing snow for the first time An athlete crossing the finish line first A soldier returning home 11.75 Social Norm Someone standing up when a superior enters a room A person receiving a gift A lighthouse during daytime 10.76 Animal Behaviors A peacock attracting a mate An eating gorilla A monkey eating a banana 7.97 Daily Items A car tire A bicycle with a broken chain An hourglass just finishing its counting 7.37 Weather Conditions A heavy rainstorm in a city A cloudless sky during the day A rainbow after a rain shower 6.77 Biological Laws A cherry tree in winter A pine tree in severe drought A wheat field during harvest 5.38 Chemical Laws Phenolphthalein indicator changing color in basic solution Bleach turning stained fabric white Calcium carbonate reacting with hydrochloric acid 4.98 Astronomical Phenomena Saturn’s rings seen through a telescope Sunspots visible on the sun Gamma-ray burst in a distant galaxy 4.98 Mechanical Operations A coffee grinder crushing beans A bulldozer pushing soil A sewing machine stitching fabric 4.78 Material Properties A balloon filled with too much air A metal rod heated in a fire A glass window hit by a baseball 3.19 Other A pediatrician checking a child’s knee-jerk reaction A dragon dance in a Chinese New Year parade A glass window hit by a baseball 15.74
+
+Table 6: Themes of commonsense knowledge and the corresponding percentage of data samples. 
+
+Level Examples 
+
+Low Creativity (1) A starry night sky with a full moon. (2) A bird flying in the sky. (3) A child playing with a ball. (4) A car driving on a road. High Creativity (1) A medieval castle floating in the sky, held aloft by colossal, golden chains that stretch into the clouds. The towers are made of shimmering glass and enchanted marble, and the courtyard is filled with glowing flowers that bloom in time with the sound of distant music. A group of knights in silver armor ride ethereal, winged horses through the clouds, their swords crackling with magical energy. (2) A hidden cove, where the sea meets the jungle, is home to a tribe that communicates through bioluminescent patterns on their skin. As they dance under the moonlight, their bodies light up in sync with the rhythm of the waves, creating a mesmerizing spectacle that attracts sea creatures from the depths. (3) In a forgotten temple deep in the jungle, a massive tree grows through the ancient stone structure, its roots wrapping around towering pillars. At the base of the tree, an enormous crystal floats in midair, casting rainbow reflections on the moss-covered walls. A group of explorers with glowing tattoos approaches, their steps silent as the ground beneath them pulses with ancient energy. Table 7: Examples of prompts with varying levels of creativity. 
+
+Videos. During the video collection process, we used a series of video generation models to generate results, with the model parameters used during generation shown in the Table 9. Except for OpenSora, which runs inference on 2 RTX 3090 GPUs, and Kling, which generates videos on the web, all other models perform inference on a single RTX 3090 GPU. After generation, we employed two distinct methods to filter videos based on their motion intensity. The first method involves calculating the normalized video motion strength using optical flow intensity, denoted as Dflow . The second method assesses the motion strength based on the Structural Similarity Index Measure (SSIM), denoted as Dssim . By utilizing these two metrics, Dflow and Dssim , we were able to effectively filter out videos with excessively high or low motion intensities, thereby enhancing the quality and relevance of our dataset for subsequent analysis. The formulas for these calculations are given by: 
+
+Dflow = 1
+
+N
+
+NX
+
+i=1 
+
+1
+
+S ·
+
+vuut WX
+
+x=1 
+
+HX
+
+y=1 
+
+(OF x(x, y )) 2 + ( OF y (x, y )) 2 (2) 16 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Dssim = 1 − 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+SSIM (Ii, I i+1 ) (3) Here, N represents the number of video frames minus one, as the optical flow is computed between consecutive frames. 
+
+W and H denote the width and height of the video frames, respectively. OF x(x, y ) and OF y (x, y ) are the horizontal and vertical components of the optical flow at position (x, y ). The resolution scale, S, is defined as √W 2 + H2. In the context of the SSIM-based method, Ii and Ii+1 are consecutive frames, and SSIM (Ii, I i+1 ) represents the SSIM value calculated between these adjacent frames. 
+
+A.3. Human Annotation Details 
+
+In this section, we provide additional details on human annotation. The scoring criteria are listed in the Table 8, with sample examples for some dimensions referenced in Section. A.1. Additionally, we showcase our annotation website in the Figure 9, which features a clear and straightforward annotation process. This design allows annotators to quickly grasp the annotation details, align with the scoring criteria, and minimize inconsistencies among annotators. 
+
+Figure 9: The annotation interface for the Quality dimension, where human annotators score the videos based on assessment criteria and provide reasoning for their scores. The interfaces for other dimensions are similar, with the Alignment and Rationality dimensions including additional prompts. 
+
+A.4. Prompts for Converting Instruction Tuning Data 
+
+We leverage GPT-4o to transform disorganized human feedback into logical and systematic reasoning CoT data. Three keyframes—initial, final, and a middle frame—are extracted as image inputs, while text prompts are illustrated in Figures 10, 11, and 12. Figure 10 represents the general prompt, while Figures 11 and 12 correspond to the Alignment and Rationality dimensions, respectively, as these dimensions require textual alignment and specialized transformations. 
+
+B. Hyper-parameters during Training 
+
+We fine-tune Qwen2-VL-7B-Instruct on the GRADEO-Instruct dataset train split (2.9k) with a batch size of 1 for 10 epochs, using a learning rate of 1e-05. The optimization is performed with the AdamW optimizer, with betas set to (0.9, 0.999) and epsilon set to 1e-08. The learning rate scheduler is cosine, with a warmup ratio of 0.1. The training is conducted on 4 RTX 3090 GPUs, with a total batch size of 4 for both training and evaluation. 17 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Dimension Rating Criteria Quality 1 - Poor: The video is of extremely low quality across all dimensions. It is heavily blurred, with significant digital artifacts, lacks texture and detail, and appears highly artificial. The severe flaws make it unpleasant to watch. 
+
+2 - Bad: The video quality is below average, with noticeable issues in clarity, artifacts, texture/detail, and naturalness. The video is somewhat blurred, has visible artifacts, moderate lack of detail, and some elements look synthetic, affecting the overall viewing experience. 
+
+3 - Average: The video quality is acceptable, meeting basic expectations in all dimensions. It is reasonably clear, with some artifacts that do not severely impact the viewing experience, has adequate texture and detail, and overall appears moderately natural. 
+
+4 - Good: The video quality is high, with only minor areas for improvement across dimensions. It is very clear, almost free of artifacts, rich in texture and detail, and appears mostly natural, offering a good viewing experience with only a few minor issues. 
+
+5 - Perfect: The video quality is exceptional across all dimensions, with no noticeable issues. It is extremely clear, free from artifacts, rich in texture and detail, and completely natural, providing an outstanding viewing experience. 
+
+Aesthetic 1 - Poor: The video exhibits very low aesthetic quality across all dimensions. The content is uninteresting and poorly chosen, the composition is cluttered and lacks visual balance, the colors are dull or clashing, and the lighting is poor, reducing the overall visual quality. These major flaws make the video unappealing. 
+
+2 - Bad: The video has below average aesthetic quality with noticeable issues in content, composition, color, and lighting. The content is somewhat relevant but lacks distinctive interest, the composition is functional but unrefined, colors are acceptable but lack harmony, and lighting is functional but could be improved for greater aesthetic impact. 
+
+3 - Average: The video has acceptable aesthetic quality, meeting basic expectations in all dimensions. The content is suitable and somewhat engaging, the composition is adequate with some visual balance, colors are moderate in quality, and lighting is acceptable. While there is room for improvement, the video is not unpleasant to watch. 
+
+4 - Good: The video has high aesthetic quality with only minor areas for improvement. The content is highly relevant and interesting, the composition is well-balanced with clear focal points, colors are vibrant and harmonious, and lighting is well-balanced, enhancing the visual appeal. The video offers a good viewing experience with only a few minor issues. 
+
+5 - Perfect: The video has exceptional aesthetic quality with no noticeable issues across all dimensions. The content is highly engaging and aesthetically pleasing, the composition is excellent with strong visual balance and intentionality, colors are vibrant and contribute positively to the visual appeal, and lighting is excellent, adding depth and mood to the video. The video provides an outstanding viewing experience. 
+
+Consistency 1 - Poor: Very low consistency, with major warping and distortions affecting the main subjects and background elements, causing significant disruptions and viewer confusion. 
+
+2 - Bad: Below-average consistency, with noticeable warping and distortions that frequently detract from the video content and disrupt continuity. 
+
+3 - Average: Acceptable consistency, where the main subjects and background elements mostly maintain their identity between frames, though occasional minor changes or inconsistencies are present. 
+
+4 - Good: High consistency, with the main subjects and background elements maintaining their identity between frames with only rare and minor changes, providing a stable and coherent viewing experience. 
+
+5 - Perfect: Exceptional consistency, where the main subjects and background elements remain perfectly consistent between frames, ensuring a seamless and unbroken viewing experience. 
+
+Alignment 1 - Poor: Significant misalignment, with major discrepancies between video elements and the prompt, leading to a distorted understanding of the content. 
+
+2 - Bad: Below average, with noticeable inconsistencies that affect the accuracy and coherence of the video in relation to the prompt. 
+
+3 - Average: Adequate alignment, meeting basic expectations but with minor discrepancies that occasionally cause confusion. 
+
+4 - Good: High alignment, with only slight inconsistencies that do not significantly detract from the overall correspondence between video elements and the prompt. 
+
+5 - Perfect: Exceptional alignment, with all elements accurately reflecting the prompt, ensuring a precise and consistent representation. 
+
+Rationality 1 - Poor: Extremely low rationality, with severe deviations from real-world expectations and logical consistency in common sense knowledge and reasoning. 
+
+2 - Bad: Below average rationality, with noticeable issues that affect the adherence to real-world expectations and logical consistency in common sense knowledge and reasoning. 
+
+3 - Average: Acceptable rationality, meeting basic real-world expectations and logical consistency in common sense knowledge and reasoning, but with occasional lapses. 
+
+4 - Good: High rationality, closely following real-world expectations and logical consistency in common sense knowledge and reasoning, with only minor lapses. 
+
+5 - Perfect: Exceptional rationality, perfectly aligning with real-world expectations and logical consistency in common sense knowledge and reasoning, without any noticeable lapses. 
+
+Safety 1 - Severe Risk: Content strongly promotes or depicts activities that are illegal, harmful, or highly offensive, including explicit sexual content, severe violence, hate speech, or the promotion of dangerous behaviors. 
+
+2 - High Risk: Content contains significant elements that could lead to harm, controversy, or the spread of misinformation, such as provocative sexual content, graphic violence, discriminatory language, or clear infringements. 
+
+3 - Moderate Risk: Content has elements that raise safety concerns, though not to the extent of high-risk content. It may include milder forms of the issues mentioned in higher risk categories or controversial topics that could be sensitive. 
+
+4 - Low Risk: Content is largely safe but may contain minor issues that are context-dependent or potentially sensitive in certain circumstances, such as mild suggestive content or non-graphic depictions of violence. 
+
+5 - No Risk: Content is completely safe and adheres to all safety standards, with no elements that could be considered harmful, controversial, or misleading. 
+
+Creativity 1 - Lack of Creativity: The video exhibits an extremely poor level of creativity. The visual elements are monotonous and common, with a lack of innovative storytelling and visual expression. The content is dull and fails to spark the viewer’s imagination and curiosity. 
+
+2 - Insufficient Creativity: The video’s creativity is below average. There are attempts at originality, but the visual elements and narrative techniques are rather ordinary. The overall content lacks depth and novelty, failing to effectively capture the viewer’s attention. 
+
+3 - Average Creativity: The video demonstrates a basic level of creativity. The visual elements and narrative techniques meet the viewer’s basic expectations, with some novel elements, but there is significant room for improvement. It does not fully break away from the norm. 
+
+4 - Good Creativity: The video shows a high level of creativity. The visual elements are unique and imaginative, and the narrative techniques are innovative. The content is engaging and thought-provoking, offering a good viewing experience with a certain level of originality and depth. 
+
+5 - Exceptional Creativity: The video achieves a top-tier level of creativity. The visual elements are rare and highly creative, the narrative techniques are distinctive and captivating, and the content is not only novel but also profound. It completely breaks the mold, providing an outstanding viewing experience and deep thought-provoking value. 
+
+Table 8: The scoring criteria corresponding to each dimension. 
+
+T2V Model Duration (s) FPS Resolution 
+
+ZeroScope 2.4 10 576 × 320 Latte 1.6 10 512 × 512 Lavie 2 8 512 x 320 Show-1 3.48 8.33 576 × 320 VideoCrafter1 1.6 10 512 × 320 VideoCrafter2 1.6 10 512 × 320 Open-Sora 1.2 4.25 24 424x240 Kling 1.0 5.1 30 1280 × 720 Kling 1.5 5.1 30 1920x1080 Table 9: Settings for using T2V models to generate videos during the collection phase. 18 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning I need you to assess a video based on given rating criteria, video description, and human assessment reason to craft the asse ssm ent. You 
+
+may include some connective or transitional phrases to enhance clarity and coherence, but the content must strictly align wit h t he 
+
+provided information and not exceed it. Follow the outlined structure with four key sections: OVERVIEW, DESCRIPTION, ANALYSIS , a nd 
+
+ASSESSMENT. Your task is to provide a comprehensive assessment while adhering to the format provided below. 
+
+Video Description: …
+
+Human Annotation Rationale : …
+
+Rating Criteria: …
+
+Here are the details for each section: 
+
+1.OVERVIEW: Outline the steps of your assessment process. For example, start with a comprehensive and thorough description of th e video 
+
+itself, then proceed to a detailed, criterion -specific analysis, and finally, provide the final assessment score. 
+
+2.DESCRIPTION: Provide a clear and detailed account of the video's content. 
+
+3.ANALYSIS: Conduct a step -by -step breakdown of the video, logically assessing. Your analysis should adhere strictly to the prov ided 
+
+information and be logically structured. Ensure that the assessment integrates the assessment reason with the elements of the vi deo 
+
+description, following the rating criteria for a cohesive and rigorous assessment. Use appropriate transitional phrases to en han ce 
+
+logical flow, including words like "ok", "but", "then", "so", and rhetorical questions, to guide further analysis. Avoid usin g t he terms 
+
+'human assessment reason' or any phrasing that suggests reliance on external, predefined reasons, and ensure the assessment i s l ogically 
+
+structured and coherent. 
+
+4.ASSESSMENT: Provide the given score directly as the final rating. 
+
+Example Structure: 
+
+<OVERVIEW>[The steps of your assessment process]</OVERVIEW> 
+
+<DESCRIPTION>[A clear and detailed account of the video's content]</DESCRIPTION> 
+
+<ANALYSIS>[A step -by -step breakdown of the video, logically analysis]</ANALYSIS> 
+
+<ASSESSMENT>[Rating Score: x(1/2/3/4/5)]</ASSESSMENT> 
+
+Ensure your assessment is thorough and that the ASSESSMENT section adheres strictly to the content provided. 
+
+Figure 10: General prompts for constructing CoT Data. I need you to assess a video based on given rating criteria, prompt deconstruction, and human assessment reason to craft the ass essment. 
+
+You may include some connective or transitional phrases to enhance clarity and coherence, but the content must strictly align wi th the 
+
+provided information and not exceed it. Follow the outlined structure with four key sections: OVERVIEW, PROMPT, ANALYSIS, and 
+
+ASSESSMENT. Your task is to provide a comprehensive assessment while adhering to the format provided below .
+
+Video Prompt: …
+
+Video Prompt Key Elements: …
+
+Human Annotation Rationale : … 
+
+Rating Criteria: …
+
+Here are the details for each section :
+
+1. OVERVIEW: Outline the steps of your assessment process. For example, start with a detailed deconstruction of the prompt, i den tifying 
+
+the key elements required for alignment. Then proceed to a criterion -specific analysis of the video and prompt alignment, and finally, 
+
+provide the assessment score .
+
+2. PROMPT: Provide a clear and detailed breakdown of the input prompt, identifying the specific elements (e.g., objects, actions ,
+
+attributes) required for alignment with the video .
+
+3. ANALYSIS: Conduct a step -by -step comparison of the video content against the prompt elements. Assess how well the video match es each 
+
+identified element from the prompt. Your analysis should strictly adhere to the provided information and be logically structu red . Use 
+
+transitional phrases such as "ok," "but," "then," "so," and rhetorical questions to enhance logical flow and clarity .
+
+4. ASSESSMENT: Provide the final rating score directly as the assessment conclusion .
+
+Example Structure :
+
+<OVERVIEW>[The steps of your assessment process]</OVERVIEW >
+
+<PROMPT>[A detailed breakdown of the input prompt, identifying required elements]</PROMPT >
+
+<ANALYSIS>[A logical comparison of the video content against the prompt elements]</ANALYSIS >
+
+<ASSESSMENT>[Rating Score: x (1/2/3/4/5)]</ASSESSMENT >
+
+Ensure your assessment is thorough and that the ASSESSMENT section adheres strictly to the content provided .
+
+Figure 11: Prompts for constructing CoT Data (Alignment dimension). 19 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning I need you to assess a video based on given rating criteria, prompt (event) reasoning, and human assessment reason to craft t he assessment. 
+
+You may include some connective or transitional phrases to enhance clarity and coherence, but the content must strictly align wi th the 
+
+provided information and not exceed it. Follow the outlined structure with four key sections: OVERVIEW, REASONING, ANALYSIS, and 
+
+ASSESSMENT. Your task is to provide a comprehensive assessment while adhering to the format provided below .
+
+Video Prompt (Event): …
+
+Theme of Human Common Sense: …
+
+Human Annotation Rationale : … 
+
+Rating Criteria: …
+
+Here are the details for each section :
+
+1. OVERVIEW: Outline the steps of your assessment process. For example, start with an analysis of the given prompt (event) an d i nfer its 
+
+logical outcomes (effect) based on human common sense. Then proceed to a detailed, criterion -specific analysis of the video content in 
+
+relation to the inferred effect, and finally, provide the assessment score .
+
+2. REASONING: Analyze the prompt (event) and infer the expected effect or outcomes based on human common sense. Clearly ident ify the causal 
+
+relationships and describe the expected results. Use rhetorical questions or reflections to propose question, encouraging deeper thought .
+
+3. ANALYSIS: Conduct a step -by -step comparison of the video content against the inferred effect. Assess how well the video repre sents the 
+
+logical outcomes of the event. Your analysis should strictly adhere to the provided information and be logically structured. Use 
+
+transitional phrases such as "ok," "but," "then," "so," and rhetorical questions to enhance logical flow and clarity .
+
+4. ASSESSMENT: Provide the final rating score directly as the assessment conclusion .
+
+Example Structure :
+
+<OVERVIEW>[The steps of your assessment process]</OVERVIEW >
+
+<REASONING>[A detailed analysis of the prompt (event) and its inferred effect based on human common sense]</REASONING >
+
+<ANALYSIS>[A logical comparison of the video content against the inferred effect]</ANALYSIS >
+
+<ASSESSMENT>[Rating Score: x (1/2/3/4/5)]</ASSESSMENT >
+
+Ensure your assessment is thorough and that the ASSESSMENT section adheres strictly to the content provided .
+
+Figure 12: Prompts for constructing CoT Data (Rationality dimension). 
+
+C. Experimental Details 
+
+C.1. Baselines Settings 
+
+For VideoScore, we adopt the original code settings provided by the authors, linearly mapping the floating-point scores from 1–4 to a 1–5 range and rounding to the nearest integer to determine the final grade. For other MLLMs, the prompts and inputs are the same as those used for our model, as referenced in Table 10. For automated metrics, we follow the official configurations and calculate the score by taking one frame per second from the video, then averaging the scores. Finally, the averaged score is mapped to a 1–5 scale, as detailed in Table 11. 
+
+Dimension Prompts 
+
+Quality, Aesthetic, Consistency, Safety, Creativity You are an expert in evaluating AI-generated videos. Your task is to assess the specific dimension of the video: ... , and provide a score for this dimension. Use the following rating criteria: ... Alignment You are an expert in evaluating AI-generated videos. Your task is to assess the specific dimension of the video: alignment, and provide a score for this dimension. This is the prompt input to the video generation model: ... Use the following rating criteria: ... Rationality You are an expert in evaluating AI-generated videos. Your task is to assess the specific dimension of the video: rationality, and provide a score for this dimension. This is the prompt(event) input to the video generation model: ... The theme of human common sense reflected by this prompt is: ... Use the following rating criteria: ... Table 10: Prompting MLLMs to assessment videos. 20 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Metric 1 (Poor) 2 (Bad) 3 (Avg) 4 (Good) 5 (Perfect) PIQE,BRISQUE [60, ∞) [40,60) [20,40) [10,20) [0,10) CLIP-Score [0,0.60) [0.60,0.70) [0.70,0.80) [0.80,0.90) [0.90,1] ImageReward-v1.0 [-3,-1.5) [-1.5,-0.5) [-0.5,0.5) [0.5,2) [2,3] HPS-v2.1 [0,0.15) [0.15,0.23) [0.23,0.27) [0.27,0.30) [0.30,1] Table 11: Discretization rules for metrics baselines. Video Frames  
+
+> 7x7 Conv
+> BN
+> ReLU  Max Pool
+> 3x3 Conv
+> BN
+> ReLU
+> 3x3 Conv
+> BN
+> ReLU  Av gPool
+> Flatten
+> FC
+> 1 2 3 4 5
+
+Figure 13: Basic CNN video score model. 
+
+C.2. Ablation Details 
+
+The CNN-based video scoring model (cf. Figure 13) is designed to process video frames sequentially. It consists of an input layer accepting frames of size 3 × 512 × 320 , followed by:1)Three convolutional layers with 64, 128, and 256 filters respectively, each followed by batch normalization and ReLU activation. 2)Max pooling and adaptive average pooling layers to reduce dimensionality. 3)A flattening operation to transform the output into a 1D vector. 4)A fully connected layer mapping to the number of score classes. This model was trained from scratch and does not utilize pre-trained weights, contrasting with our LLM-based approach. 
+
+D. Benchmarking Details 
+
+D.1. Prompt Suite 
+
+Sampling video generation models is time-consuming, making it necessary to control the number of prompts for more efficient evaluation. To establish a diverse and representative prompt suite, we carefully designed 100 prompts for each dimension. For the evaluation of Quality and Aesthetics dimensions, we created a list of prompts describing common scenarios in everyday life, using common categories such as animals, humans, scenes, and daily items as subjects. For the 
+
+Consistency dimension, we paired common subjects with typical backgrounds, covering a variety of prompts, including single-subject, multi-subject, and background variation scenarios. For the Alignment dimension , we based our prompts on eight primary elements (object, count, color, style, spatial, temporal, action, camera), with each prompt involving multiple elements. For the Rationality dimension, the design process followed an approach similar to the dataset construction process. For the Safety dimension, we adopted some prompts from SafeSora as examples and generated additional malicious prompts containing unsafe content. For the Creativity dimension, we designed 50 short and commonly encountered prompts, alongside 50 longer prompts set in sci-fi and fantasy contexts. We present the word count distribution and a word cloud of the 700 collected prompts in the Figure 14. Prompts of varying lengths can test the semantic understanding capabilities of T2V models. 
+
+D.2. Qualitative Comparison on T2V models 
+
+T2V models were evaluated under standardized conditions with the following video generation parameters: Hotshot-XL at 672x384 resolution, 8 fps, and 1.0 second duration; Open-Sora at 424x240 resolution, 24 fps, and 4.25 seconds; VideoCrafter-2 and VideoCrafter-1 both at 512x320 resolution, 10 fps, and 1.6 seconds; ZeroScope at 576x320 resolution, 10 fps, and 2.4 seconds; ModelScope at 256x256 resolution, 8 fps, and 2.0 seconds; Lavie at 512x320 resolution, 8 fps, and 2.0 seconds; and Latte at 512x512 resolution, 10 fps, and 1.6 seconds. By generating videos using various T2V models on the Prompt Suite and scoring them with our approach, we present some qualitative comparisons, as shown in Figure 15, 16, 17, and 18. 21 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning 
+
+Figure 14: Word count and word clouds for prompt suite. 
+
+E. Limitations 
+
+While our approach provides a comprehensive and unified evaluation framework for Text-to-Video generation, there are certain limitations due to the following reasons: (1) High Cost of Video Annotation: The scale of our training dataset is not large enough, with only seven evaluation dimensions. Additionally, the limited number of annotators may not fully capture the diversity of human preferences. Expanding the annotation scale is necessary to ensure more comprehensive evaluations. (2) Hallucination Issues in Existing MLLMs and Video Understanding Models: These models may introduce elements that do not exist in the video when describing scenes or performing reasoning, leading to evaluation failures. These limitations highlight areas for improvement and point toward promising directions for future work. 22 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning Prompt: Saturn's rings through a powerful telescope. 
+
+Dimension: Rationality 
+
+> VideoCrafter 2
+
+## 4
+
+> Hotshot -XL
+
+## 1
+
+## 3
+
+> Lavie  Videocrafter 1
+
+## 2Prompt : A car out of fuel. 
+
+Dimension: Rationality 
+
+> Hotshot -XL
+
+## 3
+
+> Latte
+
+## 1
+
+## 3
+
+> ZeroScope  Videocrafter 2
+
+## 1
+
+Figure 15: Qualitative comparison and scores. 23 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning Prompt: the man in a black coat photographs a white swan on the lake. 
+
+Dimension: Alignment 
+
+> Hotshot -XL
+
+## 4
+
+> Lavie
+
+## 2
+
+## 4
+
+> opensora  Videocrafter 2
+
+## 4Prompt: a white horse races against a yellow cheetah on the savannah. 
+
+Dimension: Alignment 
+
+> Hotshot -XL
+
+## 4
+
+## 3
+
+## 4
+
+> ZeroScope  Videocrafter 2
+
+Figure 16: Qualitative comparison and scores. 24 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning Prompt : a meadow of giant flowers that emit haunting melodies, their petals glowing 
+
+softly in the twilight. a wanderer carrying a crystalline staff walks among them, 
+
+stopping to listen as the music begins to harmonize with the stars appearing above. 
+
+Dimension: Creativity 
+
+> Hotshot -XL
+
+## 4
+
+> Videocrafter1
+
+## 2
+
+## 4
+
+> opensora  Videocrafter 2
+
+## 2Prompt: a young woman reading a book under a cherry blossom tree in full bloom. 
+
+Dimension: Quality 
+
+> Videocrafter1
+
+## 5
+
+> opensora
+
+## 2
+
+## 4
+
+> ZeroScope  Hotshot -XL
+
+## 2
+
+Figure 17: Qualitative comparison and scores. 25 GRADEO: Towards Human-Like Evaluation for Text-to-Video Generation via Multi-Step Reasoning Prompt: Comet visible with the naked eye. 
+
+Dimension: Rationality 
+
+> Hotshot -XL
+
+## 5
+
+> opensora
+
+## 1
+
+## 3
+
+> Lavie  Videocrafter 2
+
+## 2
+
+Figure 18: Qualitative comparison and scores. 26
