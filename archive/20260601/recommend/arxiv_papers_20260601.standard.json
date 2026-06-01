@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-01T21:51:00.693891+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2605.28203v1",
+      "source": "arxiv",
+      "title": "Refining Multidimensional Video Reward Models via Disentangled Influence Functions",
+      "abstract": "As Text-to-Video (T2V) generation models continue to evolve, the complexity of video evaluation necessitates a fine-grained assessment across various axes. To address this, recent works have focused on developing Multidimensional Video Reward Models (MVRMs), which decompose the evaluation process to better align with the multifaceted nature of human visual perception. However, training effective MVRMs is fundamentally challenged by the complex nature of video data. In this work, we identify a critical phenomenon termed Dimensional Heterogeneity: the reliability of a training sample can vary substantially across evaluation dimensions, meaning that a sample may provide reliable supervision for one objective while inducing high supervision risk for another. Consequently, prevailing data-centric methods that filter based on global scalar metrics are ill-posed for T2V tasks. To address this, we propose a disentangled influence framework that that efficiently estimates dimension-specific supervision risk. Leveraging this framework, we introduce two dimension-disentangled refinement strategies: Dimension-Disentangled Pruning, which removes extreme high-risk samples, and Dimension-Disentangled Reweighting, which softly down-weights high-risk supervision. Extensive experiments demonstrate that our disentangled strategies significantly outperform global filtering baselines, yielding reward models with superior alignment to ground truth.",
+      "authors": [
+        "Muyao Wang",
+        "Zeke Xie",
+        "Hideki Nakayama"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-05-27T09:26:46+00:00",
+      "link": "https://arxiv.org/pdf/2605.28203v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes Multidimensional Video Reward Models for fine-grained video generation evaluation",
+      "llm_evidence_cn": "提出多维视频奖励模型用于细粒度视频生成评估",
+      "llm_evidence": "提出多维视频奖励模型用于细粒度视频生成评估",
+      "canonical_evidence": "提出多维视频奖励模型用于细粒度视频生成评估",
+      "llm_tldr_en": "Proposes a method to refine multidimensional video reward models via disentangled influence functions, addressing dimensional heterogeneity in training data for video evaluation.",
+      "llm_tldr_cn": "针对视频生成评估的多维奖励模型训练中样本在不同维度上可靠性不一致的问题，提出基于解耦影响函数的精炼方法，通过识别并处理维度异质性提升模型对视频质量的评估能力。实验表明该方法能有效改进评估维度的对齐，为视频生成质量评估提供了更可靠的工具。",
+      "llm_tldr": "针对视频生成评估的多维奖励模型训练中样本在不同维度上可靠性不一致的问题，提出基于解耦影响函数的精炼方法，通过识别并处理维度异质性提升模型对视频质量的评估能力。实验表明该方法能有效改进评估维度的对齐，为视频生成质量评估提供了更可靠的工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
