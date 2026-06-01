@@ -1,21 +1,21 @@
 ---
 title: "Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion"
-title_zh: Self Forcing：弥合自回归视频扩散中的训练-测试差距
+title_zh: 自强制：弥合自回归视频扩散中的训练-测试差距
 authors: "Xun Huang, Zhengqi Li, Guande He, Mingyuan Zhou, Eli Shechtman"
 date: 2025-09-18
 pdf: "https://openreview.net/pdf?id=mSiN7i0BYH"
 tags: ["query:vgen-metrics"]
-score: 8.0
-evidence: 视频级损失直接评估整个生成序列的质量
-tldr: 自回归视频扩散模型存在暴露偏差问题，Self Forcing 通过在训练中使用自生成输出进行自回归展开，并引入视频级整体损失来直接评估整个生成序列的质量，从而缓解该问题。该方法不仅提高了生成质量，还提供了一种原理性的视频质量评估信号，适用于评估生成视频的整体一致性。
+score: 7.0
+evidence: 视频级整体损失直接评估生成视频质量
+tldr: 本文针对自回归视频扩散模型中的曝光偏差问题，提出自强制训练范式，通过在训练时进行自回归展开并引入视频级整体损失，直接评估整个生成序列的质量，从而有效缓解训练与推理之间的差异。该方法将质量评估融入训练过程，为视频生成评估提供了新的视角和工具。
 source: NeurIPS-2025-Accepted
 selection_source: conference_retrieval
 figures_json: "[{\"url\": \"assets/figures/openreview/openreview-neurips-2025-msin7i0byh/fig-001.webp\", \"caption\": \"\", \"page\": 0, \"index\": 1, \"width\": 1437, \"height\": 520, \"label\": \"Figure\"}, {\"url\": \"assets/figures/openreview/openreview-neurips-2025-msin7i0byh/fig-002.webp\", \"caption\": \"\", \"page\": 0, \"index\": 2, \"width\": 1452, \"height\": 545, \"label\": \"Figure\"}, {\"url\": \"assets/figures/openreview/openreview-neurips-2025-msin7i0byh/fig-003.webp\", \"caption\": \"\", \"page\": 0, \"index\": 3, \"width\": 1436, \"height\": 433, \"label\": \"Figure\"}, {\"url\": \"assets/figures/openreview/openreview-neurips-2025-msin7i0byh/fig-004.webp\", \"caption\": \"\", \"page\": 0, \"index\": 4, \"width\": 713, \"height\": 421, \"label\": \"Figure\"}, {\"url\": \"assets/figures/openreview/openreview-neurips-2025-msin7i0byh/fig-005.webp\", \"caption\": \"\", \"page\": 0, \"index\": 5, \"width\": 1461, \"height\": 1036, \"label\": \"Figure\"}, {\"url\": \"assets/figures/openreview/openreview-neurips-2025-msin7i0byh/fig-006.webp\", \"caption\": \"\", \"page\": 0, \"index\": 6, \"width\": 1459, \"height\": 488, \"label\": \"Figure\"}, {\"url\": \"assets/figures/openreview/openreview-neurips-2025-msin7i0byh/fig-007.webp\", \"caption\": \"\", \"page\": 0, \"index\": 7, \"width\": 1425, \"height\": 772, \"label\": \"Figure\"}, {\"url\": \"assets/figures/openreview/openreview-neurips-2025-msin7i0byh/fig-008.webp\", \"caption\": \"\", \"page\": 0, \"index\": 8, \"width\": 873, \"height\": 857, \"label\": \"Figure\"}, {\"url\": \"assets/figures/openreview/openreview-neurips-2025-msin7i0byh/fig-009.webp\", \"caption\": \"\", \"page\": 0, \"index\": 9, \"width\": 1437, \"height\": 494, \"label\": \"Figure\"}]"
 tables_json: "[{\"url\": \"assets/tables/openreview/openreview-neurips-2025-msin7i0byh/table-001.webp\", \"caption\": \"\", \"page\": 0, \"index\": 1, \"width\": 703, \"height\": 1102, \"label\": \"Table\"}, {\"url\": \"assets/tables/openreview/openreview-neurips-2025-msin7i0byh/table-002.webp\", \"caption\": \"\", \"page\": 0, \"index\": 2, \"width\": 712, \"height\": 1030, \"label\": \"Table\"}, {\"url\": \"assets/tables/openreview/openreview-neurips-2025-msin7i0byh/table-003.webp\", \"caption\": \"\", \"page\": 0, \"index\": 3, \"width\": 1447, \"height\": 692, \"label\": \"Table\"}, {\"url\": \"assets/tables/openreview/openreview-neurips-2025-msin7i0byh/table-004.webp\", \"caption\": \"\", \"page\": 0, \"index\": 4, \"width\": 714, \"height\": 530, \"label\": \"Table\"}, {\"url\": \"assets/tables/openreview/openreview-neurips-2025-msin7i0byh/table-005.webp\", \"caption\": \"\", \"page\": 0, \"index\": 5, \"width\": 715, \"height\": 531, \"label\": \"Table\"}, {\"url\": \"assets/tables/openreview/openreview-neurips-2025-msin7i0byh/table-006.webp\", \"caption\": \"\", \"page\": 0, \"index\": 6, \"width\": 1434, \"height\": 635, \"label\": \"Table\"}]"
-motivation: 自回归视频扩散模型在训练时使用真实上下文，推理时却依赖自身输出，导致暴露偏差。
-method: 提出 Self Forcing 训练范式，在训练时进行自回归展开并缓存键值，使用视频级损失评估整个序列。
-result: 在多个视频生成基准上，Self Forcing 提升了生成质量和时间一致性。
-conclusion: Self Forcing 提供了一种有效的训练策略，其视频级损失可作为生成视频质量的评估依据。
+motivation: 现有的自回归视频扩散模型在推理时因条件化自身不完美输出而导致质量下降，需要更好的训练策略。
+method: 在训练时采用自回归展开和KV缓存，使模型基于自身生成结果进行条件化，并引入视频级整体损失监督。
+result: 该方法有效弥合了训练-测试差距，提升了生成视频的整体质量。
+conclusion: 自强制训练范式为视频生成模型提供了一种将质量评估内置于训练过程的有效途径。
 ---
 
 ## Abstract
