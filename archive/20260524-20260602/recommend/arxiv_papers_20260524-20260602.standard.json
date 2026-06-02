@@ -1,0 +1,312 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-02T03:21:10.402222+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.30317v1",
+      "source": "arxiv",
+      "title": "VPG: Visual Prefix Guidance for Autoregressive Image and Video Generation",
+      "abstract": "Autoregressive image and video generators are trained with teacher-forced histories but must sample from their own generated prefixes at inference time, making them vulnerable to exposure bias and prefix drift. Existing remedies either modify training or apply sampling-time guidance aimed primarily at external semantic conditions, such as class labels or text prompts, rather than testing whether a next-step prediction provides strong posterior support for the generated prefix itself. We propose Visual Prefix Guidance (VPG), a training-free inference-time guidance method for autoregressive image and video generation. VPG improves next-step prediction by contrasting the model's output under the generated prefix with its output under a corrupted prefix, then extrapolating logits toward candidates that strengthen the posterior support of the generated prefix. Across class-conditional image generation with VAR, text-to-image generation with Infinity, and text-to-video generation with InfinityStar, VPG improves generation quality without retraining the base model, reducing FID on VAR by 0.36 on average and improving benchmark performance on both image and video generation.",
+      "authors": [
+        "Xinyao Liao",
+        "Qiyuan He",
+        "Yicong Li",
+        "Jiayin Zhu",
+        "Xiaoye Qu",
+        "Wei Wei",
+        "Angela Yao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-28T17:55:06+00:00",
+      "link": "https://arxiv.org/pdf/2605.30317v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "improves autoregressive video generation quality via training-free guidance",
+      "llm_evidence_cn": "通过无训练指导方法提升自回归视频生成质量",
+      "llm_evidence": "通过无训练指导方法提升自回归视频生成质量",
+      "canonical_evidence": "通过无训练指导方法提升自回归视频生成质量",
+      "llm_tldr_en": "Proposes Visual Prefix Guidance (VPG) to reduce exposure bias in autoregressive video generation, improving next-step prediction quality without retraining.",
+      "llm_tldr_cn": "自回归视频生成模型存在暴露偏差问题，现有方法或修改训练或依赖外部语义条件。本文提出视觉前缀引导（VPG），一种无训练推理时引导方法，通过对比生成前缀与损坏前缀下的模型输出来改进下一步预测。该方法有效缓解前缀漂移，提升生成视频整体质量，为评估生成视频质量提供了可参考的改进方向。",
+      "llm_tldr": "自回归视频生成模型存在暴露偏差问题，现有方法或修改训练或依赖外部语义条件。本文提出视觉前缀引导（VPG），一种无训练推理时引导方法，通过对比生成前缀与损坏前缀下的模型输出来改进下一步预测。该方法有效缓解前缀漂移，提升生成视频整体质量，为评估生成视频质量提供了可参考的改进方向。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.24894v1",
+      "source": "arxiv",
+      "title": "BFS: Back-to-Front Layered Image Synthesis via Knowledge Transfer",
+      "abstract": "As generative models expand the possibilities of visual content creation, layered image synthesis has emerged as a promising direction for controllable and creative editing. However, existing methods struggle to fully realize this potential. Decomposition-based methods often struggle with clean separation, while generation-based methods suffer from difficulty in training data acquisition, reducing quality and scene diversity. In this paper, we propose BFS, a novel generation-based framework for layered image synthesis. Specifically, given a background image and user guidance, BFS synthesizes a foreground layer that incorporates not only a foreground object but also its associated visual effects, such as shadows and reflections, while seamlessly harmonizing with the background to produce a coherent composite. To enable diverse and high-quality foreground layer synthesis while overcoming data scarcity, we leverage the comparatively easy-to-learn knowledge of unlayered image synthesis for the foreground synthesis. To this end, we adopt a dual-branch diffusion framework in which two interconnected branches generate a composite image and a foreground layer, respectively, enabling bidirectional knowledge transfer. Based on this framework, we propose a two-stage training scheme that utilizes a high-quality unlayered composite image dataset to effectively enhance foreground quality. Extensive experiments, including a user study, show that BFS produces high-quality layered images, consistently outperforming prior methods.",
+      "authors": [
+        "Kyoungkook Kang",
+        "Gyujin Sim",
+        "Sunghyun Cho"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-24T06:46:52+00:00",
+      "link": "https://arxiv.org/pdf/2605.24894v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "layered image synthesis with foreground/background separation",
+      "llm_evidence_cn": "分层图像合成，包含前景与背景分离",
+      "llm_evidence": "分层图像合成，包含前景与背景分离",
+      "canonical_evidence": "分层图像合成，包含前景与背景分离",
+      "llm_tldr_en": "Introduces BFS, a generation-based framework for layered image synthesis that creates foreground layers with associated effects like shadows, enabling clean separation.",
+      "llm_tldr_cn": "现有分层图像合成方法在分离质量和数据获取上存在困难。本文提出BFS框架，基于知识迁移生成前景层及其关联视觉效果（如阴影、反射），并与背景无缝协调。该方法不需要分解步骤，适用于创建具有透明通道的图层，为透明视频生成中的分层技术提供了新思路。",
+      "llm_tldr": "现有分层图像合成方法在分离质量和数据获取上存在困难。本文提出BFS框架，基于知识迁移生成前景层及其关联视觉效果（如阴影、反射），并与背景无缝协调。该方法不需要分解步骤，适用于创建具有透明通道的图层，为透明视频生成中的分层技术提供了新思路。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.26064v2",
+      "source": "arxiv",
+      "title": "Paris 2.0: A Decentralized Diffusion Model for Video Generation",
+      "abstract": "We present Paris 2.0, the first video generation model pre-trained through decentralized computation. Its training recipe builds upon Paris 1.0 (arXiv:2510.03434), the first ever open-weight Decentralized Diffusion Model (DDM), which showed that image generation can be trained without a monolithic GPU cluster. However, temporally coherent video generation had remained an open problem under decentralized training, and Paris 2.0 closes it.   In low-resolution text-to-video training, against a monolithic model trained on the same data under a matched total compute budget, Paris 2.0 cuts Frechet Video Distance (FVD) from 561.04 to 279.01, a ~2.0x improvement, and lifts CLIP text-video similarity and aesthetic score.",
+      "authors": [
+        "Ali Rouzbayani",
+        "Bidhan Roy",
+        "Marcos Villagra",
+        "Zhiying Jiang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-05-25T17:27:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.26064v2",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses FVD and CLIP scores to compare video generation quality",
+      "llm_evidence_cn": "使用FVD和CLIP分数比较视频生成质量",
+      "llm_evidence": "使用FVD和CLIP分数比较视频生成质量",
+      "canonical_evidence": "使用FVD和CLIP分数比较视频生成质量",
+      "llm_tldr_en": "Paris 2.0 proposes decentralized training for video diffusion models, achieving better FVD and CLIP scores than monolithic counterparts, but does not focus on evaluation metrics themselves.",
+      "llm_tldr_cn": "Paris 2.0提出了一种去中心化训练视频扩散模型的方法，解决了在去中心化环境下生成时间一致视频的难题。在低分辨率文生视频实验中，该方法相比单体模型将FVD从561.04降低至279.01，并提升了CLIP文本-视频相似度和美学分数。该工作展示了去中心化训练的有效性，但其贡献主要在训练框架而非评估指标本身。",
+      "llm_tldr": "Paris 2.0提出了一种去中心化训练视频扩散模型的方法，解决了在去中心化环境下生成时间一致视频的难题。在低分辨率文生视频实验中，该方法相比单体模型将FVD从561.04降低至279.01，并提升了CLIP文本-视频相似度和美学分数。该工作展示了去中心化训练的有效性，但其贡献主要在训练框架而非评估指标本身。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.26064v3",
+      "source": "arxiv",
+      "title": "Paris 2.0: A Decentralized Diffusion Model for Video Generation",
+      "abstract": "We present Paris 2.0, the first video generation model pre-trained through decentralized computation. Its training recipe builds upon Paris 1.0 (arXiv:2510.03434), the first ever open-weight Decentralized Diffusion Model (DDM), which showed that image generation can be trained without a monolithic GPU cluster. However, temporally coherent video generation had remained an open problem under decentralized training, and Paris 2.0 closes it.   In low-resolution text-to-video training, against a monolithic model trained on the same data under a matched total compute budget, Paris 2.0 cuts Frechet Video Distance (FVD) from 561.04 to 279.01, a ~2.0x improvement, and lifts CLIP text-video similarity and aesthetic score.",
+      "authors": [
+        "Ali Rouzbayani",
+        "Bidhan Roy",
+        "Marcos Villagra",
+        "Zhiying Jiang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-05-25T17:27:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.26064v3",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses FVD and CLIP scores to compare video generation quality",
+      "llm_evidence_cn": "使用FVD和CLIP分数比较视频生成质量",
+      "llm_evidence": "使用FVD和CLIP分数比较视频生成质量",
+      "canonical_evidence": "使用FVD和CLIP分数比较视频生成质量",
+      "llm_tldr_en": "Paris 2.0 proposes decentralized training for video diffusion models, achieving better FVD and CLIP scores than monolithic counterparts, but does not focus on evaluation metrics themselves.",
+      "llm_tldr_cn": "Paris 2.0提出了一种去中心化训练视频扩散模型的方法，解决了在去中心化环境下生成时间一致视频的难题。在低分辨率文生视频实验中，该方法相比单体模型将FVD从561.04降低至279.01，并提升了CLIP文本-视频相似度和美学分数。该工作展示了去中心化训练的有效性，但其贡献主要在训练框架而非评估指标本身。",
+      "llm_tldr": "Paris 2.0提出了一种去中心化训练视频扩散模型的方法，解决了在去中心化环境下生成时间一致视频的难题。在低分辨率文生视频实验中，该方法相比单体模型将FVD从561.04降低至279.01，并提升了CLIP文本-视频相似度和美学分数。该工作展示了去中心化训练的有效性，但其贡献主要在训练框架而非评估指标本身。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.26486v1",
+      "source": "arxiv",
+      "title": "LongCat-Video-Avatar 1.5 Technical Report",
+      "abstract": "Despite advances in audio-driven video generation, achieving commercial-grade stability remains challenging. We present LongCat-Video-Avatar 1.5, an upgraded open-source framework prioritizing systematic engineering and production-readiness over architectural novelty. By upgrading the audio encoder to Whisper Large and meticulously scaling our training recipes, v1.5 achieves accurate lip-synchronization, full-body temporal stability, and robust long-video generation with strict identity consistency. Through rigorous data curation and RLHF Training, the model readily generalizes to stylized domains such as anime and animals, and natively handles complex real-world conditions, such as multi-person interactions and object handling. Furthermore, addressing the practical demands of industrial deployment, we employ advanced step distillation to accelerate inference to an optimal 8 NFE, achieving a favorable trade-off between serving efficiency and visual fidelity. The superiority of our approach is validated through extensive quantitative metrics and a rigorous human evaluation conducted on a comprehensive benchmark of over 500 diverse test cases. Results show that v1.5 achieves competitive or superior performance compared to leading closed-source systems (e.g., HeyGen, OmniHuman 1.5, Kling Avatar 2.0) across human-likeness ratings and expert-level quality assessments on our benchmark. With its open-source release, LongCat-Video-Avatar 1.5 narrows the gap between academic research prototypes and commercial-grade deployment.",
+      "authors": [
+        "Meituan LongCat Team",
+        "Xunliang Cai",
+        "Meng Cheng",
+        "Feng Gao",
+        "Zhe Kong",
+        "Jiamu Li",
+        "Le Li",
+        "Weiheng Li",
+        "Hongyu Liu",
+        "Shuai Tan",
+        "Xiaoming Wei",
+        "Tianyu Yang",
+        "Yong Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-26T02:54:12+00:00",
+      "link": "https://arxiv.org/pdf/2605.26486v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "open-source video generation framework with stability improvements",
+      "llm_evidence_cn": "开源视频生成框架，提升稳定性",
+      "llm_evidence": "开源视频生成框架，提升稳定性",
+      "canonical_evidence": "开源视频生成框架，提升稳定性",
+      "llm_tldr_en": "Presents LongCat-Video-Avatar 1.5, an upgraded open-source video generation framework with improved lip-sync, temporal stability, and long-video generation.",
+      "llm_tldr_cn": "音频驱动视频生成在商业级稳定性上仍有挑战。本文提出LongCat-Video-Avatar 1.5升级版，通过升级音频编码器、优化训练策略和RLHF训练，实现了精准唇形同步、全身时间稳定性和长视频生成。该框架可直接用于评估下游生成质量，是视频生成模型评价的重要实战系统。",
+      "llm_tldr": "音频驱动视频生成在商业级稳定性上仍有挑战。本文提出LongCat-Video-Avatar 1.5升级版，通过升级音频编码器、优化训练策略和RLHF训练，实现了精准唇形同步、全身时间稳定性和长视频生成。该框架可直接用于评估下游生成质量，是视频生成模型评价的重要实战系统。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.26880v1",
+      "source": "arxiv",
+      "title": "GScomp-QA: A Subjective Dataset for Quality Assessment of Compressed Gaussian Splatting",
+      "abstract": "Gaussian Splatting (GS) has emerged as an efficient representation for high-quality 3D reconstruction and novel view synthesis. However, its large model size poses challenges for storage and transmission. While several GS compression solutions have been proposed, their perceptual impact remains poorly understood due to the lack of dedicated evaluation datasets. To address this gap, this paper introduces GScomp-QA, a subjective quality assessment dataset for evaluating synthesis quality from compressed GS models. The dataset comprises 331 video stimuli from 13 real-world scenes, covering 9 state-of-the-art GS compression solutions. By using videos synthesized from uncompressed models as reference, GScomp-QA isolates compression-induced distortions from synthesis artifacts. A subjective study with 20 participants was conducted, providing reliable perceptual scores. Based on these data, GS compression solutions are evaluated through perceptual rate-distortion analysis. In addition, 18 objective quality metrics are evaluated, showing that they do not fully capture GS-specific distortions. GScomp-QA will be publicly available and provide a benchmark for evaluating GS compression solutions and supporting the development of quality metrics tailored to GS compression.",
+      "authors": [
+        "Pedro Martin",
+        "António Rodrigues",
+        "João Ascenso",
+        "Maria Paula Queluz"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.MM"
+      ],
+      "published": "2026-05-26T11:41:10+00:00",
+      "link": "https://arxiv.org/pdf/2605.26880v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "provides subjective quality assessment dataset for compressed GS videos",
+      "llm_evidence_cn": "提供压缩高斯溅射合成视频的主观质量评估数据集",
+      "llm_evidence": "提供压缩高斯溅射合成视频的主观质量评估数据集",
+      "canonical_evidence": "提供压缩高斯溅射合成视频的主观质量评估数据集",
+      "llm_tldr_en": "GScomp-QA introduces a subjective dataset with 331 video stimuli for evaluating compressed Gaussian Splatting models, using uncompressed references for comparison.",
+      "llm_tldr_cn": "GScomp-QA构建了一个包含331个视频刺激的主观质量评估数据集，覆盖13个真实场景和9种高斯溅射压缩方案，以未压缩模型合成的视频为参考，隔离压缩失真对感知质量的影响。该数据集填补了压缩高斯溅射质量评估的空白，为相关压缩方法的优化提供了基准。",
+      "llm_tldr": "GScomp-QA构建了一个包含331个视频刺激的主观质量评估数据集，覆盖13个真实场景和9种高斯溅射压缩方案，以未压缩模型合成的视频为参考，隔离压缩失真对感知质量的影响。该数据集填补了压缩高斯溅射质量评估的空白，为相关压缩方法的优化提供了基准。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.26918v1",
+      "source": "arxiv",
+      "title": "Are Video Models Zero-Shot Learners and Reasoners in Education? EduVideoBench, A Knowledge-Skills-Attitude Benchmark for Educational Video Generation",
+      "abstract": "Video generation models (VGMs) are rapidly entering classrooms, yet existing benchmarks evaluate only perceptual quality, intrinsic faithfulness, generic safety, or video as a reasoning medium, and none assesses whether the outputs are educationally valid. In this work, we present EduVideoBench, the first balanced benchmark in the education domain, grounded in the Knowledge-Skills-Attitude (KSA) framework so that pedagogical adequacy and educational safety are evaluated jointly rather than as ad-hoc quality dimensions. Across five frontier VGMs, our results show substantial room for improvement across knowledge, skills, and attitude before they are classroom-ready. We complement this with a qualitative analysis of expert comments, finding that educational validity is multi-component, where a single misaligned element such as pacing, legibility, or notation can invalidate an otherwise correct video. We hope EduVideoBench will guide the development of VGMs that are pedagogically grounded and safe for the classroom.",
+      "authors": [
+        "Unggi Lee",
+        "Hoyoung Ahn",
+        "Yoon Choi",
+        "Seonmin Eun",
+        "Jahyun Jeong",
+        "Seonmin Jin",
+        "Harmony Jung",
+        "Hye Jin Kim",
+        "Chaerin Lee",
+        "Hyunji Lee",
+        "Jeongjin Lee",
+        "Soohwan Lee",
+        "Young-Seok Oh",
+        "Jaehyeon Park",
+        "Sun-ok Ryu",
+        "Sunyoung Shin",
+        "Yoorim Son",
+        "Haeun Park",
+        "Yeil Jeong"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-05-26T12:16:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.26918v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes benchmark evaluating video generation quality in education domain",
+      "llm_evidence_cn": "提出面向教育领域的视频生成质量评估基准",
+      "llm_evidence": "提出面向教育领域的视频生成质量评估基准",
+      "canonical_evidence": "提出面向教育领域的视频生成质量评估基准",
+      "llm_tldr_en": "EduVideoBench is a benchmark for educational video generation that jointly evaluates pedagogical adequacy and safety, covering knowledge, skills, and attitude dimensions.",
+      "llm_tldr_cn": "现有视频生成基准仅评估感知质量或通用安全性，忽略了教育有效性。本文提出EduVideoBench，基于知识-技能-态度框架联合评估教育视频的教学充分性与安全性。在五个前沿模型上的结果显示，距离课堂就绪仍有较大差距。该工作为教育视频生成提供了首个平衡的评估基准。",
+      "llm_tldr": "现有视频生成基准仅评估感知质量或通用安全性，忽略了教育有效性。本文提出EduVideoBench，基于知识-技能-态度框架联合评估教育视频的教学充分性与安全性。在五个前沿模型上的结果显示，距离课堂就绪仍有较大差距。该工作为教育视频生成提供了首个平衡的评估基准。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

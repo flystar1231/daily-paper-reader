@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-01T21:51:00.694455+00:00",
-  "updated_date": "20260601",
+  "generated_at": "2026-06-02T03:21:10.403307+00:00",
+  "updated_date": "20260524-20260602",
   "carryover_days": 9,
   "tag_states": {
     "vgen-metrics": {
-      "updated_date": "20260601",
+      "updated_date": "20260524-20260602",
       "carryover_days": 9,
       "items": []
     }
