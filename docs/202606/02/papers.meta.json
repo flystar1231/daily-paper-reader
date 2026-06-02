@@ -1,0 +1,39 @@
+{
+  "label": "2026-06-02",
+  "date": "2026-06-02",
+  "generated_at": "2026-06-02T22:58:11",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202606/02/2606.01285v1-knowledge-intensive-video-generation",
+      "section": "deep",
+      "title_en": "Knowledge-Intensive Video Generation",
+      "authors": "Chenxu Wang, Mingda Chen",
+      "date": "2026-05-31",
+      "pdf": "https://arxiv.org/pdf/2606.01285v1",
+      "score": "9.0",
+      "evidence": "提出了针对生成视频的事实性和有用性的自动评估指标",
+      "tldr": "当前文本到视频生成在视觉质量上进步迅速，但缺乏对事实性和实用性的评估。为此，作者提出知识密集型视频生成（KIVI）任务，要求模型从信息寻求提示生成解释或操作视频，并构建包含1080个提示的KIVI-Bench基准，设计了自动评估指标。实验发现，七种先进模型在事实性和有用性上远不及人类，尤其在视觉属性、操作流程和信息清晰呈现方面表现不足。该工作为生成事实准确且教学有用的视频提出了新的挑战。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Text-to-video generation has advanced rapidly in visual quality, but remains under-evaluated for factuality and practical usefulness. We introduce knowledge-intensive video generation (KIVI), where models generate videos from short information-seeking prompts that ask for explanations, procedures, or demonstrations. To evaluate this setting, we construct KIVI-Bench, a benchmark of 1,080 prompts, and propose automatic metrics for factuality and helpfulness. Human evaluation shows that our metrics significantly better align with human annotations than existing alternatives. Experiments on seven state-of-the-art video generation models show that current systems still lag behind human performance, especially on visual properties, procedural operations, and clear information presentation. These results highlight KIVI as a challenging direction for factual and instructionally useful video generation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/02/2606.01031v1-temporally-aligned-evaluation-for-audio-driven-talking-head-generation",
+      "section": "deep",
+      "title_en": "Temporally-Aligned Evaluation for Audio-Driven Talking Head Generation",
+      "authors": "Zhicheng Zhang, Lei Wang, Yu Zhang, Yongsheng Gao",
+      "date": "2026-05-31",
+      "pdf": "https://arxiv.org/pdf/2606.01031v1",
+      "score": "8.0",
+      "evidence": "提出时间对齐的生成视频评估方法",
+      "tldr": "现有音频驱动说话头生成评估依赖帧级指标，假设严格时序对齐，但实际语音驱动面部运动存在时序偏移、速度差异和风格变化，导致评估失真。本文提出将评估重构为序列对齐问题，采用Soft Dynamic Time Warping对齐特征轨迹，在保持时序顺序的同时容忍有限错位。通过大规模基准测试（20种方法、7个数据集），验证了时序对齐度量相比传统帧级指标更稳定、对时序差异更不敏感，并能更清晰揭示不同建模范式在同步性、真实感、表现力和稳定性之间的系统权衡。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Audio-driven talking-head generation has advanced rapidly, yet existing evaluation protocols mainly rely on frame-wise metrics that assume strict temporal correspondence between generated and reference videos. This assumption does not match speech-driven facial motion, which naturally includes slight timing shifts, different speaking speeds, and stylistic variations. As a result, conventional metrics may treat harmless timing differences as quality errors, making it harder to fairly compare methods and understand their trade-offs. In this work, we argue that evaluation of dynamic generative models should be formulated as a sequence-alignment problem rather than independent frame comparison. We introduce a unified sequence-level reformulation that integrates Soft Dynamic Time Warping into established evaluation pipelines. By aligning feature trajectories while preserving temporal order, the proposed framework provides robustness to bounded temporal misalignments without altering the underlying perceptual, identity, or synchronization encoders. We show that frame-wise evaluation can be viewed as a special case under rigid alignment, while sequence-level alignment provides improved stability, lower sensitivity to timing differences, and clearer separation between modeling paradigms. Building on this principled formulation, we conduct a large-scale benchmark of 20 methods across seven datasets spanning canonical, in-the-wild, and style-diverse scenarios under standardized protocols. Extensive experiments show that temporally aligned metrics are more robust to timing differences, provide more consistent results across datasets, and better reveal systematic trade-offs between modeling paradigms, such as synchronization versus realism and expressiveness versus stability.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

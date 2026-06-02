@@ -1,0 +1,527 @@
+Title: Knowledge-Intensive Video Generation
+
+URL Source: https://arxiv.org/pdf/2606.01285v1
+
+Published Time: Tue, 02 Jun 2026 01:34:44 GMT
+
+Number of Pages: 31
+
+Markdown Content:
+# Knowledge-Intensive Video Generation 
+
+Chenxu Wang 
+
+Fudan University 
+
+chenxuwang22@m.fudan.edu.cn 
+
+Mingda Chen 
+
+Shanghai Jiao Tong University 
+
+mingdachen@sjtu.edu.cn 
+
+Abstract 
+
+Text-to-video generation has advanced rapidly in visual quality, but remains under-evaluated for factuality and practical usefulness in information-seeking scenarios. We introduce 
+
+knowledge-intensive video generation (KIVI 1), where models generate videos from short information-seeking prompts that ask for ex-planations, procedures, or demonstrations. To evaluate this setting, we construct KIVI-Bench, a benchmark of 1,080 prompts, and propose automatic metrics for factuality and helpful-ness. Human evaluation shows that our metrics significantly better align with human annota-tions than existing alternatives. Experiments on seven state-of-the-art video generation mod-els show that current systems still lag behind human performance, especially on visual prop-erties, procedural operations, and clear infor-mation presentation. These results highlight KIVI as a challenging direction for factual and instructionally useful video generation. 
+
+1 Introduction 
+
+Text-to-video generation aims to synthesize videos conditioned on natural-language prompts. Re-cent advances in diffusion-based generative mod-eling have substantially improved the visual qual-ity of generated videos (Ho et al., 2022; Singer et al., 2023). As these models become increas-ingly accessible, they are expected to support not only entertainment-oriented generation, but also information-seeking and instructional applications, where users ask models to explain concepts, demon-strate procedures, or communicate factual knowl-edge in domains such as healthcare (Liu et al., 2026), education (Leiker et al., 2023; Pellas, 2025), and live Q&A (Klein and McCartney, 2024). However, existing progress in text-to-video gen-eration has primarily focused on visual quality (Wu       
+
+> 1The code and supplementary materials are available at
+> https://github.com/wcxhimself/KIVI Prompt :How to set up cellular service on a US -
+> unlocked base model Google Pixel 10 .
+> Generated Video (focus on factuality)
+> Generated Video (focus on visual quality)
+> Prompt :An over -the -shoulder view establishes ...
+> A pair of hands picks up a base model Google
+> Pixel 10 smartphone … (964 words)
+> Prior Work This Work
+
+Figure 1: An example illustrating how knowledge-intensive video generation differs from visual-quality-driven video generation in information-seeking scenar-ios. Prior work typically focuses on more generic video generation settings, where prompts describe visually rich scenes and evaluation emphasizes visual quality. In contrast, our setting uses short instructional prompts that describe what the user wants to learn. In this example, visual-quality-based evaluation may favor the top video, which looks realistic but incorrectly depicts a physical SIM-card setup for the Google Pixel 10. However, the bottom video correctly shows that cellular service can be set up through software, and is therefore preferred in our task. 
+
+et al., 2024; Huang et al., 2024), which does not directly measure whether a video conveys factually accurate information. Moreover, standard text-to-video benchmarks often target generic generation settings, where prompts describe desired visual scenes in detail, such as visually appealing land-scapes or cinematic shots. These prompts typically emphasize appearance rather than informational content. However, in realistic information-seeking scenarios, users are more likely to provide short instructional prompts describing what they want to 
+
+> arXiv:2606.01285v1 [cs.CV] 31 May 2026
+
+learn, such as how to perform a procedure, manipu-late an object, or understand a concept. The model must then infer what visual steps and explanations should be shown. This setting is more challenging, but better reflects practical use cases where users seek information through generated videos. To address this gap, we introduce knowledge-intensive video generation (KIVI), a task setting that evaluates whether models can generate factu-ally accurate and useful videos from information-seeking prompts. As illustrated in Figure 1, stan-dard text-to-video generation mainly translates a detailed scene description into a visually plausi-ble video. Fully specifying a 60-second instruc-tional video may require a very long prompt and substantial prior knowledge, which is impractical for users who are seeking that knowledge in the first place. In contrast, KIVI starts from a short in-structional prompt and requires the model to decide what content to show while ensuring that the events, objects, and actions are faithful to relevant world knowledge. This brings KIVI closer to information-seeking long-form text generation (Brown et al., 2020; Lee et al., 2022), but with a key distinction: many requests, such as skill demonstrations, physi-cal procedures, and object manipulations, are more naturally answered with videos than with text alone. The evaluation target therefore shifts from “Does the video look good?” to “Does the video commu-nicate correct and useful information?” To evaluate models on KIVI, we construct KIVI-Bench, a benchmark of 1,080 prompts covering di-verse knowledge-seeking scenarios. We further pro-pose two complementary automatic metrics. The first measures factuality by estimating the frac-tion of verifiable claims conveyed in the generated video that are factually correct, following the intu-ition of claim-level factual precision in long-form text generation (Manakul et al., 2023; Min et al., 2023). The second measures helpfulness, captur-ing whether the video provides information useful for satisfying the user’s request. Together, these metrics evaluate whether a generated video is both factually reliable and practically useful. We validate our metrics through human evalua-tion and find that they achieve stronger agreement with human annotations than existing evaluation alternatives for both factuality and helpfulness. We then benchmark seven state-of-the-art video gen-eration models, including closed-source and open-source systems, and compare them with human performance. Closed-source models achieve the best non-human results, but still lag behind humans, indicating substantial room for improvement. Fur-ther analysis shows that current models often fail on visual properties, procedural operations, and clear information presentation, highlighting the need for more factual, trustworthy, and instructionally use-ful video generation. To summarize, our contributions are as follows. • We formulate KIVI as a new task setting for evaluating text-to-video generation be-yond visual quality, where models gener-ate videos from short information-seeking prompts rather than fully specified scene de-scriptions. • We construct KIVI-Bench, a benchmark of 1,080 knowledge-intensive prompts covering diverse instructional and information-seeking scenarios. • We introduce automatic factuality and helpful-ness metrics for generated videos, and show that they better agree with human annotations than existing evaluation alternatives. • We benchmark seven state-of-the-art video generation models and show that KIVI-Bench remains challenging for current methods, with detailed analyses of common model failures. 
+
+2 Related Work 
+
+Text-to-Video Generation. Recent work on text-to-video generation has made rapid progress by ex-tending diffusion models, transformer-based gen-erative models, and large-scale multi-modal pre-training to the video domain (Ho et al., 2022; Hong et al., 2023; Singer et al., 2023; Villegas et al., 2023; Blattmann et al., 2023; Kondratyuk et al., 2024). Alongside model development, several benchmarks have been proposed to evaluate generated videos along dimensions such as visual quality, tempo-ral consistency, and motion smoothness (Liu et al., 2023, 2024; Huang et al., 2024; Sun et al., 2025). More recent studies further examine whether gen-erated videos obey physical commonsense (Bansal et al., 2025; Meng et al., 2025; Bansal et al., 2026). More closely related to our work, Wang et al. (2025b) evaluate video generation models using real user queries involving knowledge explanation, art creation, and human-machine interaction, while Chen et al. (2026) and Wang et al. (2026) intro-duce benchmarks for evaluating world knowledge in traditional text-to-video generation, with an em-phasis on cultural and physical plausibility. In contrast, our work formulates knowledge-intensive video generation as a realistic evaluation setting and studies whether generated videos are both fac-tually accurate and helpful across a broad range of knowledge-seeking prompts. 
+
+Multi-Modal Knowledge-Intensive Tasks. Alarge body of work has studied multi-modal tasks that require external knowledge beyond the visual input. Knowledge-based visual question answer-ing benchmarks such as OK-VQA (Marino et al., 2019), KVQA (Shah et al., 2019), and A-OKVQA (Schwenk et al., 2022) require models to answer questions using commonsense, encyclopedic, or structured world knowledge in addition to image understanding. More recent benchmarks further emphasize information-seeking and fine-grained knowledge, such as InfoSeek (Chen et al., 2023) and Encyclopedic-VQA (Mensink et al., 2023), where questions often require recognizing visual entities and retrieving relevant external knowl-edge (Mensink et al., 2023). Other work extends knowledge-intensive reasoning to heterogeneous multi-modal contexts, including text, tables, and images (Talmor et al., 2021). More recent work has extended the setups to videos (Garcia et al., 2020; He et al., 2025; Zhao et al., 2025; Cao et al., 2026). However, they primarily evaluate understanding and question answering over given multi-modal evidence. Our work studies a complementary gen-eration problem: instead of answering questions about existing visual content, models must gener-ate videos that accurately convey the knowledge requested by a textual prompt. 
+
+Multi-Modal Fact-Checking. Fact-checking has traditionally focused on verifying textual claims against textual evidence (Thorne et al., 2018), but recent work has extended the setting to multi-modal evidence and misinformation. Multi-modal fact-checking datasets and systems verify claims using both text and images, often requiring models to re-trieve evidence, detect cross-modal inconsistencies, and predict whether a claim is supported or refuted (Chakraborty et al., 2023). Another line of work studies out-of-context or mismatched image-text misinformation, where both the image and cap-tion may be individually real but misleading when paired together (Luo et al., 2021; Abdelnabi et al., 2022; Tonglet et al., 2025). These works highlight the importance of verifying cross-modal factual consistency. However, they typically assume that the claim, evidence, or image-text pair is already given. In contrast, knowledge-intensive video gen-eration requires evaluating factuality in generated videos, where the relevant claims must first be in-ferred from the video content and then checked against external knowledge. Our work therefore connects text-to-video evaluation with multi-modal fact-checking, but targets the distinct problem of measuring whether generated videos faithfully and helpfully communicate correct information. 
+
+3 Knowledge-Intensive Video Generation 
+
+Knowledge-intensive video generation aims to gen-erate long video clips that follow the requirements of information-seeking prompts. The overall gen-eration and evaluation pipeline is shown in Fig-ure 2. In the following subsections, we will de-scribe how the prompt set and evaluation metrics are constructed. 
+
+3.1 KIVI-Bench Construction 
+
+The prompt set, which we refer to as KIVI-Bench, is constructed through the following pipeline. 
+
+Prompt Topic Selection. To ensure diverse topic coverage, we use 18 topic categories from Wiki-How Video., 2 covering everyday life and profes-sional domains. See Appendix A.2 for details on the topics. 
+
+Prompt Set Generation. For each category, we first manually construct several seed prompts ac-cording to five quality criteria: (1) video demonstra-tion is more suitable than text explanation; (2) the prompt is factually correct and involves uniquely identifiable entities with easily accessible docu-mentation for verification; (3) it uses distinctive and non-trivial proper nouns rather than common entities that models may handle from surface-level visual priors; (4) it contains non-obvious factual constraints that challenge the model’s world knowl-edge; and (5) it is concise and natural, resembling a real-world user query. These hand-crafted prompts are used as in-context demonstrations for large lan-guage models (LLMs). We then apply our genera-tion template (See Appendix 7) to ask the LLM to expand each category to approximately 80 prompts, resulting in 1,440 candidates. The LLM is in-structed to avoid duplication within each output batch. Finally, we manually review all candidates             
+
+> 2https://www.wikihow.com/Videos Input Prompt
+> Outline Planner Video Generator
+> Generated Video
+> Generated Video
+> Claim Extraction
+> How to set up cellular
+> service on a US -unlocked
+> base model Google Pixel 10.
+> Generation Evaluation  Claim 1 : The US -unlocked base model Google Pixel 10 features a
+> horizontal camera bar on the back with three camera lenses.
+> Claim 2 : Setting up cellular service on a US -unlocked base model Google
+> Pixel 10 involves removing the SIM tray from the bottom edge of the
+> device.
+> Claim 3 : Setting up cellular service on a US -unlocked base model Google
+> Pixel 10 involves inserting a physical SIM card into the SIM tray slot
+> at the bottom of the device .
+> Claim 4 : Setting up cellular service on a US -unlocked base model Google
+> Pixel 10 involves tapping the Settings app icon on the home screen.
+> Claim 5 : The cellular setup process shown in the video can be completed
+> in under 1 minute by an average user.
+> …
+> Claim Verification
+> Relevance :
+> Does the video directly address the
+> prompt and match its explicit
+> constraints, rather than depicting an
+> unrelated task?
+> Completeness :
+> Does the video demonstrate the key
+> steps and required tools needed for its
+> chosen method, covering all essential
+> requirements?
+> Clarity :
+> Is the procedure easy to follow , with
+> logical action sequence, clear pacing,
+> and observable before -after state
+> changes?
+> Step 1 :Show Pixel 10 back panel with horizontal camera
+> bar and three lenses.
+> Step 2 :Hands rotate phone to show front display with lock
+> screen.
+> ......
+> Step 13 :Zoom to status bar showing signal bars and '5G'
+> indicator
+
+Factuality Evaluation 
+
+> Evaluated Claim List
+
+Helpfulness Evaluation Figure 2: A diagram illustrating the generation and evaluation pipeline used in this work. During generation, the input prompt is first passed to an LLM to produce a multi-step outline of the desired video, which is then used by a video generator to produce the final video. During evaluation, the generated video is assessed with LLM-based metrics along two aspects: factuality and helpfulness. Factuality measures the fraction of correct atomic claims conveyed in the video, while helpfulness measures how well the video satisfies the user request along three dimensions. In the shown example, the incorrect claims state that the Google Pixel 10 uses physical SIM cards. 
+
+across categories and remove overlapping prompts to obtain the final set. 
+
+Quality Control. We conduct a two-stage qual-ity review on the 1,440 raw candidates. First, we use an LLM (prompt in Appendix 8) to scan can-didates across categories and flag pairs with sub-stantially overlapping named entities or procedures. For each flagged pair, a human reviewer decides whether to merge the prompts, keep one, or discard both. This step removes approximately 20% of candidates and resolves cross-category duplication. Second, a human reviewer inspects each remaining prompt and removes cases where: (i) the named entity no longer exists or has been discontinued, (ii) the entity name is ambiguous and may refer to multiple products, or (iii) the task has no well-established answer and cannot be reliably verified. This step removes an additional 6% of candidates, resulting in the final set of 1,080 prompts. 
+
+3.2 KIVI-Bench Evaluation Metrics 
+
+To support automatic evaluation, we propose two LLM-based metrics that assess complementary as-pects of generated videos. 
+
+Factual Precision (FactP). Inspired by factual-ity evaluation in long-form text generation (Man-akul et al., 2023; Min et al., 2023), we design an LLM-based metric that first reviews the generated video and extracts video claims . We define a video claim as an atomic, externally verifiable factual statement about what the video visually depicts. Claims are extracted by a LLM using the prompt in Appendix 12. 3 Each extracted claim is then ver-ified against world knowledge 4 and classified as “Correct”, “Incorrect” or “Uncertain” using the ver-ification prompt in Appendix 14. For each data item, FactP is defined as: 
+
+> 3
+
+Although multi-modal claims that combine visual and textual information are more natural than text-only claims, our analysis shows that they are not straightforward to implement (See Sec. 5.1 for more details). We therefore use text-only claims throughout our experiments and leave a more thorough exploration of multi-modal claims to future work. 
+
+> 4
+
+We note that while retrieval from external sources is a common approach for accessing world knowledge, in this work we rely on the LLM’s parametric knowledge to verify claim factuality. This choice is motivated partly by prior work in the text domain showing that LLM-based verification can be feasible (Manakul et al., 2023), and partly by the limitations of existing retrieval sources: they are typically text-based and are not well suited to our setting, where the relevant information is often multimodal and absent from text-only knowledge corpora. FactP = number of correct claims total number of claims × 100% 
+
+We then average FactP across all data items to obtain the dataset-level metric score. 
+
+Helpfulness Score (HelpS). While FactP mea-sures the precision of factual claims, it does not capture whether the video adequately satisfies the user’s request. We therefore introduce a recall-oriented helpfulness score. Given a video, an LLM reviews the video and rates it along three dimen-sions (See the prompt in Appendix 15), each on a scale from 0 to 10: Relevance , measuring whether the video addresses the user request; Completeness ,measuring whether key steps or information are covered; and Clarity , measuring whether the con-tent is easy to follow. The final score is computed as: 5
+
+HelpS = Rel. + Compl. + Clar. 
+
+3 × 100% 
+
+Similar to FactP, we report the dataset-level HelpS by averaging over all data items. 
+
+4 Experiments 
+
+Due to computational and budget constraints, all experiments use a uniformly sampled subset of 54 prompts, with 3 prompts from each category. All LLM calls in our pipeline, including outline plan-ning, segment script generation, claim extraction, claim verification, and helpfulness evaluation, use Gemini 3.1 Pro Preview (Google DeepMind, 2026) with temperature 0. We choose Gemini 3.1 Pro because of its strong video-understanding capabil-ity. More details on computational resources are reported in Appendix A.1. 
+
+4.1 Evaluation Setup 
+
+We evaluate seven state-of-the-art video generation models on KIVI-Bench, including • Two closed-source API models: Seedance 2.0 (Seedance et al., 2026) and HappyHorse 1.0 6
+
+• Five open-source models: Wan 2.2 (A14B; Wang et al., 2025a), HunyuanVideo 1.5 
+
+> 5While more effective weighting schemes may exist, we find that simple averaging gives reasonable performance and leave further exploration to future work.
+> 6https://www.aliyun.com/benefit/scene/ happyhorse
+
+(Wu et al., 2025), Helios-Base (Yuan et al., 2026), LongLive 1.0 (Yang et al., 2026), and LongCat-Video (Team et al., 2025) Each model is prompted to generate videos of ap-proximately 60 seconds. For all evaluations on KIVI-Bench, we use the official implementation of each model. The long video generation models (Helios-Base, LongLive 1.0, and LongCat-Video) support two modes: interactive and single-prompt generation. In interactive mode, the model receives a sequence of time-stamped sub-prompts, each describing one stage of the procedure; in single-prompt mode, it generates the full video from a single prompt. In preliminary experiments, we find that interactive mode generally produces richer and more tempo-rally structured videos. We therefore use interactive mode for all long video models except Helios-Base, for which we use single-prompt mode due to tech-nical issues in its official implementation. For short video generation models (Seedance 2.0, HappyHorse 1.0, Wan 2.2, and HunyuanVideo 1.5), which can only generate clips of around 5 seconds, we adopt a similar interactive pipeline. Appendix A.7 provides more detailed comparisons between interactive and single-prompt generation for these models. Specifically, we first use an LLM to convert the input prompt into a multi-step visual outline. The first clip is generated from the textual outline of the initial step. Each subsequent clip is generated by conditioning on both the last frame of the previous clip and the textual outline of the current step. We then stitch all clips together to obtain the final long video. In addition to our factuality and helpfulness met-rics, we evaluate generated videos using six qual-ity dimensions from VBench-Long (Huang et al., 2026): motion smoothness, imaging quality, dy-namic degree, aesthetic quality, subject consistency, and background consistency. These metrics serve as visual quality baseline metrics for comparison with our proposed evaluation metrics. 
+
+4.2 Benchmarking on KIVI-Bench 
+
+Table 1 presents the overall results. We also report human performance on KIVI-Bench using refer-ence videos collected online. Since many prompts in our benchmark do not have suitable reference videos, we randomly select 54 prompts from the subset for which such videos can be found. Inter-estingly, human-produced videos achieve nearly Factuality Helpfulness Model #Cor. (↑) #Inc. (↓) #Unc. (↓) Total (↑) FactP (%, ↑) Rel (↑) Cmp (↑) Clr (↑) HelpS (%, ↑)Human * 426 10 1 437 97.8 84.0 78.7 83.2 81.9                                                                
+
+> Closed-source short video generation models
+> Seedance 2.0 367 77 6450 81.6 75.7 69.8 54.1 66.6
+> HappyHorse 1.0 362 66 9437 83.2 70.2 66.5 48.1 61.6
+> Open-source short video generation models
+> Wan 2.2 306 112 8426 73.1 57.4 53.0 34.8 48.4 HunyuanVideo 1.5 259 139 5403 63.2 41.3 38.0 19.3 32.9
+> Open-source long video generation models
+> Helios-Base 221 123 6350 64.2 43.3 24.1 13.5 27.0 LongCat-Video 184 152 5341 50.8 23.3 15.4 7.2 15.3 LongLive 1.0 176 201 7384 46.5 28.3 15.4 3.9 15.9
+
+Table 1: Overall results on the subset of KIVI-Bench. #Cor. = number of correct claims, #Inc. = number of incorrect claims, #Unc. = number of uncertain claims. FactP = Factual Precision. Rel = Relevance. Cmp = Completeness. Clr = Clarity. HelpS = Helpfulness Score. The best non-human performance in each column is boldfaced. * indicates the results are obtained from a different subset of KIVI-Bench.                     
+
+> Metric Fact. (%) Help. (%)
+> Prior evaluation metrics
+> Motion Smoothness 39.8 44.4 Imaging Quality 38.9 38.0 Dynamic Degree 56.5 52.8 Aesthetic Quality 44.4 52.8 Subject Consistency 44.4 45.4 Background Consistency 51.9 52.8 Overall Visual Quality 48.1 47.2
+> Our proposed metrics
+> Factual Precision 70.8 –Helpfulness Score –69.0
+
+Table 2: Human evaluation results. Annotators choose their preferred video from each presented pair based on factuality and helpfulness. Agreement approximately measures the fraction of decisions where the metric-preferred video matches the human preference. 
+
+the best performance across all axes, except for the total number of claims, where they are only slightly behind the closed-source models. Among non-human results, HappyHorse 1.0 achieves the highest FactP, while Seedance 2.0 obtains the high-est HelpS, with both closed-source models con-sistently outperforming open-source alternatives. Among open-source models, Wan 2.2 performs best, whereas LongCat-Video and LongLive 1.0 score substantially lower. The 37-point FactP gap and 51-point HelpS gap between the best and worst models highlight the large variation in knowledge-intensive video generation capability. The helpful-ness subscores in Table 1 further show that Clar-ity is the most challenging dimension across all models, ranging from 3.9 to 54.1, suggesting that coherent visual pacing over multi-segment genera-tion remains a fundamental challenge. Compared with human performance, even the strongest closed-source models still lag behind, suggesting substan-tial room for improvement in state-of-the-art video generation models. We also conduct a category-level analysis and find that models perform better on categories that require fewer fine-grained specifics, such as philos-ophy and travel. In contrast, categories that demand precise factual details, such as cars and vehicles, are typically more challenging. See Appendix A.3 for more details. 
+
+4.3 Human Evaluation 
+
+To validate the effectiveness of our automatic met-rics, we conduct a human evaluation study. Anno-tators were presented with two videos generated for the same prompt and asked to choose which one they preferred in terms of factuality and help-fulness, with the two preferences collected sepa-rately. Annotators were encouraged to use online search tools to verify relevant information. We also provided links to online videos containing rel-evant information to facilitate the annotation pro-cess. Detailed annotation instructions are provided in Appendix A.4. In total, we collected 108 valid annotations for both factuality and helpfulness preferences. Six annotators participated in the study, and each two-video comparison was annotated by one annotator for both dimensions. To compute human–metric agreement, a metric receives 1 point if it prefers the same model as the human annotator, 0.5 points if the two models are tied according to the metric, and Mode Agree. (%)    
+
+> Text-Only 70.4
+> Text + Image 58.3 Text + Video 58.3
+
+Table 3: Human agreement on factuality preferences. 
+
+0 otherwise. The final agreement score is obtained by averaging over all comparisons. Table 2 reports the results. Under this proto-col, our FactP achieves 70.8% agreement with human factuality judgments, outperforming the best VBench-Long dimension, Dynamic Degree (56.5%), by a relative gain of 25.3%. Our Help-fulness Score achieves 69.0% agreement, surpass-ing Dynamic Degree (52.8%) by a relative gain of 30.7%. In contrast, the weakest VBench-Long dimensions, Imaging Quality and Motion Smooth-ness, agree with human judgments only 38–40% of the time. VBench-Long Overall also trails our metrics by more than 22 points on both dimensions. These results show that our LLM-based metrics better capture human-perceived factual accuracy and utility than traditional visual-quality-oriented metrics. 
+
+5 Analysis 
+
+5.1 Multi-Modal vs. Text-Only Claim Verification 
+
+We compare three claim verification strategies us-ing outputs from four models (Seedance 2.0, Hap-pyHorse 1.0, Wan 2.2, and HunyuanVideo 1.5). 
+
+Text-only verifies each claim using only its textual form. Text+Video pairs each claim with a short video clip, whose temporal location is identified by an LLM. Text+Image pairs each claim with a key frame, defined as the middle frame of the cor-responding video clip. For the multi-modal modes, we keep the textual claims unchanged and provide the visual content only as additional evidence. This design allows the text to preserve broader contex-tual information that may not be fully captured by a single image or video clip. We evaluate each verification mode by compar-ing its factuality preferences with human prefer-ences. As shown in Table 3, Text-only is signifi-cantly better than the other two. We hypothesize that the lower agreement of multi-modal verifica-tion is partly due to modality-induced confounding. In the multi-modal modes, the LLM is asked to judge factuality by considering both the textual                
+
+> Prompt Outline Step Generated Video
+> Show how to re-place the cabin air filter on aToy-ota RAV4 (XA50) to improve HVAC airflow.
+> Hand opens the pas-senger side door
+> of a Toyota RAV4 (XA50), revealing the dashboard and closed glovebox.
+> (Step 1)
+> Seedance 2.0
+> Demonstrate how to replace the waste toner bottle in a Canon imageRUN-NER ADVANCE C3530.
+> The hand pushes the
+> front cover panel
+> of the printer back to the right until it clicks firmly shut.
+> (Step 11) Seedance 2.0
+
+Table 4: Examples where the outline is correct but the generated video is factually incorrect. For each prompt (left), the outline step (middle) describes the correct procedure, whereas the generated video frame (right) contains factual errors, suggesting that the inaccuracies may arise from the video generation model rather than the outline. 
+
+claim and the associated image or video clip. How-ever, the visual evidence may contain information that is not aligned one-to-one with the claim. For example, a single image or video clip may involve multiple objects, actions, or subclaims, making it harder to determine whether one specific textual claim is factual. In contrast, textual claims are more easily represented as atomic units, which leads to cleaner and more stable verification. Interestingly, we also find that multi-modal verification yields substantially lower FactP scores, possibly due to the ambiguity and difficulty of judging multi-modal claims (See Appendix A.5). At the same time, text-only verification also has limitations. Textual claims may fail to capture cer-tain visual errors, especially when the error de-pends on grounding actions, objects, or product appearances in the video. For example, matching visual depictions of actions or products to proper nouns in the world can be nontrivial. In this work, we follow textual long-form factuality evaluation and use the proper nouns in the prompt as the main subjects of the textual claims. We leave more ex-plicit visual grounding of claims to future work. 
+
+5.2 Impact of Outline Factuality 
+
+We further investigate whether factual errors arise from the outline or from failures of the video gener-ation models. To this end, we conduct a qualitative analysis by identifying cases where the outline is factually correct but the generated video contains Error Type Correct Incorrect Entity Mis.          
+
+> Demonstrate how to sharpen a pencil us-ing a Bostitch Per-sonal Electric Pen-cil Sharpener. Human-Generated Seedance 2.0
+> Incorrect Proc.
+> How to measure blood pressure us-ing an Omron Plat-inum BP5450. Human-Generated HunyuanVideo 1.5
+> Component Mis.
+> Demonstrate check-ing and topping up Castrol Edge 5W-30 LL-01 in a BMW 3 Series (G20). HunyuanVideo 1.5 HappyHorse 1.0
+> Table 5: Error examples. For each type, we show a correct example (middle) and an example exhibiting factual error (right).
+
+clear factual errors. As shown in Table 4, the RAV4 outline correctly specifies opening the passenger side door , whereas Seedance 2.0 accesses the driver’s side in the generated video. In the Canon printer example, the outline describes closing the appropriate front cover panel, while Seedance 2.0 hallucinates an HP logo on a Canon device. More examples are provided in Appendix A.6. These examples show that even when the outline is fac-tually sound, the video generation model can in-dependently introduce errors, suggesting that the observed inaccuracies can stem from the video gen-eration stage. 
+
+5.3 Error Analysis 
+
+We analyze all incorrect claims from our main re-sults, totaling 870 items. With the assistance of LLMs, we review these claims and summarize re-curring failure patterns. Due to space constraints, we focus on factuality errors here and defer discus-sions of other error types to the appendix. 
+
+Entity Misrepresentation. The model invents features or depicts incorrect visual properties of the specified entity. In the Bostitch pencil sharpener ex-ample (Row 1 in Table 5), Seedance 2.0 generates a box-like structure with a top-facing insertion slot, whereas the actual device has a curved body with a front-facing aperture. This is the most frequent fac-tuality error, reflecting the model’s difficulty with less common proper nouns. While broadly familiar objects, such as chicken eggs or paper airplanes, are often rendered correctly, prompts requiring precise knowledge of specific product models frequently lead to hallucinated features and substantially lower factual precision. 
+
+Incorrect Procedure. The entity is rendered cor-rectly but operated incorrectly. In the Omron BP5450 example (Row 2 in Table 5), Hunyuan-Video 1.5 places the cuff on the forearm, whereas the device is designed for upper-arm measurement. Unlike Entity Misrepresentation, which reflects a lack of static product knowledge, this error type reveals a gap in procedural knowledge: the model can reproduce the entity’s appearance but does not know how it should be used. 
+
+Component Misplacement. The correct compo-nent appears in the wrong physical location. In the BMW 3 Series example (Row 3 in Table 5), HappyHorse 1.0 correctly depicts the engine oil and funnel but places them in the interior center console instead of the engine bay. This error is less frequent than the preceding two types, suggesting that models may find it easier to learn where com-ponents belong than what they look like or how they should be used. Together, these three error types account for over 98% of incorrect claims, suggesting that fu-ture work on knowledge-intensive video generation should prioritize entity-specific visual knowledge, procedural knowledge, and component localiza-tion. 
+
+6 Conclusion 
+
+We introduced KIVI, a task setting that evalu-ates whether text-to-video models can generate factually accurate and useful videos from short information-seeking prompts. To support this set-ting, we constructed KIVI-Bench, a benchmark of 1,080 prompts, and proposed automatic metrics for factual precision and helpfulness. Human evalua-tion shows that our metrics align better with human annotations than existing alternatives. Benchmark-ing seven state-of-the-art models, we find that cur-rent systems still lag behind human performance, particularly on fine-grained visual properties, pro-cedural operations, and clear information presenta-tion. These results highlight the need to evaluate and improve video generation beyond visual qual-ity. Limitations 
+
+This work has several limitations. First, although KIVI-Bench covers diverse knowledge-intensive prompts, our main experiments are conducted on a uniformly sampled subset due to computational and budget constraints. Second, our evaluation relies on LLM-based claim extraction and verification. The pipeline may inherit errors from the underlying LLMs, such as missing important details, producing non-atomic claims, or making incorrect verification judgments when evidence is ambiguous or difficult to retrieve. Third, our factuality metric is primarily text-based. While this leads to more stable claim de-composition, it may miss errors that require visual grounding, such as incorrect object appearance, ac-tion execution, or spatial layout. Our multi-modal ablation suggests that directly verifying claims with images or videos remains challenging due to the ambiguity and density of visual evidence. Finally, our results are based on a fixed set of models and generation settings. Different model versions, prompting strategies, or decoding config-urations may lead to different outcomes. There-fore, the reported results should be interpreted as a snapshot of current model capabilities under our evaluation protocol. 
+
+References 
+
+Sahar Abdelnabi, Rakibul Hasan, and Mario Fritz. 2022. Open-domain, content-based, multi-modal fact-checking of out-of-context images via online resources. In IEEE/CVF Conference on Computer Vision and Pattern Recognition, CVPR 2022, New Orleans, LA, USA, June 18-24, 2022 , pages 14920– 14929. IEEE. Hritik Bansal, Zongyu Lin, Tianyi Xie, Zeshun Zong, Michal Yarom, Yonatan Bitton, Chenfanfu Jiang, Yizhou Sun, Kai-Wei Chang, and Aditya Grover. 2025. Videophy: Evaluating physical commonsense for video generation. In The Thirteenth International Conference on Learning Representations .Hritik Bansal, Clark Peng, Yonatan Bitton, Roman Gold-enberg, Aditya Grover, and Kai-Wei Chang. 2026. Videophy-2: A challenging action-centric physical commonsense evaluation in video generation. In 
+
+The Fourteenth International Conference on Learn-ing Representations .Andreas Blattmann, Robin Rombach, Huan Ling, Tim Dockhorn, Seung Wook Kim, Sanja Fidler, and Karsten Kreis. 2023. Align your latents: High-resolution video synthesis with latent diffusion mod-els. In IEEE/CVF Conference on Computer Vision and Pattern Recognition, CVPR 2023, Vancouver, BC, Canada, June 17-24, 2023 , pages 22563–22575. IEEE. Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens Winter, and 12 others. 2020. Language models are few-shot learners. In Advances in Neural Information Processing Systems , volume 33, pages 1877–1901. Curran Associates, Inc. Meng Cao, Pengfei Hu, Yingyao Wang, Jihao Gu, Hao-ran Tang, Haoze Zhao, Chen Wang, Jiahua Dong, Wangbo Yu, Ge Zhang, Xiang Li, Ian Reid, and Xi-aodan Liang. 2026. Video simpleqa: Towards factu-ality evaluation in large video language models. In 
+
+Fortieth AAAI Conference on Artificial Intelligence, Thirty-Eighth Conference on Innovative Applications of Artificial Intelligence, Sixteenth Symposium on Ed-ucational Advances in Artificial Intelligence, AAAI 2026, Singapore, January 20-27, 2026 , pages 2616– 2624. AAAI Press. Megha Chakraborty, Khushbu Pahwa, Anku Rani, Shreyas Chatterjee, Dwip Dalal, Harshit Dave, Ritvik G, Preethi Gurumurthy, Adarsh Mahor, Samahriti Mukherjee, Aditya Pakala, Ishan Paul, Janvita Reddy, Arghya Sarkar, Kinjal Sensharma, Aman Chadha, Amit Sheth, and Amitava Das. 2023. FACTIFY3M: A benchmark for multimodal fact verification with ex-plainability through 5W question-answering. In Pro-ceedings of the 2023 Conference on Empirical Meth-ods in Natural Language Processing , pages 15282– 15322, Singapore. Association for Computational Linguistics. Yang Chen, Hexiang Hu, Yi Luan, Haitian Sun, Soravit Changpinyo, Alan Ritter, and Ming-Wei Chang. 2023. Can pre-trained vision and language models answer visual information-seeking questions? In Proceed-ings of the 2023 Conference on Empirical Methods in Natural Language Processing , pages 14948–14968, Singapore. Association for Computational Linguis-tics. Yubin Chen, Xuyang Guo, Zhenmei Shi, Zhao Song, and Jiahao Zhang. 2026. T2vworldbench: A bench-mark for evaluating world knowledge in text-to-video generation. 2026 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) , pages 6474–6485. Noa Garcia, Mayu Otani, Chenhui Chu, and Yuta Nakashima. 2020. Knowit VQA: answering knowledge-based questions about videos. In The Thirty-Fourth AAAI Conference on Artificial Intelli-gence, AAAI 2020, The Thirty-Second Innovative Ap-plications of Artificial Intelligence Conference, IAAI 2020, The Tenth AAAI Symposium on Educational Advances in Artificial Intelligence, EAAI 2020, New York, NY, USA, February 7-12, 2020 , pages 10826– 10834. AAAI Press. Google DeepMind. 2026. Gemini 3.1 pro model card. Accessed: May 2026. Xuehai He, Weixi Feng, Kaizhi Zheng, Yujie Lu, Wan-rong Zhu, Jiachen Li, Yue Fan, Jianfeng Wang, Linjie Li, Zhengyuan Yang, Kevin Lin, William Yang Wang, Lijuan Wang, and Xin Eric Wang. 2025. MMWorld: Towards multi-discipline multi-faceted world model evaluation in videos. In The Thirteenth International Conference on Learning Representations .Jonathan Ho, William Chan, Chitwan Saharia, Jay Whang, Ruiqi Gao, Alexey Gritsenko, Diederik P Kingma, Ben Poole, Mohammad Norouzi, David J Fleet, and 1 others. 2022. Imagen video: High defini-tion video generation with diffusion models. arXiv preprint arXiv:2210.02303 .Wenyi Hong, Ming Ding, Wendi Zheng, Xinghan Liu, and Jie Tang. 2023. Cogvideo: Large-scale pretrain-ing for text-to-video generation via transformers. In 
+
+The Eleventh International Conference on Learning Representations .Ziqi Huang, Yinan He, Jiashuo Yu, Fan Zhang, Chenyang Si, Yuming Jiang, Yuanhan Zhang, Tianx-ing Wu, Qingyang Jin, Nattapol Chanpaisit, Yao-hui Wang, Xinyuan Chen, Limin Wang, Dahua Lin, Yu Qiao, and Ziwei Liu. 2024. Vbench: Compre-hensive benchmark suite for video generative models. In IEEE/CVF Conference on Computer Vision and Pattern Recognition, CVPR 2024, Seattle, WA, USA, June 16-22, 2024 , pages 21807–21818. IEEE. Ziqi Huang, Fan Zhang, Xiaojie Xu, Yinan He, Jiashuo Yu, Ziyue Dong, Qianli Ma, Nattapol Chanpaisit, Chenyang Si, Yuming Jiang, Yaohui Wang, Xinyuan Chen, Ying-Cong Chen, Limin Wang, Dahua Lin, Yu Qiao, and Ziwei Liu. 2026. Vbench++: Com-prehensive and versatile benchmark suite for video generative models. IEEE Trans. Pattern Anal. Mach. Intell. , 48(3):3268–3285. Daniel V Klein and Paul McCartney. 2024. Delivering live q&a in videos via synthetic content generation using generative artificial intelligence. Dan Kondratyuk, Lijun Yu, Xiuye Gu, Jose Lezama, Jonathan Huang, Grant Schindler, Rachel Hornung, Vighnesh Birodkar, Jimmy Yan, Ming-Chang Chiu, Krishna Somandepalli, Hassan Akbari, Yair Alon, Yong Cheng, Joshua V. Dillon, Agrim Gupta, Meera Hahn, Anja Hauth, David Hendon, and 12 others. 2024. VideoPoet: A large language model for zero-shot video generation. In Proceedings of the 41st International Conference on Machine Learning , vol-ume 235 of Proceedings of Machine Learning Re-search , pages 25105–25124. PMLR. Nayeon Lee, Wei Ping, Peng Xu, Mostofa Patwary, Pas-cale Fung, Mohammad Shoeybi, and Bryan Catan-zaro. 2022. Factuality enhanced language models for open-ended text generation. In Advances in Neural Information Processing Systems .Daniel Leiker, Ashley Ricker Gyllen, Ismail Eldesouky, and Mutlu Cukurova. 2023. Generative ai for learn-ing: Investigating the potential of learning videos with synthetic virtual instructors. In Artificial In-telligence in Education. Posters and Late Breaking Results, Workshops and Tutorials, Industry and In-novation Tracks, Practitioners, Doctoral Consortium and Blue Sky , pages 523–529, Cham. Springer Nature Switzerland. Ting Liu, Patrick Pang, Yiming Taclis Luo, Dana McKay, George Buchanan, and Shanton Chang. 2026. Evaluating the use of generative ai videos for health self-management of older adults: Mixed methods study. JMIR Aging , 9:e88005. Yaofang Liu, Xiaodong Cun, Xuebo Liu, Xintao Wang, Yong Zhang, Haoxin Chen, Yang Liu, Tieyong Zeng, Raymond Chan, and Ying Shan. 2024. Evalcrafter: Benchmarking and evaluating large video generation models. In IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition, CVPR 2024, Seattle, WA, USA, June 16-22, 2024 , pages 22139–22149. IEEE. Yuanxin Liu, Lei Li, Shuhuai Ren, Rundong Gao, Shicheng Li, Sishuo Chen, Xu Sun, and Lu Hou. 2023. FETV: A benchmark for fine-grained evalua-tion of open-domain text-to-video generation. In 
+
+Thirty-seventh Conference on Neural Information Processing Systems Datasets and Benchmarks Track .Grace Luo, Trevor Darrell, and Anna Rohrbach. 2021. NewsCLIPpings: Automatic Generation of Out-of-Context Multimodal Media. In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing , pages 6801–6817, Online and Punta Cana, Dominican Republic. Association for Computational Linguistics. Potsawee Manakul, Adian Liusie, and Mark Gales. 2023. SelfCheckGPT: Zero-resource black-box hallucina-tion detection for generative large language models. In Proceedings of the 2023 Conference on Empiri-cal Methods in Natural Language Processing , pages 9004–9017, Singapore. Association for Computa-tional Linguistics. Kenneth Marino, Mohammad Rastegari, Ali Farhadi, and Roozbeh Mottaghi. 2019. OK-VQA: A visual question answering benchmark requiring external knowledge. In IEEE Conference on Computer Vision and Pattern Recognition, CVPR 2019, Long Beach, CA, USA, June 16-20, 2019 , pages 3195–3204. Com-puter Vision Foundation / IEEE. Fanqing Meng, Jiaqi Liao, Xinyu Tan, Quanfeng Lu, Wenqi Shao, Kaipeng Zhang, Yu Cheng, Dianqi Li, and Ping Luo. 2025. Towards world simulator: Crafting physical commonsense-based benchmark for video generation. In Forty-second International Conference on Machine Learning .Thomas Mensink, Jasper Uijlings, Lluis Castrejon, Arushi Goel, Felipe Cadar, Howard Zhou, Fei Sha, André Araujo, and Vittorio Ferrari. 2023. Encyclope-dic vqa: Visual questions about detailed properties of fine-grained categories. In 2023 IEEE/CVF Interna-tional Conference on Computer Vision (ICCV) , pages 3090–3101. Sewon Min, Kalpesh Krishna, Xinxi Lyu, Mike Lewis, Wen-tau Yih, Pang Koh, Mohit Iyyer, Luke Zettle-moyer, and Hannaneh Hajishirzi. 2023. FActScore: Fine-grained atomic evaluation of factual precision in long form text generation. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing , pages 12076–12100, Singa-pore. Association for Computational Linguistics. Nikolaos Pellas. 2025. The impact of ai-generated in-structional videos on problem-based learning in sci-ence teacher education. Education Sciences , 15(1). Dustin Schwenk, Apoorv Khandelwal, Christopher Clark, Kenneth Marino, and Roozbeh Mottaghi. 2022. A-okvqa: A benchmark for visual question answer-ing using world knowledge. In Computer Vision – ECCV 2022: 17th European Conference, Tel Aviv, Israel, October 23–27, 2022, Proceedings, Part VIII ,page 146–162, Berlin, Heidelberg. Springer-Verlag. Team Seedance, De Chen, Liyang Chen, Xin Chen, Ying Chen, Zhuo Chen, Zhuowei Chen, Feng Cheng, Tianheng Cheng, Yufeng Cheng, Mojie Chi, Xuyan Chi, Jian Cong, Qinpeng Cui, Fei Ding, Qide Dong, Yujiao Du, Haojie Duanmu, Junliang Fan, and 152 others. 2026. Seedance 2.0: Advancing video generation for world complexity. Preprint ,arXiv:2604.14148. Sanket Shah, Anand Mishra, Naganand Yadati, and Partha Pratim Talukdar. 2019. Kvqa: knowledge-aware visual question answering. In Proceedings of the Thirty-Third AAAI Conference on Artificial Intelli-gence and Thirty-First Innovative Applications of Ar-tificial Intelligence Conference and Ninth AAAI Sym-posium on Educational Advances in Artificial Intelli-gence , AAAI’19/IAAI’19/EAAI’19. AAAI Press. Uriel Singer, Adam Polyak, Thomas Hayes, Xi Yin, Jie An, Songyang Zhang, Qiyuan Hu, Harry Yang, Oron Ashual, Oran Gafni, Devi Parikh, Sonal Gupta, and Yaniv Taigman. 2023. Make-a-video: Text-to-video generation without text-video data. In The Eleventh International Conference on Learning Representa-tions .Kaiyue Sun, Kaiyi Huang, Xian Liu, Yue Wu, Zihan Xu, Zhenguo Li, and Xihui Liu. 2025. T2v-compbench: A comprehensive benchmark for compositional text-to-video generation. In IEEE/CVF Conference on Computer Vision and Pattern Recognition, CVPR 2025, Nashville, TN, USA, June 11-15, 2025 , pages 8406–8416. Computer Vision Foundation / IEEE. Alon Talmor, Ori Yoran, Amnon Catav, Dan Lahav, Yizhong Wang, Akari Asai, Gabriel Ilharco, Han-naneh Hajishirzi, and Jonathan Berant. 2021. Multi-modal{qa}: complex question answering over text, tables and images. In International Conference on Learning Representations .Meituan LongCat Team, Xunliang Cai, Qilong Huang, Zhuoliang Kang, Hongyu Li, Shijun Liang, Liya Ma, Siyu Ren, Xiaoming Wei, Rixu Xie, and Tong Zhang. 2025. Longcat-video technical report. Preprint ,arXiv:2510.22200. James Thorne, Andreas Vlachos, Christos Christodoulopoulos, and Arpit Mittal. 2018. FEVER: a large-scale dataset for fact extraction and VERification. In Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long Papers) , pages 809–819, New Orleans, Louisiana. Association for Computational Linguistics. Jonathan Tonglet, Gabriel Thiem, and Iryna Gurevych. 2025. COVE: COntext and VEracity prediction for out-of-context images. In Proceedings of the 2025 Conference of the Nations of the Americas Chap-ter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Pa-pers) , pages 2029–2049, Albuquerque, New Mexico. Association for Computational Linguistics. Ruben Villegas, Mohammad Babaeizadeh, Pieter-Jan Kindermans, Hernan Moraldo, Han Zhang, Moham-mad Taghi Saffar, Santiago Castro, Julius Kunze, and Dumitru Erhan. 2023. Phenaki: Variable length video generation from open domain textual descrip-tions. In International Conference on Learning Rep-resentations .Ang Wang, Baole Ai, Bin Wen, Chaojie Mao, Chen-Wei Xie, Di Chen, Feiwu Yu, Haiming Zhao, Jianxiao Yang, Jianyuan Zeng, Jiayu Wang, Jingfeng Zhang, Jingren Zhou, Jinkai Wang, Jixuan Chen, Kai Zhu, Kang Zhao, Keyu Yan, Lianghua Huang, and 42 others. 2025a. Wan: Open and advanced large-scale video generative models. CoRR , abs/2503.20314. Shuting Wang, Yunqi Liu, Zixin Yang, Ning Hu, Zhicheng Dou, and Chenyan Xiong. 2025b. Respond beyond language: A benchmark for video generation in response to realistic user intents. arXiv preprint arXiv:2506.01689 .Zeqing Wang, Xinyu Wei, Bairui Li, Zhen Guo, Jin-rui Zhang, Hongyang Wei, Keze Wang, and Lei Zhang. 2026. Videoverse: How far is your t2v generator from a world model? arXiv preprint arXiv:2510.08398 .Bing Wu, Chang Zou, Changlin Li, Duojun Huang, Fang Yang, Hao Tan, Jack Peng, Jianbing Wu, Jiangfeng Xiong, Jie Jiang, Linus, Patrol, Peizhen Zhang, Peng Chen, Penghao Zhao, Qi Tian, Song-tao Liu, Weijie Kong, Weiyan Wang, and 62 others. 2025. Hunyuanvideo 1.5 technical report. Preprint ,arXiv:2511.18870. Jay Zhangjie Wu, Guian Fang, Haoning Wu, Xintao Wang, Yixiao Ge, Xiaodong Cun, David Junhao Zhang, Jia-Wei Liu, Yuchao Gu, Rui Zhao, and 1 others. 2024. Towards a better metric for text-to-video generation. arXiv preprint arXiv:2401.07781 .Shuai Yang, Wei Huang, Ruihang Chu, Yicheng Xiao, Yuyang Zhao, Xianbang Wang, Muyang Li, Enze Xie, Ying-Cong Chen, Yao Lu, Song Han, and Yukang Chen. 2026. Longlive: Real-time interactive long video generation. In The Fourteenth International Conference on Learning Representations .Shenghai Yuan, Yuanyang Yin, Zongjian Li, Xinwei Huang, Xiao Yang, and Li Yuan. 2026. Helios: Real real-time long video generation model. Preprint ,arXiv:2603.04379. Yilun Zhao, Haowei Zhang, Lujing Xie, Tongyan Hu, Guo Gan, Yitao Long, Zhiyuan Hu, Weiyuan Chen, Chuhan Li, Zhijian Xu, Chengye Wang, Ziyao Shang-guan, Zhenwen Liang, Yixin Liu, Chen Zhao, and Ar-man Cohan. 2025. MMVU: measuring expert-level multi-discipline video understanding. In IEEE/CVF Conference on Computer Vision and Pattern Recog-nition, CVPR 2025, Nashville, TN, USA, June 11-15, 2025 , pages 8475–8489. Computer Vision Founda-tion / IEEE. 
+
+A Appendix 
+
+A.1 Computational Resources 
+
+All experiments were conducted on a cluster with 10 NVIDIA A100 GPUs. 
+
+A.2 Prompt Topics 
+
+Arts & Entertainment, Cars & Other Vehicles, Com-puters & Electronics, Education & Communica-tions, Family Life, Finance & Business, Food & Entertaining, Health, Hobbies & Crafts, Holidays & Traditions, Home & Garden, Personal Care & Style, Pets & Animals, Philosophy & Religion, Sci-ence & Experiments, Sports & Fitness, Travel, and Work World. 
+
+A.3 Category-Level Performance Analysis. 
+
+As shown in Figures 3 and 4, performance varies sharply across categories. The easiest categories for factuality—Arts & Entertainment (avg. 87.8% FP), Philosophy & Religion (85.0%), and Travel (83.4%)—involve concrete visual actions with well-defined objects that models can render with reason-able accuracy. The hardest—Education & Commu-nications (29.0%), Cars & Other Vehicles (39.9%), and Health (53.9%)—demand domain-specific tool knowledge that models frequently hallucinate. In Helpfulness, the gap is even larger: Cars & Other Vehicles averages only 13.5% HS due to frequent spatial errors, while Arts & Entertainment reaches 63.9%. The consistently poor showing of Cars                
+
+> Model Text-Only Text+Image Text+Video
+> HappyHorse 1.0 83.3 57.0 65.4 Seedance 2.0 81.6 62.1 69.9 Wan 2.2 73.1 56.9 61.0 HunyuanVideo 1.5 63.2 43.1 48.9
+> Table 6: Factual Precision (%) under three verification modes.
+
+across both metrics reflects the difficulty of automo-tive procedures, where component locations, fluid types, and tool interactions must all be precisely rendered for a video to be useful. 
+
+A.4 Human Evaluation Details Evaluation Setup. We construct 108 pairwise comparison tasks across three model groups re-flecting natural capability tiers: (1) Seedance 2.0 vs. HappyHorse 1.0, the two closed-source API models; (2) Wan 2.2 vs. HunyuanVideo 1.5, repre-sentative open-source models; and (3) Helios-Base vs. LongCat-Video vs. LongLive 1.0, three models designed for long video generation. This grouping ensures comparisons within comparable capability tiers. Groups (1) and (2) together account for 54 tasks, while Group (3) contributes the remaining 54 tasks. For each task, annotators watch the gen-erated videos side-by-side, with a reference video provided for consultation, then make two separate forced-choice (A vs. B, no tie) judgments: (1) Fac-tuality: which video contains fewer or less severe factual errors; (2) Helpfulness: which video leaves the user more confident to successfully complete the task. 
+
+Annotation Details. Six domain-familiar anno-tators participated, each evaluating a randomized subset of the tasks. Each task is evaluated by ex-actly one annotator through the platform’s atomic reservation mechanism. Annotators consult the ref-erence video and documented entity characteristics before judgment. See Figure 5 for the guideline. 
+
+A.5 Multi-Modal Claim Ablation 
+
+Table 6 further shows that Text-only produces substantially higher FactP scores than both multi-modal modes across all models. This is expected because Text-only verifies whether the extracted textual claims are factually correct, whereas the multi-modal modes additionally require the model to check whether the visual content supports the claim. As a result, multi-modal verification is 0     
+
+> 10
+> 20
+> 30
+> 40
+> 50
+> 60
+> 70
+> 80
+> 90
+> 100
+> Arts and Entertainment
+> Cars Other Vehicles
+> Computers and Electronics
+> Education and Communications
+> Family Life
+> Finance and Business
+> Food and Entertaining
+> Health
+> Hobbies and Crafts
+> Holidays and Traditions
+> Home and Garden
+> Personal Care and Style
+> Pets and Animals
+> Philosophy and Religion
+> Science and Experiments
+> Sports and Fitness
+> Travel
+> Work World
+> Seedance 2.0 HappyHorse 1.0 Wan 2.2 HunyuanVideo 1.5
+> Helios-Base LongCat-Video LongLive 1.0
+
+Figure 3: Average FactP by category across all 7 models. 
+
+stricter and more sensitive to visual grounding er-rors, but it can also be noisier due to the ambiguity and density of visual evidence. 
+
+A.6 Outline Factuality 
+
+As demonstrated in Table 7, The TheraGun outline explicitly mentions a triangular handle , yet Hap-pyHorse 1.0 renders a generic cylindrical grip. The blood pressure outline instructs placing the cuff 
+
+above the elbow crease on the upper arm, while HappyHorse 1.0 wraps it around the forearm. 
+
+A.7 Interactive vs. Single-Prompt for Script Generation 
+
+Our pipeline generates each segment script after observing the output of the previous segment, al-lowing the LLM to adapt to the actual generated video rather than an idealized expectation. We com-pare this design against a single-prompt baseline, where all segment scripts are generated upfront using the same outline and model. As shown in Table 8, interactive generation im-proves FactP by 3.2 points and HelpS by 8.2 points. The factuality gain mainly comes from error correc-tion. Without visual feedback, the LLM assumes that the previous segment was generated correctly and writes subsequent scripts based on this ideal-ized state. When the actual video deviates from the script, for example, when the model generates a stethoscope instead of an Omron BP5450, the one-pass scripts continue to reference the intended device, producing claims that are mismatched with the visual content and penalized during verification. In contrast, the iterative approach observes such deviations and adjusts later scripts accordingly, re-ducing cascading factual errors. The larger gain in HelpS reflects a similar effect on procedural co-herence: visual feedback helps prevent cumulative misalignment in camera continuity and action se-quencing across segments. 
+
+A.8 Error Analysis 
+
+Types 1 to 3 are factuality errors, counted at the claim level; their distribution is shown in Fig-ure 6. The remaining two types concern help-fulness, which is evaluated at the video level: a single video may score low for multiple overlap-ping reasons, and factual errors naturally cascade into helpfulness penalties: if the model invents a feature (Entity Misrepresentation), the video be-0     
+
+> 10
+> 20
+> 30
+> 40
+> 50
+> 60
+> 70
+> 80
+> 90
+> 100
+> Arts and Entertainment
+> Cars Other Vehicles
+> Computers and Electronics
+> Education and Communications
+> Family Life
+> Finance and Business
+> Food and Entertaining
+> Health
+> Hobbies and Crafts
+> Holidays and Traditions
+> Home and Garden
+> Personal Care and Style
+> Pets and Animals
+> Philosophy and Religion
+> Science and Experiments
+> Sports and Fitness
+> Travel
+> Work World
+> Seedance 2.0 HappyHorse 1.0 Wan 2.2 HunyuanVideo 1.5
+> Helios-Base LongCat-Video LongLive 1.0
+
+Figure 4: Average HelpS by category across all 7 models. 
+
+comes irrelevant to the prompt (low Relevance); if it demonstrates a wrong procedure (Incorrect Proce-dure), key steps are effectively missing (low Com-pleteness) and the sequence cannot be followed (low Clarity). Because this overlap makes it dif-ficult to attribute a low helpfulness score solely to helpfulness-specific failures, we focus on two patterns that are largely orthogonal to factuality. 
+
+Type 1: Entity Misrepresentation. The model invents features or draws incorrect visual proper-ties of the specified device. In the Bostitch pencil sharpener example (Table 5), Seedance 2.0 gen-erates a box-like structure with a top-facing in-sertion slot, whereas the actual device features a curved body with a front-facing aperture. This is the most frequent factuality error, reflecting the model’s difficulty with less common proper nouns: while broadly familiar objects (e.g., a chicken egg, a paper airplane) are usually rendered correctly, prompts requiring precise knowledge of specific product models frequently trigger hallucinated fea-tures, resulting in substantially lower factual preci-sion. 
+
+Type 2: Incorrect Procedure. The entity is ren-dered correctly but operated improperly. In the Omron BP5450 example (Table 5), HunyuanVideo 1.5 places the cuff on the forearm, whereas the device is designed exclusively for upper-arm mea-surement. Unlike Entity Misrepresentation, which reflects a lack of static product knowledge, this er-ror type reveals a gap in procedural knowledge: the model can reproduce the entity’s appearance but does not know how it should be correctly operated. 
+
+Type 3: Component Misplacement. The correct component appears at the wrong physical location. In the BMW 3 Series example (Table 5), Happy-Horse 1.0 correctly depicts the engine oil and fun-nel but places them in the interior center console instead of the engine bay. This error is less fre-quent than the preceding two types, suggesting that models have an easier time learning where compo-nents belong than what they look like or how they are used. The remaining 1.7% of claims fall into a residual category, primarily incorrect outcome assertions and physically impossible descriptions. 
+
+Type 4: Incomplete Coverage. The video gets the facts right but omits critical steps. In the cur-Prompt Outline Step Video Generation 
+
+Show how to re-place the cabin air filter on a Toy-ota RAV4 (XA50) to improve HVAC airflow. 
+
+Hand opens the pas-senger side door 
+
+of a Toyota RAV4 (XA50), revealing the dashboard and closed glovebox. 
+
+> (Step 1)
+
+Seedance 2.0 
+
+Demonstrate how to replace the waste toner bottle in a Canon imageRUN-NER ADVANCE C3530. 
+
+The hand pushes the 
+
+front cover panel 
+
+of the printer back to the right until it clicks firmly shut.  
+
+> (Step 11)
+
+Seedance 2.0 
+
+Demonstrate aneck massage targeting the trapezius using a TheraGun Prime. 
+
+Wrap a hand around the top section of the TheraGun Prime’s triangular handle using an overhand grip. 
+
+> (Step 5)
+
+HappyHorse 1.0 
+
+How to measure blood pressure using an Omron Platinum BP5450. 
+
+Adjust the cuff ver-tically so the bot-tom edge rests ex-actly half an inch above the inside el-bow crease .
+
+> (Step 4)
+
+HappyHorse 1.0 
+
+Table 7: Outline-correct, video-incorrect examples. 
+
+For each prompt, the outline step (middle) describes the correct procedure, while the generated video frame (right) exhibits factual errors. This confirms that the factual inaccuracies originate from the video generation model rather than the outline. 
+
+Method FactP (%) HelpS (%) 
+
+Single-Prompt 69.9 40.2 Interactive 73.1 48.4 
+
+Table 8: Interactive vs. single-prompt script generation using Wan 2.2. 
+
+Error Type Correct (3-frame) Incorrect (3-frame) Type 4 
+
+Incomplete Coverage 
+
+Demonstrate how to install Nicetown 100% Blackout Thermal curtains. 
+
+HappyHorse 1.0 Helios-Base 
+
+Type 5 
+
+Unfollowable Present. 
+
+Demonstrate how to dye Easter eggs using red cabbage leaves. 
+
+Seedance 2.0 Wan 2.2 
+
+Table 9: Helpfulness error examples (Types 4–5). Each cell shows a three-frame sequence (stacked vertically) to illustrate the temporal nature of the error. 
+
+tain installation example (Table 9), Helios-Base achieves perfect FactP (100%) yet zero Complete-ness: the video shows curtains already hanging on the rod from start to finish, never demonstrating the fundamental steps of removing the rod, threading grommets, or remounting. The model knows what the end state looks like but fails to show how to reach it. 
+
+Type 5: Unfollowable Presentation. The neces-sary steps are present but rendered incoherently. In the Easter egg dyeing example (Table 9), Wan 2.2 achieves high FactP (92%) and includes the cor-rect materials (eggs, cabbage dye, bowl), but the frames contradict each other: a raw egg is cracked directly into the dye, intact white eggs later appear beside the raw yolk without explanation, and fin-ished dyed eggs are removed from the bowl while the raw yolk still floats in it. The steps are all shown, but in a logically broken sequence that no user could follow. Human Evaluation Guideline 
+
+# 1 Factuality Evaluation Role: Fact-checker comparing Video A vs B on factual accuracy. Errors include: incorrect facts, wrong objects, false causalities, erroneous safety info, and entity-attribute mismatches with the QUESTION entity 's documented characteristics. Principles: 1. Entity-Spec Alignment: Depicting an attribute that contradicts the QUESTION entity 'sdocumented characteristics is a factual error. 2. Use authoritative sources for critical/specialized facts; common sense suffices otherwise. 3. Judge only what is visually or aurally present in the video — do not infer unshown info. 4. Do not penalize a video simply for having fewer factual claims if it has no errors. Decision (forced choice: pick A or B, no tie): 1. Fewer/less severe errors wins. 2. If errors are comparable, more correct verifiable facts wins. 3. If factual content is comparable, more specific, less ambiguous, less misleading wins. 4. If both are poor, pick the relatively more reliable one. # 2 Helpfulness Evaluation Role: Evaluate whether a user can complete the QUESTION task relying solely on this video. Do NOT judge aesthetics or generation quality. Principles: 1. Judge only content actually in the video. 2. Do not use external knowledge to fill missing steps. 3. Judge for this QUESTION only, not overall quality. 4. Evaluate the method the video actually uses, not a different method. Decision (forced choice: pick A or B, no tie): Watch both videos and form an overall impression: which one leaves you more confident that a user could successfully complete the task? Pay equal attention to all three aspects — a truly helpful video must be **on-topic** (matches the QUESTION), **complete** (shows the essential process), and **clear** (easy to follow). Do not prioritize one over another; weigh them together and pick the video that feels more useful overall. 1. If one video is clearly stronger across all three, choose it. 2. If they have trade-offs (e.g., A is more complete but B is clearer), decide based on which deficit would be harder for the user to work around. 3. If both are poor, pick the **relatively more usable** one. # 3 Workflow 1. Read the QUESTION. 2. Consult the reference video and search the QUESTION entity 's documented characteristics (brand, model, features, capabilities, behaviors, etc.). 3. Watch Video A — note factual errors, assess A 's helpfulness. 4. Watch Video B — same. 5. Vote `fact_vote: A ` or `B` with brief reasoning. 6. Vote `helpfulness_vote: A ` or `B` with brief reasoning. 
+
+Figure 5: Human Annotation Guideline 42.6% 
+
+> Entity
+> Misrepresentation
+> 40.7%
+> Incorrect
+> Procedure
+> 15.0%
+> Component
+> Misplacement
+> 1.7%
+> Other
+
+Figure 6: Distribution of 870 incorrect claims across three factuality error types. Entity Misrepresentation dominates at 42.6%, followed by Incorrect Procedure (40.7%) and Component Misplacement (15.0%). The remaining 1.7% are residual cases. Prompt generation template 
+
+# Role Generate high-quality video generation prompts. # Input Topic Category: {category} # Objective Generate {num_prompts} diverse video generation prompts about {category}. Each prompt tests whether a text-to-video model can produce a factually accurate video. A good prompt describes content where video representation is inherently more vivid and informative than a text-based explanation. # Constraints ## Correctness & Verifiability 1. FACTUALLY CORRECT: The prompt itself must be factually accurate — the entity described must exist, and the task must be a real procedure that works as described. Do NOT fabricate features, products, or procedures. 2. UNIQUE & DETERMINISTIC ENTITY: The named entity MUST be uniquely identifiable. Every proper noun (brand, model, material, method name) must refer to one and only one real-world product or concept. No ambiguous references. This ensures human annotators can precisely locate the entity 's documentation for verification. 3. JUSTIFIABLE ANSWER: The task described MUST have a correct, well-established answer or procedure. Do NOT generate prompts about controversial, debated, or undefined topics. ## Video-Specific Value 4. VISUAL SUPERIORITY: The content MUST be one where video representation is clearly more effective than a text description. Select content involving spatial manipulation, physical movement, visual state changes, or interface navigation — scenes that are hard to convey in words alone. ## Entity Richness & Difficulty 5. RICH PROPER NOUNS: Use diverse, specific proper nouns throughout the prompt (brand, model number, year, variant, material, technique name). The more precise identifiers, the harder it is for video generation models to hallucinate correctly. Examples of good precision: "TENS 7000 unit with electrode pads for lower back pain relief" over "a TENS unit"; "Petzl Grigri belay device with a locking carabiner for top-rope climbing" over "a climbing device." ## Non-Triviality 6. MEANINGFUL COMPLEXITY: The content MUST be rich enough to require multiple distinct visual events. Single-event prompts are trivial. The ideal prompt describes content with a meaningful sequence where temporal order matters. ## Uniqueness (Within This Category) 7. NO INTRACATEGORY DUPLICATION: Among the {num_prompts} prompts you generate, no two should describe the same entity or content. If two prompts are too similar (e.g. "replace part A" and "replace part B"), keep only the more distinctive one. # Output Format { "category": "{category}", "prompts": [ "<prompt 1>", ...] } # Examples of Valid Prompts Category: Health - "Demonstrate how to measure blood pressure using an Omron Platinum BP5450." - "Demonstrate how to apply a TENS 7000 unit with electrode pads for lower back pain relief." ...... Category: Sports and Fitness - "Demonstrate how to thread a Petzl Grigri belay device with a locking carabiner for top-rope climbing." - "Demonstrate how to set up a Peloton Bike+ with the rotating screen for a live cycling class." # Task Generate {num_prompts} prompts for the category "{category}" following all 7 constraints above. 
+
+Figure 7: Prompt generation template Deduplication prompt 
+
+# Role Scan a list of video generation prompts across categories and flag pairs that are semantically overlapping. # Input You will receive a list of prompts grouped by category. Each prompt has: - category: the topic domain - prompt: the instructional question text # Objective Identify pairs of prompts whose named entities (brand, model, product) or described procedures are substantially overlapping. Two prompts are considered overlapping if: - They name the same specific product or device (e.g., both ask about "Nikon D850"). - They describe the same task for the same entity (e.g., two prompts about "replacing the cabin air filter on a Toyota RAV4"). - They differ only in minor wording but share the same core procedure. Do NOT flag prompts that: - Share the same general topic but involve different entities or procedures (e.g., "Demonstrate how to measure blood pressure" and "Demonstrate how to set up a CPAP machine" under Health are not duplicates). - Use the same entity for genuinely different tasks (e.g., "set up Nikon D850" vs "clean Nikon D850 sensor" are not duplicates). # Output Format Return ONLY valid JSON: {"duplicates": [ {"prompt_a": "<full text of first prompt>", "category_a": "<category>", "prompt_b": "<full text of second prompt>", "category_b": "<category>", "reason": "<why these are overlapping>", "action": "<merge|keep_one|discard_both>" }]}# Task Scan all prompts, identify overlapping pairs, and output JSON. 
+
+Figure 8: Deduplication prompt Outline prompt 
+
+# Role Master Video Director & Outline Planner. # Input Video Topic: {initial_prompt} # Objective Decompose the video topic into a logical sequence of visual micro-actions. Aim for a total duration around 60 seconds, with flexibility to adapt based on task complexity. # Constraints 1. STRICTLY VISUAL: Every step MUST describe exact visual occurrences (manipulation, tool movement, screen interaction). No abstract explanations. 2. 60-SECOND PACING: Generate EXACTLY 10 to 14 steps. Assign each step a `duration_seconds `
+
+(approx 3.0–5.0s) based on action complexity. - For simple tasks (e.g. clipping a nail), break it down into micro-details (e.g. inspecting tool, positioning, single-action focus) to naturally fill the steps. - For complex tasks (e.g. replacing car brakes), focus on a representative 1-minute continuous phase, or seamlessly condense the steps to fit the 10-14 step limit. 3. CAMERA ANGLES: Specify clear camera angles (e.g. "Close-up", "Over-the-shoulder view", "First-person view", "Screen capture"). 4. CONTINUITY: Ensure logical visual flow from one step to the next. 5. TOPIC-SPECIFIC VISUAL ANCHORS: Extract 3-4 defining visual identifiers from the input topic (e.g. brand/model, software UI, tool type, ingredient, environment cue, or technique). Distribute these across at least 3 steps, ensuring they are actively manipulated or highlighted in the `visual_action ` descriptions so the generated video is unmistakably tied to the exact subject. # Output Format Return ONLY valid JSON matching the exact schema below. NO markdown. # JSON Schema {"video_goal": "A concise 1-sentence summary.", "required_subjects_and_props": "Comma-separated string of what primary subjects, tools, or interfaces are needed.", "total_steps": "integer between 10 and 14", "outline_steps": [ {"step_index": "integer (1-indexed)", "duration_seconds": "float", "camera_angle": "string", "visual_action": "Describe the exact visual action for this step." }]}
+
+Figure 9: Outline generation prompt First segment prompt 
+
+# Role Video Generation Configuration Assistant (Segment 1 / Bootstrap). # Input Video Topic: {initial_prompt} Current Step: {visual_action} Suggested Camera Angle: {camera_angle} Required Props: {required_subjects_and_props} Reference Num Frames: {reference_num_frames} # Constraints 1. Frame Budget: Output `num_frames ` using {reference_num_frames} as the baseline. Adjust slightly up or down to match natural density and rhythm. 2. Structure: EXACTLY 3 sentences total. Map strictly to: - [Sentence 1: Camera Setup & Initial Motion]: Incorporate the {camera_angle} to establish the view. - [Sentence 2: Subject + Action/State]: Visually depict the {visual_action} using the {required_subjects_and_props}. Focus on exact movements or changes. - [Sentence 3: Environment & Lighting Anchors]: Establish the clear setting or background interface necessary for the video. 3. CRITICAL ANCHOR DEFINITION: - IDENTITY_MARKER: Derive from {initial_prompt} and {required_subjects_and_props}. Create a concise string containing exactly 3-5 concrete visual traits of the primary interacting subject/tool. Focus exclusively on persistent attributes. Exclude actions, temporal shifts, and pronouns. - CONTINUITY_ANCHORS: Define the background, environment, or overall lighting/atmosphere. - These anchors MUST be injected verbatim into EVERY subsequent segment. 4. Output Format: - Return ONLY valid JSON matching the exact schema below. NO markdown. NO extra fields. # Required JSON Schema {"seed": 42, "identity_marker": "string", "continuity_anchors": "string", "segments": [ {"prompt": "3-sentence string following structure rules", "num_frames": "integer" }]}# Execution Analyze request → define anchors → draft Segment 1 prompt → output JSON. 
+
+Figure 10: First segment generation prompt Other segments prompt 
+
+# Role Instructional Video-Conditioned Iterative Script Generator. # Inputs - Previous Segment Video: [Attached] - Initial Request: {initial_prompt} - Progress: Segment {current_idx} - Identity Marker: {identity_marker} - Continuity Anchors: {continuity_anchors} - CURRENT STEP TO TEACH: {visual_action} - Target Camera Angle for this Step: {camera_angle} - Reference Num Frames: {reference_num_frames} # Dual-Condition Alignment Directive 1. VISUAL TRACKING: Watch FINAL 2 SECONDS of attached video. Extract exact terminal state. 2. TEXTUAL LOCK: Cross-reference with {continuity_anchors}. 3. INSTRUCTIONAL PROGRESSION: The action MUST logically progress from the video 's end-state to execute the {visual_action}. 4. FRAME PACING: Use {reference_num_frames} as the baseline for `num_frames `. Allow slight deviation to accommodate motion complexity. # Generation Constraints 1. Structure: EXACTLY 3 sentences total. Map strictly to: - [Sentence 1]: Visual Stitch & Camera. Inherit terminal camera state, transition smoothly towards the {camera_angle}. - [Sentence 2]: Instructional Action Core. Integrate {identity_marker} verbatim. Describe the precise visual execution of the {visual_action}. Specify exactly how the subjects/objects interact. Zero character alteration to the marker. - [Sentence 3]: Environment Lock. EXPLICITLY reference {continuity_anchors}. Ensure background and layout remain strictly consistent. 2. Continuity Guards: - NO pronouns. NO generic verbs. NO abstract concepts. - PRESERVE ALL VISUAL TRAITS: The attributes in {identity_marker} must remain visually unchanged. - Camera transitions MUST be smooth. 3. Output Format: - Return ONLY valid JSON. NO markdown. - Schema: {"prompt": "string", "num_frames": integer} # Execution Extract video end-state → Lock to anchors → Draft S1/S2/S3 with {identity_marker} & {continuity_anchors} → Evaluate Stop logic → Output JSON. 
+
+Figure 11: Other segment generation prompt Claim extraction (part1) 
+
+# Role Professional Video Atomic Claims Extraction Assistant, extracting externally verifiable atomic claims from various types of videos. # Input video:{} , question:{} # Core Rules ## 1. Visual Content Priority - Claims MUST describe what is VISUALLY PRESENT in the video, not general knowledge about the topic - Extract the SPECIFIC movements/actions shown, even if they are incorrect or mismatched with the question - The verification system will judge truthfulness; your job is accurate visual description using question 's entity name - If video shows X but question asks about Y, extract claim as "Y requires/uses [X 'scharacteristics]" - Extract ONLY objects/actions that are RELEVANT to completing the question 's task: * Core entity features (the device/tool mentioned in question) * Objects actively used or manipulated in demonstrated steps * Environmental elements that affect task execution (e.g., table for positioning) * Unusual/incorrect items shown in the process (even if wrong) - IGNORE purely decorative background items (curtains, plants, wall art, furniture color) unless directly used in the task. ## 2. Entity Naming Convention - If the question specifies entity names, claims must use the complete name every time. - If the question does not specify entity names, claims should use specific names identifiable from the video. - Related sub-entities or variants (e.g., "Instagram web version" for "Instagram") are acceptable when they improve clarity. - Pronouns (it/they/the device, etc.) and vague references ("this feature", "the above method", etc.) are prohibited in all cases. - If video content differs from question-specified entities, still use the question 's entity name in claims. - Do NOT substitute with generic terms like "the device", "the monitor", etc. ## 3. Fact Extraction Standards - Atomicity: Each claim contains only one independent fact. Avoid combining multiple actions, conditions, or outcomes in a single claim. - Verifiability: The content stated in the claim can be judged true or false through external information without watching the video. Claims can be true or factually incorrect; the key is that they must be verifiable by external information. - Informativeness: Express verifiable entity characteristics or method knowledge, not merely describing visuals without factual content. - Knowledge Conversion: Convert SPECIFIC VISUAL ACTIONS shown in the video into statements using the question 's entity name, with existential qualifiers for open-ended questions. - Do NOT convert to "correct" knowledge if video shows incorrect/different content - Objectivity: Claims must be objective and free from subjective/evaluative words (e.g., "correctly", "properly", "effectively", "best", "should"). Describe what IS done, not what SHOULD be done. - Convert subjective question phrasing into objective factual statements. - Timestamp Annotation: Each claim must include the exact timestamp or time range when the visual evidence appears in the video, using format MM:SS or MM:SS-MM:SS. - Scope Qualification: For open-ended questions allowing multiple methods (e.g., "How to..."), use qualified language like "can involve", "one method uses", or "the video demonstrates" instead of absolute terms like "requires"/"must", unless the video explicitly claims universality. 
+
+Figure 12: Claim extraction prompt (part1) Claim extraction (part2) 
+
+## 4. Context Handling - Analyze the overall video flow and extract implied knowledge claims (but only extract content actually shown/occurring in the video), not just describing single frames. - Combine with question context: claims should treat video content as the video 's "claimed answer" to the question, regardless of whether that answer is factually correct. - Extract what the video "claims" or "demonstrates" about the question topic, not what is objectively true about that topic. - Extract visual elements that are relevant to the task or affect task execution. - Convert unusual objects into method claims using qualified language (e.g., "can involve", "may include", "one method uses", "the demonstrated process may require"). ## 5. Contradictory Content Handling - When the method shown in the video contradicts the question or common knowledge: 1. Still extract the video content as a claim. 2. Do not add value judgments like "wrong" or "false" to the claim itself. 3. The truthfulness of the claim is determined by external verification; the extraction task is not responsible for judging truth. # Exemplars ## Exemplar 1 { "video_summary": "The video demonstrates the complete power-on and initial setup process for iPhone 15 Pro with several correct steps and a few inaccurate claims", "question": "Please show me how to set up an iPhone 15 Pro with step by step demonstrations.", "estimated_category": "Electronics Tutorial", "claims": [{ "id": 1, "claim": "iPhone 15 Pro has a titanium frame with matte finish casing", "timestamp": "00:00-00:02" }, ... { "id": 17, "claim": "iPhone 15 Pro displays the home screen with default app layout after completing all setup steps", "timestamp": "00:58-01:00" } ] } ... (two more exemplars) # Output Format {"video_summary": "<One sentence summarizing the main video content>", "question": "<The user 's question that the video attempts to answer>", "estimated_category": "<Video type judged based on content>", "claims": [ { "id": <Integer, starting from 1>, "claim": "<Specific factual statement, use declarative sentence, no pronouns allowed, must include complete entity name>", "timestamp": "<Time range in format MM:SS-MM:SS or single timestamp MM:SS when the visual evidence appears>" } ] } # Task Carefully watch the video, analyze the provided video and question, extract all verifiable atomic factual claims as comprehensively as possible. Claims must describe WHAT THE VIDEO SHOWS using the ENTITY NAME FROM THE QUESTION. The verification system will determine if the claim is true or false. Your job is accurate extraction, not truth judgment. 
+
+Figure 13: Claim extraction prompt (part2) Claim verification 
+
+# Role Professional Fact-Checking Assistant, based on world knowledge and domain expertise, to verify the accuracy of video claims. # Goal Assuming each claim accurately describes the video content (i.e., not verifying whether the claim truthfully represents the video), classify each claim as Correct, Incorrect, or Uncertain based on accepted facts, professional knowledge, and verifiable external information. # Input You will receive a JSON-formatted list of video claims, each claim containing: - id: Claim number - claim: Specific factual claim content # Verification Categories - Correct: Claim content aligns with accepted facts/professional knowledge, supported by reliable knowledge sources. - Incorrect: Claim content contradicts accepted facts/professional knowledge, refuted by reliable knowledge sources. - Uncertain: Judgment cannot be made due to one or more of the following: - Insufficient professional knowledge available - The topic is disputed or controversial - Inadequate information to verify - Ambiguous entity or reference # Output Format (JSON only) {"verification_summary": { "total_claims": <integer>, "correct": <integer>, "incorrect": <integer>, "uncertain": <integer> }, "claim_results": [ {"claim_id": <integer>, "claim": "<content>", "verdict": "<Correct|Incorrect|Uncertain>", "reason": "<basis for judgment>", "reference": "URL or source name (e.g., 'WHO 2025 Report '), or 'N/A ' if based on general knowledge" }]}# Special Instructions 1. Knowledge Priority Principle: Use world knowledge/professional knowledge to judge the factual accuracy of the claim itself 2. External Verification Priority: For verifiable factual claims, refer to authoritative sources, professional standards, or accepted knowledge 3. Transparent Reasoning: The reason field should explain the basis for judgment 4. Assumption Consistency: By default, assume the claim 's description of the video is accurate; no need to verify whether the video displays the claim content # Task Verify the claims and output JSON. 
+
+Figure 14: Claim verification prompt Helpfulness evaluation 
+
+# Role Video Helpfulness evaluator. # Input QUESTION: {QUESTION}, VIDEO: {VIDEO} # Core Definition helpfulness: Can the target user, relying on this video, understand and complete the task requested by the QUESTION comprehensively and with minimal trial-and-error? # Hard Rules - Score based on the demonstrations (actions, item states, camera framing, audio/text if present). Do not use external/common knowledge to fill missing steps. - If a required step is not clearly presented in the video, treat it as NOT PRESENT for Completeness. - The scoring target is "helpfulness for the QUESTION", not aesthetics. - If the VIDEO is inaccessible, unplayable, or completely blank, set all subscores to 0 and final_score to 0. - Timestamp policy: whenever you cite evidence, provide an approximate timestamp range "HH:MM:SS-HH:MM:SS". If truly not available, use "unknown". # Scoring Procedure - Identify the chosen approach and extract key requirements: - Recognize that the QUESTION may have multiple valid solutions. First, identify which specific valid method/approach the VIDEO is attempting to demonstrate to achieve the goal. - Given the QUESTION 's ultimate goal AND the VIDEO 's chosen approach, create a comprehensive checklist of core requirements that are indispensable to successfully complete *that specific method*. - Determine the exact number of requirements dynamically based strictly on the actual logical steps of the identified method. Do not arbitrarily limit, merge, or pad the list. - Include: required tools/materials for this method, critical procedural steps, key physical states (e.g. changes in shape/color). - For each requirement: Decide whether it is PRESENT in the video. Provide a timestamp_range where it is shown. - Score A–C (0–10) using the rubric and anchors below. - Compute final_score as the simple average of the 3 dimensions and round to 1 decimal. # Scoring Dimensions Each dimension is scored 0-10. The final total is also 0-10. A. Relevance: Does the video content directly address the QUESTION task and match explicit constraints? Do NOT score step coverage here. B. Completeness: Does the video demonstrate the key steps/tools needed to complete the task using its chosen valid method? Only assess WHETHER PRESENT (coverage) based on your dynamically generated checklist for this specific approach. C. Clarity: Is the procedure easy to interpret and follow? Includes: logical action sequence, clear pacing (not rushed), and observable state changes (e.g. clearly showing 'before ' and 
+
+'after ' of an action). # Output Format Output strictly in valid JSON format without markdown code blocks. {"key_requirements": [{ "requirement": "string", "present": true, "notes": "string" }], "main_issues": ["string"], "subscores": { "relevance": <0-10>, "completeness": <0-10>, "clarity": <0-10> }, "score_calculation": "(A+B+C)/3" }# Task Given a user QUESTION and a generated VIDEO, evaluate how helpful the video is for the user in achieving the QUESTION 's goal, and output a score of 0-10. 
+
+Figure 15: Helpfulness evaluation prompt Script generation prompt 
+
+# Role Long-Form Video Script Generator that produces `single_prompt ` and `interactive_prompts ` from a step-by-step outline. # Input Video Topic: {initial_prompt} Full Outline (all steps): {full_outline} Required Props: {required_subjects_and_props} # Objective Convert the outline into a full video script. Each segment 's prompt must be independently self-contained, with end-to-end visual continuity ensured purely through language. # Constraints ## 1. Identity & Continuity Anchors Derive from {initial_prompt} and {required_subjects_and_props}: - IDENTITY_MARKER: 3-5 concrete visual traits of the primary subject/tool (brand, model, color, shape, size). No actions or pronouns. - CONTINUITY_ANCHORS: Persistent background, environment, lighting, or atmosphere. These anchors must appear verbatim in EVERY segment 's prompt. ## 2. Per-Segment Prompt Rules Each outline step → one **3-sentence flowing prompt**. Step 1: 1. Camera angle + `identity_marker ` and props in starting position. 2. Visual execution of the step 's `visual_action `.3. Restate `continuity_anchors ` and `identity_marker ` (setting, lighting, background). Steps 2..N: 1. Smooth camera transition from previous angle to the step 's `camera_angle `.2. Visual execution of the step 's `visual_action ` with verbatim `identity_marker `.3. Re-establish environment with `continuity_anchors ` and verbatim `identity_marker `.## 3. Cross-Segment Continuity - Each prompt must be self-contained yet sequentially coherent. - End state of segment N sets up segment N+1. - NO pronouns referencing entities from previous segments without full context. - NO abrupt camera jumps — describe smooth transitions. ## 4. Output Format Return ONLY valid JSON. NO markdown. # JSON Schema {"seed": 42, "identity_marker": "string", "continuity_anchors": "string", "video_goal": "string", "total_steps": "integer", "single_prompt": "Continuous narrative covering all steps in order.", "interactive_prompts": [ {"prompt": "3-sentence prompt with verbatim identity_marker and continuity_anchors", "duration_seconds": "float from outline step"}, {"prompt": "...", "duration_seconds": "..."} ]}
+
+Figure 16: Script generation prompt text+image claim verification 
+
+# Role Professional Fact-Checking Assistant, based on world knowledge and domain expertise, to verify the accuracy of video claims. # Goal The text claim and the attached image together describe what the video shows. Based on accepted facts, professional knowledge, and verifiable external information, classify the claim as Correct, Incorrect, or Uncertain. # Input You will receive: - claim_id: Claim number - claim: Specific factual claim content - image: [Attached image frame extracted from the video] - frame_capture_time: The time the image was captured # Verification Categories - Correct: Claim content aligns with accepted facts/professional knowledge, supported by reliable knowledge sources. - Incorrect: Claim content contradicts accepted facts/professional knowledge, refuted by reliable knowledge sources. - Uncertain: Judgment cannot be made due to one or more of the following: - Insufficient professional knowledge available - The topic is disputed or controversial - Inadequate information to verify - Ambiguous entity or reference # Output Format {"claim_id": <integer>, "claim": "<content>", "verdict": "<Correct|Incorrect|Uncertain>", "reason": "<basis for judgment>", "reference": "URL or source name (e.g. 'WHO 2025 Report '), or 'N/A ' if based on general knowledge" }# Special Instructions 1. Knowledge Priority Principle: Use world knowledge/professional knowledge to judge the factual accuracy of the claim itself 2. External Verification Priority: For verifiable factual claims, refer to authoritative sources, professional standards, or accepted knowledge 3. Transparent Reasoning: The reason field should explain the basis for judgment 4. Complementary Evidence: The text claim states what fact is being asserted, and the attached image shows what the video actually displays. Use both together to determine factual correctness — neither alone is sufficient. # Task Verify the claim and output JSON. 
+
+Figure 17: Text+Image claim verification prompt text+video claim verification 
+
+# Role Professional Fact-Checking Assistant, based on world knowledge and domain expertise, to verify the accuracy of video claims. # Goal The text claim and the attached video clip together describe what the video shows. Based on accepted facts, professional knowledge, and verifiable external information, classify each claim as Correct, Incorrect, or Uncertain. # Input You will receive: - claim_id: Claim number - claim: Specific factual claim content - clip: [Attached video segment extracted from the original video] - timestamp: Time range of the clip in the original video # Verification Categories - Correct: Claim content aligns with accepted facts/professional knowledge, supported by reliable knowledge sources. - Incorrect: Claim content contradicts accepted facts/professional knowledge, refuted by reliable knowledge sources. - Uncertain: Judgment cannot be made due to one or more of the following: - Insufficient professional knowledge available - The topic is disputed or controversial - Inadequate information to verify - Ambiguous entity or reference # Output Format {"claim_id": <integer>, "claim": "<content>", "verdict": "<Correct|Incorrect|Uncertain>", "reason": "<basis for judgment>", "reference": "URL or source name (e.g. 'WHO 2025 Report '), or 'N/A ' if based on general knowledge" }# Special Instructions 1. Knowledge Priority Principle: Use world knowledge/professional knowledge to judge the factual accuracy of the claim itself 2. External Verification Priority: For verifiable factual claims, refer to authoritative sources, professional standards, or accepted knowledge 3. Transparent Reasoning: The reason field should explain the basis for judgment 4. Complementary Evidence: The text claim states what fact is being asserted, and the attached video clip shows what the video actually displays. Use both together to determine factual correctness — neither alone is sufficient. # Task Verify the claim and output JSON. 
+
+Figure 18: Text+Video claim verification prompt Factual error classification 
+
+# Role You are a failure analysis assistant. Your task is to classify incorrect video claims into predefined error types based on the claim text and the verifier 's reasoning. # Input You will receive a list of incorrect claims. Each claim contains: - claim: the factual statement extracted from the video - reason: the verifier 's explanation for why this claim is incorrect # Error Types Classify each incorrect claim into ONE of the following categories: A. Entity Misrepresentation The claim describes a feature, appearance, or capability that does not exist on the specified device. The model fabricated a button, interface element, physical property, or software function. Indicators: "does not have", "does not support", "does not feature", "is not a feature", "lacks", "no such", incorrect color/shape/material, wrong orientation of a component. B. Component Misplacement The claim describes a correct component or action, but at the wrong physical location. The entity exists, but the model placed it incorrectly. Indicators: "located on", "not on the", "wrong location", "instead of", "not in the", spatial references (side vs rear, top vs front, left vs right, interior vs engine bay). C. Incorrect Procedure The claim describes an incorrect method of using or operating the device. The entity and its components are essentially correct, but the shown usage procedure is wrong, unsafe, or contradicts the manufacturer 's instructions. Indicators: "should be", "must be", "the correct procedure", "cannot", "improper", "not the correct way", "contradicts", "manufacturer specifies". D. Other The error does not clearly fit any of the above categories. Use sparingly. # Output Format Return ONLY valid JSON: {"error_classification": [ {"claim_id": <integer>, "claim": "<original claim text>", "type": "<A|B|C|D>", "brief": "<one-sentence justification>" }], "summary": { "A_Entity_Misrepresentation": <count>, "B_Component_Misplacement": <count>, "C_Incorrect_Procedure": <count>, "D_Other": <count> }}# Task Classify each incorrect claim into exactly one category (A/B/C/D) and output JSON. 
+
+Figure 19: Factual error classification prompt

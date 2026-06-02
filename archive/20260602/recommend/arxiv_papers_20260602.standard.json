@@ -1,0 +1,94 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-02T22:56:01.458146+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2606.01285v1",
+      "source": "arxiv",
+      "title": "Knowledge-Intensive Video Generation",
+      "abstract": "Text-to-video generation has advanced rapidly in visual quality, but remains under-evaluated for factuality and practical usefulness. We introduce knowledge-intensive video generation (KIVI), where models generate videos from short information-seeking prompts that ask for explanations, procedures, or demonstrations. To evaluate this setting, we construct KIVI-Bench, a benchmark of 1,080 prompts, and propose automatic metrics for factuality and helpfulness. Human evaluation shows that our metrics significantly better align with human annotations than existing alternatives. Experiments on seven state-of-the-art video generation models show that current systems still lag behind human performance, especially on visual properties, procedural operations, and clear information presentation. These results highlight KIVI as a challenging direction for factual and instructionally useful video generation.",
+      "authors": [
+        "Chenxu Wang",
+        "Mingda Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-31T15:11:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.01285v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes automatic metrics for factuality and helpfulness of generated videos",
+      "llm_evidence_cn": "提出了针对生成视频的事实性和有用性的自动评估指标",
+      "llm_evidence": "提出了针对生成视频的事实性和有用性的自动评估指标",
+      "canonical_evidence": "提出了针对生成视频的事实性和有用性的自动评估指标",
+      "llm_tldr_en": "Introduces KIVI-Bench with 1080 prompts and automatic metrics for factuality/helpfulness; human evaluation shows better alignment than existing metrics.",
+      "llm_tldr_cn": "针对文本到视频生成在事实性和实用性方面评估不足的问题，该论文提出了知识密集型视频生成（KIVI）任务，并构建了包含1080个提示的KIVI-Bench基准。作者设计了用于事实性和有用性的自动评估指标，通过人工评估验证这些指标比现有替代方案更符合人类判断。在七个先进视频生成模型上的实验表明，当前系统在视觉属性和程序操作等方面仍落后于人类水平。该工作为视频生成模型提供了更全面的评估方法。",
+      "llm_tldr": "针对文本到视频生成在事实性和实用性方面评估不足的问题，该论文提出了知识密集型视频生成（KIVI）任务，并构建了包含1080个提示的KIVI-Bench基准。作者设计了用于事实性和有用性的自动评估指标，通过人工评估验证这些指标比现有替代方案更符合人类判断。在七个先进视频生成模型上的实验表明，当前系统在视觉属性和程序操作等方面仍落后于人类水平。该工作为视频生成模型提供了更全面的评估方法。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.01031v1",
+      "source": "arxiv",
+      "title": "Temporally-Aligned Evaluation for Audio-Driven Talking Head Generation",
+      "abstract": "Audio-driven talking-head generation has advanced rapidly, yet existing evaluation protocols mainly rely on frame-wise metrics that assume strict temporal correspondence between generated and reference videos. This assumption does not match speech-driven facial motion, which naturally includes slight timing shifts, different speaking speeds, and stylistic variations. As a result, conventional metrics may treat harmless timing differences as quality errors, making it harder to fairly compare methods and understand their trade-offs. In this work, we argue that evaluation of dynamic generative models should be formulated as a sequence-alignment problem rather than independent frame comparison. We introduce a unified sequence-level reformulation that integrates Soft Dynamic Time Warping into established evaluation pipelines. By aligning feature trajectories while preserving temporal order, the proposed framework provides robustness to bounded temporal misalignments without altering the underlying perceptual, identity, or synchronization encoders. We show that frame-wise evaluation can be viewed as a special case under rigid alignment, while sequence-level alignment provides improved stability, lower sensitivity to timing differences, and clearer separation between modeling paradigms. Building on this principled formulation, we conduct a large-scale benchmark of 20 methods across seven datasets spanning canonical, in-the-wild, and style-diverse scenarios under standardized protocols. Extensive experiments show that temporally aligned metrics are more robust to timing differences, provide more consistent results across datasets, and better reveal systematic trade-offs between modeling paradigms, such as synchronization versus realism and expressiveness versus stability.",
+      "authors": [
+        "Zhicheng Zhang",
+        "Lei Wang",
+        "Yu Zhang",
+        "Yongsheng Gao"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.AI",
+        "cs.CV",
+        "cs.LG",
+        "cs.MM"
+      ],
+      "published": "2026-05-31T05:44:42+00:00",
+      "link": "https://arxiv.org/pdf/2606.01031v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes temporally-aligned evaluation for generated videos",
+      "llm_evidence_cn": "提出时间对齐的生成视频评估方法",
+      "llm_evidence": "提出时间对齐的生成视频评估方法",
+      "canonical_evidence": "提出时间对齐的生成视频评估方法",
+      "llm_tldr_en": "Proposes sequence-aligned evaluation for dynamic generative models, addressing limitations of frame-wise metrics in generated video quality assessment.",
+      "llm_tldr_cn": "本文指出音频驱动说话头生成评估中逐帧指标的缺陷，提出将评估视为序列对齐问题。通过序列级重新定义，统一了时间偏移和速度变化下的评测，更公平地比较生成方法。该方法可直接应用于一般视频生成质量评估，提升评价的合理性。",
+      "llm_tldr": "本文指出音频驱动说话头生成评估中逐帧指标的缺陷，提出将评估视为序列对齐问题。通过序列级重新定义，统一了时间偏移和速度变化下的评测，更公平地比较生成方法。该方法可直接应用于一般视频生成质量评估，提升评价的合理性。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
