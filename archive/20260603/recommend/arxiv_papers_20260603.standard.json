@@ -1,0 +1,107 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-03T22:40:42.324908+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.27235v1",
+      "source": "arxiv",
+      "title": "MRT: Masked Region Transformer for Layered Image Generation and Editing at Scale",
+      "abstract": "Layered image generation and editing is a fundamental capability that enables layer-wise reuse, editing, and composition of generated visual content, analogous to word-level editing in natural language. Despite its importance, this remains an underexplored area at scale. To address this gap, we present MRT, a 20B-parameter masked region diffusion model tailored for multi-layer transparent image generation and editing, trained on over 10M multilingual design samples spanning diverse aspect ratios and textual prompts. To fully leverage this scale, we make two key technical contributions. First, we unify three complementary tasks including text-to-layers, image-to-layers, and layers-to-layers within a shared masked region diffusion framework, where selective token masking enables flexible layer-wise generation and editing. Second, to enable overflow layer generation, we introduce an overflow-aware canvas layer that handles boundary inconsistencies and supports semi-transparent background synthesis, enabling complete editable layers extending beyond visible canvas boundaries. Additionally, we apply diffusion distillation to achieve 8-step, real-time multi-layer generation with minimal quality degradation. Extensive experiments demonstrate that our framework substantially outperforms prior state-of-the-art approaches, including various commercial systems, across all three tasks, establishing a new benchmark for multi-layer transparent image generation. Notably, our model significantly outperforms the concurrent Qwen-Image-Layered model in image-to-layers quality according to user-study results, while achieving 10-100\\times faster inference and reducing activation GPU memory consumption by 50-90\\% during image-to-layer inference.",
+      "authors": [
+        "Zhicong Tang",
+        "Zhao Zhang",
+        "Jingye Chen",
+        "Mohan Zhou",
+        "Yifan Pu",
+        "Yuchi Liu",
+        "Yalong Bai",
+        "Ethan Smith",
+        "Yuhui Yuan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-26T16:16:19+00:00",
+      "link": "https://arxiv.org/pdf/2605.27235v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "masked region diffusion for multi-layer transparent image generation",
+      "llm_evidence_cn": "使用掩码区域扩散的多层透明图像生成",
+      "llm_evidence": "使用掩码区域扩散的多层透明图像生成",
+      "canonical_evidence": "使用掩码区域扩散的多层透明图像生成",
+      "llm_tldr_en": "MRT proposes a 20B-parameter masked region diffusion model for multi-layer transparent image generation and editing, unifying three tasks into a shared framework and scaling with over 10M diverse samples.",
+      "llm_tldr_cn": "该文针对大规模多层透明图像生成与编辑这一未充分探索的问题，提出MRT模型，它是一个200亿参数的掩码区域扩散模型，将文本到图层、图像到图层和图层到图层三种任务统一在共享框架中。在超过1000万多样化样本上训练后，模型能够生成高质量的多层透明图像。该方法为透明视频的生成提供了关键技术基础，有望迁移到视频领域。",
+      "llm_tldr": "该文针对大规模多层透明图像生成与编辑这一未充分探索的问题，提出MRT模型，它是一个200亿参数的掩码区域扩散模型，将文本到图层、图像到图层和图层到图层三种任务统一在共享框架中。在超过1000万多样化样本上训练后，模型能够生成高质量的多层透明图像。该方法为透明视频的生成提供了关键技术基础，有望迁移到视频领域。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.00793v1",
+      "source": "arxiv",
+      "title": "MBench: A Comprehensive Benchmark on Memory Capability for Video World Models",
+      "abstract": "Recent advancements in video-based world models have demonstrated an unprecedented ability to synthesize high-fidelity visual sequences. However, a fundamental gap persists between visually plausible video generation and the functional requirements of a world model, particularly in maintaining a stable and reasonable internal state over extended temporal horizons. While existing benchmarks primarily emphasize visual quality, motion coherence, and text-video alignment, they largely overlook memory, the core capability of a world model to preserve consistency across long-term horizons and complex interactions. To address this gap, we present \\textbf{MBench}, a comprehensive benchmark dedicated to quantifying and evaluating the memory capability of video world models. We systematically decompose the memory capability of video world models into three hierarchical and complementary core dimensions: entity consistency, environment consistency, and causal consistency, which are further refined into 12 quantifiable sub-dimensions for comprehensive characterization of long-term memory. Our benchmark is built upon rigorously curated real-captured long videos, and evaluated by rule-based quantitative matrices and VLM to enable objective and comprehensive consistency assessment. Extensive evaluations of mainstream state-of-the-art video world models reveal critical systemic limitations of existing methods in long-term state retention, providing a standardized benchmark and clear research direction to advance the field.",
+      "authors": [
+        "Shengjun Zhang",
+        "Zhang Zhang",
+        "Simin Huang",
+        "Zhenyu Tang",
+        "Hanyang Wang",
+        "Chensheng Dai",
+        "Min Chen",
+        "Yifan Li",
+        "Yuxin Li",
+        "Yingjie Chen",
+        "Hao Liu",
+        "Chen Li",
+        "Yueqi Duan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-30T16:17:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.00793v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmark for evaluating video world models memory capability, relevant to video generation quality",
+      "llm_evidence_cn": "评估视频世界模型记忆能力的基准，与生成视频质量评估相关",
+      "llm_evidence": "评估视频世界模型记忆能力的基准，与生成视频质量评估相关",
+      "canonical_evidence": "评估视频世界模型记忆能力的基准，与生成视频质量评估相关",
+      "llm_tldr_en": "MBench is a comprehensive benchmark for evaluating memory capability of video world models, addressing a gap in existing evaluation which focuses on visual quality but overlooks consistency over time.",
+      "llm_tldr_cn": "视频世界模型在合成高保真序列方面取得进展，但现有基准主要评估视觉质量、运动连贯性和文本对齐，忽略了长期记忆一致性。本文提出MBench基准，专门量化视频世界模型的记忆能力。通过评估时间一致性，补充了生成视频的评估维度，有助于更全面地衡量视频生成质量。",
+      "llm_tldr": "视频世界模型在合成高保真序列方面取得进展，但现有基准主要评估视觉质量、运动连贯性和文本对齐，忽略了长期记忆一致性。本文提出MBench基准，专门量化视频世界模型的记忆能力。通过评估时间一致性，补充了生成视频的评估维度，有助于更全面地衡量视频生成质量。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -6,31 +6,31 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-02
-- 运行时间：2026-06-02 22:58:05 UTC
+- 最新运行日期：2026-06-03
+- 运行时间：2026-06-03 22:44:12 UTC
 - 运行状态：成功
 - 本次总论文数：2
-- 精读区：2
-- 速读区：0
+- 精读区：0
+- 速读区：2
 
 ### 今日简报（AI）
-今日精读两篇高质量论文，聚焦知识密集型视频生成与音频驱动头部生成的时序对齐评估。
+今日速读2篇推荐论文，重点在于图像生成与视频世界模型能力评估。
 
-最值得关注：知识注入可显著提升视频生成的内容合理性；时序对齐是评估音频驱动头部生成的关键瓶颈。
+最值得关注的是《MRT》提出的掩码区域Transformer，可实现分层图像生成与编辑；《MBench》则系统评价了视频世界模型的内存能力。
 
-普通读者可跟进视频生成与知识融合的进展，并留意头部生成评估标准的优化方向。
-- 详情：[/202606/02/README](/202606/02/README)
+建议优先阅读《MRT》了解其编辑能力，后续可关注视频记忆评估指标的扩展应用。
+- 详情：[/202606/03/README](/202606/03/README)
 
 ### 精读区论文标签
-1. [Knowledge-Intensive Video Generation](/202606/02/2606.01285v1-knowledge-intensive-video-generation)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：提出了针对生成视频的事实性和有用性的自动评估指标
-2. [Temporally-Aligned Evaluation for Audio-Driven Talking Head Generation](/202606/02/2606.01031v1-temporally-aligned-evaluation-for-audio-driven-talking-head-generation)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：提出时间对齐的生成视频评估方法
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [MRT: Masked Region Transformer for Layered Image Generation and Editing at Scale](/202606/03/2605.27235v1-mrt-masked-region-transformer-for-layered-image-generation-and-editing-at-scale)  
+   标签：评分：7.0/10、query:vgen-metrics
+   evidence：使用掩码区域扩散的多层透明图像生成
+2. [MBench: A Comprehensive Benchmark on Memory Capability for Video World Models](/202606/03/2606.00793v1-mbench-a-comprehensive-benchmark-on-memory-capability-for-video-world-models)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：评估视频世界模型记忆能力的基准，与生成视频质量评估相关
 
 
 <div class="dpr-home-promo-card">
