@@ -1,0 +1,54 @@
+{
+  "label": "2026-06-04",
+  "date": "2026-06-04",
+  "generated_at": "2026-06-04T20:45:56",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202606/04/2606.01481v1-safegen-bench-benchmarking-safety-in-image-conditioned-text-to-video-generation",
+      "section": "deep",
+      "title_en": "SafeGen-Bench: Benchmarking Safety in Image-Conditioned Text-to-Video Generation",
+      "authors": "Yingzi Ma, Xiaogeng Liu, Yawen Zheng, Chaowei Xiao",
+      "date": "2026-05-31",
+      "pdf": "https://arxiv.org/pdf/2606.01481v1",
+      "score": "9.0",
+      "evidence": "生成视频安全性评估基准",
+      "tldr": "现有视频生成安全基准仅关注恶意文本提示，忽略图文结合可能产生有害内容。本文提出SafeGen-Bench，定义10类风险，用起始帧与文本配对模拟真实输入。评估显示条件T2V模型不安全分数高达44.5，单模态护栏在7个类别上80%失效。该基准旨在推动更安全可控的视频生成模型发展。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "With the rapid advancements in text-to-image diffusion models, generative video models (T2V models) like Sora can now produce short synthetic videos from a text prompt or an initial image. However, synthetic video generation -- especially when guided by an initial image -- often poses risks, including the potential creation of illegal, politically sensitive, or unethical content. Existing benchmarks have started to consider the safety of generated videos, but they primarily focus on testing models with malicious text prompts, ignoring the scenario where text prompt and image combination may still lead to harmful video content. In practice, this is a common and challenging issue: videos generated from safe text and image inputs can nonetheless convey harmful information. To bridge this gap, we introduce SafeGen-Bench, a benchmark specifically designed to evaluate the safety of conditional T2V models. Our benchmark defines 10 malicious categories, concentrating on risks related to both temporal sequences and depicted behaviors. SafeGen-Bench consists of carefully selected start frames from diverse image and video sources, paired with corresponding text prompts to simulate realistic inputs. We evaluate a variety of conditional T2V models on SafeGen-Bench, and the results indicate that current models struggle to consistently avoid generating malicious content with unsafety scores reaching up to 44.5, especially under conditions requiring high quality. Furthermore, we assess the effectiveness of both text-based and image-based guardrails on our benchmark, finding that unimodal guardrails alone were insufficient to provide a robust defense, with an 80\\% failure rate across seven malicious categories. We hope that SafeGen-Bench will foster the development of safer and more controllable conditional T2V models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/04/2606.01897v1-community-aware-assessment-of-social-textual-engagement-and-resonance-a-human-centric-perspective-on-user-generated-content-evaluation",
+      "section": "quick",
+      "title_en": "Community-Aware Assessment of Social Textual Engagement and Resonance: A Human-Centric Perspective on User-Generated Content Evaluation",
+      "authors": "Tianjiao Li, Kai Zhao, Xiang Li, Yang Liu, Huyang Sun",
+      "date": "2026-06-01",
+      "pdf": "https://arxiv.org/pdf/2606.01897v1",
+      "score": "7.0",
+      "evidence": "提出了针对用户生成内容的视频质量评估新方法",
+      "tldr": "传统视频质量评估仅关注美学保真度，忽略社交动态。本文提出CASTER任务评估UGC社区共鸣，并设计MEDEA架构，通过Social-CoT多模态视角采样模拟社区心智。采用监督微调和过程监督强化学习两阶段训练。在CASTER-Bench基准上，MEDEA显著超越基线，提供与真实社区反馈一致的可解释推理路径。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Traditional Video Quality Assessment (VQA) focuses narrowly on aesthetic fidelity, overlooking the complex social dynamics that define quality in User-Generated Content (UGC). In this work, we propose a paradigm shift from signal-centric metrics to human-centric resonance assessment. We introduce CASTER (Community-Aware Assessment of Social Textual Engagement and Resonance), a new task that evaluates whether a UGC item achieves positive community resonance based on its multimodal attributes rather than visual quality alone. To address this, we present MEDEA (Multimodal Engagement-Driven Evaluation Architecture), which introduces a novel Social Chain-of-Thought (Social-CoT) mechanism. Unlike traditional logical CoT, Social-CoT performs multimodal perspective-taking, instantiating diverse viewer personas to simulate collective cognitive and emotional reactions (i.e., the \"community mind\") before deriving a quality judgment. MEDEA is trained via a two-stage approach involving supervised fine-tuning and process-supervised reinforcement learning with Social Alignment Reward to ensure reasoning paths are grounded in authentic human social cognition. To support this task, we release CASTER-Bench, a comprehensive human-annotated benchmark covering diverse UGC categories. Experiments demonstrate that MEDEA significantly outperforms state-of-the-art baselines on CASTER-Bench while providing interpretable and empathetic reasoning paths that align with real community feedback.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/04/2606.03972v1-aad-1-asymmetric-adversarial-distillation-for-one-step-autoregressive-video-generation",
+      "section": "quick",
+      "title_en": "AAD-1: Asymmetric Adversarial Distillation for One-Step Autoregressive Video Generation",
+      "authors": "Haobo Li, Yanhong Zeng, Yunhong Lu, Jiapeng Zhu, Hao Ouyang, Qiuyu Wang, Ka Leong Cheng, Yujun Shen, Zhipeng Zhang",
+      "date": "2026-06-02",
+      "pdf": "https://arxiv.org/pdf/2606.03972v1",
+      "score": "6.0",
+      "evidence": "提出整体真实度评分作为视频质量评估方法",
+      "tldr": "现有自回归视频生成采用对抗蒸馏但易出现运动崩溃和训练不稳定，导致生成静态视频。提出的AAD-1框架通过非对称判别器设计（双向全局时空上下文）和分阶段训练（先分布匹配热身再对抗蒸馏）解决此问题。在VBench上达到最先进性能，实现一步生成高质量动态视频，为自回归视频生成提供了稳定高效的范式。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We present AAD-1, an Asymmetric Adversarial Distillation framework for One-step autoregressive image-to-video generation. State-of-the-art methods adopt adversarial distillation but suffer from motion collapse and training instability, resulting in static videos. AAD-1 addresses these challenges through two key designs in architecture and training strategy. Our key architectural insight is to break the symmetry between generator and discriminator. While the generator remains causal to preserve autoregressive sampling capability, the discriminator attends bidirectionally over the full spatiotemporal context and produces a single holistic realism score for the entire video sequence. This asymmetric design enables the discriminator to effectively detect global temporal failures and long-range drift that cause motion collapse in autoregressive generation. To stabilize training, we introduce a phased strategy that first uses distribution matching to bootstrap a stable one-step generator, providing a warm-up phase that brings the student distribution closer to the teacher before adversarial distillation begins. Extensive experiments on VBench demonstrate that AAD-1 achieves state-of-the-art performance in one-step autoregressive video generation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

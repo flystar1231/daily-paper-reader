@@ -6,31 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-03
-- 运行时间：2026-06-03 22:44:12 UTC
+- 最新运行日期：2026-06-04
+- 运行时间：2026-06-04 20:45:50 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：0
+- 本次总论文数：3
+- 精读区：1
 - 速读区：2
 
 ### 今日简报（AI）
-今日速读2篇推荐论文，重点在于图像生成与视频世界模型能力评估。
-
-最值得关注的是《MRT》提出的掩码区域Transformer，可实现分层图像生成与编辑；《MBench》则系统评价了视频世界模型的内存能力。
-
-建议优先阅读《MRT》了解其编辑能力，后续可关注视频记忆评估指标的扩展应用。
-- 详情：[/202606/03/README](/202606/03/README)
+今天对图像条件视频生成的安全基准测试进行精读，并速读了两篇社交文本评估和视频生成论文。最值得关注的是获9.0分的《SafeGen-Bench》，它系统性地评估了图像到视频生成中的安全风险。建议读者优先了解该安全基准方法，同时可参照社区互动评估研究提升内容理解。
+- 详情：[/202606/04/README](/202606/04/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [SafeGen-Bench: Benchmarking Safety in Image-Conditioned Text-to-Video Generation](/202606/04/2606.01481v1-safegen-bench-benchmarking-safety-in-image-conditioned-text-to-video-generation)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：生成视频安全性评估基准
 
 ### 速读区论文标签
-1. [MRT: Masked Region Transformer for Layered Image Generation and Editing at Scale](/202606/03/2605.27235v1-mrt-masked-region-transformer-for-layered-image-generation-and-editing-at-scale)  
+1. [Community-Aware Assessment of Social Textual Engagement and Resonance: A Human-Centric Perspective on User-Generated Content Evaluation](/202606/04/2606.01897v1-community-aware-assessment-of-social-textual-engagement-and-resonance-a-human-centric-perspective-on-user-generated-content-evaluation)  
    标签：评分：7.0/10、query:vgen-metrics
-   evidence：使用掩码区域扩散的多层透明图像生成
-2. [MBench: A Comprehensive Benchmark on Memory Capability for Video World Models](/202606/03/2606.00793v1-mbench-a-comprehensive-benchmark-on-memory-capability-for-video-world-models)  
+   evidence：提出了针对用户生成内容的视频质量评估新方法
+2. [AAD-1: Asymmetric Adversarial Distillation for One-Step Autoregressive Video Generation](/202606/04/2606.03972v1-aad-1-asymmetric-adversarial-distillation-for-one-step-autoregressive-video-generation)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：评估视频世界模型记忆能力的基准，与生成视频质量评估相关
+   evidence：提出整体真实度评分作为视频质量评估方法
 
 
 <div class="dpr-home-promo-card">
