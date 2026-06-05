@@ -6,29 +6,31 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-04
-- 运行时间：2026-06-04 20:45:50 UTC
+- 最新运行日期：2026-06-05
+- 运行时间：2026-06-05 21:43:43 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：1
-- 速读区：2
+- 本次总论文数：2
+- 精读区：2
+- 速读区：0
 
 ### 今日简报（AI）
-今天对图像条件视频生成的安全基准测试进行精读，并速读了两篇社交文本评估和视频生成论文。最值得关注的是获9.0分的《SafeGen-Bench》，它系统性地评估了图像到视频生成中的安全风险。建议读者优先了解该安全基准方法，同时可参照社区互动评估研究提升内容理解。
-- 详情：[/202606/04/README](/202606/04/README)
+今日精读两篇视频处理与生成论文，分别聚焦背景替换与评估基准。
+
+最值得关注的是PAI-Studio提出的相机感知运动方法实现电影级背景替换，以及V2V-Bench为视频生成评估提供的全面基准。
+
+建议后续重点关注视频生成中运动一致性的评估方法，这对实际应用场景尤为关键。
+- 详情：[/202606/05/README](/202606/05/README)
 
 ### 精读区论文标签
-1. [SafeGen-Bench: Benchmarking Safety in Image-Conditioned Text-to-Video Generation](/202606/04/2606.01481v1-safegen-bench-benchmarking-safety-in-image-conditioned-text-to-video-generation)  
+1. [PAI-Studio: Cinematic Video Background Replacement with Camera-Aware Motion](/202606/05/2606.01399v1-pai-studio-cinematic-video-background-replacement-with-camera-aware-motion)  
    标签：评分：9.0/10、query:vgen-metrics
-   evidence：生成视频安全性评估基准
+   evidence：背景替换涉及alpha通道
+2. [V2V-Bench: A Comprehensive Benchmark for Video-to-Video Generation Evaluation](/202606/05/2606.05665v1-v2v-bench-a-comprehensive-benchmark-for-video-to-video-generation-evaluation)  
+   标签：评分：8.0/10、query:vgen-metrics
+   evidence：提出了一个包含11个维度的全面基准，用于评估视频到视频生成
 
 ### 速读区论文标签
-1. [Community-Aware Assessment of Social Textual Engagement and Resonance: A Human-Centric Perspective on User-Generated Content Evaluation](/202606/04/2606.01897v1-community-aware-assessment-of-social-textual-engagement-and-resonance-a-human-centric-perspective-on-user-generated-content-evaluation)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：提出了针对用户生成内容的视频质量评估新方法
-2. [AAD-1: Asymmetric Adversarial Distillation for One-Step Autoregressive Video Generation](/202606/04/2606.03972v1-aad-1-asymmetric-adversarial-distillation-for-one-step-autoregressive-video-generation)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出整体真实度评分作为视频质量评估方法
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
