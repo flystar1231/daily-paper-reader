@@ -1,0 +1,60 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-06T20:23:24.362598+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.03972v2",
+      "source": "arxiv",
+      "title": "AAD-1: Asymmetric Adversarial Distillation for One-Step Autoregressive Video Generation",
+      "abstract": "We present AAD-1, an Asymmetric Adversarial Distillation framework for One-step autoregressive image-to-video generation. State-of-the-art methods adopt adversarial distillation but suffer from motion collapse and training instability, resulting in static videos. AAD-1 addresses these challenges through two key designs in architecture and training strategy. Our key architectural insight is to break the symmetry between generator and discriminator. While the generator remains causal to preserve autoregressive sampling capability, the discriminator attends bidirectionally over the full spatiotemporal context and produces a single holistic realism score for the entire video sequence. This asymmetric design enables the discriminator to effectively detect global temporal failures and long-range drift that cause motion collapse in autoregressive generation. To stabilize training, we introduce a phased strategy that first uses distribution matching to bootstrap a stable one-step generator, providing a warm-up phase that brings the student distribution closer to the teacher before adversarial distillation begins. Extensive experiments on VBench demonstrate that AAD-1 achieves state-of-the-art performance in one-step autoregressive video generation.",
+      "authors": [
+        "Haobo Li",
+        "Yanhong Zeng",
+        "Yunhong Lu",
+        "Jiapeng Zhu",
+        "Hao Ouyang",
+        "Qiuyu Wang",
+        "Ka Leong Cheng",
+        "Yujun Shen",
+        "Zhipeng Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-02T17:55:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.03972v2",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "discriminator produces holistic realism score for generated videos",
+      "llm_evidence_cn": "判别器为生成视频生成整体逼真度评分",
+      "llm_evidence": "判别器为生成视频生成整体逼真度评分",
+      "canonical_evidence": "判别器为生成视频生成整体逼真度评分",
+      "llm_tldr_en": "Introduces AAD-1 for one-step video generation with an asymmetric discriminator that provides a holistic realism score, serving as an evaluation metric.",
+      "llm_tldr_cn": "现有对抗蒸馏视频生成存在运动崩溃问题。本文提出AAD-1，采用非对称生成器-判别器架构：生成器保持因果性，判别器双向关注全时空上下文并输出整体逼真度评分。该设计不仅能生成高质量一步视频，其判别器还可作为视频质量评估指标。实验证明该方法在保真度和运动合理性上优于先前工作。",
+      "llm_tldr": "现有对抗蒸馏视频生成存在运动崩溃问题。本文提出AAD-1，采用非对称生成器-判别器架构：生成器保持因果性，判别器双向关注全时空上下文并输出整体逼真度评分。该设计不仅能生成高质量一步视频，其判别器还可作为视频质量评估指标。实验证明该方法在保真度和运动合理性上优于先前工作。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

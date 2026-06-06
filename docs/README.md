@@ -6,31 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-05
-- 运行时间：2026-06-05 21:43:43 UTC
+- 最新运行日期：2026-06-06
+- 运行时间：2026-06-06 20:24:05 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：2
-- 速读区：0
+- 本次总论文数：1
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-今日精读两篇视频处理与生成论文，分别聚焦背景替换与评估基准。
-
-最值得关注的是PAI-Studio提出的相机感知运动方法实现电影级背景替换，以及V2V-Bench为视频生成评估提供的全面基准。
-
-建议后续重点关注视频生成中运动一致性的评估方法，这对实际应用场景尤为关键。
-- 详情：[/202606/05/README](/202606/05/README)
+今日聚焦一篇关于一步自回归视频生成的非对称对抗蒸馏论文（评分7.0/10）。该方法通过不对称对抗蒸馏实现单步生成，在保持质量的同时大幅提升速度。建议关注视频生成领域“一步到位的蒸馏技术”与自回归模型的结合趋势。
+- 详情：[/202606/06/README](/202606/06/README)
 
 ### 精读区论文标签
-1. [PAI-Studio: Cinematic Video Background Replacement with Camera-Aware Motion](/202606/05/2606.01399v1-pai-studio-cinematic-video-background-replacement-with-camera-aware-motion)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：背景替换涉及alpha通道
-2. [V2V-Bench: A Comprehensive Benchmark for Video-to-Video Generation Evaluation](/202606/05/2606.05665v1-v2v-bench-a-comprehensive-benchmark-for-video-to-video-generation-evaluation)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：提出了一个包含11个维度的全面基准，用于评估视频到视频生成
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [AAD-1: Asymmetric Adversarial Distillation for One-Step Autoregressive Video Generation](/202606/06/2606.03972v2-aad-1-asymmetric-adversarial-distillation-for-one-step-autoregressive-video-generation)  
+   标签：评分：7.0/10、query:vgen-metrics
+   evidence：判别器为生成视频生成整体逼真度评分
 
 
 <div class="dpr-home-promo-card">
