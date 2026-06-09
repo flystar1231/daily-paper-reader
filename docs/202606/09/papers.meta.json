@@ -1,0 +1,69 @@
+{
+  "label": "2026-06-09",
+  "date": "2026-06-09",
+  "generated_at": "2026-06-09T20:37:03",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202606/09/2606.08091v1-videoweaver-evaluating-and-evolving-skills-for-agentic-long-video-generation",
+      "section": "deep",
+      "title_en": "VideoWeaver: Evaluating and Evolving Skills for Agentic Long Video Generation",
+      "authors": "Jianhui Wei, Jie Tan, Hengchuan Zhu, Xiaotian Zhang, Yan Zhang, Ziyi Chen, Daoan Zhang, Wei Xu, Zuozhu Liu",
+      "date": "2026-06-06",
+      "pdf": "https://arxiv.org/pdf/2606.08091v1",
+      "score": "8.0",
+      "evidence": "用于评估和进化长视频生成技能的基准",
+      "tldr": "现有agent框架在长视频生成这一多模态长程任务上尚未充分探索。VideoWeaver建立了一个包含16个任务类别、285个案例的基准，让agent自主组合基础技能构建工作流而非遵循预设流程。通过agent-as-judge同时检查执行轨迹和最终视频，并设计技能演化算法。实验表明，显式组合技能比仅用基础技能更优，技能演化进一步提升质量，且agent-as-judge与人类判断高度一致，特别是过程指标。该工作为长视频生成提供评估基准和技能自动优化方法。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Recent agent frameworks such as Claude Code, Codex, and OpenClaw are strong at tool use and orchestration, but whether they can handle long video generation, a long-horizon multimodal task, remains underexplored. Unlike earlier video agents whose pipeline is handcrafted, these frameworks can build and refine their own workflows. We introduce VideoWeaver, an agent harness and benchmark that evaluates and evolves skills for long video generation, where an agent turns a single instruction into a long video by composing foundation skills into its own workflow rather than following a predefined pipeline. The benchmark has 16 task categories and 285 cases, with references spanning text, image, audio, video, and their combinations. Because errors can arise at any stage and not just in the final video, we propose an agent-as-judge that inspects both the execution trace and the final video, grounding its scores in evidence such as metadata and intermediate files. Using this feedback, we further design a skill evolution algorithm that refines and merges the agent's skills. Across multiple frameworks and models, we find that an explicit composition skill improves the generation process over using foundation skills alone, that skill evolution further improves output quality, and that performance varies notably across harness and model choices. The proposed agent-as-judge also aligns well with human judgments, especially on process metrics. Code and dataset is available at https://github.com/JianhuiWei7/VideoWeaver",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/09/2606.04596v1-a-systematic-evaluation-of-positional-bias-in-multi-video-summarization-with-mllms",
+      "section": "quick",
+      "title_en": "A Systematic Evaluation of Positional Bias in Multi-Video Summarization with MLLMs",
+      "authors": "Huangchen Xu, Yuan Wu, Yi Chang",
+      "date": "2026-06-03",
+      "pdf": "https://arxiv.org/pdf/2606.04596v1",
+      "score": "7.0",
+      "evidence": "提出多视频摘要评估指标（覆盖率、DPB、MEG），方法可迁移至生成视频质量评估",
+      "tldr": "多模态大语言模型（MLLMs）在多视频摘要中可能存在位置偏差，即同一视频在不同输入槽位时摘要质量不同。我们构建了基于ActivityNet和News视频的基准，涵盖烹饪、家居、休闲和新闻场景，包含两视频和四视频输入。评估了9个开源和专有MLLMs，使用覆盖率、方向性位置偏差（DPB）和中边差距（MEG）三种指标测量位置效应。结果表明位置效应依赖于领域和模型：有向偏差可能较小但中间位置表现不佳，增加视觉或生成预算无法均匀消除不平衡。进一步分析了提示层缓解方法。该研究揭示了多视频摘要对输入顺序敏感，需要更鲁棒的顺序无关多模态系统。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Multimodal Large Language Models (MLLMs) are increasingly used for video understanding, yet their reliability under multi-video inputs remains poorly understood. We study positional bias in multi-video summarization, where the quality of a per-video summary can change with the video's input slot even when the underlying content is unchanged. We construct a benchmark from ActivityNet and News videos, covering Cooking, Domestic, Leisure, and News settings with two- and four-video inputs. We evaluate nine open-source and proprietary MLLMs and measure position effects with three complementary metrics: Coverage, Directional Positional Bias (DPB), and Middle-Edge Gap (MEG). Our results show that positional effects are domain- and model-dependent: signed directional bias can be small even when middle positions underperform, and increasing visual or generation budget does not uniformly remove the imbalance. We further analyze prompt-level mitigation methods. Together, the results show that multi-video summarization remains sensitive to input protocol and position, motivating more robust order-invariant multimodal systems.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/09/2606.08415v1-covebench-can-video-editing-models-handle-complex-instructions",
+      "section": "quick",
+      "title_en": "CoVEBench: Can Video Editing Models Handle Complex Instructions?",
+      "authors": "Jiangtao Wu, Jiaming Wang, Yiwen He, Yuanxing Zhang, Shihao Li, Dunyuan Liu, Xuedong Zhao, Jialu Chen, Zekun Moore Wang, Jiaheng Liu",
+      "date": "2026-06-07",
+      "pdf": "https://arxiv.org/pdf/2606.08415v1",
+      "score": "7.0",
+      "evidence": "用于评估视频编辑模型复杂指令的基准",
+      "tldr": "现有视频编辑模型在简单任务上表现良好，但真实用户请求常需组合编辑。现有基准局限于孤立编辑和粗粒度指标。为此提出CoVEBench，含416个源视频、626条组合指令和9990个细粒度检查项。实验显示模型在同时处理多操作时频繁遗漏编辑、违反约束或引入伪影。CoVEBench为推进视频编辑适应现实工作流提供了诊断性测试平台。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "While recent text-guided video editing models excel at elementary tasks (e.g., style transfer, object insertion), real-world user requests are highly compositional. A single prompt often demands multiple coupled edits, such as modifying subjects, actions, and camera views, while strictly preserving unrelated spatiotemporal content. Existing benchmarks, heavily constrained by isolated edits and coarse global metrics, fail to diagnose how models handle such complex workflows. To address this gap, we introduce CoVEBench, a compositional video editing benchmark comprising 416 curated source videos, 626 multi-point editing instructions, and 9,990 fine-grained checklist items. Covering diverse editing dimensions, CoVEBench evaluates models via MLLM-judged instruction compliance and video fidelity, alongside automated metrics for video quality. Extensive experiments reveal that compositional editing remains a profound challenge: current models frequently omit edits, violate preservation constraints, or introduce artifacts when handling multiple operations simultaneously. CoVEBench provides a challenging, diagnostic testbed to advance video editing toward realistic user workflows.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/09/2606.07311v1-culturescore-evaluating-cultural-faithfulness-in-video-generation-models",
+      "section": "quick",
+      "title_en": "CULTURESCORE: Evaluating Cultural Faithfulness in Video Generation Models",
+      "authors": "Anku Rani, Wei Dai, Shravan Nayak, Pattie Maes, Mahdi M. Kalayeh, Paul Pu Liang",
+      "date": "2026-06-05",
+      "pdf": "https://arxiv.org/pdf/2606.07311v1",
+      "score": "6.0",
+      "evidence": "提出CultureScore评估框架衡量视频生成模型文化忠实度",
+      "tldr": "视频生成模型虽进步迅速，但现有评估指标仅关注视觉质量，无法衡量其是否准确表现不同文化规范。为此，我们提出CultureScore，将文化忠实度分解为身份、背景和行为三个粒度。在10个国家、3个模型生成的6180个视频上评估，发现最优模型仅得56.8%，行为维度低于52%。人类偏好排序与CultureScore一致，而与视觉评分相反，表明文化忠实度是公平视频生成不可或缺的准则。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "As video generation models like Veo 3.1 and LTX-2 advance, their ability to accurately represent diverse global cultures remains a critical yet understudied frontier. Current metrics, such as VideoScore, only measure visual quality but offer no mechanism for assessing cultural faithfulness. Consequently, a model that replaces a Namaste with a handshake receives the same score as one that generates the gesture correctly. We propose CultureScore, a compositional evaluation framework that decomposes cultural faithfulness into three granular dimensions: Identity (who is represented), Context (culturally localized background), and Behavior (normative gestures and interactions). We operationalize this framework through an evaluation suite spanning 10 countries, yielding 6,180 generated videos across three state-of-the-art models. Our evaluation reveals that no current model achieves culturally faithful video generation: the best-performing model reaches only 56.8\\% overall CultureScore, with Behavior the most challenging dimension, which remains below 52\\% across all models. Furthermore, human preference rankings align directionally with CultureScore but are inverted relative to VideoScore; the highest-scoring model on visual quality was ranked last by annotators, underscoring that cultural faithfulness is an essential criterion for equitable video generation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
