@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-10",
+  "date": "2026-06-10",
+  "generated_at": "2026-06-10T22:32:35",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/10/2606.11129v1-worldolympiad-can-your-world-model-survive-a-triathlon",
+      "section": "deep",
+      "title_en": "WorldOlympiad: Can Your World Model Survive a Triathlon?",
+      "authors": "Yuke Zhao, Wangbo Zhao, Weijie Wang, Zeyu Zhang, Dakai An, Akide Liu, Yinghao Yu, Jiasheng Tang, Fan Wang, Wei Wang, Bohan Zhuang",
+      "date": "2026-06-09",
+      "pdf": "https://arxiv.org/pdf/2606.11129v1",
+      "score": "9.0",
+      "evidence": "提出从物理、几何、交互三个维度评估视频世界模型的基准",
+      "tldr": "现有视频生成模型评估常关注视觉质量或短期时序，忽略物理规则、3D结构和长期交互。为此提出WorldOlympiad基准，将世界模型评估分解为物理（力学/热学/材料）、几何（3D高斯泼溅重建一致性）和交互（复杂动作指令与连续片段）三个维度。在游戏、机器人和通用视频场景下，SOTA模型在物理推理、3D一致性和长程交互上暴露显著缺陷。该基准提供可扩展、可解释的评估套件，推动更结构化的生成世界模型评估。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We introduce WorldOlympiad, a benchmark for diagnosing video-based world models across physical faithfulness, geometric consistency, and interaction fidelity. While existing benchmarks often focus on visual quality, semantic alignment, or short-term temporal coherence, they provide limited insight into whether generated videos obey physical rules, preserve coherent 3D structure, and sustain controllable interactions over long horizons. To address this gap, WorldOlympiad decomposes world-model evaluation into three complementary dimensions. The physical track uses object segmentation and MLLM-as-judge to assess whether generated videos follow interpretable rules in mechanics, thermal phenomena, and material properties. The geometry track reconstructs generated videos with Gaussian splatting and evaluates structural consistency, cross-view coherence, and camera-trajectory alignment. The interaction track assesses whether generated rollouts follow complex action prompts and maintain smooth, coherent transitions across consecutive video chunks. WorldOlympiad further covers three major downstream scenarios, including gaming, robotics, and general real-world videos, capturing diverse challenges from interactive control and embodied manipulation to open-domain motion and camera dynamics. Together, these tracks and scenarios form a scalable and interpretable evaluation suite that exposes failure modes beyond generic video quality. Experiments on state-of-the-art models reveal substantial gaps in physical reasoning, 3D consistency, and long-horizon interaction, underscoring the need for more structured evaluation protocols for generative world models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,32 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-09
-- 运行时间：2026-06-09 20:36:53 UTC
+- 最新运行日期：2026-06-10
+- 运行时间：2026-06-10 22:32:28 UTC
 - 运行状态：成功
-- 本次总论文数：4
+- 本次总论文数：1
 - 精读区：1
-- 速读区：3
+- 速读区：0
 
 ### 今日简报（AI）
-今日聚焦长视频生成智能体评估与多视频摘要位置偏差系统性研究，其中《VideoWeaver》以8.0高分揭示智能体长视频技能演进方向。最值得关注两项结论：视频编辑模型对复杂指令理解存在显著盲区，以及文化忠实度评估成为视频生成新短板。建议普通读者优先精读《VideoWeaver》以把握智能体视频生成前沿，再速读《CoVEBench》了解当前编辑模型能力边界。
-- 详情：[/202606/09/README](/202606/09/README)
+今日精读一篇探讨世界模型在“铁人三项”综合测试中生存能力的高分论文（9.0/10）。研究发现现有模型在长时序推理与物理一致性上存在显著短板，亟需提升跨环境泛化鲁棒性。后续可关注如何通过多任务预训练或结构化记忆增强模型稳定性。
+- 详情：[/202606/10/README](/202606/10/README)
 
 ### 精读区论文标签
-1. [VideoWeaver: Evaluating and Evolving Skills for Agentic Long Video Generation](/202606/09/2606.08091v1-videoweaver-evaluating-and-evolving-skills-for-agentic-long-video-generation)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：用于评估和进化长视频生成技能的基准
+1. [WorldOlympiad: Can Your World Model Survive a Triathlon?](/202606/10/2606.11129v1-worldolympiad-can-your-world-model-survive-a-triathlon)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：提出从物理、几何、交互三个维度评估视频世界模型的基准
 
 ### 速读区论文标签
-1. [A Systematic Evaluation of Positional Bias in Multi-Video Summarization with MLLMs](/202606/09/2606.04596v1-a-systematic-evaluation-of-positional-bias-in-multi-video-summarization-with-mllms)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：提出多视频摘要评估指标（覆盖率、DPB、MEG），方法可迁移至生成视频质量评估
-2. [CoVEBench: Can Video Editing Models Handle Complex Instructions?](/202606/09/2606.08415v1-covebench-can-video-editing-models-handle-complex-instructions)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：用于评估视频编辑模型复杂指令的基准
-3. [CULTURESCORE: Evaluating Cultural Faithfulness in Video Generation Models](/202606/09/2606.07311v1-culturescore-evaluating-cultural-faithfulness-in-video-generation-models)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出CultureScore评估框架衡量视频生成模型文化忠实度
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">

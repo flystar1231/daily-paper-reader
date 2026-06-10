@@ -1,0 +1,61 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-10T22:30:24.471784+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2606.11129v1",
+      "source": "arxiv",
+      "title": "WorldOlympiad: Can Your World Model Survive a Triathlon?",
+      "abstract": "We introduce WorldOlympiad, a benchmark for diagnosing video-based world models across physical faithfulness, geometric consistency, and interaction fidelity. While existing benchmarks often focus on visual quality, semantic alignment, or short-term temporal coherence, they provide limited insight into whether generated videos obey physical rules, preserve coherent 3D structure, and sustain controllable interactions over long horizons. To address this gap, WorldOlympiad decomposes world-model evaluation into three complementary dimensions. The physical track uses object segmentation and MLLM-as-judge to assess whether generated videos follow interpretable rules in mechanics, thermal phenomena, and material properties. The geometry track reconstructs generated videos with Gaussian splatting and evaluates structural consistency, cross-view coherence, and camera-trajectory alignment. The interaction track assesses whether generated rollouts follow complex action prompts and maintain smooth, coherent transitions across consecutive video chunks. WorldOlympiad further covers three major downstream scenarios, including gaming, robotics, and general real-world videos, capturing diverse challenges from interactive control and embodied manipulation to open-domain motion and camera dynamics. Together, these tracks and scenarios form a scalable and interpretable evaluation suite that exposes failure modes beyond generic video quality. Experiments on state-of-the-art models reveal substantial gaps in physical reasoning, 3D consistency, and long-horizon interaction, underscoring the need for more structured evaluation protocols for generative world models.",
+      "authors": [
+        "Yuke Zhao",
+        "Wangbo Zhao",
+        "Weijie Wang",
+        "Zeyu Zhang",
+        "Dakai An",
+        "Akide Liu",
+        "Yinghao Yu",
+        "Jiasheng Tang",
+        "Fan Wang",
+        "Wei Wang",
+        "Bohan Zhuang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-09T17:24:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.11129v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes a benchmark to evaluate video-based world models with three complementary dimensions",
+      "llm_evidence_cn": "提出从物理、几何、交互三个维度评估视频世界模型的基准",
+      "llm_evidence": "提出从物理、几何、交互三个维度评估视频世界模型的基准",
+      "canonical_evidence": "提出从物理、几何、交互三个维度评估视频世界模型的基准",
+      "llm_tldr_en": "WorldOlympiad is a benchmark for diagnosing video-based world models across physical faithfulness, geometric consistency, and interaction fidelity using object segmentation and MLLM judges.",
+      "llm_tldr_cn": "现有视频生成世界模型的评估多局限于视觉质量和短时一致性，缺乏对物理规则、3D结构和长程交互的全面诊断。为此，本文提出WorldOlympiad基准，将评估分解为物理可信度、几何一致性和交互保真度三个互补维度。物理轨道使用目标分割和多模态大语言模型评判，几何轨道重建3D结构进行度量，交互轨道则评估可控性。实验证明，该基准能有效揭示现有模型在物理和几何方面的严重缺陷。该工作为视频生成评估提供了更系统、更严格的框架，对透明视频生成评估也有参考价值。",
+      "llm_tldr": "现有视频生成世界模型的评估多局限于视觉质量和短时一致性，缺乏对物理规则、3D结构和长程交互的全面诊断。为此，本文提出WorldOlympiad基准，将评估分解为物理可信度、几何一致性和交互保真度三个互补维度。物理轨道使用目标分割和多模态大语言模型评判，几何轨道重建3D结构进行度量，交互轨道则评估可控性。实验证明，该基准能有效揭示现有模型在物理和几何方面的严重缺陷。该工作为视频生成评估提供了更系统、更严格的框架，对透明视频生成评估也有参考价值。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
