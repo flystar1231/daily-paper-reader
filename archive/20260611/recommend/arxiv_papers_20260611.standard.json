@@ -1,0 +1,141 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-11T21:36:19.950158+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2606.11838v1",
+      "source": "arxiv",
+      "title": "Plan-and-Verify Video Reward Reasoning with Spatio-Temporal Scene Graph Grounding",
+      "abstract": "Reward models for text-to-video (T2V) generation guide post-training but often fail at fine-grained semantic alignment. We trace this to two structural weaknesses in existing reasoning-based reward models: they do not systematically verify every condition described in the prompt, and the visual evidence supporting each judgment remains implicit in their free-form reasoning. We propose SG-PVR, a video reward model that addresses these limitations through plan-and-verify reasoning grounded in spatio-temporal scene graphs. The verification plan decomposes the prompt into atomic claims, ensuring every requirement is checked. The spatio-temporal scene graph, encoding entities, attributes, and temporally-grounded relations, is extracted from the video and maintained as a persistent structured visual reference throughout reasoning. Each claim is verified against both the video and the scene graph, anchoring judgments in explicit visual evidence. SG-PVR achieves strong performance on semantic alignment, including fine-grained temporal semantics. As a test-time reranker, it further enhances compositional alignment in T2V generation.",
+      "authors": [
+        "Hyomin Kim",
+        "Junghye Kim",
+        "Joanie Hayoun Chung",
+        "Yoonjin Oh",
+        "Kyungjae Lee",
+        "Sungbin Lim",
+        "Sungwoong Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-10T09:18:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.11838v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes a reward model for text-to-video generation that verifies semantic alignment using scene graphs, directly relevant to evaluating generated video quality",
+      "llm_evidence_cn": "提出基于场景图的文本到视频生成奖励模型，验证语义对齐，直接用于评估生成视频质量",
+      "llm_evidence": "提出基于场景图的文本到视频生成奖励模型，验证语义对齐，直接用于评估生成视频质量",
+      "canonical_evidence": "提出基于场景图的文本到视频生成奖励模型，验证语义对齐，直接用于评估生成视频质量",
+      "llm_tldr_en": "SG-PVR is a video reward model that uses plan-and-verify reasoning grounded in spatio-temporal scene graphs to improve fine-grained semantic alignment evaluation for text-to-video generation.",
+      "llm_tldr_cn": "现有文本到视频生成奖励模型在细粒度语义对齐上存在不足，无法系统验证提示中的每个条件且证据隐式。本文提出SG-PVR，通过计划验证推理和时空场景图提取，将提示分解为原子声明并显式检查，从而提升生成视频的语义对齐评估质量。实验表明该方法在多个基准上优于现有奖励模型，为生成视频评估提供了更可靠的方案。",
+      "llm_tldr": "现有文本到视频生成奖励模型在细粒度语义对齐上存在不足，无法系统验证提示中的每个条件且证据隐式。本文提出SG-PVR，通过计划验证推理和时空场景图提取，将提示分解为原子声明并显式检查，从而提升生成视频的语义对齐评估质量。实验表明该方法在多个基准上优于现有奖励模型，为生成视频评估提供了更可靠的方案。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.08415v2",
+      "source": "arxiv",
+      "title": "CoVEBench: Can Video Editing Models Handle Complex Instructions?",
+      "abstract": "While recent text-guided video editing models excel at elementary tasks (e.g., style transfer, object insertion), real-world user requests are highly compositional. A single prompt often demands multiple coupled edits, such as modifying subjects, actions, and camera views, while strictly preserving unrelated spatiotemporal content. Existing benchmarks, heavily constrained by isolated edits and coarse global metrics, fail to diagnose how models handle such complex workflows. To address this gap, we introduce CoVEBench, a compositional video editing benchmark comprising 416 curated source videos, 626 multi-point editing instructions, and 9,990 fine-grained checklist items. Covering diverse editing dimensions, CoVEBench evaluates models via MLLM-judged instruction compliance and video fidelity, alongside automated metrics for video quality. Extensive experiments reveal that compositional editing remains a profound challenge: current models frequently omit edits, violate preservation constraints, or introduce artifacts when handling multiple operations simultaneously. CoVEBench provides a challenging, diagnostic testbed to advance video editing toward realistic user workflows.",
+      "authors": [
+        "Jiangtao Wu",
+        "Jiaming Wang",
+        "Yiwen He",
+        "Yuanxing Zhang",
+        "Shihao Li",
+        "Dunyuan Liu",
+        "Xuedong Zhao",
+        "Jialu Chen",
+        "Zekun Moore Wang",
+        "Jiaheng Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-07T02:29:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.08415v2",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Proposes a compositional video editing benchmark with fine-grained evaluation via MLLM-judged instructions, offering transferable methodology for video quality assessment of generated content",
+      "llm_evidence_cn": "提出了一个组合视频编辑基准，通过MLLM评判的细粒度检查表进行评估，为生成视频质量评估提供了可迁移的方法论",
+      "llm_evidence": "提出了一个组合视频编辑基准，通过MLLM评判的细粒度检查表进行评估，为生成视频质量评估提供了可迁移的方法论",
+      "canonical_evidence": "提出了一个组合视频编辑基准，通过MLLM评判的细粒度检查表进行评估，为生成视频质量评估提供了可迁移的方法论",
+      "llm_tldr_en": "CoVEBench introduces a compositional benchmark for video editing models, using fine-grained checklists and MLLM judgment to evaluate complex multi-point edits, addressing limitations of coarse global metrics",
+      "llm_tldr_cn": "现有视频编辑基准局限于孤立编辑和粗粒度全局指标，难以评估模型处理复杂组合指令的能力。为此，CoVEBench构建了包含416个源视频、626条多点编辑指令和9990个细粒度检查项的组合基准，采用多模态大模型（MLLM）作为评判器。实验表明，该方法能有效诊断模型在复杂工作流中的表现，为视频质量评估提供了更精细的范式。",
+      "llm_tldr": "现有视频编辑基准局限于孤立编辑和粗粒度全局指标，难以评估模型处理复杂组合指令的能力。为此，CoVEBench构建了包含416个源视频、626条多点编辑指令和9990个细粒度检查项的组合基准，采用多模态大模型（MLLM）作为评判器。实验表明，该方法能有效诊断模型在复杂工作流中的表现，为视频质量评估提供了更精细的范式。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.09330v1",
+      "source": "arxiv",
+      "title": "Dynamic XR Rendering Offloading Based on Feature-Based Quality Assessment",
+      "abstract": "Extended Reality (XR) applications demand intensive computation and low latency, especially for real-time rendering tasks. In this letter, we present an edge-aided XR rendering testbed that dynamically offloads rendering workloads between the XR client and the edge server built upon network conditions and latency constraints. The testbed integrates a Microsoft HoloLens 2 headset, a GPU-enabled edge server, and a customized remote rendering toolkit based on the HOLO Stream SDK, enabling seamless switching between local and edge rendering modes in real time. To overcome the limitations of pixel-level quality metrics under head movements and asynchronous frame arrivals, we propose a perceptual evaluation metric based on deep feature embeddings and cosine similarity, which remains robust to spatial and temporal misalignments. Furthermore, we design a contextual bandit learning controller to adapt rendering placement decisions in real time by jointly optimizing perceptual quality and latency. Experimental results demonstrate the feasibility and performance of our testbed, validating its effectiveness in delivering high-quality and interactive XR experiences.",
+      "authors": [
+        "Sige Liu",
+        "Zhe Wang",
+        "Lavish Kamal Kumar",
+        "Yansha Deng"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV"
+      ],
+      "published": "2026-06-08T10:54:10+00:00",
+      "link": "https://arxiv.org/pdf/2606.09330v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Proposes a perceptual evaluation metric using deep features for quality assessment in XR rendering, transferable to generated video quality evaluation.",
+      "llm_evidence_cn": "提出一种基于深度特征的感知评估指标，用于XR渲染质量评估，可迁移至生成视频质量评价。",
+      "llm_evidence": "提出一种基于深度特征的感知评估指标，用于XR渲染质量评估，可迁移至生成视频质量评价。",
+      "canonical_evidence": "提出一种基于深度特征的感知评估指标，用于XR渲染质量评估，可迁移至生成视频质量评价。",
+      "llm_tldr_en": "Edge-aided XR testbed with dynamic rendering offloading and a feature-based perceptual quality metric to overcome pixel-level limitations, enabling robust quality assessment under head movement.",
+      "llm_tldr_cn": "本文针对扩展现实（XR）渲染场景，设计了一个边缘辅助的动态渲染卸载测试平台，并提出一种基于深度特征嵌入和余弦相似度的感知质量评估指标，以克服像素级指标在大幅运动和异步帧到达时的局限性。实验表明，该指标能有效反映用户感知质量，具有迁移至一般生成视频质量评估的潜力。",
+      "llm_tldr": "本文针对扩展现实（XR）渲染场景，设计了一个边缘辅助的动态渲染卸载测试平台，并提出一种基于深度特征嵌入和余弦相似度的感知质量评估指标，以克服像素级指标在大幅运动和异步帧到达时的局限性。实验表明，该指标能有效反映用户感知质量，具有迁移至一般生成视频质量评估的潜力。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
