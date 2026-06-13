@@ -1,0 +1,365 @@
+Title: OmniTryOn: Video Try-On Anything at Once!
+
+URL Source: https://arxiv.org/pdf/2606.08514v1
+
+Published Time: Tue, 09 Jun 2026 01:24:43 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# OmniTryOn: Video Try-On Anything at Once! 
+
+# Changliang Xia, Chengyou Jia, Keshuo Xing, Bowen Ping, Xin Shen, Zhuohang Dang, Minnan Luo ∗
+
+Xi’an Jiaotong University Xi’an, China 
+
+Figure 1: OmniTryOn successfully achieves Try-On Anything by simultaneously transferring diverse wearable objects in a single inference pass. It generates highly realistic try-on videos while strictly preserving complex human motions and background dynamics across challenging scenarios. 
+
+## Abstract 
+
+Although video virtual try-on (VVT) has achieved significant progress, existing methods still exhibit two fundamental limitations: first, they are restricted to single-garment transfer, rendering simulta-neous multi-object try-on highly impractical; second, their heavy reliance on explicit external priors (e.g., garment masks) inevitably destroys crucial physical dynamics and degrades visual quality. To bridge this gap, this paper proposes the novel Try-On Any-thing task, which aims to simultaneously transfer diverse wear-able objects onto a person in a video in a single inference pass. To support and standardize this paradigm, we introduce TryAny-Bench, a comprehensive benchmark encompassing a paired video dataset alongside a tailored evaluation protocol. Furthermore, we present OmniTryOn, an external-prior-free generative framework designed to tackle this task. Specifically, OmniTryOn employs a First Frame Wearable Cache strategy, which directly provides di-verse wearable objects for the generation process through the initial video frame. To maintain consistency, we propose the Spatiotem-porally Consistent RoPE (STC-RoPE), which inherently establishes robust spatiotemporal anchors to strictly preserve complex human motions and background dynamics. Optimized by the proposed Gradual Try-On (GTO) training strategy, our model progressively masters robust multi-object synthesis. Extensive experiments on TryAny-Bench demonstrate that OmniTryOn significantly outper-forms existing specialized video virtual try-on models and general 
+
+> ∗Corresponding author.
+
+video editing baselines, establishing a powerful new standard for the Try-On Anything task. Our dataset, code, and models are avail-able at https://github.com/xcltql666/OminTryOn. 
+
+## CCS Concepts 
+
+• Computing methodologies → Computer vision .
+
+## Keywords 
+
+Video Virtual Try-On, Video Editing, Diffusion Transformer 
+
+## 1 Introduction 
+
+Video Virtual Try-On (VVT) has received significant attention due to its extensive applications across e-commerce industry, digital entertainment, and virtual reality. Given a source video of a per-son and a reference image of the target garment, VVT aims to seamlessly transfer the garment onto the individual while strictly preserving the spatiotemporal consistency of the background and human motions. Empowered by the remarkable visual fidelity of recent advanced video generation models [ 4 , 24 , 44 , 46 , 52 ], state-of-the-art VVT approaches [ 8, 10 , 17 , 26 , 54 ] have achieved impressive generation quality and high-fidelity garment preservation. Despite these advances, a significant gap remains between ex-isting methods and real-world applications, primarily due to two fundamental limitations. First, current approaches are inherently restricted to single-garment transfer, failing to support the simulta-neous try-on of diverse wearable objects (e.g., garments, handbags, 
+
+> arXiv:2606.08514v1 [cs.CV] 7 Jun 2026
+
+and shoes), as illustrated by the baseline (MagicTryOn [ 26 ]) results in Fig. 2 (c). Second, to enforce spatial localization and structural alignment, existing frameworks heavily rely on explicit external priors (e.g., garment-agnostic masks and dense human poses) ex-tracted from a complex pipeline of auxiliary models [ 27 , 32 , 48 ]. Crucially, these rigid and often error-prone representations fail to capture complex physical dynamics. Forcing the generative process to align with them disrupts spatiotemporal coherence, inevitably leading to severe visual degradations such as background distor-tions and texture collapse, as demonstrated by the baseline artifacts in Fig. 2 (b). To bridge these gaps, we aim to develop a unified, prior-free framework capable of simultaneously transferring vari-ous wearable objects onto a person in a video in a single inference pass, a novel paradigm we term the Try-On Anything task. To this end, we first introduce TryAny-Bench , a comprehen-sive benchmark tailored for the Try-On Anything task. TryAny-Bench provides high-fidelity paired videos that extend beyond con-ventional try-on categories (i.e., garments only), simultaneously accommodating diverse customization targets such as garments, handbags, shoes, and even facial identities. Due to the absence of paired videos, existing VVT datasets [ 9, 10 , 54 ] conventionally construct training pairs by utilizing destructively masked videos as reference inputs (as illustrated in Fig. 2 (a)), which inevitably erases essential physical contexts. In contrast, by offering genuine paired reference and target videos featuring distinct wearable ob-jects while strictly preserving human motions and background dynamics, TryAny-Bench fundamentally eliminates the need for ar-tificial masking. Alongside the dataset, TryAny-Bench incorporates a specialized evaluation protocol designed to comprehensively as-sess multidimensional try-on quality, thereby establishing a robust and standardized foundation for Try-On Anything. To comprehensively tackle this task, we present OmniTryOn ,an external-prior-free generative framework. OmniTryOn achieves high-fidelity synthesis by concurrently addressing two critical re-quirements: simultaneously injecting diverse wearable objects and enforcing strict spatiotemporal consistency. To fulfill the first re-quirement, we introduce the First Frame Wearable Cache mechanism. Inspired by the in-context capabilities of DiTs [ 1 , 6, 19 ], this strat-egy formulates the initial frame of the target sequence as a unified wearable object cache, enabling fine-grained object details to con-tinuously propagate to subsequent frames via full attention [ 1 ]. Crucially, this consolidated cache design offers exceptional scala-bility, effortlessly accommodating a variable number of wearable objects. Beyond successfully injecting these object details, strictly maintaining spatiotemporal consistency without external priors poses another major challenge. To intrinsically address this, we propose the Spatiotemporally Consistent Rotary Position Embedding 
+
+(STC-RoPE). By assigning identical 3D positional coordinates [ 39 ]across the reference and target tokens, STC-RoPE ensures the exact consistency of complex human motions and backgrounds. Finally, to mitigate the optimization difficulty of the Try-On Anything task, we employ the proposed Gradual Try-On (GTO) training strategy, which progressively extends the model’s synthesis capability from conventional garments to diverse wearable objects. The main con-tributions of this work are summarized as follows: (a) Input (c) Synthetic Video 
+
+> MagicTryOn Ours MagicTryOn Ours
+> (b)
+
+Figure 2: Visual comparison of inputs and synthesis quality. 
+
+• We propose the novel Try-On Anything task and introduce 
+
+TryAny-Bench , a comprehensive benchmark tailored for this paradigm. TryAny-Bench uniquely features a physics-preserving paired video dataset alongside diverse wearable objects, complemented by a specialized evaluation protocol. 
+
+• We present the OmniTryOn framework, which eliminates the reliance on explicit external priors through a First Frame Wearable Cache mechanism and STC-RoPE. Empowered by the proposed GTO training strategy, OmniTryOn supports the simultaneous try-on of diverse wearable objects in a sin-gle inference pass while strictly maintaining human motion and background consistency. 
+
+• Extensive experiments on TryAny-Bench demonstrate that OmniTryOn significantly outperforms existing specialized video virtual try-on models and general video editing base-lines across multiple metrics, achieving superior visual fi-delity and spatiotemporal stability. 
+
+## 2 Related Work 2.1 Video Generation 
+
+With the rapid evolution of diffusion models, video generation has transitioned from text-to-video synthesis [3, 15, 36, 52] to control-lable video generation [18, 20, 25] and video editing [7, 16, 51, 53]. Early methods [2, 12, 23] predominantly employ U-Net [37] archi-tectures as their denoising backbones. Recent advancements [ 24 ,43 , 52 , 57 ] leverage Diffusion Transformers (DiTs) [ 33 ] to achieve long, high-resolution video synthesis with remarkable fidelity and stability, offering rich priors for downstream generative tasks. To satisfy diverse demands and enhance visual quality, models are increasingly required to process various control signals, including depth maps, human poses, and segmentation masks. For instance, VACE [ 22 ] unifies multiple conditional inputs to facilitate video generation under versatile structural controls. Furthermore, Video-As-Prompt [ 1] exploits the in-context capabilities of DiTs [ 1 , 6, 19 ]
+
+> 2Wearable Object
+> Extraction
+> Wearable Object
+> Replacement
+> Video Captioning
+
+Collect Investigate Raw Videos  
+
+> Target Videos Reference Videos
+> The model with
+> [face], wearing
+> [clothing] and
+> [shoes], carrying
+> [handbag], is
+> showcasing the
+> overall look.
+> Wearable Objects
+
+Filter 
+
+> TryAny-Bench
+> DataSet
+
+TryAny-Bench Evaluation   
+
+> Reference Video Target Video Result Video
+
+Video Quality 
+
+Try-On Stability 
+
+Physical Realism   
+
+> MLLM
+> Multidimensional Assessment Result
+
++Why? Figure 3: Overview of the TryAny-Bench data construction pipeline and evaluation protocol. Left: The automated data con-struction pipeline systematically processes raw e-commerce videos to generate high-fidelity paired training samples, which seamlessly accommodate diverse customization targets. Right: The tailored multidimensional evaluation protocol comprehen-sively assesses synthesis quality across Video Quality, Try-On Stability, and Physical Realism. 
+
+to achieve unified, semantically controlled video generation. De-spite their robust generalization, general video models struggle to accurately synthesize multiple wearable objects onto specific regions of dynamic persons while strictly ensuring the spatiotem-poral consistency of backgrounds and complex human motions. In this work, we enhance a DiT-based video generation framework to explicitly tackle the demanding Try-On Anything task. 
+
+## 2.2 Video Virtual Try-On 
+
+Inspired by the remarkable success of diffusion models in video generation [ 24 , 43 , 52 ], recent efforts [ 8, 10 , 17 , 26 , 54 , 58 ] have increasingly adapted these frameworks to the video virtual try-on (VVT) task. Pioneering methods such as ViViD [ 10 ], RealVVT [ 28 ], and Tunnel Try-on [ 50 ] employ U-Net [ 37 ] architectures to syn-thesize try-on videos while preserving spatiotemporal consistency. To achieve superior visual realism and fine-grained detail preser-vation, subsequent works [ 8, 17 , 26 , 54 , 58 ] have shifted towards Diffusion Transformer (DiT) [33] architectures. These approaches typically adopt multi-branch designs, dedicating separate branches to encode garment features and explicit prior conditions extracted from auxiliary modules (e.g., garment-agnostic masks and human poses). The DiT backbone then fuses these streams to facilitate gar-ment transfer. Other concurrent works [ 17 ] incorporate Multimodal Large Language Models (MLLMs) to enhance the dynamic details of the garments. However, the heavy reliance on these external modules inevitably incurs significant computational overhead and complicates the inference pipeline. Moreover, they are limited to single-garment transfer per inference pass, lacking the capability to support wearable objects beyond garment. To overcome these bottlenecks, we introduce OmniTryOn, a prior-free framework that accomplishes the try-on of diverse wearable objects in a single inference pass, eliminating the need for any auxiliary modules. 
+
+## 3 Method 
+
+Our goal is to accomplish the Try-On Anything task, enabling the simultaneous video virtual try-on of diverse wearable objects in a single inference pass without relying on explicit external priors. To support and standardize this novel paradigm, we first introduce TryAny-Bench in Sec. 3.1, a comprehensive benchmark encompass-ing a physics-preserving paired video dataset and a specialized evaluation protocol. We then present our external-prior-free gener-ative framework, OmniTryOn, in Sec. 3.2. To achieve high-fidelity synthesis, this framework introduces the First Frame Wearable Cache mechanism to seamlessly inject fine-grained object details, alongside the Spatiotemporally Consistent Rotary Position Em-bedding (STC-RoPE) to ensure the strict consistency of complex human motions and backgrounds. Finally, in Sec. 3.3, we detail the proposed Gradual Try-On (GTO) training strategy, which progres-sively extends the model’s synthesis capability from conventional garments to diverse wearable objects. 
+
+## 3.1 TryAny-Bench: Benchmarking Try-On Anything 
+
+Existing VVT datasets [ 9, 10 , 17 , 54 ] lack support for multi-object try-on and fail to provide paired reference and target videos. To overcome these limitations and standardize the evaluation of Try-On Anything task, we introduce TryAny-Bench , a comprehensive benchmark specifically designed for this novel task. As illustrated in Fig. 3, TryAny-Bench consists of two core components: a physics-preserving paired video dataset and a specialized Vision Question Answering (VQA)-based evaluation protocol. 
+
+3.1.1 TryAny-Bench Dataset Construction. To construct the core dataset of TryAny-Bench, we systematically process raw e-commerce videos to generate high-fidelity paired video samples. Each sample strictly comprises a reference video, a target video, and correspond-ing diverse wearable object images. 
+
+Wearable Object Extraction. We first curate over 1,500 raw e-commerce videos featuring diverse wearable objects as target videos. For each raw video, we sample two anchor frames from the middle segment where the person’s full body is clearly visible. We then utilize a commercial image model, Gemini 3.1 Flash Image [ 14 ], to extract the wearable objects from these anchors and composite them onto a blank background. Crucially, we prompt the image model to intentionally perturb the scales and spatial orientations of the objects. This data augmentation strategy effectively prevents 
+
+> 3
+
+Table 1: Comparison between TryAny-Bench and existing VVT datasets. TryAny-Bench uniquely supports the Try-On Anything task by providing high-fidelity paired videos across diverse wearable objects. Crucially, this genuine paired setting fundamentally enables mask-free training. Furthermore, while previous datasets rely solely on conventional video generation metrics, TryAny-Bench is the only benchmark to introduce a tailored, multidimensional evaluation protocol for comprehensive assessment. Dataset / Benchmark Paired Videos Try-On Scope Mask-Free Multi-dim Eval. No Start Overexposure 
+
+VVT [9] × Garments × × ✓
+
+ViViD [10] × Garments × × ×
+
+EEVEE [54] × Garments × × ✓
+
+ViT-HD [17] × Garments × × ✓
+
+TryAny-Bench ✓ Diverse Objects ✓ ✓ ✓
+
+spatial leakage, compelling the generative model to learn robust object localization and adaptation rather than trivial copy-pasting. Detailed extraction prompts are in the supplementary material. 
+
+Wearable Object Replacement. To construct the reference video, we must alter the wearables in the target video while strictly pre-serving the background and complex human motions. We first employ a state-of-the-art VVT model, MagicTryOn [ 26 ], to re-place conventional garments (e.g., tops and bottoms). However, this explicit-prior-based model inevitably introduces visual arti-facts and lacks the capability to transfer non-garment objects. To address these limitations, we sequentially feed the intermediate video into a recent video editing model, CAPYBARA [ 35 ]. This step serves a dual objective: modifying other wearable objects (e.g., handbags and shoes) and simultaneously inpainting the artifacts left by the VVT model, thereby restoring strict spatiotemporal con-sistency and visual quality. For videos with visible faces, we further apply a face-swapping model [ 38 ] to alter facial identities. This sequential process yields a high-fidelity reference video featuring entirely different wearables from the target video, fundamentally eliminating the reliance on the destructive masking prevalent in existing datasets during training. 
+
+Fine-Grained Video Captioning. To provide accurate semantic guidance, we employ a multimodal large language model, Qwen3-VL-Instruct-8B [ 41 ], to generate fine-grained text captions for the target videos. The prompt specifically focuses on the customization targets, yielding semantic descriptions in the format: " The model with [description of face], wearing [description of clothing] and [de-scription of shoes], carrying [description of handbag], is showcasing the overall look. " Prompt details are in the supplementary material. 
+
+Quality Control and Statistics. To ensure data quality, we metic-ulously crop out overexposed initial frames commonly found in raw e-commerce videos, strictly maintaining temporal visual con-sistency. Furthermore, we conduct rigorous manual filtering to eliminate low-quality samples caused by editing error accumula-tion across the data construction pipeline. Ultimately, this rigorous construction process yields 1,460 high-quality paired samples, es-tablishing the core dataset of TryAny-Bench with 1,243 training videos and 217 testing videos. A comprehensive comparison be-tween TryAny-Bench and existing datasets is provided in Table 1. 
+
+3.1.2 TryAny-Bench Evaluation Protocol. While established met-rics [ 42 , 45 , 55 ] provide foundational video editing assessments, they often struggle to capture the nuanced, multidimensional require-ments of complex virtual try-on scenarios. To complement these metrics and achieve a more comprehensive evaluation, TryAny-Bench introduces a specialized Vision Question Answering (VQA)-based evaluation system tailored for the Try-On Anything task. Although recent VQA approaches [ 11 , 21 , 34 ] offer fine-grained assessments for general video editing [ 56 ], their criteria are funda-mentally not tailored to the unique physical and semantic demands of novel Try-On Anything task. Therefore, we construct a dedicated evaluation system encompassing three primary aspects: (1) Video Quality , evaluated through the sub-dimensions of Visual Fidelity (VF), Action Synchronization (AS), and Environment Stability (ES); (2) Try-On Stability , comprising Object Integrity (OI), Material Fi-delity (MF), and Scale Naturalness (SN); and (3) Physical Realism ,which includes Temporal Stability (TS), Anatomical Integrity (AI), and Dynamic Plausibility (DP). Across all dimensions, higher scores denote superior synthesis quality. Crucially, the protocol pairs these quantitative scores with explicit textual rationales to maximize in-terpretability. The detailed evaluation protocol and specific VQA prompts are provided in the supplementary material. 
+
+## 3.2 OmniTryOn 
+
+As illustrated in Fig. 4 (a), our OmniTryOn framework is built upon Diffusion Transformers (DiTs) [ 33 ] to accomplish the Try-On Any-thing task in a single inference pass without relying on explicit external priors. The system accepts a reference video, a wearable object image, and corresponding text descriptions as inputs. Specif-ically, the reference video is encoded into the latent space via a VAE encoder to preserve complex human motions and background dynamics. Concurrently, the wearable object image is encoded and concatenated to the noisy latent sequence as the first frame. Meanwhile, the text descriptions and the wearable object image are encoded into text and CLIP tokens to inject precise wearable object semantics into the generation process. Following multiple denoising steps within the DiT backbone, the synthesized latent is finally decoded by the VAE decoder into the target video. 
+
+3.2.1 First Frame Wearable Cache. As illustrated in Fig. 4 (b), we prepend the latent representation of the wearable object image to the noisy target video latents, establishing it as the first frame. For the reference video, its first frame is duplicated once to strictly align its temporal length with that of the target video. Subsequently,     
+
+> 4Full Self-Attention
+> Layer Norm Layer Norm
+> Cross
+> Attention
+> Cross
+> Attention
+> FFN FFN
+> Layer Norm Layer Norm
+> VAE
+> Encoder
+> C
+> Wearable
+> Object Image
+> VAE
+> Encoder
+> Reference
+> Video
+> VAE
+> Decoder
+> Target
+> Video
+> Trainable
+> Frozen
+> CConcatenate
+> CLIP
+> Encoder
+> UmT5
+> Encoder
+> C
+> [Description of the
+> target video.]
+> Noise DiT Blocks ×N
+> Spatiotemporally Consistent RoPE
+> First
+> Frame
+> Symmetric
+> Architecture
+> Target video
+> token 𝐀 𝐀
+> Reference video
+> token 𝐀 𝐀
+
+Width 
+
+Height 
+
+Time 
+
+> Spatiotemporally Consistent RoPE
+
+··· 
+
+··· 
+
+··· 
+
+··· 
+
+> First Frame Wearable Cache
+> First Frame Wearable Cache
+
+··· 
+
+> Wearable
+> token
+> Noisy
+> token
+
+··· C 
+
+> Target video token 𝐀 𝐀
+
+(a) OmniTryOn (b) 
+
+(c) 
+
+> 𝐀 𝐀
+> 𝐀 𝐀
+> QKV
+
+Figure 4: Overview of the OmniTryOn framework. To achieve Try-On Anything at once, the encoded wearable object image is concatenated with the target noise sequence to serve as the First Frame Wearable Cache, efficiently injecting precise customization details. During the denoising proces, the reference and target latents interact through full self-attention. Crucially, the proposed Spatiotemporally Consistent RoPE (STC-RoPE) establishes shared positional anchors across both latents, ensuring strict preservation of complex human motions and background dynamics without relying on external prior. 
+
+both the target and reference videos are converted into flattened patch tokens in the latent space, denoted as 𝑋 𝑇 ∈ R𝐿 𝑇 𝑎𝑟𝑔𝑒𝑡 ×𝑑 and 
+
+𝑋 𝑅 ∈ R𝐿 𝑅𝑒 𝑓 ×𝑑 , respectively. These tokens are then processed via the full attention mechanism [1] within the DiT blocks: Attention (𝑄, 𝐾, 𝑉 ) = softmax 
+
+ 𝑄𝐾 𝑇 
+
+√𝑑 
+
+
+
+𝑉 (1) where 𝑄 = [𝑊 𝑇 𝑎𝑟𝑔𝑒𝑡 𝑄 𝑋 𝑇 ;𝑊 𝑅𝑒 𝑓 𝑄 𝑋 𝑅 ], 𝐾 = [𝑊 𝑇 𝑎𝑟𝑔𝑒𝑡 𝐾 𝑋 𝑇 ;𝑊 𝑅𝑒 𝑓 𝐾 𝑋 𝑅 ], and 
+
+𝑉 = [𝑊 𝑇 𝑎𝑟𝑔𝑒𝑡 𝑉 𝑋 𝑇 ;𝑊 𝑅𝑒 𝑓 𝑉 𝑋 𝑅 ] represent the concatenated Queries, Keys, and Values derived from 𝑋 𝑇 and 𝑋 𝑅 . Benefiting from the ro-bust in-context modeling capabilities of DiTs [ 1 , 6, 19 ], the prepended first frame of the target video seamlessly functions as a wearable object cache during this attention computation. This cache con-tinuously propagates fine-grained structural and texture details of the diverse wearable objects to the subsequent generated frames. Concurrently, the reference video tokens supply the essential condi-tioning to enforce the strict consistency of complex human motions and background dynamics. 
+
+3.2.2 Spatiotemporally Consistent RoPE. Maintaining the inter-frame consistency of diverse wearable objects while strictly pre-serving complex human motions and background dynamics without explicit external priors is highly challenging. To overcome this, we propose the Spatiotemporally Consistent Rotary Position Embed-ding (STC-RoPE), which grounds the reference video, the wearable object image, and the target video within a shared spatiotemporal coordinate system to facilitate their mutual perception. DiT-based generative models typically utilize Rotary Position Embedding (RoPE) [ 39 ] to assign positional coordinates to input tokens, applying 3D RoPE (𝑡, 𝑥, 𝑦 ) for videos and 2D RoPE (𝑥, 𝑦 )
+
+for images. This positioning fundamentally dictates the attention interactions between the reference and target tokens. To prevent spatiotemporal overlap between the reference and target tokens, previous works often introduce temporal [ 1 ] or spatial [ 40 , 47 ]biases to the coordinates of the reference tokens. However, unlike various controllable generation tasks (e.g., style transfer) explored in these works, the Try-On Anything task inherently demands that the target video strictly preserves the complex human motions and background dynamics of the reference video, differing only in the designated wearable objects. Therefore, we assign completely identical 3D RoPE (𝑡, 𝑥, 𝑦 ) to both the reference and target videos, where 𝑡 ∈ [ 0, 𝑓 − 1], 𝑥 ∈[0, ℎ − 1], and 𝑦 ∈ [ 0, 𝑤 − 1]. Here, 𝑓 , ℎ, and 𝑤 denote the temporal length, height, and width of the latent representations, respectively. Consequently, grounding all inputs in this shared spatiotemporal coordinate system establishes a strict identity mapping for the hu-man motions and backgrounds. This formulation naturally provides strictly consistent spatiotemporal anchors, enabling the model to accurately localize and transfer the fine-grained features of the wearable objects. 
+
+## 3.3 Gradual Try-On Training Strategy 
+
+We employ the proposed Gradual Try-On (GTO) training strat-egy to optimize our OmniTryOn, steadily extending the model’s try-on capability from conventional garments to diverse wearable objects to ultimately accomplish the Try-On Anything task. The GTO strategy is decoupled into two progressive stages. Stage 1. This stage focuses exclusively on conventional garment transfer. During this stage, the paired reference and target videos feature different garments but retain identical non-garment wear-able objects. Crucially, these specific training pairs are intrinsically 
+
+> 5
+
+derived from the intermediate outputs of the TryAny-Bench dataset construction pipeline (Sec. 3.1). Compared to other wearable ob-jects, garments exhibit larger spatial footprints and highly com-plex non-rigid deformations (e.g., dynamic wrinkles and intricate human-garment interactions), making them the most challenging to synthesize. Therefore, Stage 1 isolates this optimization difficulty, compelling the model to concentrate entirely on robust garment transfer. Stage 2. This stage expands the training scope to support the simultaneous try-on of diverse wearable objects (e.g., handbags and shoes). Building upon the foundational try-on ability acquired in Stage 1, the model efficiently learns to align and generate these relatively semi-rigid objects while further reinforcing its garment synthesis capabilities. Through this progressive training, the frame-work ultimately achieves the robust capacity for multi-object try-on in a single inference pass. Across both stages, the framework is optimized using the flow matching objective [ 29 , 30 ]. Specifically, let 𝑋 1 denote the target video latents and 𝑋 0 ∼ N ( 0, I) represent the standard Gaussian noise. The noisy input 𝑋 𝑡 at timestep 𝑡 ∈ [ 0, 1] is constructed via linear interpolation: 𝑋 𝑡 = 𝑡𝑋 1 + ( 1 −𝑡 )𝑋 0. The model 𝑣 𝜃 is trained to predict the velocity field 𝑉 𝑡 = 𝜕 𝜕𝑡 𝑋 𝑡 = 𝑋 1 − 𝑋 0. The overall training objective is formulated as: 
+
+L = E𝑡,𝑋 0,𝑋 1
+
+h
+
+𝑉 𝑡 − 𝑣 𝜃 (𝑋 𝑡 , 𝑡, 𝐶 𝑅𝑒 𝑓 , 𝐶 𝑇 𝑒𝑥𝑡 ) 22
+
+i
+
+(2) where 𝐶 𝑅𝑒 𝑓 and 𝐶 𝑇 𝑒𝑥𝑡 denote the condition embeddings extracted from the reference video and the text captions, respectively. 
+
+## 4 Experiments 4.1 Experimental Settings 
+
+4.1.1 Implementation Details. We adopt the pretrained weights from Video-As-Prompt [ 1] as the foundational model, which is fine-tuned based on Wan2.1-I2V-14B [ 43 ]. All training processes are exclusively conducted on the training set of our curated TryAny-Bench dataset. Following the proposed Gradual Try-On (GTO) train-ing strategy, the model is trained for a total of two epochs, dedi-cating one full epoch to each progressive stage. During training, each video sequence contains 49 frames, and the batch size is set to 1 per GPU. The network parameters are optimized using the AdamW [ 31 ] optimizer with a fixed learning rate of 1 × 10 −5. All experiments are executed on 8 NVIDIA H200 GPUs. 
+
+4.1.2 Evaluation Metrics. To comprehensively assess the perfor-mance of our framework, we employ a dual evaluation system comprising established quantitative metrics and the multidimen-sional VQA-based protocol introduced in TryAny-Bench (Sec. 3.1). 
+
+Established Metrics. Following previous VVT works [ 8, 10 , 17 ,26 ], we adopt four widely used metrics: SSIM [ 45 ], LPIPS [ 55 ], VFID 𝐼 [ 10 ], and VFID 𝑅 [10 ]. Specifically, SSIM measures the struc-tural similarity between the generated and reference videos, while LPIPS captures fine-grained perceptual differences. Furthermore, VFID 𝐼 (using the I3D [ 5] backbone) and VFID 𝑅 (using the ResNeXt [ 49 ]backbone) are utilized to simultaneously evaluate the spatial visual quality and temporal consistency of the synthesized videos. 
+
+VQA-Based Evaluation. As detailed in Sec. 3.1, we utilize a spe-cialized VQA-based evaluation protocol to comprehensively assess the multidimensional try-on quality unique to our novel task. To ex-ecute this assessment in our experiments, we employ the advanced 
+
+gemini-3-flash-preview [ 13 ] model as our multimodal evaluator. To ensure deterministic and reproducible scoring, the sampling temperature of the evaluator is strictly set to 0.0. 
+
+## 4.2 Quantitative Comparison 
+
+We evaluate our OmniTryOn against recent open-source special-ized video virtual try-on baselines (ViViD [ 10 ], CatV 2TON [ 8 ], and MagicTryOn [ 26 ]), as well as two state-of-the-art general video editing models (VACE [ 22 ] and VAP [ 1 ]), on the curated OTO test set. As reported in Table 2, OmniTryOn significantly outperforms existing VVT methods across all established metrics, demonstrating its superior capability to achieve the simultaneous try-on of diverse wearable objects while strictly ensuring the consistency of complex human motions and backgrounds. We attribute the suboptimal performance of specialized VVT baselines to three inherent limitations: first, their reliance on garment-agnostic input videos severely hinders the generation of accurate physical details and authentic visual appearances; second, they ex-perience severe spatiotemporal quality degradation stemming from error accumulation during cascaded inferences for multi-garment transfer; and finally, they possess an inherent inability to synthe-size non-garment customization targets. In contrast, our framework elegantly overcomes these bottlenecks. Specifically, the First Frame Wearable Cache strategy provides the precise conditions for diverse wearable objects in a single inference pass, while the STC-RoPE mechanism inherently establishes robust spatiotemporal anchors to strictly preserve complex human motions and backgrounds. Fur-thermore, OmniTryOn substantially surpasses both general video editing models. Notably, VAP [ 1] yields the poorest overall perfor-mance, indicating that general video editing models struggle to maintain the strict spatiotemporal consistency when it comes to the novel Try-On Anything task. To further validate the multidimensional superiority of our model beyond established metrics, we conduct a comprehensive VQA-based evaluation. The fine-grained assessment results across all sub-dimensions are visualized in the radar chart presented in Fig. 5. As visually evident, the area enclosed by OmniTryOn comprehensively envelops those of all baselines, demonstrating absolute multidimen-sional dominance. Notably, our framework exhibits superiority in 
+
+Table 2: Quantitative comparison between OmniTryOn and state-of-the-art baselines. The reported inference time de-notes the average processing time on the TryAny-Bench test set. For baselines, this duration intrinsically encompasses the mandatory computational overhead for extracting ex-plicit external priors and executing cascaded inferences.                                      
+
+> Method VFID 𝐼 ↓VFID 𝑅 ↓SSIM ↑LPIPS ↓Inference Time (s) ↓
+> Magic-TryOn[26] 18.256 0.654 0.820 0.162 356 CatV2TON[8] 24.141 2.172 0.793 0.201 220 ViViD[10] 19.139 0.454 0.787 0.190 216 VACE[22] 17.975 1.653 0.801 0.173 217 VAP[1] 41.767 5.763 0.651 0.419 186
+> Ours 14.704 0.235 0.821 0.144 186
+> 6
+
+highly challenging criteria such as Object Integrity and Material Fidelity, where existing methods severely degrade. 
+
+Figure 5: Comprehensive VQA-based evaluation results. Our model envelops the performance areas of all baselines, demonstrating absolute multidimensional superiority. 
+
+## 4.3 Qualitative Comparison 
+
+Figure 6 presents a comprehensive visual comparison between our OmniTryOn and the state-of-the-art baselines. As visually evident, existing VVT models exhibit a fundamental functional limitation: they completely fail to synthesize non-garment wearable objects. Furthermore, when transferring conventional garments, they suf-fer from severe visual degradations. For instance, CatV 2TON [ 8](third row) produces noticeable ghosting artifacts and unnatural boundary residues stemming from destructive garment-agnostic masking. Meanwhile, ViViD [ 10 ] (fourth row) severely alters the target attributes, resulting in unintended style modifications and color deviations (e.g., hallucinating puffy sleeves in the first col-umn and aggressively changing the garment color in the second column). Similarly, general video editing models struggle to perform pre-cise localized customization while strictly preserving the original spatiotemporal dynamics. VACE [ 22 ] (fifth row) hallucinates incor-rect visual features, such as introducing arbitrary red stripes to the black pants in the second column. More critically, VAP [ 1] (sixth row) experiences catastrophic spatiotemporal collapse, completely failing to preserve the complex human motions and original back-ground dynamics (e.g., degrading into fragmented, floating layouts in the second and third columns). In contrast, our OmniTryOn elegantly overcomes all these bot-tlenecks. Empowered by our core designs, it successfully achieves the try-on of diverse wearable objects with exceptional fidelity. It meticulously preserves the high-frequency structural details of the target objects while strictly maintaining robust spatiotemporal consistency for both complex human motions and backgrounds. 
+
+## 4.4 Ablation Study 
+
+4.4.1 Evaluation on Garment-Only Try-On. To further validate the comprehensive superiority of our framework, we conduct a quan-titative evaluation solely focused on garments, as existing VVT baselines are inherently restricted to this domain. The evaluation subset is directly sourced from the intermediate outputs of the TryAny-Bench dataset construction pipeline (Sec. 3.1). As reported in Table 3, OmniTryOn consistently outperforms the existing mod-els even in garment-only scenarios. We attribute this superiority to the fact that handling multiple garments (e.g., a top and a bottom) still necessitates cascaded inferences in baseline frameworks, which, along with their reliance on destructive garment-agnostic masks, inevitably incurs spatiotemporal degradation and the accumulation of external artifacts. Conversely, OmniTryOn seamlessly achieves multi-garment transfer in a single mask-free inference pass. 
+
+Table 3: Evaluation results on Garment-Only Try-On. 
+
+Method VFID 𝐼 ↓ VFID 𝑅 ↓ SSIM ↑ LPIPS ↓
+
+Magic-TryOn 12.228 0.251 0.858 0.118 CatV2TON 21.952 3.029 0.833 0.159 ViViD 16.167 0.332 0.821 0.152 VACE 13.613 0.604 0.846 0.128 VAP 50.804 9.390 0.629 0.435 
+
+Ours 12.152 0.170 0.851 0.117 
+
+4.4.2 Spatiotemporally Consistent RoPE. To validate the necessity of the proposed Spatiotemporally Consistent RoPE (STC-RoPE), we design an ablation study comparing it against three variants that introduce positional biases between the reference and target tokens: Spatial-biased RoPE [ 47 ], Temporal-biased RoPE [ 1 ], and a combined Spatiotemporal-biased RoPE. Detailed implementation configurations for these variants are provided in the supplemen-tary material. For evaluation efficiency, all variants are assessed using models trained exclusively through the first stage of the GTO strategy. As reported in Table 4, our STC-RoPE, which strictly avoids any positional biases, yields superior performance across all metrics. This empirical result validates our design. Specifically, introducing positional biases inherently disrupts the mutual per-ception between inputs. In contrast, assigning completely identical positional coordinates successfully enforces the strict identity map-ping of backgrounds and complex human motions required for the Try-On Anything task. 
+
+Table 4: Ablation study of different RoPE variants.                       
+
+> Method VFID 𝐼 ↓VFID 𝑅 ↓SSIM ↑LPIPS ↓
+> Temporal-biased RoPE 12.842 0.173 0.847 0.120 Spatial-biased RoPE 21.910 1.902 0.676 0.330 Spatiotemporal-biased RoPE 22.891 2.872 0.672 0.326
+> STC-RoPE 12.152 0.170 0.851 0.117
+
+4.4.3 Gradual Try-On Training Strategy. To validate the effective-ness of the proposed Gradual Try-On (GTO) strategy, we compare our model optimized via GTO against a variant optimized simul-taneously for all wearable objects from scratch (referred to as the Direct strategy). Both strategies are trained for an identical number 
+
+> 7Input MagicTryOn CatV 2TON ViViD VACE VAP Ours
+
+Figure 6: Qualitative comparison between OmniTryOn and state-of-the-art baselines. 
+
+of epochs. As reported in Table 5, the GTO strategy yields supe-rior quantitative results. This confirms that allowing the model to progressively acquire try-on capabilities ensures a more stable and effective optimization process. 
+
+Table 5: Ablation study of the training strategy. 
+
+Method VFID 𝐼 ↓ VFID 𝑅 ↓ SSIM ↑ LPIPS ↓
+
+Direct Strategy 14.679 0.264 0.816 0.148 GTO Strategy 14.704 0.235 0.821 0.144 
+
+## 5 Conclusion 
+
+In this paper, we present a comprehensive solution to the novel Try-On Anything task, featuring a robust benchmark (TryAny-Bench) alongside an external-prior-free generative framework (OmniT-ryOn). To achieve multi-object customization, OmniTryOn inte-grates a First Frame Wearable Cache that simultaneously injects diverse wearable objects in a single inference pass. Furthermore, our proposed Spatiotemporally Consistent RoPE (STC-RoPE) strictly preserves complex human motions and background dynamics with-out relying on explicit external priors. Empowered by the Gradual Try-On (GTO) training strategy, the framework progressively ex-tends its synthesis capabilities from conventional garments to ar-bitrary customization targets. Extensive experiments demonstrate that OmniTryOn delivers superior visual fidelity and spatiotempo-ral stability, thereby establishing a powerful state-of-the-art stan-dard for the Try-On Anything task and paving the way for highly immersive applications such as e-commerce and digital fashion. 
+
+## References          
+
+> [1] Yuxuan Bian, Xin Chen, Zenan Li, Tiancheng Zhi, Shen Sang, Linjie Luo, and Qiang Xu. 2025. Video-As-Prompt: Unified Semantic Control for Video Genera-tion. arXiv preprint arXiv:2510.20888 (2025). [2] Andreas Blattmann, Tim Dockhorn, Sumith Kulal, Daniel Mendelevitch, Maciej Kilian, Dominik Lorenz, Yam Levi, Zion English, Vikram Voleti, Adam Letts, et al .2023. Stable video diffusion: Scaling latent video diffusion models to large datasets. arXiv preprint arXiv:2311.15127 (2023). [3] Andreas Blattmann, Robin Rombach, Huan Ling, Tim Dockhorn, Seung Wook Kim, Sanja Fidler, and Karsten Kreis. 2023. Align your latents: High-resolution video synthesis with latent diffusion models. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition . 22563–22575.
+> 8
+
+[4] Ryan Burgert, Yuancheng Xu, Wenqi Xian, Oliver Pilarski, Pascal Clausen, Ming-ming He, Li Ma, Yitong Deng, Lingxiao Li, Mohsen Mousavi, et al . 2025. Go-with-the-flow: Motion-controllable video diffusion models using real-time warped noise. In Proceedings of the Computer Vision and Pattern Recognition Conference .13–23. [5] Joao Carreira and Andrew Zisserman. 2017. Quo vadis, action recognition? a new model and the kinetics dataset. In proceedings of the IEEE Conference on Computer Vision and Pattern Recognition . 6299–6308. [6] Jingxi Chen, Zongxia Li, Zhichao Liu, Guangyao Shi, Xiyang Wu, Fuxiao Liu, Cornelia Fermuller, Brandon Y Feng, and Yiannis Aloimonos. 2025. First Frame Is the Place to Go for Video Content Customization. arXiv preprint arXiv:2511.15700 
+
+(2025). [7] Yiyang Chen, Xuanhua He, Xiujun Ma, and Yue Ma. 2025. Contextflow: Training-free video object editing via adaptive context enrichment. arXiv preprint arXiv:2509.17818 (2025). [8] Zheng Chong, Wenqing Zhang, Shiyue Zhang, Jun Zheng, Xiao Dong, Haoxiang Li, Yiling Wu, Dongmei Jiang, and Xiaodan Liang. 2025. Catv2ton: Taming diffu-sion transformers for vision-based virtual try-on with temporal concatenation. 
+
+arXiv preprint arXiv:2501.11325 (2025). [9] Haoye Dong, Xiaodan Liang, Xiaohui Shen, Bowen Wu, Bing-Cheng Chen, and Jian Yin. 2019. Fw-gan: Flow-navigated warping gan for video virtual try-on. In 
+
+Proceedings of the IEEE/CVF international conference on computer vision . 1161– 1170. [10] Zixun Fang, Wei Zhai, Aimin Su, Hongliang Song, Kai Zhu, Mao Wang, Yu Chen, Zhiheng Liu, Yang Cao, and Zheng-Jun Zha. 2024. Vivid: Video virtual try-on using diffusion models. arXiv preprint arXiv:2405.11794 (2024). [11] Qihang Ge, Wei Sun, Yu Zhang, Yunhao Li, Zhongpeng Ji, Fengyu Sun, Shangling Jui, Xiongkuo Min, and Guangtao Zhai. 2025. Lmm-vqa: Advancing video quality assessment with large multimodal models. IEEE Transactions on Circuits and Systems for Video Technology (2025). [12] Rohit Girdhar, Mannat Singh, Andrew Brown, Quentin Duval, Samaneh Azadi, Sai Saketh Rambhatla, Akbar Shah, Xi Yin, Devi Parikh, and Ishan Misra. 2024. Factorizing text-to-video generation by explicit image conditioning. In European Conference on Computer Vision . Springer, 205–224. [13] Google DeepMind. 2026. Gemini 3 Flash Preview. https://ai.google.dev/gemini-api/docs/models/gemini-3-flash-preview. Accessed: 2026-03-22. [14] Google DeepMind. 2026. Gemini 3.1 Flash Image (Nano Banana 2). https:// aistudio.google.com/models/gemini-3-1-flash-image. Accessed: 2026-03-13. [15] Yuwei Guo, Ceyuan Yang, Anyi Rao, Zhengyang Liang, Yaohui Wang, Yu Qiao, Maneesh Agrawala, Dahua Lin, and Bo Dai. 2023. Animatediff: Animate your personalized text-to-image diffusion models without specific tuning. arXiv preprint arXiv:2307.04725 (2023). [16] Yoav HaCohen, Nisan Chiprut, Benny Brazowski, Daniel Shalem, Dudu Moshe, Eitan Richardson, Eran Levin, Guy Shiran, Nir Zabari, Ori Gordon, et al . 2024. Ltx-video: Realtime video latent diffusion. arXiv preprint arXiv:2501.00103 (2024). [17] Qingdong He, Xueqin Chen, Yanjie Pan, Peng Tang, Pengcheng Xu, Zhenye Gan, Chengjie Wang, Xiaobin Hu, Jiangning Zhang, and Yabiao Wang. 2025. The devil is in the details: Enhancing Video Virtual Try-On via Keyframe-Driven Details Injection. arXiv preprint arXiv:2512.20340 (2025). [18] Xuanhua He, Quande Liu, Zixuan Ye, Weicai Ye, Qiulin Wang, Xintao Wang, Qifeng Chen, Pengfei Wan, Di Zhang, and Kun Gai. 2025. Fulldit2: Effi-cient in-context conditioning for video diffusion transformers. arXiv preprint arXiv:2506.04213 (2025). [19] Lianghua Huang, Wei Wang, Zhi-Fan Wu, Yupeng Shi, Huanzhang Dou, Chen Liang, Yutong Feng, Yu Liu, and Jingren Zhou. 2024. In-context lora for diffusion transformers. arXiv preprint arXiv:2410.23775 (2024). [20] Yuyang Huang, Yabo Chen, Li Ding, Xiaopeng Zhang, Wenrui Dai, Junni Zou, Hongkai Xiong, and Qi Tian. 2025. Im-zero: Instance-level motion controllable video generation in a zero-shot manner. In Proceedings of the Computer Vision and Pattern Recognition Conference . 7265–7275. [21] Ziheng Jia, Zicheng Zhang, Jiaying Qian, Haoning Wu, Wei Sun, Chunyi Li, Xiaohong Liu, Weisi Lin, Guangtao Zhai, and Xiongkuo Min. 2025. Vqa2: visual question answering for video quality assessment. In Proceedings of the 33rd ACM International Conference on Multimedia . 6751–6760. [22] Zeyinzi Jiang, Zhen Han, Chaojie Mao, Jingfeng Zhang, Yulin Pan, and Yu Liu. 2025. Vace: All-in-one video creation and editing. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 17191–17202. [23] Johanna Karras, Aleksander Holynski, Ting-Chun Wang, and Ira Kemelmacher-Shlizerman. 2023. Dreampose: Fashion video synthesis with stable diffusion. In 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision . 22680– 22690. [24] Weijie Kong, Qi Tian, Zijian Zhang, Rox Min, Zuozhuo Dai, Jin Zhou, Jiangfeng Xiong, Xin Li, Bo Wu, Jianwei Zhang, et al . 2024. Hunyuanvideo: A systematic framework for large video generative models. arXiv preprint arXiv:2412.03603 
+
+(2024). [25] Guojun Lei, Chi Wang, Rong Zhang, Yikai Wang, Hong Li, and Weiwei Xu. 2025. Animateanything: Consistent and controllable animation for video generation. In Proceedings of the Computer Vision and Pattern Recognition Conference . 27946– 27956. [26] Guangyuan Li, Siming Zheng, Hao Zhang, Jinwei Chen, Junsheng Luan, Binkai Ou, Lei Zhao, Bo Li, and Peng-Tao Jiang. 2025. MagicTryOn: Harnessing Diffu-sion Transformer for Garment-Preserving Video Virtual Try-on. arXiv preprint arXiv:2505.21325 (2025). [27] Peike Li, Yunqiu Xu, Yunchao Wei, and Yi Yang. 2020. Self-correction for human parsing. IEEE Transactions on Pattern Analysis and Machine Intelligence 44, 6 (2020), 3260–3271. [28] Siqi Li, Zhengkai Jiang, Jiawei Zhou, Zhihong Liu, Xiaowei Chi, and Haoqian Wang. 2025. Realvvt: Towards photorealistic video virtual try-on via spatio-temporal consistency. arXiv preprint arXiv:2501.08682 (2025). [29] Yaron Lipman, Ricky TQ Chen, Heli Ben-Hamu, Maximilian Nickel, and Matt Le. 2022. Flow matching for generative modeling. arXiv preprint arXiv:2210.02747 
+
+(2022). [30] Xingchao Liu, Xiwen Zhang, Jianzhu Ma, Jian Peng, et al . 2023. Instaflow: One step is enough for high-quality diffusion-based text-to-image generation. In The Twelfth International Conference on Learning Representations .[31] Ilya Loshchilov and Frank Hutter. 2017. Decoupled weight decay regularization. 
+
+arXiv preprint arXiv:1711.05101 (2017). [32] Zhenglin Pan. 2025. AniLines - Anime Lineart Extractor. https://github.com/ zhenglinpan/AniLines-Anime-Lineart-Extractor. [33] William Peebles and Saining Xie. 2023. Scalable diffusion models with transform-ers. In Proceedings of the IEEE/CVF international conference on computer vision .4195–4205. [34] Yanyun Pu, Kehan Li, Zeyi Huang, Zhijie Zhong, and Kaixiang Yang. 2025. MVQA-68K: A Multi-dimensional and Causally-annotated Dataset with Quality Inter-pretability for Video Assessment. In Proceedings of the 33rd ACM International Conference on Multimedia . 11189–11198. [35] Zhefan Rao, Haoxuan Che, Ziwen Hu, Bin Zou, Yaofang Liu, Xuanhua He, Chong-Hou Choi, Yuyang He, Haoyu Chen, Jingran Su, Yanheng Li, Meng Chu, Chenyang Lei, Guanhua Zhao, Zhaoqing Li, Xichen Zhang, Anping Li, Lin Liu, Dandan Tu, and Rui Liu. 2026. Capybara: A Unified Visual Creation Model. [36] Yixuan Ren, Yang Zhou, Jimei Yang, Jing Shi, Difan Liu, Feng Liu, Mingi Kwon, and Abhinav Shrivastava. 2024. Customize-a-video: One-shot motion customization of text-to-video diffusion models. In European Conference on Computer Vision .Springer, 332–349. [37] Olaf Ronneberger, Philipp Fischer, and Thomas Brox. 2015. U-net: Convolutional networks for biomedical image segmentation. In International Conference on Medical image computing and computer-assisted intervention . Springer, 234–241. [38] Henry Ruhs et al . 2023. FaceFusion: Next generation face swapper and enhancer. https://github.com/facefusion/facefusion. [39] Jianlin Su, Murtadha Ahmed, Yu Lu, Shengfeng Pan, Wen Bo, and Yunfeng Liu. 2024. Roformer: Enhanced transformer with rotary position embedding. 
+
+Neurocomputing 568 (2024), 127063. [40] Zhenxiong Tan, Songhua Liu, Xingyi Yang, Qiaochu Xue, and Xinchao Wang. 2025. Ominicontrol: Minimal and universal control for diffusion transformer. In 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision . 14940– 14950. [41] Qwen Team. 2025. Qwen3 Technical Report. arXiv:2505.09388 [cs.CL] https: //arxiv.org/abs/2505.09388 [42] Thomas Unterthiner, Sjoerd Van Steenkiste, Karol Kurach, Raphael Marinier, Marcin Michalski, and Sylvain Gelly. 2018. Towards accurate generative models of video: A new metric & challenges. arXiv preprint arXiv:1812.01717 (2018). [43] Team Wan, Ang Wang, Baole Ai, Bin Wen, Chaojie Mao, Chen-Wei Xie, Di Chen, Feiwu Yu, Haiming Zhao, Jianxiao Yang, et al . 2025. Wan: Open and advanced large-scale video generative models. arXiv preprint arXiv:2503.20314 (2025). [44] Ang Wang, Baole Ai, Bin Wen, Chaojie Mao, Chen-Wei Xie, Di Chen, Feiwu Yu, Haiming Zhao, Jianxiao Yang, Jianyuan Zeng, et al . 2025. Wan: Open and advanced large-scale video generative models. arXiv preprint arXiv:2503.20314 3, 4 (2025), 6. [45] Zhou Wang, Alan C Bovik, Hamid R Sheikh, and Eero P Simoncelli. 2004. Image quality assessment: from error visibility to structural similarity. IEEE transactions on image processing 13, 4 (2004), 600–612. [46] Thaddäus Wiedemer, Yuxuan Li, Paul Vicol, Shixiang Shane Gu, Nick Matarese, Kevin Swersky, Been Kim, Priyank Jaini, and Robert Geirhos. 2025. Video models are zero-shot learners and reasoners. arXiv preprint arXiv:2509.20328 (2025). [47] Shaojin Wu, Mengqi Huang, Wenxu Wu, Yufeng Cheng, Fei Ding, and Qian He. 2025. Less-to-more generalization: Unlocking more controllability by in-context generation. In Proceedings of the IEEE/CVF International Conference on Computer Vision . 18682–18692. [48] Yuxin Wu, Alexander Kirillov, Francisco Massa, Wan-Yen Lo, and Ross Girshick. 2019. Detectron2. https://github.com/facebookresearch/detectron2. [49] Saining Xie, Ross Girshick, Piotr Dollár, Zhuowen Tu, and Kaiming He. 2017. Aggregated residual transformations for deep neural networks. In Proceedings of the IEEE conference on computer vision and pattern recognition . 1492–1500. 
+
+> 9
+
+[50] Zhengze Xu, Mengting Chen, Zhao Wang, Linyu Xing, Zhonghua Zhai, Nong Sang, Jinsong Lan, Shuai Xiao, and Changxin Gao. 2024. Tunnel try-on: Ex-cavating spatial-temporal tunnels for high-quality virtual try-on in videos. In 
+
+Proceedings of the 32nd ACM International Conference on Multimedia . 3199–3208. [51] Xiangpeng Yang, Ji Xie, Yiyuan Yang, Yan Huang, Min Xu, and Qiang Wu. 2025. Unified Video Editing with Temporal Reasoner. arXiv preprint arXiv:2512.07469 
+
+(2025). [52] Zhuoyi Yang, Jiayan Teng, Wendi Zheng, Ming Ding, Shiyu Huang, Jiazheng Xu, Yuanming Yang, Wenyi Hong, Xiaohan Zhang, Guanyu Feng, et al . 2024. Cogvideox: Text-to-video diffusion models with an expert transformer. arXiv preprint arXiv:2408.06072 (2024). [53] Zixuan Ye, Xuanhua He, Quande Liu, Qiulin Wang, Xintao Wang, Pengfei Wan, Di ZHANG, Kun Gai, Qifeng Chen, and Wenhan Luo. [n. d.]. Unified In-Context Video Editing. In The Fourteenth International Conference on Learning Representa-tions .[54] Jianhao Zeng, Yancheng Bai, Ruidong Chen, Xuanpu Zhang, Lei Sun, Dongyang Jin, Ryan Xu, Nannan Zhang, Dan Song, and Xiangxiang Chu. 2025. Eevee: Towards Close-up High-resolution Video-based Virtual Try-on. arXiv preprint arXiv:2511.18957 (2025). [55] Richard Zhang, Phillip Isola, Alexei A Efros, Eli Shechtman, and Oliver Wang. 2018. The unreasonable effectiveness of deep features as a perceptual metric. In Proceedings of the IEEE conference on computer vision and pattern recognition .586–595. [56] Zhongwei Zhang, Fuchen Long, Wei Li, Zhaofan Qiu, Wu Liu, Ting Yao, and Tao Mei. 2025. Region-Constraint In-Context Generation for Instructional Video Editing. arXiv preprint arXiv:2512.17650 (2025). [57] Zangwei Zheng, Xiangyu Peng, Tianji Yang, Chenhui Shen, Shenggui Li, Hongxin Liu, Yukun Zhou, Tianyi Li, and Yang You. 2024. Open-sora: Democratizing efficient video production for all. arXiv preprint arXiv:2412.20404 (2024). [58] Tongchun Zuo, Zaiyu Huang, Shuliang Ning, Ente Lin, Chao Liang, Zerong Zheng, Jianwen Jiang, Yuan Zhang, Mingyuan Gao, and Xin Dong. 2025. Dreamvvt: Mastering realistic video virtual try-on in the wild via a stage-wise diffusion transformer framework. arXiv preprint arXiv:2508.02807 (2025).

@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-13",
+  "date": "2026-06-13",
+  "generated_at": "2026-06-13T20:41:56",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/13/2606.08514v1-omnitryon-video-try-on-anything-at-once",
+      "section": "quick",
+      "title_en": "OmniTryOn: Video Try-On Anything at Once!",
+      "authors": "Changliang Xia, Chengyou Jia, Minnan Luo, Zhuohang Dang, Xin Shen, Bowen Ping",
+      "date": "2026-06-07",
+      "pdf": "https://arxiv.org/pdf/2606.08514v1",
+      "score": "6.0",
+      "evidence": "提出了TryAny-Bench，包含视频试穿生成的评估协议和数据集",
+      "tldr": "现有视频虚拟试穿局限于单件衣物转移且依赖外部掩码先验，破坏了物理动态和视觉质量。本文提出Try-On Anything任务，旨在一次性同时转移多种可穿戴物体到视频人物。构建了TryAny-Bench基准，并提出OmniTryOn框架，采用首帧可穿戴缓存策略、时空一致旋转位置编码以及渐进式训练策略，无需外部先验。实验表明，该方法在多项指标上显著优于现有视频试穿和编辑模型。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Although video virtual try-on (VVT) has achieved significant progress, existing methods still exhibit two fundamental limitations: first, they are restricted to single-garment transfer, rendering simultaneous multi-object try-on highly impractical; second, their heavy reliance on explicit external priors (e.g., garment masks) inevitably destroys crucial physical dynamics and degrades visual quality. To bridge this gap, this paper proposes the novel Try-On Anything task, which aims to simultaneously transfer diverse wearable objects onto a person in a video in a single inference pass. To support and standardize this paradigm, we introduce TryAny-Bench, a comprehensive benchmark encompassing a paired video dataset alongside a tailored evaluation protocol. Furthermore, we present OmniTryOn, an external-prior-free generative framework designed to tackle this task. Specifically, OmniTryOn employs a First Frame Wearable Cache strategy, which directly provides diverse wearable objects for the generation process through the initial video frame. To maintain consistency, we propose the Spatiotemporally Consistent RoPE (STC-RoPE), which inherently establishes robust spatiotemporal anchors to strictly preserve complex human motions and background dynamics. Optimized by the proposed Gradual Try-On (GTO) training strategy, our model progressively masters robust multi-object synthesis. Extensive experiments on TryAny-Bench demonstrate that OmniTryOn significantly outperforms existing specialized video virtual try-on models and general video editing baselines, establishing a powerful new standard for the Try-On Anything task. Our dataset, code, and models are available at https://github.com/xcltql666/OminTryOn.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
