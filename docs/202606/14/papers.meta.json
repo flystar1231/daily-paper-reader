@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-14",
+  "date": "2026-06-14",
+  "generated_at": "2026-06-14T21:09:24",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/14/2606.12899v1-lgvsc-a-large-model-driven-generative-video-semantic-communication-framework",
+      "section": "deep",
+      "title_en": "LGVSC: A Large-Model-Driven Generative Video Semantic Communication Framework",
+      "authors": "Yu Ma, Hang Yin, Li Qiao, Shuo Sun, Zhen Gao, Yin Xu, Wenjun Zhang",
+      "date": "2026-06-11",
+      "pdf": "https://arxiv.org/pdf/2606.12899v1",
+      "score": "9.0",
+      "evidence": "引入了概率语义相似度评分（PSSS）作为评估生成视频语义质量的指标。",
+      "tldr": "万物互联时代视频传输需求激增，语义通信可平衡效率与质量。本文提出LGVSC框架，通过解耦编解码器并暴露显式中间语义表示保持可解释性；引入概率语义相似度PSSS精确评估语义；基于多模态大模型实现语义引导关键帧提取，优化带宽；设计生成式动态自适应解码器适应任意长度视频。实验表明带宽比达10^-4至10^-3，显著优于传统方案，且零样本泛化至下游任务。该工作为低带宽视频语义通信提供了高效、可解释的新范式。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Driven by the massive video transmission requirements in the Internet of Everything, semantic communication holds great promise for striking a balance between transmission efficiency and quality. This paper introduces a large-model-driven generative video semantic communication (LGVSC) framework, enabling efficient video semantic transmission under extremely low bandwidth conditions. First, by decoupling the encoder and decoder as well as exposing explicit intermediate semantic representations, LGVSC maintains interpretability, avoiding the black-box behavior commonly observed in end-to-end systems. Next, we introduce a new metric, i.e., the probability-based semantic similarity score (PSSS), which quantifies semantic similarity for complex modalities within a continuous range, allowing for more precise evaluation of semantic content. Building on PSSS, we propose a semantic-guided keyframe extraction module driven by a multimodal large model. This module can enhance fine-grained semantic consistency during keyframe selection at the transmitter, optimizing transmission bandwidth without compromising semantic fidelity. Additionally, we design a generative large-model-driven dynamic semantic-adaptive decoder at the receiver, which can adapt to videos of arbitrary lengths. Simulation results demonstrate that LGVSC significantly outperforms traditional schemes, achieving a channel bandwidth ratio on the order of 10^-4 to 10^-3, while maintaining strong zero-shot generalization across downstream tasks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

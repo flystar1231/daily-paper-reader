@@ -1,0 +1,57 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-14T21:08:19.610098+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2606.12899v1",
+      "source": "arxiv",
+      "title": "LGVSC: A Large-Model-Driven Generative Video Semantic Communication Framework",
+      "abstract": "Driven by the massive video transmission requirements in the Internet of Everything, semantic communication holds great promise for striking a balance between transmission efficiency and quality. This paper introduces a large-model-driven generative video semantic communication (LGVSC) framework, enabling efficient video semantic transmission under extremely low bandwidth conditions. First, by decoupling the encoder and decoder as well as exposing explicit intermediate semantic representations, LGVSC maintains interpretability, avoiding the black-box behavior commonly observed in end-to-end systems. Next, we introduce a new metric, i.e., the probability-based semantic similarity score (PSSS), which quantifies semantic similarity for complex modalities within a continuous range, allowing for more precise evaluation of semantic content. Building on PSSS, we propose a semantic-guided keyframe extraction module driven by a multimodal large model. This module can enhance fine-grained semantic consistency during keyframe selection at the transmitter, optimizing transmission bandwidth without compromising semantic fidelity. Additionally, we design a generative large-model-driven dynamic semantic-adaptive decoder at the receiver, which can adapt to videos of arbitrary lengths. Simulation results demonstrate that LGVSC significantly outperforms traditional schemes, achieving a channel bandwidth ratio on the order of 10^-4 to 10^-3, while maintaining strong zero-shot generalization across downstream tasks.",
+      "authors": [
+        "Yu Ma",
+        "Hang Yin",
+        "Li Qiao",
+        "Shuo Sun",
+        "Zhen Gao",
+        "Yin Xu",
+        "Wenjun Zhang"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-06-11T04:58:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.12899v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Introduces probability-based semantic similarity score (PSSS) for evaluating generated video quality.",
+      "llm_evidence_cn": "引入了概率语义相似度评分（PSSS）作为评估生成视频语义质量的指标。",
+      "llm_evidence": "引入了概率语义相似度评分（PSSS）作为评估生成视频语义质量的指标。",
+      "canonical_evidence": "引入了概率语义相似度评分（PSSS）作为评估生成视频语义质量的指标。",
+      "llm_tldr_en": "LGVSC proposes a generative video semantic communication framework with a new metric PSSS for evaluating semantic similarity.",
+      "llm_tldr_cn": "针对超低带宽视频传输缺乏可解释性和合适评估指标的问题，本文提出LGVSC框架，解耦编解码器暴露中间语义表示，并引入概率语义相似度评分（PSSS）来量化生成视频的语义相似度。实验表明该方法在极低带宽下保持高质量，PSSS指标有效评估语义保真度，为生成视频通信提供了可解释的解决方案和评估工具。",
+      "llm_tldr": "针对超低带宽视频传输缺乏可解释性和合适评估指标的问题，本文提出LGVSC框架，解耦编解码器暴露中间语义表示，并引入概率语义相似度评分（PSSS）来量化生成视频的语义相似度。实验表明该方法在极低带宽下保持高质量，PSSS指标有效评估语义保真度，为生成视频通信提供了可解释的解决方案和评估工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}

@@ -6,24 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-13
-- 运行时间：2026-06-13 20:41:50 UTC
+- 最新运行日期：2026-06-14
+- 运行时间：2026-06-14 21:09:18 UTC
 - 运行状态：成功
 - 本次总论文数：1
-- 精读区：0
-- 速读区：1
+- 精读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日聚焦视频试穿领域，速读一篇论文尝试“一次性任意服装视频试穿”。该方法可将任意衣物穿在视频人物身上，值得关注其实际效果与泛化性。若对视频虚拟穿搭技术感兴趣，可进一步了解其与静态试穿的差异。
-- 详情：[/202606/13/README](/202606/13/README)
+今日精读一篇大模型驱动的生成式视频语义通信框架论文，评分高达9.0。核心方向是借助大型模型提升视频语义通信的生成效率与质量。建议读者关注该框架的算法实现与实验效果，评估其在低带宽场景下的实用价值。
+- 详情：[/202606/14/README](/202606/14/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [LGVSC: A Large-Model-Driven Generative Video Semantic Communication Framework](/202606/14/2606.12899v1-lgvsc-a-large-model-driven-generative-video-semantic-communication-framework)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：引入了概率语义相似度评分（PSSS）作为评估生成视频语义质量的指标。
 
 ### 速读区论文标签
-1. [OmniTryOn: Video Try-On Anything at Once!](/202606/13/2606.08514v1-omnitryon-video-try-on-anything-at-once)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出了TryAny-Bench，包含视频试穿生成的评估协议和数据集
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
