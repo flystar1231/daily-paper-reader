@@ -1,0 +1,59 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-15T22:40:04.889660+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.11782v1",
+      "source": "arxiv",
+      "title": "Seeing What Matters: Perceptual Wrapper with Common Randomness for 3D Gaussian Splatting",
+      "abstract": "While 3D Gaussian Splatting (3DGS) achieves impressive real-time rendering, it frequently struggles to synthesize high-frequency textures, a limitation heavily exacerbated in memory-constrained and rate-distortion-optimized (RDO) pipelines. To address this, we propose a versatile 2D perceptual wrapper that enhances the rendered outputs of existing 3DGS representations in a content- and view-dependent manner. Our method leverages a lightweight synthesis network conditioned on pseudo-random Gaussian noise to synthesize perceptually plausible textures. Supervised by Wasserstein Distortion, the network learns to match local feature statistics rather than strictly enforcing pixel-wise reconstruction fidelity, effectively mitigating the blurriness inherent in standard frameworks. We demonstrate the broad applicability of our plug-and-play approach across vanilla, memory-constrained, and RDO 3DGS methods. Comprehensive subjective and objective experiments confirm that our method significantly improves over existing baselines, yielding superior perceptual quality at sharply reduced file or model sizes.",
+      "authors": [
+        "He-Bi Yang",
+        "Jing-Zhong Chen",
+        "Yen-Kuan Ho",
+        "Sang NguyenQuang",
+        "Fan-Yi Hsu",
+        "Yun-Yu Lee",
+        "Jui-Chiu Chiang",
+        "Wen-Hsiao Peng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-10T08:14:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.11782v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses perceptual distortion metric for rendering quality",
+      "llm_evidence_cn": "使用感知失真度量评估渲染质量",
+      "llm_evidence": "使用感知失真度量评估渲染质量",
+      "canonical_evidence": "使用感知失真度量评估渲染质量",
+      "llm_tldr_en": "Proposes a 2D perceptual wrapper for 3DGS that uses Wasserstein Distortion to enhance texture quality, offering a transferable metric for generated video quality assessment.",
+      "llm_tldr_cn": "针对3D高斯泼溅在纹理合成上的不足，本文提出一种2D感知包裹器，利用轻量级合成网络和Wasserstein失真损失来生成感知上合理的纹理。该方法通过匹配局部特征统计而非像素级重建，有效缓解了模糊伪影，其采用的感知失真度量可迁移至生成视频的质量评估任务。",
+      "llm_tldr": "针对3D高斯泼溅在纹理合成上的不足，本文提出一种2D感知包裹器，利用轻量级合成网络和Wasserstein失真损失来生成感知上合理的纹理。该方法通过匹配局部特征统计而非像素级重建，有效缓解了模糊伪影，其采用的感知失真度量可迁移至生成视频的质量评估任务。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

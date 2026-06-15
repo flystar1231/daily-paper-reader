@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-15",
+  "date": "2026-06-15",
+  "generated_at": "2026-06-15T22:41:10",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/15/2606.11782v1-seeing-what-matters-perceptual-wrapper-with-common-randomness-for-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "Seeing What Matters: Perceptual Wrapper with Common Randomness for 3D Gaussian Splatting",
+      "authors": "He-Bi Yang, Jing-Zhong Chen, Yen-Kuan Ho, Sang NguyenQuang, Fan-Yi Hsu, Yun-Yu Lee, Jui-Chiu Chiang, Wen-Hsiao Peng",
+      "date": "2026-06-10",
+      "pdf": "https://arxiv.org/pdf/2606.11782v1",
+      "score": "6.0",
+      "evidence": "使用感知失真度量评估渲染质量",
+      "tldr": "3D高斯泼溅（3DGS）在渲染高频纹理时存在不足，尤其是在内存受限和率失真优化管道中。提出一种2D感知包装器，利用轻量级合成网络以伪随机高斯噪声为条件，在Wasserstein Distortion监督下学习局部特征统计，从而生成感知合理纹理。在多种3DGS方法上显著提升感知质量，同时大幅减小文件或模型尺寸。该方法可插拔，有效改善实时渲染的感知逼真度。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "While 3D Gaussian Splatting (3DGS) achieves impressive real-time rendering, it frequently struggles to synthesize high-frequency textures, a limitation heavily exacerbated in memory-constrained and rate-distortion-optimized (RDO) pipelines. To address this, we propose a versatile 2D perceptual wrapper that enhances the rendered outputs of existing 3DGS representations in a content- and view-dependent manner. Our method leverages a lightweight synthesis network conditioned on pseudo-random Gaussian noise to synthesize perceptually plausible textures. Supervised by Wasserstein Distortion, the network learns to match local feature statistics rather than strictly enforcing pixel-wise reconstruction fidelity, effectively mitigating the blurriness inherent in standard frameworks. We demonstrate the broad applicability of our plug-and-play approach across vanilla, memory-constrained, and RDO 3DGS methods. Comprehensive subjective and objective experiments confirm that our method significantly improves over existing baselines, yielding superior perceptual quality at sharply reduced file or model sizes.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
