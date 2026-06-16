@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-16T23:05:40.190311+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.15032v1",
+      "source": "arxiv",
+      "title": "How Should World Models Be Evaluated? A Decision-Making-Centric Position",
+      "abstract": "World models have rapidly become one of the central abstractions in modern AI. Yet the term now refers to several different objects: action-conditioned environment models, latent imagination models, future-video predictors, interactive neural simulators, latent predictive representations, and synthetic-data engines. Evaluation has broadened with the term. Recent papers measure video realism, perceptual similarity, instruction following, physical plausibility, policy ranking, executability, planning success, and downstream policy improvement. The result is not only metric diversity but also a recurring problem of claim/evidence mismatch: papers frequently make a stronger claim about what their model is useful for than their evaluation can actually establish.   This paper surveys the recent literature and argues that the central question is use-dependent. When a model is presented as a world model for embodied decision-making, a more decisive issue is not whether it generates visually compelling videos, but whether it supports reliable counterfactual reasoning, policy evaluation, planning, and policy optimization under intervention, policy-induced distribution shift, and long-horizon rollout. We organize the literature using an L0--L7 ladder that ranges from visual plausibility to policy optimization utility. In our interpretation, L0--L3 are most naturally read as diagnostics of generated artifacts, L4 is often the first genuinely interventional test, and L5--L7 provide the most direct evidence of decision usefulness. Based on this diagnosis, we propose a decision-making-centric evaluation framework and a benchmark protocol that foreground counterfactual action fidelity, closed-loop rollout validity, reward/value prediction, policy-ranking agreement, optimization lift, model exploitability, and uncertainty calibration.",
+      "authors": [
+        "Yang Yu",
+        "Shiyuan Zhang",
+        "Yifei Sheng",
+        "Haoxiang Ren",
+        "Haoxin Lin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-13T00:21:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.15032v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "discusses evaluation metrics for video realism and perceptual similarity in world models, directly relevant to video generation quality assessment",
+      "llm_evidence_cn": "讨论了世界模型中视频真实感和感知相似性等评价指标，与生成视频质量评估直接相关",
+      "llm_evidence": "讨论了世界模型中视频真实感和感知相似性等评价指标，与生成视频质量评估直接相关",
+      "canonical_evidence": "讨论了世界模型中视频真实感和感知相似性等评价指标，与生成视频质量评估直接相关",
+      "llm_tldr_en": "Critiques the diversity and mismatch of evaluation metrics in world models, including video realism, and advocates for decision-making-centric evaluation; provides a framework useful for video generation assessment.",
+      "llm_tldr_cn": "本文系统梳理了世界模型评价指标的多样性，包括视频真实感、感知相似性等，并指出常见的主张与证据不匹配问题。文章提出以决策为中心的评价框架，为生成视频质量评估提供了方法论参考，尤其适用于需要多维度评价的视频生成任务。",
+      "llm_tldr": "本文系统梳理了世界模型评价指标的多样性，包括视频真实感、感知相似性等，并指出常见的主张与证据不匹配问题。文章提出以决策为中心的评价框架，为生成视频质量评估提供了方法论参考，尤其适用于需要多维度评价的视频生成任务。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
