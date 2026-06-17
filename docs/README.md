@@ -6,26 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-16
-- 运行时间：2026-06-16 23:06:44 UTC
+- 最新运行日期：2026-06-17
+- 运行时间：2026-06-17 22:12:06 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日精选一篇关于世界模型评估的立场论文，评分7.0。
-该文主张以决策为中心评估世界模型，而非传统感知指标，方向值得关注。
-对AI研究者，建议进一步探索决策导向的评估框架在自身项目中的应用。
-- 详情：[/202606/16/README](/202606/16/README)
+今天速读了1篇体育视频非对称编码的感知质量研究论文。核心是提出一种感知加权视频质量指标，针对体育场景优化。建议后续关注该指标在高速运动画面中的实际表现。
+- 详情：[/202606/17/README](/202606/17/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [How Should World Models Be Evaluated? A Decision-Making-Centric Position](/202606/16/2606.15032v1-how-should-world-models-be-evaluated-a-decision-making-centric-position)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：讨论了世界模型中视频真实感和感知相似性等评价指标，与生成视频质量评估直接相关
+1. [Perceptually-Weighted Video Quality Metric for Asymmetric Encoded Sports Videos](/202606/17/2606.17869v1-perceptually-weighted-video-quality-metric-for-asymmetric-encoded-sports-videos)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：带感知加权的全参考视频质量指标
 
 
 <div class="dpr-home-promo-card">
