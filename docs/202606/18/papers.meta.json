@@ -1,0 +1,69 @@
+{
+  "label": "2026-06-18",
+  "date": "2026-06-18",
+  "generated_at": "2026-06-18T22:21:49",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202606/18/2606.18943v1-physics-iq-verified",
+      "section": "deep",
+      "title_en": "Physics-IQ Verified",
+      "authors": "Tim Rädsch, Yuki M Asano, Hilde Kuehne, Stefan Bauer, Priyank Jaini, Robert Geirhos, Carsten T. Lüth",
+      "date": "2026-06-17",
+      "pdf": "https://arxiv.org/pdf/2606.18943v1",
+      "score": "9.0",
+      "evidence": "评估视频生成模型的物理理解能力，提出基准改进",
+      "tldr": "视频生成模型（VGM）需理解物理世界以支持世界建模等任务。Physics-IQ基准通过对比生成视频与真实物理实验视频来评估物理理解，但存在提示和真值质量缺陷。本文系统审计该基准，提出三项改进：提升提示和真值质量，并引入样本级等权重评分系统。新基准Physics-IQ Verified改进了57.6%样本和34.8%提示，在六模型比较中产生中度排名变化（Kendall τ=0.46）。此项工作为物理准确的VGM提供了更可靠的评估信号，推动社区发展。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video generative models ( VGMs) have become a new frontier that can be used not just for video generation but for a multitude of downstream tasks, including world modeling. To advance these tasks, a good video model must understand the physical reality of the world. Evaluating this understanding is an emerging field and has led to the Physics-IQ benchmark, which quantifies this explicitly by comparing model-generated videos to real-world videos of physical experiments. In this work, we present a systematic audit of the Physics-IQ benchmark, expose shortcomings and propose three solutions that sharpen how we can measure physical understanding of VGMs. Specifically, we improve prompt and ground-truth quality to reduce the influence of confounding factors and further introduce a sample-level scoring system that weights each sample and metric equally. Our resulting benchmark, Physics-IQ Verified, refines 57.6\\% of all samples and improves over 34.8\\% of prompts. In a comparison study using six image-to-video generative models, we observe moderate but meaningful ranking changes (Kendall's $τ= 0.46$). We hope Physics-IQ Verified advances the community by providing a more reliable signal toward physically accurate VGMs. The code for the benchmark can be accessed at https://github.com/google-deepmind/physics-iq-benchmark",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/18/2606.19073v1-taming-i2v-models-for-image-hoi-editing-a-cognitive-benchmark-and-agentic-self-correcting-framework",
+      "section": "deep",
+      "title_en": "Taming I2V models for Image HOI Editing: A Cognitive Benchmark and Agentic Self-Correcting Framework",
+      "authors": "Jiayi Gao, Qingchao Chen, Yuxin Peng, Yang Liu",
+      "date": "2026-06-17",
+      "pdf": "https://arxiv.org/pdf/2606.19073v1",
+      "score": "8.0",
+      "evidence": "提出了用于评估生成视频中人与物体交互质量的HOI-Eval指标",
+      "tldr": "现有图像编辑方法难以处理复杂的人-物交互（HOI）编辑，且缺乏针对性基准和评估指标。为此，提出HOI-Edit基准，包含三个认知层级和自动指标HOI-Eval，通过VLM问答评估实例级交互。发现I2V模型因时序生成能力天然适合动态编辑，且能提供失败过程回放。进一步提出自修正框架SCPE，通过迭代优化提示约束I2V模型生成，提取视频帧作为编辑结果。在HOI-Edit上，SCPE在交互指标上达到与SOTA模型竞争的性能。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Current image editing methods excel at static attributes but fail at complex Human-Object Interactions (HOI), a critical challenge unaddressed by existing benchmarks that conflate HOI with static attributes, relying on global metrics incapable of simultaneously assessing dynamic interaction validity and entangled human-object pair preservation. Thus, we first introduce HOI-Edit, a comprehensive benchmark with three progressive cognitive levels, which features an automated metric HOI-Eval that reliably evaluates instance-level interaction by letting VLM Q&A after thinking with images containing grounded Human-Object pairs. Considering the task's essence of remodeling dynamic relationships, we benchmark Image-to-Video (I2V) models, finding them inherently suited for dynamic editing due to their temporal generation capabilities. Crucially, beyond superior performance, this capability provides a \"replay of the failure process,\" offering unique diagnosability into why errors occur. We thus propose SCPE (Self-Correcting Process Editing), a novel, agentic self-correcting framework that constrains the generation of I2V models through iteratively refined prompts, enabling the generated videos to more accurately present the target HOI. Extracted frames from these videos are the final editing results. On HOI-Edit, SCPE achieves performance competitive with state-of-the-art (SOTA) editing models like Nano Banana on interaction. Code is available at https://github.com/oceanflowlab/HOI-Edit.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/18/2606.16742v1-revealing-artifacts-via-noise-amplification-a-novel-perspective-for-ai-generated-video-detection",
+      "section": "quick",
+      "title_en": "Revealing Artifacts via Noise Amplification: A Novel Perspective for AI-Generated Video Detection",
+      "authors": "Renxi Cheng, Jie Gui, Hongsong Wang",
+      "date": "2026-06-15",
+      "pdf": "https://arxiv.org/pdf/2606.16742v1",
+      "score": "7.0",
+      "evidence": "通过放大伪影检测AI生成视频，与视频质量评估相关",
+      "tldr": "AI生成视频检测面临挑战，现有方法多针对GAN难以应对文本到视频模型。提出Noise Amplification方法，基于位平面提取并放大噪声信号，结合像素级、区域级和帧级处理。在GenVidBench和HardGVD基准上显著优于现有方法。该工作提供了检测新视角和挑战性基准，推动了AI视频检测研究。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "With the rapid advancement of video generation models, distinguishing between AI-generated and authentic videos has emerged as a challenging endeavor. The majority of existing research endeavors concentrate on the development of detectors for identifying samples generated by generative adversarial networks. Nevertheless, the detection of AI-generated videos, particularly those produced by text-to-video models, still remains an uncharted territory. Although state-of-the-art text-to-video models can generate realistic visual content similar to real videos, they fall short of generating the details of the images and the changes in details within the videos. Inspired by this, we address AI-generated video detection from a novel perspective of bit-planes, which can effectively describe the details or noises in images or videos. To this end, we propose a simple yet effective approach called Noise Amplification. This approach first extracts noise signals based on bit-planes, then amplifies these noise signals, and finally feeds them into the discriminator networks for video fake classification. Noise amplification is comprehensively constructed by incorporating three aspects: pixel-level intensity enhancement, region-level spatial amplification, and frame-level temporal aggregation. To evaluate methods of AI-generated video detection in challenging scenarios, we also introduce a benchmark named HardGVD. Extensive experiments on both the large-scale dataset GenVidBench and HardGVD show that our simple approach significantly outperforms state-of-the-art methods.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/18/2606.12899v2-lgvsc-a-large-model-driven-generative-video-semantic-communication-framework",
+      "section": "quick",
+      "title_en": "LGVSC: A Large-Model-Driven Generative Video Semantic Communication Framework",
+      "authors": "Yu Ma, Hang Yin, Li Qiao, Shuo Sun, Zhen Gao, Yin Xu, Wenjun Zhang",
+      "date": "2026-06-11",
+      "pdf": "https://arxiv.org/pdf/2606.12899v2",
+      "score": "6.0",
+      "evidence": "提出PSSS指标评估生成视频的语义质量",
+      "tldr": "针对万物互联中大规模视频传输的带宽挑战，提出大模型驱动生成式视频语义通信框架LGVSC，通过解耦编码解码并显式中间语义表示保持可解释性；引入概率语义相似度评分PSSS，多模态大模型驱动语义引导关键帧提取以优化带宽；接收端采用生成式大模型动态自适应解码器。实验表明信道带宽比降至10^-4~10^-3量级，下游任务零样本泛化能力显著，整体性能优于传统方案。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Driven by the massive video transmission requirements in the Internet of Everything, semantic communication holds great promise for striking a balance between transmission efficiency and quality. This paper introduces a large-model-driven generative video semantic communication (LGVSC) framework, enabling efficient video semantic transmission under extremely low bandwidth conditions. First, by decoupling the encoder and decoder as well as exposing explicit intermediate semantic representations, LGVSC maintains interpretability, avoiding the black-box behavior commonly observed in end-to-end systems. Next, we introduce a new metric, i.e., the probability-based semantic similarity score (PSSS), which quantifies semantic similarity for complex modalities within a continuous range, allowing for more precise evaluation of semantic content. Building on PSSS, we propose a semantic-guided keyframe extraction module driven by a multimodal large model. This module can enhance fine-grained semantic consistency during keyframe selection at the transmitter, optimizing transmission bandwidth without compromising semantic fidelity. Additionally, we design a generative large-model-driven dynamic semantic-adaptive decoder at the receiver, which can adapt to videos of arbitrary lengths. Simulation results demonstrate that LGVSC significantly outperforms traditional schemes, achieving a channel bandwidth ratio on the order of $10^{-4}$ to $10^{-3}$, while maintaining strong zero-shot generalization across downstream tasks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
