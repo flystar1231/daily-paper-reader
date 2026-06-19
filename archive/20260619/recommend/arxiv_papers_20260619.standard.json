@@ -1,0 +1,136 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-19T20:56:34.677617+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2606.20310v1",
+      "source": "arxiv",
+      "title": "Through the PRISM: Preference Representation in Intermediate States of Video Diffusion Models",
+      "abstract": "Evaluating video generation with clean, pixel-based reward models disconnects evaluation from the noisy diffusion process and incurs massive VAE decoding costs. In this paper, we challenge this paradigm by asking a fundamental question: Can a powerful video generator inherently discriminate preferences directly from noisy latents? To answer this, we introduce \\textbf{PRISM} (\\textbf{P}reference \\textbf{R}epresentation in \\textbf{I}ntermediate \\textbf{S}tates of Diffusion \\textbf{M}odels). PRISM employs a lightweight Query-based Aggregation head with a frozen video diffusion backbone to decode preference signals from noisy latents. Surprisingly, PRISM not only achieves SOTA preference accuracy but also unlocks strong noise-robustness, which enables early-stage Best-of-$N$ sampling. This allows for filtering suboptimal candidates at the very beginning of denoising, drastically reducing computation while boosting video quality. We also reveal a strong positive correlation between a backbone's generative performance and its inherent evaluative power, enabling self-improving video backbones.",
+      "authors": [
+        "Haoxuan Wu",
+        "Lai Man Po",
+        "Mengyang Liu",
+        "Kun Li",
+        "Hongzheng Yang",
+        "Wei Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-18T14:44:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.20310v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes PRISM, a preference reward model from noisy latents for video generation evaluation",
+      "llm_evidence_cn": "提出PRISM，一种从噪声潜在状态中提取偏好的视频生成评估方法",
+      "llm_evidence": "提出PRISM，一种从噪声潜在状态中提取偏好的视频生成评估方法",
+      "canonical_evidence": "提出PRISM，一种从噪声潜在状态中提取偏好的视频生成评估方法",
+      "llm_tldr_en": "PRISM uses a frozen video diffusion backbone with a lightweight Query-based Aggregation head to decode preference signals from noisy latents, achieving SOTA preference accuracy for video generation evaluation.",
+      "llm_tldr_cn": "现有视频生成评估通常依赖干净的像素级奖励模型，忽略了扩散过程的噪声特性且耗费大量VAE解码成本。本文提出PRISM，通过一个轻量级查询聚合头与冻结的视频扩散主干协同工作，直接从噪声潜在状态中解码偏好信号。实验表明PRISM在偏好预测准确率上达到最优，并展现出强大的噪声鲁棒性。该方法为视频生成评估提供了全新的范式。",
+      "llm_tldr": "现有视频生成评估通常依赖干净的像素级奖励模型，忽略了扩散过程的噪声特性且耗费大量VAE解码成本。本文提出PRISM，通过一个轻量级查询聚合头与冻结的视频扩散主干协同工作，直接从噪声潜在状态中解码偏好信号。实验表明PRISM在偏好预测准确率上达到最优，并展现出强大的噪声鲁棒性。该方法为视频生成评估提供了全新的范式。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.18478v1",
+      "source": "arxiv",
+      "title": "Data-Forcing Distillation: Restoring Diversity and Fidelity in Few-Step Video Generation",
+      "abstract": "Recent progress has shown promise in distilling multi-step video diffusion models into efficient few-step students. Among them, Distribution Matching Distillation (DMD) and its successor DMD2 achieved strong generation quality and fast convergence. However, due to the nature of the reverse Kullback--Leibler (KL) objective, these methods exhibit two persistent failure modes: a substantial drop in sample diversity, and visibly over-saturated outputs that deviate from real-video appearance. In this work, we propose Data-Forcing Distillation (DFD), a simple post-training framework that restores diversity and fidelity in DMD with only a single-line of code change. At its core is the teacher score discrepancy to guide the student toward the real-data distribution, pulling it to missing modes (mitigating mode collapse) and away from problematic modes absent in real data (avoiding over-saturation). We provide an in-depth theoretical analysis of our framework and validate our approach on text-to-video, image-to-video, and autoregressive video generation. With only 100--300 steps of finetuning, DFD effectively restores diversity and fidelity on both Wan2.1-1.3B and Cosmos-Predict2.5-2B model, resolving the over-saturation artifacts with significantly better video dynamics and appearance, and even outperforms the teacher model.",
+      "authors": [
+        "Siyi Chen",
+        "Shaowei Liu",
+        "Yixuan Jia",
+        "Zian Wang",
+        "Huan Ling",
+        "Qing Qu",
+        "Jun Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-16T20:38:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.18478v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "restoring diversity and fidelity in few-step video generation",
+      "llm_evidence_cn": "恢复少步视频生成的多样性和保真度",
+      "llm_evidence": "恢复少步视频生成的多样性和保真度",
+      "canonical_evidence": "恢复少步视频生成的多样性和保真度",
+      "llm_tldr_en": "Data-Forcing Distillation improves diversity and fidelity of distilled video generation models, addressing quality issues relevant to evaluation metrics.",
+      "llm_tldr_cn": "针对分布匹配蒸馏中出现的多样性下降和过饱和问题，本文提出数据强制蒸馏（DFD）框架，通过教师分数差异引导学生模型，仅单行代码修改即可恢复多样性和保真度。实验表明DFD显著提高生成视频质量，与视频生成评估指标（如FVD）相关，但未专门研究透明视频。",
+      "llm_tldr": "针对分布匹配蒸馏中出现的多样性下降和过饱和问题，本文提出数据强制蒸馏（DFD）框架，通过教师分数差异引导学生模型，仅单行代码修改即可恢复多样性和保真度。实验表明DFD显著提高生成视频质量，与视频生成评估指标（如FVD）相关，但未专门研究透明视频。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.20233v1",
+      "source": "arxiv",
+      "title": "Cinematic Compositing Using Character-Environment-Harmonized Video Generation Models",
+      "abstract": "Cinematic compositing aims to integrate green-screen characters into novel environments while maintaining physical and photometric realism. Previous methods often fail to capture the complex bidirectional interactions between characters and their surroundings, which we characterize as Character-to-Environment (C2E) physical interaction and Environment-to-Character (E2C) lighting harmonization. To address this, we propose an end-to-end video diffusion framework that jointly models C2E and E2C interactions, specifically handling the challenges of interactive props. Our approach introduces a tri-mask-guided architecture with RGB-D joint denoising to ensure physically consistent interactions among the character, props, and environment. We further develop an efficient prior-driven data curation pipeline to construct high-quality relighting pairs without expensive rendering. Finally, a reference-conditioned mechanism enables controllable environment synthesis and precise prop replacement. Extensive experiments demonstrate that our framework significantly outperforms existing methods in cinematic-quality dynamic video compositing.",
+      "authors": [
+        "Tianyi Xiang",
+        "Mingming He",
+        "Li Ma",
+        "Jing Liao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-17T17:56:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.20233v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generates composite videos with transparent-like layering using green-screen",
+      "llm_evidence_cn": "通过绿幕合成生成类似透明叠加的视频",
+      "llm_evidence": "通过绿幕合成生成类似透明叠加的视频",
+      "canonical_evidence": "通过绿幕合成生成类似透明叠加的视频",
+      "llm_tldr_en": "Proposes an end-to-end video diffusion framework for cinematic compositing, jointly modeling character-environment interactions with tri-mask guidance and RGB-D denoising.",
+      "llm_tldr_cn": "该论文提出端到端视频扩散框架，用于电影级绿幕合成，联合建模角色与环境双向交互，使用三掩码引导和RGB-D联合去噪。实验证明了物理和光度真实感的提升，为透明视频生成提供了可行方法。",
+      "llm_tldr": "该论文提出端到端视频扩散框架，用于电影级绿幕合成，联合建模角色与环境双向交互，使用三掩码引导和RGB-D联合去噪。实验证明了物理和光度真实感的提升，为透明视频生成提供了可行方法。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "methods for transparent video generation",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

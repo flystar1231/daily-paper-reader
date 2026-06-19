@@ -1,0 +1,54 @@
+{
+  "label": "2026-06-19",
+  "date": "2026-06-19",
+  "generated_at": "2026-06-19T21:00:08",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202606/19/2606.20310v1-through-the-prism-preference-representation-in-intermediate-states-of-video-diffusion-models",
+      "section": "deep",
+      "title_en": "Through the PRISM: Preference Representation in Intermediate States of Video Diffusion Models",
+      "authors": "Haoxuan Wu, Lai Man Po, Mengyang Liu, Kun Li, Hongzheng Yang, Wei Liu",
+      "date": "2026-06-18",
+      "pdf": "https://arxiv.org/pdf/2606.20310v1",
+      "score": "8.0",
+      "evidence": "提出PRISM，一种从噪声潜在状态中提取偏好的视频生成评估方法",
+      "tldr": "现有视频生成评估依赖干净像素奖励模型，与扩散过程的噪声脱节且计算成本高。本文提出PRISM，在冻结的视频扩散主干上附加轻量查询聚合头，直接从噪声潜变量中解码偏好信号，达到SOTA偏好准确率并具有强噪声鲁棒性。该方法支持早期Best-of-N采样，在去噪初期过滤次优候选，大幅降低计算量并提升视频质量。此外，发现主干的生成性能与其内在评估能力正相关，可实现自提升。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Evaluating video generation with clean, pixel-based reward models disconnects evaluation from the noisy diffusion process and incurs massive VAE decoding costs. In this paper, we challenge this paradigm by asking a fundamental question: Can a powerful video generator inherently discriminate preferences directly from noisy latents? To answer this, we introduce \\textbf{PRISM} (\\textbf{P}reference \\textbf{R}epresentation in \\textbf{I}ntermediate \\textbf{S}tates of Diffusion \\textbf{M}odels). PRISM employs a lightweight Query-based Aggregation head with a frozen video diffusion backbone to decode preference signals from noisy latents. Surprisingly, PRISM not only achieves SOTA preference accuracy but also unlocks strong noise-robustness, which enables early-stage Best-of-$N$ sampling. This allows for filtering suboptimal candidates at the very beginning of denoising, drastically reducing computation while boosting video quality. We also reveal a strong positive correlation between a backbone's generative performance and its inherent evaluative power, enabling self-improving video backbones.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/19/2606.18478v1-data-forcing-distillation-restoring-diversity-and-fidelity-in-few-step-video-generation",
+      "section": "quick",
+      "title_en": "Data-Forcing Distillation: Restoring Diversity and Fidelity in Few-Step Video Generation",
+      "authors": "Siyi Chen, Shaowei Liu, Yixuan Jia, Zian Wang, Huan Ling, Qing Qu, Jun Gao",
+      "date": "2026-06-16",
+      "pdf": "https://arxiv.org/pdf/2606.18478v1",
+      "score": "6.0",
+      "evidence": "恢复少步视频生成的多样性和保真度",
+      "tldr": "现有视频扩散蒸馏方法（如DMD）因逆向KL散度导致样本多样性骤降和过饱和伪影。本文提出Data-Forcing Distillation (DFD)，通过教师得分差异引导学生逼近真实数据分布，恢复缺失模式并远离异常模式。仅需100-300步微调，DFD在Wan2.1和Cosmos-Predict2.5模型上有效提升多样性与保真度，甚至超越教师模型。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Recent progress has shown promise in distilling multi-step video diffusion models into efficient few-step students. Among them, Distribution Matching Distillation (DMD) and its successor DMD2 achieved strong generation quality and fast convergence. However, due to the nature of the reverse Kullback--Leibler (KL) objective, these methods exhibit two persistent failure modes: a substantial drop in sample diversity, and visibly over-saturated outputs that deviate from real-video appearance. In this work, we propose Data-Forcing Distillation (DFD), a simple post-training framework that restores diversity and fidelity in DMD with only a single-line of code change. At its core is the teacher score discrepancy to guide the student toward the real-data distribution, pulling it to missing modes (mitigating mode collapse) and away from problematic modes absent in real data (avoiding over-saturation). We provide an in-depth theoretical analysis of our framework and validate our approach on text-to-video, image-to-video, and autoregressive video generation. With only 100--300 steps of finetuning, DFD effectively restores diversity and fidelity on both Wan2.1-1.3B and Cosmos-Predict2.5-2B model, resolving the over-saturation artifacts with significantly better video dynamics and appearance, and even outperforms the teacher model.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/19/2606.20233v1-cinematic-compositing-using-character-environment-harmonized-video-generation-models",
+      "section": "quick",
+      "title_en": "Cinematic Compositing Using Character-Environment-Harmonized Video Generation Models",
+      "authors": "Tianyi Xiang, Mingming He, Li Ma, Jing Liao",
+      "date": "2026-06-17",
+      "pdf": "https://arxiv.org/pdf/2606.20233v1",
+      "score": "6.0",
+      "evidence": "通过绿幕合成生成类似透明叠加的视频",
+      "tldr": "电影合成需将绿幕角色融入新环境并保持物理和光照真实感，但现有方法无法处理角色与环境的双向交互（C2E物理交互和E2C光照协调）。本文提出端到端视频扩散框架，采用三掩码引导与RGB-D联合去噪，同时建模这两种交互，并设计先验驱动数据构建流程解决数据匮乏问题。实验证明该方法在电影级动态视频合成中显著优于现有方法，贡献在于首次联合建模双向交互，实现了可控环境合成与精确道具替换。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Cinematic compositing aims to integrate green-screen characters into novel environments while maintaining physical and photometric realism. Previous methods often fail to capture the complex bidirectional interactions between characters and their surroundings, which we characterize as Character-to-Environment (C2E) physical interaction and Environment-to-Character (E2C) lighting harmonization. To address this, we propose an end-to-end video diffusion framework that jointly models C2E and E2C interactions, specifically handling the challenges of interactive props. Our approach introduces a tri-mask-guided architecture with RGB-D joint denoising to ensure physically consistent interactions among the character, props, and environment. We further develop an efficient prior-driven data curation pipeline to construct high-quality relighting pairs without expensive rendering. Finally, a reference-conditioned mechanism enables controllable environment synthesis and precise prop replacement. Extensive experiments demonstrate that our framework significantly outperforms existing methods in cinematic-quality dynamic video compositing.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,32 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-18
-- 运行时间：2026-06-18 22:21:43 UTC
+- 最新运行日期：2026-06-19
+- 运行时间：2026-06-19 21:00:00 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：2
+- 本次总论文数：3
+- 精读区：1
 - 速读区：2
 
 ### 今日简报（AI）
-今日推荐4篇AI前沿研究，其中2篇精读高分论文：9.0分的《Physics-IQ Verified》和8.0分的《Taming I2V models for Image HOI Editing》。最值得关注的是物理智能验证与人机交互图像编辑新框架，建议优先精读这两篇高价值论文。
-- 详情：[/202606/18/README](/202606/18/README)
+今日视频生成模型研究聚焦于偏好表示与蒸馏优化，精读论文《Through the PRISM》提出通过中间状态嵌入偏好，获8.0高分。最值得关注的方向是PRISM中利用扩散模型潜在空间进行偏好推理，以及数据强制蒸馏对视频生成多样性的提升。建议普通读者优先阅读PRISM，理解如何在视频生成中更精细地控制输出风格。
+- 详情：[/202606/19/README](/202606/19/README)
 
 ### 精读区论文标签
-1. [Physics-IQ Verified](/202606/18/2606.18943v1-physics-iq-verified)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：评估视频生成模型的物理理解能力，提出基准改进
-2. [Taming I2V models for Image HOI Editing: A Cognitive Benchmark and Agentic Self-Correcting Framework](/202606/18/2606.19073v1-taming-i2v-models-for-image-hoi-editing-a-cognitive-benchmark-and-agentic-self-correcting-framework)  
+1. [Through the PRISM: Preference Representation in Intermediate States of Video Diffusion Models](/202606/19/2606.20310v1-through-the-prism-preference-representation-in-intermediate-states-of-video-diffusion-models)  
    标签：评分：8.0/10、query:vgen-metrics
-   evidence：提出了用于评估生成视频中人与物体交互质量的HOI-Eval指标
+   evidence：提出PRISM，一种从噪声潜在状态中提取偏好的视频生成评估方法
 
 ### 速读区论文标签
-1. [Revealing Artifacts via Noise Amplification: A Novel Perspective for AI-Generated Video Detection](/202606/18/2606.16742v1-revealing-artifacts-via-noise-amplification-a-novel-perspective-for-ai-generated-video-detection)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：通过放大伪影检测AI生成视频，与视频质量评估相关
-2. [LGVSC: A Large-Model-Driven Generative Video Semantic Communication Framework](/202606/18/2606.12899v2-lgvsc-a-large-model-driven-generative-video-semantic-communication-framework)  
+1. [Data-Forcing Distillation: Restoring Diversity and Fidelity in Few-Step Video Generation](/202606/19/2606.18478v1-data-forcing-distillation-restoring-diversity-and-fidelity-in-few-step-video-generation)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出PSSS指标评估生成视频的语义质量
+   evidence：恢复少步视频生成的多样性和保真度
+2. [Cinematic Compositing Using Character-Environment-Harmonized Video Generation Models](/202606/19/2606.20233v1-cinematic-compositing-using-character-environment-harmonized-video-generation-models)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：通过绿幕合成生成类似透明叠加的视频
 
 
 <div class="dpr-home-promo-card">
