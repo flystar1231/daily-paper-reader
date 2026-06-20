@@ -1,0 +1,57 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-20T21:33:10.016223+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.16449v2",
+      "source": "arxiv",
+      "title": "PermaVid: Consistent Video Generation Across Edits via Disentangled Context Memory",
+      "abstract": "Consistent video generation under editing operations requires persistence: when edits modify scene appearance or layout, subsequent generations should remain coherent across time and viewpoints. However, existing memory designs struggle to maintain long-term consistency after such modifications, as stored contexts may become outdated or invalid. To address this, we propose PermaVid, a novel framework built upon a multi-modal context memory that disentangles spatial context into semantic appearance and geometric structure, together with an edit-aware memory update and retrieval strategy that keeps memory evolution aligned with subsequent observations. Specifically, we develop two complementary memory banks: an RGB context memory that captures appearance-aware observations while implicitly encoding geometry, and a depth context memory that preserves geometry-only structure disentangled from semantics. Building on this design, we introduce a memory-guided video generation model that performs multi-modal feature fusion under reference conditions drawn from mixed-modality memory contexts. Experiments demonstrate that our method maintains strong long-term semantic and structural consistency after edits, significantly outperforming state-of-the-art methods.",
+      "authors": [
+        "Shuai Yang",
+        "Bingjie Gao",
+        "Ziwei Liu",
+        "Jiaqi Wang",
+        "Dahua Lin",
+        "Tong Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-15T09:20:32+00:00",
+      "link": "https://arxiv.org/pdf/2606.16449v2",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "video generation method with memory for consistency",
+      "llm_evidence_cn": "具有记忆一致性的视频生成方法",
+      "llm_evidence": "具有记忆一致性的视频生成方法",
+      "canonical_evidence": "具有记忆一致性的视频生成方法",
+      "llm_tldr_en": "PermaVid proposes a disentangled context memory for consistent video generation under editing operations, addressing long-term coherence issues.",
+      "llm_tldr_cn": "视频编辑操作下保持生成一致性是视频生成的关键挑战。现有方法在编辑后难以维持长期一致性。PermaVid提出了一种解耦上下文记忆框架，将空间上下文分离为语义外观和几何结构，并设计编辑感知的记忆更新策略。实验表明，该方法在多种编辑场景下显著提升了生成视频的时间一致性和视角一致性，推动了交互式视频生成的应用。",
+      "llm_tldr": "视频编辑操作下保持生成一致性是视频生成的关键挑战。现有方法在编辑后难以维持长期一致性。PermaVid提出了一种解耦上下文记忆框架，将空间上下文分离为语义外观和几何结构，并设计编辑感知的记忆更新策略。实验表明，该方法在多种编辑场景下显著提升了生成视频的时间一致性和视角一致性，推动了交互式视频生成的应用。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

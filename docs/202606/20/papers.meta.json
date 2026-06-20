@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-20",
+  "date": "2026-06-20",
+  "generated_at": "2026-06-20T21:33:59",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/20/2606.16449v2-permavid-consistent-video-generation-across-edits-via-disentangled-context-memory",
+      "section": "quick",
+      "title_en": "PermaVid: Consistent Video Generation Across Edits via Disentangled Context Memory",
+      "authors": "Shuai Yang, Bingjie Gao, Ziwei Liu, Jiaqi Wang, Dahua Lin, Tong Wu",
+      "date": "2026-06-15",
+      "pdf": "https://arxiv.org/pdf/2606.16449v2",
+      "score": "6.0",
+      "evidence": "具有记忆一致性的视频生成方法",
+      "tldr": "视频编辑操作后，现有记忆设计难以维持后续生成的一致性。PermaVid提出解耦记忆框架，将空间上下文分为RGB外观记忆和深度几何记忆，并设计编辑感知的更新与检索策略。实验表明，该方法在编辑后能保持长期语义和结构一致性，显著超越现有方法。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Consistent video generation under editing operations requires persistence: when edits modify scene appearance or layout, subsequent generations should remain coherent across time and viewpoints. However, existing memory designs struggle to maintain long-term consistency after such modifications, as stored contexts may become outdated or invalid. To address this, we propose PermaVid, a novel framework built upon a multi-modal context memory that disentangles spatial context into semantic appearance and geometric structure, together with an edit-aware memory update and retrieval strategy that keeps memory evolution aligned with subsequent observations. Specifically, we develop two complementary memory banks: an RGB context memory that captures appearance-aware observations while implicitly encoding geometry, and a depth context memory that preserves geometry-only structure disentangled from semantics. Building on this design, we introduce a memory-guided video generation model that performs multi-modal feature fusion under reference conditions drawn from mixed-modality memory contexts. Experiments demonstrate that our method maintains strong long-term semantic and structural consistency after edits, significantly outperforming state-of-the-art methods.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
