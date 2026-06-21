@@ -6,24 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-20
-- 运行时间：2026-06-20 21:33:53 UTC
+- 最新运行日期：2026-06-21
+- 运行时间：2026-06-21 20:51:53 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日速读1篇视频生成一致性研究论文，提出解耦上下文记忆方法。核心方向是保持多次编辑后视频内容的逻辑连贯性。建议后续关注该方法与现有视频编辑工具的对比效果。
-- 详情：[/202606/20/README](/202606/20/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202606/21/README](/202606/21/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [PermaVid: Consistent Video Generation Across Edits via Disentangled Context Memory](/202606/20/2606.16449v2-permavid-consistent-video-generation-across-edits-via-disentangled-context-memory)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：具有记忆一致性的视频生成方法
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
