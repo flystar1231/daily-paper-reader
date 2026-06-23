@@ -6,19 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-22
-- 运行时间：2026-06-22 22:30:36 UTC
+- 最新运行日期：2026-06-23
+- 运行时间：2026-06-23 21:08:03 UTC
 - 运行状态：成功
-- 本次总论文数：0
-- 精读区：0
+- 本次总论文数：2
+- 精读区：2
 - 速读区：0
 
 ### 今日简报（AI）
-> 今日无新推荐，系统未产出可展示论文。
-- 详情：[/202606/22/README](/202606/22/README)
+今日精读两篇高分论文，聚焦视频编辑的内容保留与物理一致性评估。  
+最值得关注：Vera分层扩散模型实现内容保留编辑（9.0分），以及无参考物理一致性评估方法（8.0分）。  
+建议读者关注视频编辑工具的可控性与生成视频的物理合理性，二者是当前质量瓶颈。
+- 详情：[/202606/23/README](/202606/23/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Vera: A Layered Diffusion Model for Content-Preserving Video Editing](/202606/23/2606.23610v1-vera-a-layered-diffusion-model-for-content-preserving-video-editing)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：生成用于合成的alpha遮罩，直接与透明/alpha视频生成相关
+2. [Reference-Free Assessment of Physical Consistency in World Model-based Video Generation](/202606/23/2606.22363v1-reference-free-assessment-of-physical-consistency-in-world-model-based-video-generation)  
+   标签：评分：8.0/10、query:vgen-metrics
+   evidence：生成视频的物理一致性无参考评估
 
 ### 速读区论文标签
 - 本次无速读推荐。

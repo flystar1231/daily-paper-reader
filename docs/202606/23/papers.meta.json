@@ -1,0 +1,39 @@
+{
+  "label": "2026-06-23",
+  "date": "2026-06-23",
+  "generated_at": "2026-06-23T21:08:09",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202606/23/2606.23610v1-vera-a-layered-diffusion-model-for-content-preserving-video-editing",
+      "section": "deep",
+      "title_en": "Vera: A Layered Diffusion Model for Content-Preserving Video Editing",
+      "authors": "Hongkai Zheng, Ta-Ying Cheng, Benjamin Klein, Yisong Yue, Zhuoning Yuan",
+      "date": "2026-06-22",
+      "pdf": "https://arxiv.org/pdf/2606.23610v1",
+      "score": "9.0",
+      "evidence": "生成用于合成的alpha遮罩，直接与透明/alpha视频生成相关",
+      "tldr": "视频编辑中内容保留是核心挑战，现有方法常误改角色或背景。Vera提出分层扩散框架，生成编辑层和alpha遮罩与源视频合成，通过Mixture-of-Transformers架构分离编辑与保留。定量测试和用户偏好显示，Vera在内容保留上显著优于同类模型，编辑质量持平，且仅需486K帧训练数据。该工作为视频编辑提供了一种高效的内容保留方案。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video diffusion models have enabled remarkable progress in video generation and editing. However, content preservation remains a core challenge: existing methods regenerate every pixel and often alter elements that should remain unchanged, such as characters or background scenes. We introduce Vera, a layered diffusion framework for content-preserving video editing. Instead of regenerating the entire video, Vera generates an edit layer along with an alpha matte for compositing with the source video, separating creative editing from content preservation by design. To encourage coherent composition with the source video, we extend the text-to-video DiT into a Mixture-of-Transformers (MoT) architecture, with separate DiTs for each layer that interact through joint self-attention. To support the training of Vera, we further construct a high-quality layered dataset with accurate alpha mattes, diverse scenes and dynamics, and visual effects. Across our quantitative benchmark and human preference study, Vera outperforms leading open-source video editing models in content preservation while remaining competitive in edit quality, using 486K frames of layered training data.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/23/2606.22363v1-reference-free-assessment-of-physical-consistency-in-world-model-based-video-generation",
+      "section": "deep",
+      "title_en": "Reference-Free Assessment of Physical Consistency in World Model-based Video Generation",
+      "authors": "Yun Oh, Sukmin Yun",
+      "date": "2026-06-21",
+      "pdf": "https://arxiv.org/pdf/2606.22363v1",
+      "score": "8.0",
+      "evidence": "生成视频的物理一致性无参考评估",
+      "tldr": "现有视频生成评估依赖人工投票或地面真值，成本高且难以反映物理一致性。本文提出无参考评估方法，结合相对和绝对指标，利用DROID-SLAM和SEA-RAFT检测物理不一致。该评估筛选的视频使任务成功率提升8%以上，缩小仿真与现实差距。绝对评估还能时空定位物理伪影，提供可视化解释。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We introduce reference-free measures for evaluating the physical consistency of generated videos, combining relative and absolute approaches to assess fidelity. Although tools like WorldGym or WorldEval enable robotic simulation via video generation, physical fidelity gaps often prevent these environments from accurately reproducing real-world task success rates of VLA models. Unlike existing evaluation methods, which require costly human voting (Elo) or unavailable ground-truth references (FVD), our approach utilizes DROID-SLAM and SEA-RAFT to quantify physical inconsistencies, motivated by WorldScore. Videos filtered using our relative consistency assessment show an improvement in task success rates of over 8%, effectively narrowing the simulation-to-reality gap. Furthermore, our absolute assessment enables spatio-temporal localization, providing visualization of when and where physical artifacts occur.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
