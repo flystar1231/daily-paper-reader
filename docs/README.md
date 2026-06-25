@@ -6,32 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-24
-- 运行时间：2026-06-24 21:44:48 UTC
+- 最新运行日期：2026-06-25
+- 运行时间：2026-06-25 21:05:28 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：1
 - 精读区：0
-- 速读区：3
+- 速读区：1
 
 ### 今日简报（AI）
-1) 今日速读三篇视频生成论文，聚焦创作者意图反馈、蒸馏保真度与3D一致性基准。  
-2) 最值得关注：分数最高的《Bridging Creative Intent and Visual Quality》（7.0）提出创作者驱动循环框架，以及《GeoT2V-Bench》（6.0）提供3D一致性评测方法。  
-3) 下一步可重点探索视频生成中用户控制与输出质量的协同机制，并利用3D基准验证模型空间一致性。
-- 详情：[/202606/24/README](/202606/24/README)
+今日聚焦文本到视频生成中的物理合理性评估，通过场景图实现细粒度检验。  
+推荐速读《Physics Question Scene Graph》，其用问题场景图量化视频物理一致性，为模型改进提供新视角。  
+下一步建议关注物理规律在生成任务中的落地，推动视频从“像真”走向“合理”。
+- 详情：[/202606/25/README](/202606/25/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Bridging Creative Intent and Visual Quality: Creator-Driven Recurrent Video Generation with Agentic Feedback Loops](/202606/24/2606.18591v1-bridging-creative-intent-and-visual-quality-creator-driven-recurrent-video-generation-with-agentic-feedback-loops)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：提出人机协作迭代视频优化框架，通过自动主观反馈评估生成视频质量
-2. [Data-Forcing Distillation: Restoring Diversity and Fidelity in Few-Step Video Generation](/202606/24/2606.18478v2-data-forcing-distillation-restoring-diversity-and-fidelity-in-few-step-video-generation)  
+1. [Physics Question Scene Graph: Fine-grained Evaluation of Physical Plausibility in Text-to-Video Generation](/202606/25/2606.25306v1-physics-question-scene-graph-fine-grained-evaluation-of-physical-plausibility-in-text-to-video-generation)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：恢复少步视频生成中的多样性和保真度，关注生成视频质量评估
-3. [GeoT2V-Bench: Benchmarking 3D Consistency in Text-to-Video Models via 3D Reconstruction](/202606/24/2606.24829v1-geot2v-bench-benchmarking-3d-consistency-in-text-to-video-models-via-3d-reconstruction)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：通过3D重建评估相机提示文本到视频模型的基准
+   evidence：视频生成物理合理性的细粒度评估方法
 
 
 <div class="dpr-home-promo-card">
