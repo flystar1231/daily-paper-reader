@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-25
-- 运行时间：2026-06-25 21:05:28 UTC
+- 最新运行日期：2026-06-26
+- 运行时间：2026-06-26 21:37:28 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日聚焦文本到视频生成中的物理合理性评估，通过场景图实现细粒度检验。  
-推荐速读《Physics Question Scene Graph》，其用问题场景图量化视频物理一致性，为模型改进提供新视角。  
-下一步建议关注物理规律在生成任务中的落地，推动视频从“像真”走向“合理”。
-- 详情：[/202606/25/README](/202606/25/README)
+今日速读一篇论文，聚焦LLM驱动帧级量化参数自适应，提升VVenC编码效率。  
+核心发现：大语言模型可根据视频帧内容智能调整QP，有望替代传统手工调参方案。  
+建议进一步了解LLM轻量化部署在实时编码中的可行性。
+- 详情：[/202606/26/README](/202606/26/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Physics Question Scene Graph: Fine-grained Evaluation of Physical Plausibility in Text-to-Video Generation](/202606/25/2606.25306v1-physics-question-scene-graph-fine-grained-evaluation-of-physical-plausibility-in-text-to-video-generation)  
+1. [LLM-Driven Heuristic Frame-Level Quantization Parameter Adaptation for VVenC](/202606/26/2606.20847v1-llm-driven-heuristic-frame-level-quantization-parameter-adaptation-for-vvenc)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：视频生成物理合理性的细粒度评估方法
+   evidence：提出使用LLM和PSNR评分函数优化视频编码帧级量化参数
 
 
 <div class="dpr-home-promo-card">

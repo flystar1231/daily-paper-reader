@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-26",
+  "date": "2026-06-26",
+  "generated_at": "2026-06-26T21:37:35",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/26/2606.20847v1-llm-driven-heuristic-frame-level-quantization-parameter-adaptation-for-vvenc",
+      "section": "quick",
+      "title_en": "LLM-Driven Heuristic Frame-Level Quantization Parameter Adaptation for VVenC",
+      "authors": "Liqiang He, Yingwen Zhang, Riyu Lu, Meng Wang, Shiqi Wang",
+      "date": "2026-06-18",
+      "pdf": "https://arxiv.org/pdf/2606.20847v1",
+      "score": "6.0",
+      "evidence": "提出使用LLM和PSNR评分函数优化视频编码帧级量化参数",
+      "tldr": "视频编码中帧级QP分配面临挑战，固定QP内容无关，拉格朗日方法精度不足。本文利用LLM构建闭环进化框架，自动设计RDO启发式并直接用VVenC编码评估。实验表明，进化启发式在多个测试集上优于固定QP和拉格朗日基线。LLM自主发现自适应启发式惩罚QP波动，为RDO设计提供新见解。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Optimal frame-level quantization parameter (QP) allocation remains a persistent challenge in modern video encoders. The fixed-QP scheme widely adopted in practical systems is inherently content-agnostic, while classical Lagrangian rate-distortion optimization (RDO) methods often suffer from inaccurate multiplier settings. In this paper, we explore the use of large language models (LLMs) to automatically design RDO heuristics for frame-level QP adaptation. We construct a closed-loop evolutionary framework in which the LLM iteratively proposes RDO heuristics as algorithmic ideas with executable code, and these candidates are evaluated directly through encoding with the Fraunhofer Versatile Video Encoder (VVenC), where each heuristic acts as a scoring function that compares different QP choices based on the encoding statistics of past frames and current candidates. Experimental results across multiple test sets show that the evolved heuristic achieves promising rate-distortion improvements over both the fixed-QP scheme and the Lagrangian baseline. Further analysis reveals that the LLM can autonomously discover an adaptive heuristic that penalizes QP fluctuations via entropy-based terms, providing new insights into the design of RDO algorithms",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

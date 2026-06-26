@@ -1,0 +1,365 @@
+Title: LLM-Driven Heuristic Frame-Level Quantization Parameter Adaptation for VVenC
+
+URL Source: https://arxiv.org/pdf/2606.20847v1
+
+Published Time: Tue, 23 Jun 2026 00:17:00 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# LLM-Driven Heuristic Frame-Level Quantization Parameter Adaptation for VVenC 
+
+Liqiang He 1∗, Yingwen Zhang 1∗, Riyu Lu 1,2, Meng Wang 3, Shiqi Wang 1‡
+
+> 1
+
+Department of Computer Science, City University of Hong Kong 
+
+> 2
+
+Department of Computer Science and Technology, Harbin Institute of Technology 
+
+> 3
+
+School of Data Science, Lingnan University 
+
+Abstract —Optimal frame-level quantization parameter (QP) allocation remains a persistent challenge in modern video en-coders. The fixed-QP scheme widely adopted in practical sys-tems is inherently content-agnostic, while classical Lagrangian rate-distortion optimization (RDO) methods often suffer from inaccurate multiplier settings. In this paper, we explore the use of large language models (LLMs) to automatically design RDO heuristics for frame-level QP adaptation. We construct a closed-loop evolutionary framework in which the LLM iteratively pro-poses RDO heuristics as algorithmic ideas with executable code, and these candidates are evaluated directly through encoding with the Fraunhofer Versatile Video Encoder (VVenC), where each heuristic acts as a scoring function that compares different QP choices based on the encoding statistics of past frames and current candidates. Experimental results across multiple test sets show that the evolved heuristic achieves promising rate-distortion improvements over both the fixed-QP scheme and the Lagrangian baseline. Further analysis reveals that the LLM can autonomously discover an adaptive heuristic that penalizes QP fluctuations via entropy-based terms, providing new insights into the design of RDO algorithms. 
+
+I. I NTRODUCTION 
+
+Among the various encoder implementations of Versatile Video Coding (VVC) [11], the Fraunhofer Versatile Video Encoder (VVenC) [26] stands out as a highly optimized, open-source encoder that effectively balances compression performance with practical usability. However, achieving op-timal rate-distortion (RD) performance for VVenC remains a complex challenge. This is largely due to the highly com-plex parameter space of modern encoders, which involves numerous interdependent coding parameters. Among these parameters, the frame-level Quantization Parameter (QP) is one of the most critical parameters, as it directly determines bit allocation across frames, thereby affecting the trade-off among overall bitrate, distortion, and subjective visual quality. In the hierarchical random access (RA) configuration, a fixed set of QP offsets is assigned to frames across different temporal layers [10], reflecting a well-established bit allocation principle: lower QPs for frequently referenced frames and higher QPs for those less critical to subsequent prediction. VVenC adopts the same fixed scheme for frame-level bit allocation. While effective in many scenarios, this approach implicitly assumes that frames at the same temporal layer share similar statistics. In practice, texture complexity, motion    
+
+> ∗equal contributions. ‡corresponding: shiqwang@cityu.edu.hk
+
+magnitude, and reference propagation can vary significantly across sequences. The fixed QP allocation scheme in VVenC is therefore suboptimal, leaving clear room for content-adaptive improvement. In this paper, we attempt to address this issue by lever-aging a classic technique in video coding: rate-distortion optimization (RDO) [13]. The core philosophy of RDO is to define a proper heuristic or measure [9], typically the Lagrangian cost J = λR + D, that quantifies the “goodness” of each coding decision, thereby enabling direct comparison through the heuristic score. For instance, a smaller score of 
+
+J usually indicates a better decision. However, applying such a Lagrangian heuristic to frame-level QP adaptation remains problematic [27], [28], primarily because an accurate λ is difficult to obtain. In principle, deriving a proper λ demands precise RD modeling [8], temporal distortion propagation modeling [7], and highly content-adaptive parameter updating, all of which are non-trivial in practice. Recently, Large Language Models (LLMs) have rapidly advanced beyond natural language processing and expanded into domains such as programming assistance [20], biomedical engineering [21], and chemical discovery [22]. They have demonstrated remarkable capability to automatically generate novel heuristics through question-and-answer interactions [6]. In this paper, we explore the potential of LLM-driven RDO heuristic design for frame-level QP adaptation. Specifically, we build a closed-loop optimization framework based on LLMs in which an RDO heuristic, comprising both algorithmic ideas and executable code, is iteratively generated and evaluated. At each iteration, the LLM is prompted to generate new RDO heuristics via question-and-answer, conditioned on his-torical heuristics. The generated heuristic is then deployed in frame-level QP RDO. The resulting compression performance, measured by the Bjøntegaard Delta Rate (BD-rate) [5], is used by the LLM as an objective to judge the heuristic’s quality in subsequent iterations. Experimental results show that such an evolved heuristic outperforms both the VVenC fixed-QP scheme and the Lagrangian heuristic. Interestingly, as an example of such independently discovered heuristics, we provide a detailed analysis of an insightful entropy-constrained RDO heuristic that offers meaningful guidance for future RDO heuristic design. To the best of our knowledge, this work presents the first LLM-driven heuristic frame-level QP 
+
+> arXiv:2606.20847v1 [eess.IV] 18 Jun 2026
+
+Fig. 1: Proposed LLM-driven RDO heuristic design framework for frame-level QP adaptation. adaptation method in video coding. II. LLM-D RIVEN RDO H EURISTIC DESIGN 
+
+A. Preliminaries: RDO Heuristic 
+
+A typical frame-level RDO algorithm is summarized as follows, which has been successfully employed for frame-level coding scale adaptation [28]. In this work, we extend it to the frame-level QP adaptation scenario. Consider a video sequence of length T . Let the QP vector 
+
+Q = [ q0, q 1, . . . , q T −1] (1) denote the frame-level QP decisions in coding order, where qt
+
+is the QP assigned to the t-th frame. At time step t, a base QP value is first determined, and a candidate set centered at this value is generated as 
+
+Qt =
+
+n
+
+q(−2)  
+
+> t
+
+, q (−1)  
+
+> t
+
+, q (0)  
+
+> t
+
+, q (+1)  
+
+> t
+
+, q (+2) 
+
+> t
+
+o
+
+, (2) where q(0)  
+
+> t
+
+is the base QP and the other candidates deviate by, e.g., ±1 and ±2 (|Q t| = 5 ). Subsequently, the current frame is encoded with each candidate q(k) 
+
+> t
+
+∈ Q t, yielding a bitrate 
+
+R(q(k) 
+
+> t
+
+) and distortion D(q(k) 
+
+> t
+
+). The Lagrangian cost is then computed as 
+
+J(q(k) 
+
+> t
+
+) = D(q(k) 
+
+> t
+
+) + λt · R(q(k) 
+
+> t
+
+), (3) where λt is a Lagrange multiplier pre-determined by the VVenC codec. Based on such a heuristic score, the QP for the current frame is selected as 
+
+q∗ 
+
+> t
+
+= arg min  
+
+> q(k)
+> t∈Q t
+
+J(q(k) 
+
+> t
+
+), (4) where a smaller score indicates a better decision. This process is performed sequentially following the RA coding order. The resulting QP vector 
+
+Q∗ = [ q∗ 
+
+> 0
+
+, q ∗ 
+
+> 1
+
+, . . . , q ∗ 
+
+> T−1
+
+] (5) constitutes the final frame-level QP allocation. This classic RDO heuristic provides a simple baseline, but its performance depends heavily on the predefined λt, which should ideally be context-adaptive but is not in practice, motivating our exploration of more flexible, LLM-generated heuristics. 
+
+B. Proposed Framework 
+
+To this end, we propose an LLM-driven closed-loop evo-lutionary framework that automates the optimization of RDO heuristics. As illustrated in Fig. 1, the framework operates as an iterative evolutionary process comprising three core modules: LLM-based heuristic generation, heuristic evalua-tion, and heuristic management. The LLM generates RDO heuristics, which are then evaluated via VVenC encoding, and the resulting BD-rate guides the update of the candidate pool for the next generation. This process repeats until the maximum number of iterations is reached. 
+
+LLM-Based Heuristic Generation. As the core engine of the framework, this module uses LLMs to generate new heuristics guided by historical evaluation results. At each itera-tion, task-specific prompts are constructed and fed to the LLM to produce novel heuristics. Two evolutionary prompt strate-gies [6] are adopted: exploration and modification. Exploration encourages large-scale structural variations, enabling the cur-rent heuristic to escape local optima and discover qualitatively different design patterns. Modification, by contrast, performs localized parameter-level fine-tuning of promising candidates within a narrower search radius. Each prompt is conditioned on historical heuristics through a structured representation: an algorithmic idea that captures the core design rationale, paired with its executable code that can be directly embedded into the RDO pipeline. The LLM’s output is also constrained to follow the same idea-code template. Within each iteration, multiple rounds of exploration and modification are issued, producing a batch of candidate heuristics that are subsequently evaluated through VVenC encoding runs. These two prompt strategies, exploration and modification, are illustrated in Fig. 1, along with an example of a generated idea, while Listing 1 shows the corresponding code. For the initial population, randomly generated seeds produced by the LLM are used. 
+
+Heuristic Evaluation. This module quantifies the “good-ness” of an LLM-generated heuristic by applying it to frame-level QP RDO and measuring the resulting BD-rate against the fixed-QP scheme. Unlike the Lagrangian heuristic defined in Eqn. (3), which only considers the bitrate and distortion of the current frame (step t), our LLM-generated heuristic takes as input the encoding statistics of all frames from step 0 to step t,thereby enabling the LLM to freely explore and autonomously discover effective decision rules beyond traditional Lagrangian heuristics. Specifically, let 
+
+St =
+
+n
+
+S(−2)  
+
+> t
+
+, S (−1)  
+
+> t
+
+, S (0)  
+
+> t
+
+, S (+1)  
+
+> t
+
+, S (+2) 
+
+> t
+
+o
+
+, (6) denote the encoding statistics associated with candidate QPs in Qt at step t, where each S(k) 
+
+> t
+
+includes both the historical statistics of previous frames (e.g., bitrate, distortion, and QP decisions) and the encoding results of the current frame when encoded with the q(k) 
+
+> t
+
+. Then, the LLM-generated heuristic is implemented as an executable function. It takes St as input and returns the index of the candidate that its internal logic considers optimal. Formally, the decision rule becomes: 
+
+q∗ 
+
+> t
+
+= arg max  
+
+> q(k)
+> t∈Q t
+
+H(St), (7) where H denotes the heuristic function generated by the LLM. This decision-making process is repeated sequentially for all frames in the sequence until the last frame is reached. After the entire sequence is encoded, the resulting BD-rate score serves as the fitness signal, which is fed back to the candidate pool to guide subsequent evolutionary refinement. Implementing the heuristic RDO defined in Eqn. (7) presents a challenge: it typically requires substantial modi-fications to the encoder’s core RDO functionality. To address this issue without deep engineering, we adopt the multi-pass encoding strategy proposed in [27]. Specifically, for each QP candidate q(k) 
+
+> t
+
+∈ Qt, we encode the current frame using the cached history of QP decisions from frames 0 to t − 1.After completing all |Q t| encoding runs, we collect their statistics into St. This allows the entire heuristic RDO score calculation and candidate comparison to be performed outside the encoder, relying only on standard encoding logs, enabling a clean separation between heuristic definition and codec implementation. Further details are available in [27]. 
+
+Heuristic Management. This module maintains a fixed-size population of heuristics and serves as the memory and selection mechanism of the closed-loop framework. Its pri-mary responsibilities are twofold: retaining high-performing heuristics discovered during evolution and providing algorith-mic parents for subsequent prompt generation. Formally, the population P is defined as an ordered list of fixed capacity K:
+
+P = {(C1, I 1, b 1), (C2, I 2, b 2), . . . , (CK , I K , b K )}, (8) where Ci, Ii, and bi denote the executable heuristic code, its corresponding idea, and the evaluated BD-rate, respectively. The population is maintained in descending order of BD-rate, with (C1, I 1, b 1) being the best individual discovered so far. At each iteration, newly generated heuristics are evaluated and assigned a score bnew . If bnew surpasses bK , the new heuristic is inserted at the appropriate rank, and the worst-performing heuristic is discarded. This ensures consistent improvement across iterations. The high-performing heuristics in P are then sampled as parents based on their BD-rate values (i.e., better BD-rate leads to higher sampling probability), with their code, idea, and metrics injected into the prompt templates (Fig. 1) to guide the LLM in building upon proven algorithmic patterns. III. E XPERIMENTAL RESULTS 
+
+A. Experimental Settings 
+
+We use DeepSeek [1], a frontier open-source model, as the LLM engine to validate our framework. Our experimental encoder is VVenC-1.7.0 [26] with the faster preset under the default RA configuration. The greater practicality of VVenC makes it suitable for large-scale evaluation of LLM-generated heuristics. The intra period is 32 and the encoding frame length is 65, applied to all experiments. YUV-PSNR is computed with a Y:U:V ratio of 6:1:1. Coding efficiency is measured by BD-rate, where negative values indicate bitrate savings relative to the anchor. Our target resolution is 1080p. For the LLM-driven heuristic evolution stage, we encode five sequences 1 from the SJTU 4K dataset [4] (downsampled to 1080p) to obtain the BD-rate against the fixed-QP scheme of each candidate heuristic. We perform 10 iterations, each generating 4 heuristic candidates. In each iteration, we apply both exploration and 
+
+> 1Wood, TrafficAndBuilding, TrafficFlow, TallBuildings, ResidentialBuilding.
+
+TABLE I: BD-rate (YUV-PSNR) comparison under RA con-figuration. The anchor is the fixed-QP scheme. 
+
+Sequences Proposed Method CTC Class B 
+
+BasketballDrive -2.39% BQTerrace -0.05% Cactus -2.31% MarketPlace -1.85% RitualDance -2.07% 
+
+Average -1.73% UVG -1.00% MCL-JCV -1.06% 
+
+modification prompts twice, resulting in a total of 4 candidates. The candidate pool size is fixed to K = 4 , and the number of parent heuristics is 2. The best-scoring heuristic from the final generation is selected and fixed for all testing. For the testing dataset, we report coding performance on CTC Class B, UVG [3], and MCL-JCV [2]. QP values are set to 22, 27, 32, and 37. For each target QP value, at every time step the base QP is set to that fixed QP, and the candidate set Qt is generated by adding offsets ±1, ±2 to the base QP, i.e., {q(−2)  
+
+> t
+
+, q (−1)  
+
+> t
+
+, q (0)  
+
+> t
+
+, q (+1)  
+
+> t
+
+, q (+2)  
+
+> t
+
+}. In addition to bitrate 
+
+Ri, distortion Di, and the QP value itself, we extract other information from the VVenC encoding logs for each frame, such as frame type, reference layer, and filtering strength. These features are aggregated into the historical statistics S(k)
+
+> t
+
+(see Sec. II-A), allowing the LLM to autonomously decide whether and how to exploit them. We optimize a separate heuristic for each QP value. During the evolution stage, for a given QP, the BD-rate is evaluated by encoding only that QP with the heuristic, while the other three QPs use the fixed-QP anchor. 
+
+B. RD Performance 
+
+Table I presents the BD-rate results of our evolved heuristic compared against the Lagrangian RDO baseline [27], [28] under the RA configuration. As shown in Table I, our heuristics achieve consistent BD-rate savings across all tested datasets. On the CTC Class B sequences, the average BD-rate sav-ing is -1.73%, with individual gains ranging from -0.05% (BQTerrace ) to -2.39% ( BasketballDrive ). On the UVG and MCL-JCV datasets, the proposed method delivers average savings of -1.00% and -1.06%, respectively. Overall, the evolved heuristic achieves an average BD-rate saving of -1.26% across all test sequences. Following [27], [28], we also implemented the Lagrangian heuristic for comparison. While this method proves effective for the frame-level coding scale RDO, its straightforward extension to QP decision exhibits unstable behavior, resulting in average BD-rate increases of 2.68% on CTC Class B, 3.09% on UVG, and 2.52% on MCL-JCV. This performance drop stems from two fundamen-tal limitations of the per-frame Lagrangian heuristic. First, it uses a fixed Lagrangian multiplier λ determined solely by the λ-QP relationship, which fails to adapt to content-                                                                                                                                                     
+
+> 1def solver(stat_0: List[Dict[ str ,Any]], stat_1: List[Dict[ str ,Any]], stat_2: List[Dict[ str , Any]], stat_3: List[Dict[ str ,Any]], stat_4: List[Dict[ str ,Any]]) -> int :
+> 23all_stats =[stat_0, stat_1, stat_2, stat_3, stat_4]
+> 4scores =[]
+> 56for stat in all_stats:
+> 7## calculate average bits and PSNR
+> 8total_bits =sum (frame[’bits’] for frame in stat)
+> 9qp_counts ={}
+> 10 sum_y, sum_u, sum_v =0.0, 0.0, 0.0
+> 11 count =0
+> 12 13 for frame in stat:
+> 14 qp =frame[’QP’]
+> 15 qp_counts[qp] =qp_counts.get(qp, 0) + 1
+> 16 sum_y += frame[’Y’]
+> 17 sum_u += frame[’U’]
+> 18 sum_v += frame[’V’]
+> 19 count += 1
+> 20 21 avg_y =sum_y /count
+> 22 avg_u =sum_u /count
+> 23 avg_v =sum_v /count
+> 24 weighted_psnr =(6 * avg_y +avg_u +avg_v) / 8
+> 25 log_bitrate =math.log(total_bits +1)
+> 26 27 ## calculate QP entropy penalty
+> 28 qp_entropy =0.0
+> 29 for qp_count in qp_counts.values():
+> 30 prob =qp_count /count
+> 31 qp_entropy -= prob * math.log(prob + 1e-10)
+> 32 33 qp_penalty =1.0 /(1.0 +qp_entropy)
+> 34 35 ## calculate heuristic score
+> 36 rd_score =weighted_psnr * qp_penalty / log_bitrate
+> 37 scores.append(rd_score)
+> 38 39 best_index =max (range (len (scores)), key= lambda i: scores[i])
+> 40 return best_index
+
+Listing 1: The generated heuristic function of QP=32. varying characteristics across frames. Second, although the Lagrangian framework can, in principle, account for reference dependencies through distortion propagation [7], doing so requires precise modeling of how the current frame’s distortion affects future frames that reference it. In practice, achieving such accurate propagation modeling is difficult, so the heuristic largely ignores inter-frame dependencies. This is particularly detrimental under the RA configuration, where hierarchical reference structures amplify the impact of suboptimal QP decisions on subsequent frames. Consequently, the Lagrangian heuristic often makes decisions that are no better than, or even worse than, using a fixed-QP scheme. By contrast, the evolved heuristic holistically exploits per-candidate encoding statistics, including bitrate, distortion, and possible reference structure information, to potentially learn an implicit model of reference propagation, which in turn suggests a degree of local adaptivity. 
+
+C. Insights from an Evolved Heuristic 
+
+To further demonstrate the superiority of our evolved heuris-tics and to provide deeper insights into their underlying mechanisms, we examine a representative heuristic evaluation 0 5 10 15 20 25 30 
+
+> POC
+> 24 26 28 30 32 34 36 38 40 42 44
+> QP
+> BasketballDrive 1920x1080
+> Lagrangian Proposed VVenC-1.7.0
+
+(a) 0 5 10 15 20 25 30  
+
+> POC
+> 24 26 28 30 32 34 36 38 40 42 44
+> QP
+> Cactus 1920x1080
+> Lagrangian Proposed VVenC-1.7.0
+
+(b) 
+
+Fig. 2: QP allocation within one GOP for (a) BasketballDrive and (b) Cactus at QP=32. function automatically generated by the LLM for QP=32, one of the four discovered heuristics. As discussed earlier, our RDO heuristic computation and candidate comparison [27] are performed entirely outside the VVenC encoder. This is imple-mented as a standalone Python function, shown in Listing 1, which takes five sets of encoding statistics (each corresponding to a different QP value q(k) 
+
+> t
+
+) and returns the index of the best-performing candidate. We distill the evaluation logic as follows. At step t, for each candidate q(k) 
+
+> t
+
+∈ Qt and its corresponding encoding statistics S(k) 
+
+> t
+
+, the heuristic defines a score: 
+
+H(S(k) 
+
+> t
+
+) = PSNR w
+
+ 1 + HQP (k) · log  P ti=0 Ri + 1  , (9) where PSNR w = (6 ¯Y + ¯U + ¯V )/8 is the weighted average of the temporal mean PSNR values of the Y, U, V components over frames 0 to t, as recorded in S(k) 
+
+> t
+
+. Ri denotes the bitrate of frame i. The term HQP (k) is the entropy of the QP distribution observed across frames 0 to t in S(k) 
+
+> t
+
+. The heuristic finally selects the candidate with the highest score: 
+
+k∗ = arg max  
+
+> k
+
+H(S(k) 
+
+> t
+
+). (10) Remarkably, the LLM has discovered two simple yet non-trivial mechanisms solely from the raw encoding statistics 
+
+S(k) 
+
+> t
+
+, without relying on any complex models. First, the score takes a ratio form: PSNR w/ log( P Ri + 1) . Because PSNR itself is a logarithmic measure of distortion (PSNR 
+
+∝ − log( MSE )), both numerator and denominator live in the logarithmic domain. The ratio therefore directly measures the weighted PSNR gain per unit logarithmic bitrate: the heuristic prefers candidates that deliver more distortion reduction for each logarithmically counted bit. However, there is a subtle structural asymmetry: the numerator averages per-frame PSNR values (each already logarithmic), whereas the denominator first sums the raw bitrates and then takes a single logarithm. This makes the denominator much more sensitive to additional bits when the cumulative bitrate is small, and much less sensitive when it is large. Consequently, this yields a dynamic allocation strategy that automatically adjusts its sensitivity to bit consumption based on the current cumulative bitrate, without any manually tuned λ. Second, the entropy penalty 
+
+HQP (k) appears in the denominator as (1 + HQP (k)) . A low entropy (most frames use the same QP) keeps the penalty near 1, whereas a high entropy (frequent QP switching) reduces the score. This discourages unnecessary QP fluctuations, which is particularly beneficial in hierarchical RA coding because un-stable QP decisions on reference frames propagate prediction errors. Crucially, both mechanisms rely solely on historical information stored in S(k) 
+
+> t
+
+: the cumulative bitrate P Ri and the QP distribution over all past frames. In sharp contrast, the vanilla Lagrangian heuristic J = D + λR only looks at the current frame’s instantaneous rate and distortion, ignoring all past decisions. To intuitively reveal the frame-level QP adaptation behavior of the LLM-driven heuristic, Fig. 2 compares the per-frame QP decisions of the heuristic given in Listing 1 with the Lagrangian and the fixed-QP offset scheme of VVenC on the sequences BasketballDrive and Cactus at QP=32. The default VVenC anchor scheme (blue curve) shows a rigid, content-agnostic allocation determined solely by temporal layer hierarchy. The Lagrangian heuristic (red curve) largely follows this pattern but occasionally selects lower QPs for less critical B-frames (e.g., POCs 1 and 3), which inadvertently allocates bits away from hierarchical reference frames and disrupts temporal dependency propagation, leading to BD-rate increase. This misbehavior stems from suboptimal Lagrangian multiplier λ settings in VVenC, indicating room for fur-ther optimization. In contrast, the evolved heuristic (green curve) generally respects the hierarchical principle (lower QPs for reference frames, higher QPs for non-reference frames) while exhibiting nontrivial flexibility: occasionally, it assigns a low-layer frame the same QP as a high-layer frame, as seen at POC 18 in BasketballDrive and POC 10 in Cactus .This selective relaxation of the strict hierarchy allows the heuristic to better adapt to local coding conditions without the handcrafted constraints of the Lagrangian approach. IV. C ONCLUSION 
+
+In this paper, we presented an LLM-driven evolutionary framework that discovers effective RDO heuristics for frame-level QP adaptation in VVenC. The evolved heuristics outper-form both the fixed-QP scheme and the Lagrangian baseline, achieving consistent BD-rate savings of around 1–2% across diverse test sets. Detailed analysis of a representative heuristic further demonstrates that the LLM can identify non-trivial mechanisms without any handcrafted complex model. These results suggest the potential of LLMs as automatic optimizers for video codecs. Future work will extend the framework to broader codec optimization tasks. REFERENCES [1] A. Liu, A. Mei, B. Lin, B. Xue, B. Wang, B. Xu, B. Wu, B. Zhang, C. Lin, C. Dong et al. , “Deepseek-v3. 2: Pushing the frontier of open large language models,” arXiv preprint arXiv:2512.02556 , 2025. [2] H. Wang, W. Gan, S. Hu, J. Y. Lin, L. Jin, L. Song, P. Wang, I. Katsavounidis, A. Aaron, and C.-C. J. Kuo, “MCL-JCV: a JND-based H. 264/AVC video quality assessment dataset,” in 2016 IEEE International Conference on Image Processing (ICIP) . IEEE, 2016, pp. 1509–1513. [3] A. Mercat, M. Viitanen, and J. Vanne, “UVG dataset: 50/120fps 4K sequences for video codec analysis and development,” in Proceedings of the 11th ACM Multimedia Systems Conference , 2020, pp. 297–302. [4] L. Song, X. Tang, W. Zhang, X. Yang, and P. Xia, “The SJTU 4K video sequence dataset,” in 2013 Fifth International Workshop on Quality of Multimedia Experience (QoMEX) . IEEE, 2013, pp. 34–35. [5] G. Bjontegaard, “Calculation of average PSNR differences between rd-curves,” ITU SG16 Doc. VCEG-M33 , 2001. [6] F. Liu, X. Tong, M. Yuan, X. Lin, F. Luo, Z. Wang, Z. Lu, and Q. Zhang, “Evolution of heuristics: Towards efficient automatic algorithm design using large language model,” arXiv preprint arXiv:2401.02051 , 2024. [7] L. Li, B. Li, H. Li, and C. W. Chen, “Lambda domain optimal bit alloca-tion algorithm for high efficiency video coding,” IEEE Transactions on Circuits and Systems for Video Technology , vol. 28, no. 1, pp. 130–142, 2016. [8] B. Li, H. Li, L. Li, and J. Zhang, “Lambda domain rate control algorithm for high efficiency video coding,” IEEE transactions on Image Processing , vol. 23, no. 9, pp. 3841–3854, 2014. [9] Y. Zhang, M. Wang, J. Li, K. Zhang, L. Zhang, and S. Wang, “A theoretical and experimental study for dependent learned rate-distortion optimization,” IEEE Transactions on Circuits and Systems for Video Technology , 2025. [10] H. Schwarz, D. Marpe, and T. Wiegand, “Hierarchical B pictures, document JVT-P014,” Poznan, Poland, Jul , 2005. [11] B. Bross, Y.-K. Wang, Y. Ye, S. Liu, J. Chen, G. J. Sullivan, and J.-R. Ohm, “Overview of the versatile video coding (VVC) standard and its applications,” IEEE Transactions on Circuits and Systems for Video Technology , vol. 31, no. 10, pp. 3736–3764, 2021. [12] T. Zhao, Z. Wang, and C. W. Chen, “Adaptive quantization parameter cascading in HEVC hierarchical coding,” IEEE Transactions on Image Processing , vol. 25, no. 7, pp. 2997–3009, 2016. [13] G. J. Sullivan and T. Wiegand, “Rate-distortion optimization for video compression,” IEEE Signal Processing Magazine , vol. 15, no. 6, pp. 74–90, 1998. [14] J. He, E.-H. Yang, F. Yang, and K. Yang, “Adaptive quantization param-eter selection for H. 265/HEVC by employing inter-frame dependency,” 
+
+IEEE Transactions on Circuits and Systems for Video Technology ,vol. 28, no. 12, pp. 3424–3436, 2017. [15] T. Wiegand, G. J. Sullivan, G. Bjontegaard, and A. Luthra, “Overview of the H. 264/AVC video coding standard,” IEEE Transactions on Circuits and Systems for Video Technology , vol. 13, no. 7, pp. 560–576, 2003. [16] G. J. Sullivan, J.-R. Ohm, W.-J. Han, and T. Wiegand, “Overview of the high efficiency video coding (HEVC) standard,” IEEE Transactions on Circuits and Systems for Video Technology , vol. 22, no. 12, pp. 1649– 1668, 2012. [17] B. Bross, Y.-K. Wang, Y. Ye, S. Liu, J. Chen, G. J. Sullivan, and J.-R. Ohm, “Overview of the versatile video coding (VVC) standard and its applications,” IEEE Transactions on Circuits and Systems for Video Technology , vol. 31, no. 10, pp. 3736–3764, 2021. [18] K. McCann, C. Rosewarne, B. Bross, M. Naccari, and K. Sharman, “High efficiency video coding (hevc) test model 16 (hm 16) encoder description,” in In: 18th Meeting of the Joint Collaborative Team on Video Coding (JCT-VC) . Document: JCTVC-R1002, 2014. [19] B. Min, H. Ross, E. Sulem, A. P. B. Veyseh, T. H. Nguyen, O. Sainz, E. Agirre, I. Heintz, and D. Roth, “Recent advances in natural language processing via large pre-trained language models: A survey,” ACM Computing Surveys , vol. 56, no. 2, pp. 1–40, 2023. [20] H. Tian, W. Lu, T. O. Li, X. Tang, S.-C. Cheung, J. Klein, and T. F. Bissyand´ e, “Is chatgpt the ultimate programming assistant–how far is it? 2023,” arXiv preprint arXiv:2304.11938 , 2025. [21] K. Cheng, Q. Guo, Y. He, Y. Lu, S. Gu, and H. Wu, “Exploring the potential of gpt-4 in biomedical engineering: the dawn of a new era,” 
+
+Annals of Biomedical Engineering , vol. 51, no. 8, pp. 1645–1653, 2023. [22] K. M. Jablonka, P. Schwaller, A. Ortega-Guerrero, and B. Smit, “Is GPT all you need for low-data discovery in chemistry?” 2023. [23] S. Zhang, C. Gong, L. Wu, X. Liu, and M. Zhou, “Automl-gpt: Automatic machine learning with gpt,” arXiv preprint arXiv:2305.02499 ,2023. [24] W. X. Zhao, K. Zhou, J. Li, T. Tang, X. Wang, Y. Hou, Y. Min, B. Zhang, J. Zhang, Z. Dong et al. , “A survey of large language models,” arXiv preprint arXiv:2303.18223 , vol. 1, no. 2, 2023. [25] G. Bjontegaard, “Improvements of the BD-PSNR model,” VCEG-AI11 ,2008. [26] A. Wieckowski, J. Brandenburg, T. Hinz, C. Bartnik, V. George, G. Hege, C. Helmrich, A. Henkel, C. Lehmann, C. Stoffers et al. ,“Vvenc: An open and optimized vvc encoder implementation,” in 
+
+2021 IEEE International Conference on Multimedia & Expo Workshops (ICMEW) . IEEE, 2021, pp. 1–2. [27] R. Lu, Y. Zhang, H. Man, M. Wang, L. Xu, S. Wang, and X. Fan, “Learned reference picture resampling control: A data-centric approach,” 
+
+IEEE Transactions on Circuits and Systems for Video Technology , 2026. [28] R. Lu, Y. Zhang, H. Man, M. Wang, S. Wang, and X. Fan, “Learning the scale in reference picture resampling for versatile video coding,” IEEE Transactions on Multimedia , vol. 27, pp. 5831–5842, 2025.

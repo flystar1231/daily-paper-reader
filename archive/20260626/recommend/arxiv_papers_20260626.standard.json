@@ -1,0 +1,57 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-26T21:36:56.321625+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.20847v1",
+      "source": "arxiv",
+      "title": "LLM-Driven Heuristic Frame-Level Quantization Parameter Adaptation for VVenC",
+      "abstract": "Optimal frame-level quantization parameter (QP) allocation remains a persistent challenge in modern video encoders. The fixed-QP scheme widely adopted in practical systems is inherently content-agnostic, while classical Lagrangian rate-distortion optimization (RDO) methods often suffer from inaccurate multiplier settings. In this paper, we explore the use of large language models (LLMs) to automatically design RDO heuristics for frame-level QP adaptation. We construct a closed-loop evolutionary framework in which the LLM iteratively proposes RDO heuristics as algorithmic ideas with executable code, and these candidates are evaluated directly through encoding with the Fraunhofer Versatile Video Encoder (VVenC), where each heuristic acts as a scoring function that compares different QP choices based on the encoding statistics of past frames and current candidates. Experimental results across multiple test sets show that the evolved heuristic achieves promising rate-distortion improvements over both the fixed-QP scheme and the Lagrangian baseline. Further analysis reveals that the LLM can autonomously discover an adaptive heuristic that penalizes QP fluctuations via entropy-based terms, providing new insights into the design of RDO algorithms",
+      "authors": [
+        "Liqiang He",
+        "Yingwen Zhang",
+        "Riyu Lu",
+        "Meng Wang",
+        "Shiqi Wang"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.MM"
+      ],
+      "published": "2026-06-18T18:32:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.20847v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes LLM-driven QP optimization using PSNR as scoring function for video quality",
+      "llm_evidence_cn": "提出使用LLM和PSNR评分函数优化视频编码帧级量化参数",
+      "llm_evidence": "提出使用LLM和PSNR评分函数优化视频编码帧级量化参数",
+      "canonical_evidence": "提出使用LLM和PSNR评分函数优化视频编码帧级量化参数",
+      "llm_tldr_en": "LLM-Driven QP Adaptation uses large language models to design rate-distortion optimization heuristics for frame-level quantization parameter allocation, evaluated via PSNR, effectively constituting a video quality assessment method.",
+      "llm_tldr_cn": "该论文探索利用大语言模型自动设计帧级量化参数分配启发式算法，在VVenC编码器上以PSNR等质量指标作为评分函数进行评估。虽然应用于编码优化，但其提出的质量驱动评估框架可直接迁移至生成视频的质量评价任务，为视频生成模型的评估提供了新思路。",
+      "llm_tldr": "该论文探索利用大语言模型自动设计帧级量化参数分配启发式算法，在VVenC编码器上以PSNR等质量指标作为评分函数进行评估。虽然应用于编码优化，但其提出的质量驱动评估框架可直接迁移至生成视频的质量评价任务，为视频生成模型的评估提供了新思路。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
