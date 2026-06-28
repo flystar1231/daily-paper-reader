@@ -7218,7 +7218,7 @@ body.dpr-sidebar-resizing {
   flex: 1;
   min-width: 0;
   padding: 5px 14px 4px 0;
-  font-size: 11px;
+  font-size: 12px;
   color: #64748b;
   font-weight: 600;
 }
@@ -7250,7 +7250,7 @@ body.dpr-sidebar-resizing {
   transition: transform .15s ease;
 }
 .dpr-sidebar-day-counts {
-  font-size: 11px;
+  font-size: 12px;
   color: #94a3b8;
   font-variant-numeric: tabular-nums;
 }
@@ -7450,7 +7450,7 @@ body.dpr-sidebar-resizing {
 }
 .dpr-sidebar-paper-title {
   position: relative;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.35;
   font-weight: 500;
   display: block;
@@ -7492,7 +7492,7 @@ body.dpr-sidebar-resizing {
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 12px;
   color: #94a3b8;
   box-sizing: border-box;
   transition: padding-right .12s ease;
@@ -7500,7 +7500,7 @@ body.dpr-sidebar-resizing {
 .dpr-sidebar-paper-stars {
   color: #f59e0b;
   letter-spacing: 1px;
-  font-size: 11px;
+  font-size: 12px;
 }
 .dpr-sidebar-paper-tags {
   display: inline-flex;
@@ -7509,7 +7509,7 @@ body.dpr-sidebar-resizing {
 }
 .dpr-sidebar-paper-tag {
   padding: 1px 6px;
-  font-size: 10px;
+  font-size: 11px;
   border-radius: 999px;
   background: #f1f5f9;
   color: #475569;
@@ -7525,7 +7525,7 @@ body.dpr-sidebar-resizing {
 .dpr-sidebar-paper-evidence {
   display: block;
   padding: 1px 0 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.45;
   color: #6b7280;
   background: transparent;

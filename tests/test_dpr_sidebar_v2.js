@@ -480,6 +480,7 @@ function testSidebarPaperVisualStateCssContract() {
   const titleRule = cssRule(css, '.dpr-sidebar-paper-title');
   assert.ok(/display:\s*block/i.test(titleRule));
   assert.ok(/position:\s*relative/i.test(titleRule));
+  assert.ok(/font-size:\s*14px/i.test(titleRule));
   assert.ok(/white-space:\s*nowrap/i.test(titleRule));
   assert.ok(/overflow:\s*hidden/i.test(titleRule));
   assert.ok(/text-overflow:\s*clip/i.test(titleRule));
@@ -510,6 +511,18 @@ function testSidebarPaperVisualStateCssContract() {
   assert.ok(/width:\s*39px/i.test(actionsRule));
 
   assert.ok(/\.dpr-sidebar-paper:hover \.dpr-sidebar-paper-evidence,\s*\.dpr-sidebar-paper:focus-within \.dpr-sidebar-paper-evidence,\s*\.dpr-sidebar-paper:hover \.dpr-sidebar-paper-meta,\s*\.dpr-sidebar-paper:focus-within \.dpr-sidebar-paper-meta\s*{[^}]*padding-right:\s*var\(--dpr-sidebar-paper-action-reserve\)/i.test(css));
+
+  const sectionLabelRule = cssRule(css, '.dpr-sidebar-axis-section-label');
+  assert.ok(/font-size:\s*12px/i.test(sectionLabelRule));
+  assert.ok(/(?:^|\n)\.dpr-sidebar-day-counts\s*{[^}]*font-size:\s*12px/i.test(css));
+  const metaRule = cssRule(css, '.dpr-sidebar-paper-meta');
+  assert.ok(/font-size:\s*12px/i.test(metaRule));
+  const starsRule = cssRule(css, '.dpr-sidebar-paper-stars');
+  assert.ok(/font-size:\s*12px/i.test(starsRule));
+  const tagRule = cssRule(css, '.dpr-sidebar-paper-tag');
+  assert.ok(/font-size:\s*11px/i.test(tagRule));
+  const evidenceRule = cssRule(css, '.dpr-sidebar-paper-evidence');
+  assert.ok(/font-size:\s*12px/i.test(evidenceRule));
 
   const readRowRule = /\.dpr-sidebar-paper\[data-read-status="read"\]\s*{[^}]*background:/i;
   assert.ok(!readRowRule.test(css), 'read should not paint the whole row');
