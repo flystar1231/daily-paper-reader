@@ -1,0 +1,847 @@
+Title: Disco-LoRA: Disentangled Composition of Content, Style, and Motion for Multi-concept Video Customization
+
+URL Source: https://arxiv.org/pdf/2606.26668v1
+
+Published Time: Fri, 26 Jun 2026 00:42:51 GMT
+
+Number of Pages: 20
+
+Markdown Content:
+# Disco-LoRA: Disentangled Composition of Content, Style, and Motion for Multi-concept Video Customization 
+
+Xuancheng Xu 1 Gengyun Jia 1,2 Bing-Kun Bao 2,3, †
+
+1Nanjing University of Posts and Telecommunications 
+
+2Hefei University of Technology 3Peng Cheng Laboratory 
+
+2024010131@njupt.edu.cn jgengyun@gmail.com bingkunbao@hfut.edu.cn 
+
+Project page: https://discolora.github.io/ Content  Motion  Generated Videos                   
+
+> [Task1]: “A <o18> terracotta warrior ,made of <m10> glass , is <v4> running through a sunlit ancient courtyard scattered with shattered ceramic fragments and overgrown moss, where shafts of golden light pierce through crumbling stone archways, highlighting the translucent, fragile contours of its crystalline form.”
+> Style
+> [Task2]: “A <o12> cat , is <v10> skateboarding down a sun-dappled urban alley lined with colorful graffiti walls and scattered autumn leaves, in <s3> watercolor painting style .”
+> Style
+> [Task3]: “A <o7> dog ,made of <m1> colorful clay , is sitting playfully on a sunlit artisan's wooden worktable scattered with clay tools and vibrant paint pots, <c5> camera moves forward .”
+> Style
+> [Task4]: “A <o6> dog , is sitting on a sun-dappled forest path with autumn leaves scattered around and soft golden light filtering through the trees, in <s14> painting style ,<c2> camera moves around .”
+> Style  Move around
+> Move forward
+
+Figure 1. Disco-LoRA is a customized text-to-video generation framework that enables users to jointly control the object, style, and motion. To evaluate its customization capabilities, we design four distinct tasks, aiming to demonstrate the flexible composition of these disentangled attributes. Specifically, Task 1 combines specific object, material texture, and object motion; Task 2 integrates the object with an artistic style and object motion; Task 3 synthesizes the object, material texture, and camera movement; and Task 4 merges the object with artistic style and camera movement. 
+
+Abstract 
+
+Video customization based on Text-to-Video (T2V) models aims to learn specific features from reference data to gen-erate controllable videos. While significant strides have  
+
+> †
+
+Corresponding Author 
+
+been made in image stylization and video motion customiza-tion, simultaneously controlling multiple concepts, such as content, style, and motion, remains a major challenge. In this work, we systematically define the task of multi-concept video customization, which requires the joint control of con-tent, style, and motion. To facilitate research in this area, we construct a comprehensive benchmark and propose Disco-LoRA, a unified framework designed to tackle this prob-
+
+1
+
+> arXiv:2606.26668v1 [cs.CV] 25 Jun 2026
+
+lem by disentangling and flexibly recombining different con-cepts in two stages: (1) We decompose the objective into two sub-tasks: Content-Style and Content-Motion. Each sub-task is addressed using our Iterative Dual-LoRA Disentan-glement Framework, which effectively disentangles distinct concepts within the data. (2) We identify layer-wise weight trends as crucial for LoRA identity, while weight magni-tudes dictate composability. To harmonize these scales, we propose a Z-score-based statistical regularization that aligns weight distributions, preserving layer-wise trends while minimizing interference between different LoRAs. Ex-tensive experiments show that Disco-LoRA excels in multi-concept video customization, effectively preserving appear-ance, style, and motion for controllable text-to-video gener-ation. 
+
+1. Introduction 
+
+Video customization leverages T2V models [3, 5, 14] to synthesize videos using learned reference features. This technique pushes the boundaries of controllable video syn-thesis, balancing temporal consistency with the preservation of specific content and style. Recent methods [62, 63] primarily focus on preserv-ing content appearance from reference images and motion patterns from reference videos, whereas other approaches like [46, 49] only explore the combination of content and style within static images. However, the customized gen-eration of multi-concept videos that integrates specific con-tent, style, and motion remains a challenging and largely underexplored task. For instance, designers might need to simulate specific objects interacting dynamically with vari-ous styles or materials. Likewise, artists may seek to bring specific objects to life within videos that faithfully reflect their own distinctive artistic styles. Thus, we are the first to systematically define multi-concept video customization as the integration of user-provided content, style, and mo-tion. Specifically, we characterize Content by objects, re-fine Style into material and artistic style based on visual impact, and categorize Motion into object motion and cam-era movements. Accordingly, we formulate four tasks rep-resenting all permutations of Content, Style, and Motion, as illustrated in Fig. 1, and concurrently propose a novel benchmark for multi-concept video customization. To realize multi-concept video customization, the most intuitive approach is to combine image-based Content-Style customization methods [28, 49] with Image-to-Video (I2V) motion customization models [78] to enforce specific mo-tion patterns. However, while image-based methods can successfully combine style and content, the position and pose of the generated subjects often remain uncontrollable, as illustrated in Fig. 2, leading to failures in achieving the desired motion customization effects when such images are Content  
+
+> Style
+> Motion
+> UnzipLoRA FlexiAct
+> I2V
+> Disco-LoRA
+> Veo 3.1
+> Figure 2. Existing proprietary models struggle to maintain mate-rial and motion consistency. Furthermore, style-customized initial frames often yield unpredictable layouts, causing subsequent I2V customization to fail. In contrast, Disco-LoRA enables the flexible and precise composition of multiple concepts.
+
+used as starting frames. Moreover, recent work [8, 16] can only achieve multi-subject generation and fails to extend from specific subjects to broader concepts, which limits its overall significance. To address this limitation, we propose Disco-LoRA, a video customization framework capable of disentangling Content, Style, and Motion, allowing for their arbitrary and free combination. We identify two core challenges in multi-concept video customization: first, obtaining disentangled representations for each individual concept; and second, combining these representations without mutual interference. To address the first challenge, we decompose the complex objective into two independent sub-tasks: Content-Style and Content-Motion disentanglement, which eliminates the need for paired triplets, enabling flexible learning from arbitrary un-paired data. Each sub-task is achieved by an Iterative Dual-LoRA Disentanglement Framework that employs it-erative learning combined with complementary prompting and time-aware masking, effectively preventing the LoRAs from overfitting to global features, ensuring the separation of content, style, and motion. Although individual concepts can be disentangled, com-posing them from disparate sources is hindered by inter-concept interference. Naive combinations typically result in content dominance, where style attributes are overshad-owed. Investigating this, we identify that layer-wise weight trends are crucial for LoRA identity, whereas weight mag-nitudes determine composability. Our analysis shows that content weights are disproportionately large, disrupting this balance. Leveraging this insight, we introduce Z-Score-Based Statistical Regularization. By aligning weight distri-butions through Z-score normalization, we harmonize the magnitudes to ensure composability while preserving the 2layer-wise trends essential for identity, resulting in a harmo-nious multi-concept integration. Overall, our contributions can be summarized as: • We define the task of multi-concept video customization by systematically categorizing Content, Style, and Mo-tion, and establish a comprehensive benchmark with four distinct tasks to evaluate this capability. • We introduce an Iterative Dual-LoRA Disentanglement Framework, effectively preventing global overfitting while ensuring robust concept separation. • We propose a Z-score-based regularization method that balances LoRA weights to address magnitude discrepan-cies, ensuring harmonious concept composition without compromising the specific characteristics of each LoRA. • Our framework enables multi-concept video customiza-tion across Content, Style, and Motion, achieving state-of-the-art fidelity in appearance preservation, artistic style transfer, and motion consistency. 
+
+2. Related Works 
+
+2.1. Text-to-Video Diffusion Transformer 
+
+Diffusion models have achieved remarkable success in gen-erating high-quality videos from text [3, 21, 50]. Leverag-ing the scalability of the Diffusion Transformer (DiT) archi-tecture [40], recent models like [56, 76] have significantly improved both appearance and motion quality. The prolif-eration of open-source models has further accelerated this field, enabling realistic video creation. 
+
+2.2. Customized Image Generation 
+
+Customized generation, built upon advances in image gen-eration techniques [1, 37, 45, 67–69, 79–81, 85], aims to integrate specific subjects and styles into new contexts while maintaining fidelity [26, 58]. Approaches like [10, 25, 47, 66] utilized special tokens to anchor subject iden-tity. However, combining multiple concepts (e.g., sub-ject and style) remains challenging due to feature entangle-ment. Recent studies [6, 18, 57] address this by analyzing the SDXL [42] or jointly training LoRAs with decoupling losses [9, 28, 39, 46, 49, 74]. Alternatively, methods such as [41, 72, 82] learn orthogonal representations for each concept, allowing for interference-free combinatorial gen-eration. 
+
+2.3. Customized Video Generation 
+
+Video customization [12, 24, 29, 35, 38] extends image-based customization techniques to the temporal domain and has emerged as an important research direction in control-lable generation [23, 30–34, 36, 59–61, 86]. While initial works [16, 19, 64, 65] focused primarily on static subject fi-delity, the greater challenge lies in jointly customizing sub-jects and motion. SAVE [54] explores motion personaliza-tion for structure-agnostic protagonist editing, enabling a new subject with substantially different body structure to inherit the motion from a single source video. Approaches that train these modules separately [63, 64, 71, 75, 83] of-ten suffer from modal interference during inference. Con-versely, joint training methods [4, 62] learn appearance and motion simultaneously using paired data. Although effec-tive, this one-to-one paradigm restricts the model’s ability to generalize to novel combinations. 
+
+3. Method 
+
+This section introduces Disco-LoRA for multi-concept video customization (Figure 3). Sec. 3.2 establishes a benchmark dividing the problem into four tasks with spe-cific test prompts. Sec. 3.3 details our Iterative Dual-LoRA Disentanglement Framework to ensure robust concept sep-aration. Finally, Sec. 3.4 proposes Z-Score Regularization, which preserves layer-wise trends and aligns magnitudes to minimize inter-LoRA interference. 
+
+3.1. Preliminary 
+
+Video Diffusion Transformer Model. Text-to-video dif-fusion transformers utilizing flow matching [27] have achieved high-quality generation. WAN2.1 [56] adopts the strategy, employing WAN block that integrates self-attention for spatiotemporal modeling and cross-attention for text conditioning P . The model iteratively denoises Gaussian noise and is optimized via a velocity prediction loss: 
+
+Ldif f = Ez0,z 1,P,t ∥u(zt, P, t ; θ) − vt∥2 , (1) 
+
+Low-Rank Adaptation (LoRA). LoRA [15] achieves effi-cient fine-tuning by assuming weight updates ∆W have a low intrinsic rank. It decomposes the update into low-rank matrices B ∈ Rm×r and A ∈ Rr×n (r ≪ min( m, n )), formulating the forward pass as W = W0 + BA . While 
+
+W0 remains frozen, only A and B are optimized. When in-tegrating multiple LoRAs, their individual updates are lin-early superimposed: 
+
+W = W0 +
+
+> N
+
+X
+
+> i=1
+
+∆Wi, (2) where W0 denotes the frozen pre-trained weights, and ∆Wi
+
+represents the weight update contributed by the i-th LoRA. 
+
+3.2. Task Definition and Dataset Construction 
+
+To achieve precise video customization, we establish a rig-orous evaluation framework based on the decoupling of three core elements: Content, Style, and Motion. 
+
+Task Definition. We first define Content as the provided visual object element (e.g., a specific plushie teddy bear), 3WAN 2 .1 
+
+> Train independently for each data
+
+Iterative Dual-LoRA Disentanglement Framework 
+
+WAN 2 .1 
+
+## ··· 
+
+> Iterative
+> Learning
+> Self-Attn
+> LoRA  LoRA
+> Cross-Attn
+> LoRA  LoRA
+> FFN
+> LoRA  LoRA
+
+La ye r1  La ye r3 0 
+
+> Self-Attn
+> LoRA  LoRA
+> Cross-Attn
+> LoRA  LoRA
+> FFN
+> LoRA  LoRA
+
+Z-Score-Based Statistical Regularization  
+
+> 𝑳𝑳 𝒎𝒎𝒎𝒎𝒎𝒎
+
+𝑳𝑳 𝒕𝒕𝒕𝒕𝒕𝒕𝒕𝒕𝒕𝒕   
+
+> La ye r1 …La ye r3 0
+> LoRA Va lue Dis t rib ut ion
+> La ye r1 …La ye r3 0
+> Ta rg e t Dis t ribut ion
+> 𝒁𝒁 -Score
+
+normalization 
+
+Inference 
+
+WAN 2 .1 Text     
+
+> down Wup WTarget LoRA
+> down Wup WLoRA to be disentangled
+
+Target 
+
+LoRAs       
+
+> down Wup W
+> Frozen Update
+> down Wup W
+> down Wup W
+> down Wup W
+> down Wup W
+
+Input Data      
+
+> Content Style Motion
+> down Wup W
+> Content
+> down Wup W
+> Motion
+> down Wup W
+> Style
+
+Figure 3. Overview of Disco-LoRA. We independently train Content, Style, and Motion using our Iterative Dual-LoRA Disentanglement Framework. We simultaneously train a Target LoRA alongside a LoRA to be disentangled for each data, utilizing the Target LoRA for the final output. Furthermore, we apply Z-Score-Based Statistical Regularization to constrain parameter distributions and prevent concept bleeding. This design realizes free-form multi-concept video customization during inference. 
+
+which serves as the central entity of the generation. Fur-thermore, we categorize Style and Motion into sub-types based on their scope of influence. First, we distinguish be-tween Material Style and Artistic Style . Material Style (e.g., “made of gold”) is object-centric, modifying the subject’s texture and physical properties while preserving its geome-try. In contrast, Artistic Style (e.g., “Van Gogh style”) op-erates globally, altering the entire video’s rendering tech-nique, color palette, and atmosphere. Second, we sepa-rate Object Motion from Camera Movement . Object Mo-tion refers to the intrinsic dynamics of the object itself (e.g., “running”), requiring the model to synthesize temporal de-formation. Conversely, Camera Movement (e.g., “zoom in”) represents extrinsic observation changes, affecting the viewpoint without necessarily altering the object’s state. Based on these distinctions, we define four tasks to eval-uate the model’s ability to recombine specific elements: 1 ⃝
+
+Object + Material + Object Motion; 2⃝ Object + Artistic Style + Object Motion; 3⃝ Object + Material + Camera Movement; and 4 ⃝ Object + Artistic Style + Camera Move-ment. 
+
+Concept Curation. We curated a diverse dataset compris-ing 20 content items from DreamBench [47], spanning both dynamic and static categories. Additionally, we selected 10 material and 22 artistic styles from StyleDrop [51], along-side 10 object motions and 11 camera movements from Davis [43] and other online sources. More details are pro-vided in the supplementary material. 
+
+3.3. Iterative Dual-LoRA Disentanglement 
+
+Task decomposition. Existing multi-concept customiza-tion methods face a dilemma: sequential training (e.g., DreamBooth [47]) often leads to holistic overfitting, while parallel training (e.g., MotionDirector [83]) demands strictly paired datasets, imposing high data collection costs. To overcome these limitations, we propose to decompose the complex disentanglement objective into two indepen-dent sub-tasks based on data modality: Content-Style 
+
+(from static images) and Content-Motion (from videos). This decoupling obviates the need for paired triplets, allow-ing efficient learning from arbitrary unpaired data. 
+
+Iterative Dual-LoRA Learning. Based on this decompo-sition, we introduce the Iterative Dual-LoRA Disentangle-ment Framework. Taking Content-Style disentanglement as an example, we aim to extract distinct content ( ∆Wc) and style ( ∆Ws) representations from a single image. We model the effective weight W as a superposition of the frozen pre-trained weights W0 and the low-rank updates: 
+
+W = W0 + ∆ Wc + ∆ Ws, (3) Instead of joint optimization, in each iteration, we update one LoRA while freezing the other (see Algorithm 1 for 
+
+∆Wc ). This forces the active LoRA to capture residual fea-tures not encoded by the frozen one, progressively refining the disentanglement. To prevent information leakage between the two Lo-RAs, we introduce two regularization strategies: (1) Com-plementary Prompting Strategy. Relying on the same 4prompts is insufficient to effectively constrain different con-cepts within a single data sample for separation; thus, we use a complementary prompting strategy. We first train the Style LoRA with a style-only prompt Ps = “in ¡style¿”. Subsequently, the Content LoRA is trained using the com-posite prompt Pc = “A ¡content¿” + Ps. This formula-tion establishes Ps as a stylistic basis, compelling the Con-tent LoRA to learn only the remaining semantic content features. (2) Time-aware Masking Strategy. To miti-gate overfitting to global image in single-image training, we leverage the diffusion process’s property where structure is determined early and details later. We implement a time-aware masking strategy (see Alg. 1, L4 & L11, utilizing time-aware thresholds Tl and Th) that constrains optimiza-tion based on the diffusion timestep. By targeting struc-tural outlines during high-noise steps and fine textures dur-ing low-noise steps, we ensure a distinct allocation of fea-tures between the two LoRAs. The proposed framework naturally extends to video data by learning a Content LoRA ( ∆Wc) and a Motion LoRA (∆Wm). While sharing the iterative logic and constraints described above, ∆Wc is trained exclusively on the first frame, whereas ∆Wm is trained on the entire sequence. Since ∆Wm is learned as a residual on top of the frozen static content, it is mathematically forced to model the temporal dynamics, achieving effective motion disentangle-ment without complex auxiliary losses. 
+
+3.4. Z-Score-Based Statistical Regularization 
+
+While our framework effectively disentangles concepts, combining LoRAs from diverse sources remains challeng-ing. Naive linear combination often results in severe inter-ference, particularly content dominance (Fig.4(c)). Visual-izing the mean weights across DiT layers reveals the root cause: while LoRAs of the same type share similar layer-wise trends, their magnitudes vary significantly (Fig.4(a)). Notably, Content LoRA weights possess much higher mag-nitudes than other types. Since LoRAs are combined lin-early (Eq. 3), this disparity causes content features to over-shadow others. To address this, we seek to align the value ranges of different LoRAs. We find that simple rescaling during in-ference is ineffective, disrupting the learned weight distri-butions leads to visual artifacts or identity loss (Fig.4(d, e)). Instead, we propose Z-Score-Based Statistical Regu-larization. This method independently computes curves for the three concepts and constrains their weights to a uni-fied numerical range during training. This ensures mag-nitude alignment while explicitly preserving the original layer-wise trends essential for accurate feature expression (Fig. 4(b)). We guide the training process by aligning layer-wise weight magnitudes with a target distribution derived from                                                                                                  
+
+> ALGORITHM 1: Iterative Dual-LoRA Disentanglement for ∆Wc
+> Require: Total epochs N
+> Require: Pre-trained weights W0, training data D
+> Require: Content LoRA ∆Wc(Target LoRA) and Style LoRA
+> ∆Ws(LoRA to be disentangled)
+> Require: Prompts Pc(e.g., “A ⟨content ⟩, in ⟨style ⟩”)
+> Require: Prompts Ps(e.g., “in ⟨style ⟩”)
+> Require: Timestep thresholds Tl, T hand total timesteps T,where 0≤Tl≤Th≤T
+> 1: for each training epoch i∈ N do //Phase 1: Update Style LoRA
+> 2: for each training step or batch x∈ D do
+> 3: Update ∆Ws;Freeze ∆Wc
+> 4: Sample timestep t∼ U (0 , T l)
+> 5: W←W0+StopGrad (∆ Wc) + ∆ Ws
+> 6: Ls← L diff (x, P s, t ;W)
+> 7: ∆Ws←∆Ws−η∂Ls
+> ∂∆Ws
+> 8: end for //Phase 2: Update Content LoRA
+> 9: for each training step or batch x∈ D do
+> 10: Freeze ∆Ws;Update ∆Wc
+> 11: Sample timestep t∼ U (Tl, T h)
+> 12: W←W0+ ∆ Wc+StopGrad (∆ Ws)
+> 13: Lc← L diff (x, P c, t ;W)
+> 14: ∆Wc←∆Wc−η∂Lc
+> ∂∆Wc
+> 15: end for
+> 16: end for
+> 17: Return ∆Wc
+
+an offline analysis of well-trained LoRA models. Specifi-cally, we shift the overall curves shown in Fig. 4(a) to en-sure that the means of the three different data types are ap-proximately consistent. Although these mean curves are fitted using the entire dataset, they exhibit strong gener-alization capabilities. Therefore, no modifications are re-quired when training on new data. Let the target vector be 
+
+T = [ t0, . . . , t L−1], where each tl represents the average absolute weight magnitude of layer l, L represents the to-tal layer number of WAN 2.1. During training, we compute the current magnitude cl for layer l by aggregating its con-stituent LoRA modules Ml = ( Ai, Bi)Nl
+
+> i=1
+
+:
+
+cl = 12NlNlX
+
+> i=1
+
+
+
+|Ai| + |Bi|
+
+
+
+, (4) where | · | denotes the arithmetic mean. We regularize the individual matrices A and B rather than their product to prevent numerical instability caused by extremely small val-ues and to maintain consistency with our offline analysis. To explicitly capture the relative distribution pattern across layers, we employ Z-score normalization. This strat-egy allows us to isolate the trend of the weight distribution. We normalize both the current magnitudes cl and the target 5Figure 4. Visual analysis of Z-Score-Based Statistical Regularization. (a) Mean curves of the original Content, Style, and Motion LoRAs. (b) Results after Statistical Regularization: means across concepts are aligned, while original inter-layer trends are preserved. (c) Results after directly combining multi-concept LoRAs for Inference. (d) Naively boosting a low-value LoRA causes severe artifacts. (e) Reducing a high-value Content LoRA degrades subject identity. (f) Altering inter-layer trends harms LoRA performance. (g) Our method achieves optimal composition by aligning distributions without disrupting these trends. (a) Curve trends of Content LoRA  (b) Curve trends of Style LoRA  (c) Curve trends of Motion LoRA 
+
+Figure 5. Analysis of ground truth selection for three differ-ent LoRA concepts. We demonstrate that the trend of the mean curves remains consistent regardless of the sample size, despite minor differences in value ranges. Consequently, by preserving the trend and adjusting the LoRA value range, we can utilize a curve derived from averaging all cases. This approach is gener-alizable and robust, remaining applicable even as the dataset size expands in the future. 
+
+vector tl as follows: 
+
+z(c) 
+
+> l
+
+= cl − μc
+
+σc + ϵ , z(t) 
+
+> l
+
+= tl − μt
+
+σt + ϵ , (5) where μ and σ represent the mean and standard deviation of the distributions across all L layers, and ϵ = 10 −8 ensures stability. Based on this normalization, we formulate the regular-ization objective by combining a trend-aware loss with an absolute magnitude constraint. The Trend Loss minimizes the discrepancy between the normalized trends using Mean Squared Error (MSE): 
+
+Ltrend = 1
+
+L
+
+> L−1
+
+X
+
+> l=0
+
+
+
+z(c) 
+
+> l
+
+− z(t)
+
+> l
+
+2
+
+, (6) Simultaneously, to prevent the weights from drifting in ab-solute scale, we incorporate a Magnitude Loss using an L1
+
+distance: 
+
+Lmag = 1
+
+L
+
+> L−1
+
+X
+
+> l=0
+
+|cl − tl| , (7) The final regularization term is a weighted sum of these two components, which is integrated into the primary diffusion objective: 
+
+L = Ldiff + λmag Lmag + λtrend Ltrend . (8) Furthermore, we analyze the robustness of these curves in Fig. 5. For each independent concept, we validate the trend stability using smaller subsets of data (e.g., 3, 5, and 7 cases). Notably, despite the reduced dataset size, the trend of the curve derived from the mean remains fundamentally unchanged, exhibiting only minor fluctuations in magni-tude. Consequently, we conclude that the curve’s trend is in-dependent of dataset quantity. The observed trend possesses significant generalization capabilities; thus, as datasets ex-pand in the future, our method can generalize to new data without requiring re-adjustment of the curve distribution. 
+
+4. Experiment 
+
+4.1. Experimental Settings 
+
+Implementation Details. For Content and Style learning, we train the LoRA with a learning rate of 1.0 × 10 −4 and the rank of 32. For motion learning, the LoRA is trained 6Table 1. Quantitative experimental results for different DiT-based methods under the numerical evaluation metrics. 
+
+Method 
+
+Semantic Alignment Motion Quality Perceptual Quality 
+
+CLIP-T ↑ CLIP-I(S) ↑ CLIP-I(C) ↑ CLIP-I(A) ↑ CSD ↑ Motion Fidelity ↑ Subject Consistency ↑ Motion Smooth ↑ Pick Score ↑ Aesthetic Quality ↑ Imaging Quality ↑
+
+DreamBooth(WAN) 0.298 0.522 0.695 0.609 0.151 0.687 0.970 0.986 0.198 0.624 0.668 MotionDirector(WAN) 0.308 0.541 0.698 0.620 0.179 0.701 0.976 0.987 0.200 0.629 0.680 UnzipLoRA+FlexiAct 0.348 0.583 0.643 0.613 0.204 0.491 0.942 0.982 0.209 0.648 0.681 
+
+Disco-LoRA (Ours) 0.361 0.592 0.673 0.633 0.211 0.771 0.971 0.987 0.212 0.683 0.694 
+
+w/o. C.P 0.315 0.530 0.635 0.583 0.187 0.695 0.945 0.977 0.201 0.635 0.675 w/o. T.A.M 0.345 0.601 0.640 0.621 0.210 0.768 0.965 0.988 0.208 0.660 0.688 w/o. Ltrend 0.310 0.515 0.610 0.563 0.181 0.580 0.920 0.975 0.201 0.620 0.665 w/o. Lmag 0.330 0.545 0.684 0.615 0.196 0.725 0.972 0.983 0.205 0.640 0.682 
+
+Disco-LoRA (Ours) 0.361 0.592 0.673 0.633 0.211 0.771 0.971 0.987 0.212 0.683 0.694 [Task1]: "A <o13> cat, made of <m9> colorful clay, is <v9> playing the piano in a cozy, sunlit music room filled with vintage instruments, and warm wooden floors that reflect the glow of afternoon light streaming through lace curtains."   
+
+> Reference
+> Methods
+> DreamBooth
+> (WAN)
+> Motion
+> Director
+> (WAN)
+> UnzipLoRA
+> +
+> FlexiAct
+> Disco-LoRA
+> (Ours)
+> [Task2]:“A <o18> terracotta warrior, is <v7> playing the flute amidst ancient ruins overgrown with moss and wildflowers under a soft golden sunset, in <s3> watercolor painting style.”
+> Content Motion
+> Style
+> Content Motion
+> Style
+
+Figure 6. Qualitative comparison of Multi-concept Video Customizatio for Task1 and Task2. Disco-LoRA preserves content identity, style similarity and object motion patterns, while other methods fail to stay faithful to the reference. 
+
+with the same learning rate and a rank of 64, with videos sampled to 49 frames at a resolution of 576 × 320 . Dur-ing inference, we use a 50-step DDIM sampler [53] and classifier-free guidance [13] to generate 49-frame videos at 15 fps and 832 ×480 resolution. Experiments are conducted on two 96G NVIDIA Pro-6000 GPUs using the DiT [40]-based WAN2.1 [56] 1.3B text-to-video model. The train-ing time per case is approximately 15 minutes for Content LoRA, 10 minutes for Style LoRA, and 30 minutes for Mo-tion LoRA. 
+
+Dataset. We conduct comprehensive evaluations on our proposed benchmark. The dataset comprises 20 content subjects, 32 style references (including 22 artistic styles and 10 material textures), and 20 motion patterns (consist-ing of 10 object motions and 10 camera movements). To assess the model across the four distinct tasks defined in our benchmark, we curated 200 specific text prompts for each task, representing diverse Content-Style-Motion com-binations. In total, we generated and evaluated 800 unique videos to verify the customization fidelity and accuracy of our method. 
+
+Metrics. Following prior works [4, 17, 28, 52, 70, 84], we evaluate performance using nine metrics across three di-mensions: (1) Semantic Alignment: We assess text-video consistency via CLIP-T and image-video consistency via 
+
+CLIP-I [44]. To disentangle style and content, we use three CLIP-I variants: CLIP-I(S) for style reference similarity, 
+
+CLIP-I(C) for content reference similarity, and CLIP-I(A) 
+
+for the average of both. Furthermore, to achieve a more robust style evaluation, we employ Contrastive Style De-scriptors (CSD) [52] to measure style similarity. (2) Mo-tion Quality: We assess dynamics using Motion Fidelity 
+
+(alignment), Subject Consistency (coherence), and Mo-tion Smoothness (coherence). (3) Perceptual Quality: We evaluate visual appeal using PickScore (human preference), 
+
+Aesthetic Quality , and Imaging Quality .
+
+Compared Methods. To evaluate the effectiveness of Disco-LoRA, we compare it with State-of-the-Art (SOTA) ap-proaches on a DiT-based backbone. Since there are lim-ited methods directly comparable on the WAN architecture, 7[Task3]: “A <o14> toy, made of <m8> sparkling diamonds, is resting on a luxurious velvet display pedestal inside an opulent museum exhibit bathed in soft golden spotlights, <c9> camera zooms in.”   
+
+> Reference
+> Methods
+> DreamBooth
+> (WAN)
+> Motion
+> Director
+> (WAN)
+> UnzipLoRA
+> +
+> FlexiAct
+> Disco-LoRA
+> (Ours)
+> [Task4]:“A <o5> dog, is sitting playfully in a sunny suburban backyard with a picket fence, green grass, and a few scattered toys like a red ball and a chew bone, in <s11> cartoon line drawing style, <c3> camera moves around.”
+> Content Motion
+> Style  Zoom in
+> Content Motion
+> Style  Move around
+
+Figure 7. Qualitative comparison of Multi-concept Video Customization for Task3 and Task4. Disco-LoRA preserves content identity, style similarity and camera motion patterns, while other methods fail to stay faithful to the reference. Table 2. Quantitative User Studies on Compared Methods.     
+
+> Method Prompt Alignment Motion Similarity Content Similarity Style Similarity Video Quality DreamBooth 2.71 ±0.16 2.09 ±0.13 4.03 ±0.12 2.29 ±0.14 2.56 ±0.15 MotionDirector 3.17 ±0.15 3.76 ±0.15 4.01 ±0.15 3.32 ±0.14 3.35 ±0.16 UnzipLoRA+FlexiAct 3.66 ±0.17 3.26 ±0.14 3.39 ±0.15 3.93 ±0.17 4.02 ±0.16 Disco-LoRA 4.31 ±0.13 4.07 ±0.14 4.14 ±0.14 4.09 ±0.13 4.34 ±0.12
+
+we adapt DreamBooth [47] and MotionDirector [83] to the WAN base model for fair comparison. Additionally, we compare against the image customization model Unzi-pLoRA [28] with the motion customization model Flex-iAct [78], utilizing the latter in an Image-to-Video (I2V) setting to achieve motion customization. 
+
+4.2. Qualitative Evaluation 
+
+We evaluate Disco-LoRA against DreamBooth [47], Mo-tionDirector [83], and UnzipLoRA [28]+FlexiAct [78]. Figures 6 and 7 demonstrate our method’s superior capa-bility in disentangling content, style, and motion compared with these baselines. In Fig. 6, baseline methods exhibit significant limitations in consistency. DreamBooth and MotionDirector struggle to maintain style alignment throughout the video sequence. Furthermore, UnzipLoRA+FlexiAct fails to generate a co-herent initial frame that respects the target style, which cas-cades into motion customization failures. A clear example is the ”playing piano” case, where the subject fails to in-teract physically with the environment. In contrast, Disco-LoRA generates videos that preserve fine-grained content details while maintaining artistic styles and material tex-tures consistent with the reference images. It accurately reproduces target motion patterns, demonstrating superior disentanglement performance compared to prior methods. In Fig. 7, DreamBooth suffers from severe content en-tanglement by erroneously blending the appearance of the jewelry with the toy, while standard LoRA training proves insufficient for learning precise camera motion. Although MotionDirector captures the camera trajectory, its integra-tion with style transfer compromises content fidelity, lead-ing to geometric hallucinations and inconsistent local style application. UnzipLoRA+FlexiAct appears heavily biased by the text prompt, misinterpreting the content as a dia-mond and introducing semantic errors during style compo-sition, such as rendering the dog with incorrect ear colors. Conversely, Disco-LoRA avoids these artifacts, generating videos that faithfully retain content and style details while effectively reproducing complex motion patterns. 
+
+4.3. Quantitative Evaluation 
+
+To evaluate the visual quality of synthesized videos, we conduct a comprehensive comparison between Disco-LoRA and state-of-the-art approaches, including Dream-Booth [47], MotionDirector [83], and the combined pipeline of UnzipLoRA [28] and FlexiAct [78]. As illus-trated in Tab. 1 and 2, Disco-LoRA demonstrates robust capabilities in customized generation, successfully disen-tangling and controlling content, style, and motion across all tasks. 
+
+Objective Evaluation. As shown in Tab. 1, Disco-LoRA demonstrates superior performance across semantic, mo-tion, and perceptual metrics: (1) Alignment and Consis-tency: Disco-LoRA achieves the highest text-video align-ment (CLIP-T: 0.361 ) and leads in style-related metrics (CLIP-I (S): 0.592 , CSD: 0.211 , CLIP-I (A): 0.633 ). While 8baselines like MotionDirector show higher CLIP-I (C), this reflects overfitting to the subject at the expense of style fidelity. (2) Motion Quality: Our method excels in motion generation with a Motion Fidelity of 0.771 ,significantly outperforming UnzipLoRA+FlexiAct (0.491) and MotionDirector (0.701). Simultaneously, it maintains high Subject Consistency (0.971) and exceptional Motion Smoothness ( 0.987 ). (3) Perceptual Quality: Disco-LoRA dominates quality-centric metrics, securing top scores in PickScore ( 0.212 ), Aesthetic Quality ( 0.683 ), and Imaging Quality ( 0.694 ), validating its ability to generate visually superior videos 
+
+User Study. We conducted user studies to comprehensively evaluate the effectiveness of Disco-LoRA. A total of 100 participants voted on 80 pairs of customized videos for four tasks, which were randomly presented to reduce bias. The evaluation was conducted based on five criteria: prompt alignment, motion similarity, appearance similarity, style similarity, and video quality. Each video was rated on a scale of 1 to 5, resulting in 8,000 ratings. As shown in Tab. 2, Disco-LoRA achieved the highest scores across all five criteria compared to other SOTA methods. Notably, our method scored above 4.0 in every category, with particularly strong performance in Prompt Alignment and Video Qual-ity. We also performed an analysis on the 95% confidence interval and found that Disco-LoRA outperformed baseline methods with statistically significant results, demonstrating its robustness in generating high-quality, stylistically con-sistent, and motion-faithful videos. 
+
+4.4. Ablation Study 
+
+To assess the contribution of each component in Disco-LoRA, we conduct comprehensive ablation studies focusing on its core modules, as summarized in Table 1. 
+
+Effect of Complementary Prompting Strategy. (C.P) 
+
+The complementary prompting strategy is crucial for pro-moting the learning of each concept. Without this con-straint, LoRA cannot learn its respective concepts effec-tively. Consequently, the Target LoRA fails to learn the specific desired concept, leading to inconsistent generation results. This degradation is reflected in lower scores across CLIP-I(S), CSD, CLIP-I(C), and CLIP-I(A). 
+
+Effect of Time-aware Masking Strategy. (T.A.M) The time-aware masking strategy effectively distinguishes and constrains the disentanglement of different concepts. In the absence of this strategy, the Style LoRA tends to overfit the appearance information of the reference artistic image (e.g., learning the texture along with the underlying object struc-ture). While this may result in a higher CLIP-I(S) score, it stems from overfitting to appearance features rather than true style transfer, ultimately causing a decrease in content and action fidelity, as evidenced by lower CLIP-I(C) and CLIP-I(A). [Task1]: "A <o10> duck, made of <m5> colorful glass, is <v3> running across a sunlit cobblestone courtyard, where rays of light refract through its translucent body, casting vibrant rainbow patterns on the mossy stones and nearby whitewashed walls."  
+
+> Reference
+> Methods
+> WAN 2.6
+> Seedance 2.0
+> Veo 3.1
+> Disco-LoRA
+> (Ours)
+> Content Motion
+> Style
+> King-O3
+
+Figure 8. Qualitative comparison of multi-concept video cus-tomization against commercial methods. Existing commercial models struggle to simultaneously customize specific subjects, styles, and motions. 
+
+Effect of Ltrend . The Ltrend loss is designed to constrain the optimization trajectory of each LoRA to align with the original trend. Removing this constraint prevents the model from accurately capturing the individual concepts, resulting in poor similarity performance across all metrics: CLIP-I(S), CSD, CLIP-I(C), and CLIP-I(A). 
+
+Effect of Lmag . The purpose of Lmag is to regularize the magnitude of different LoRAs, ensuring their means remain consistent so that every provided concept is adequately rep-resented in the video. Without the Lmag constraint, the Content LoRA tends to dominate the generation process. While this results in high CLIP-I(C), it suppresses the style transfer, leading to significantly lower CLIP-I(S) and CSD. 
+
+4.5. Comparison with Commercial Methods 
+
+To demonstrate the limitations of existing commercial mod-els in jointly customizing subject, style, and motion, we compare our approach against SOTA commercial models, including WAN 2.6 [56], Seedance 2.0 [11, 48], Veo 3.1 [8], and Kling-O3 [55]. As illustrated in Fig. 8, these models fail to effectively integrate the desired style with the subject, and they struggle to adhere to specific motion constraints. In contrast, our proposed Disco-LoRA successfully achieves multi-concept customization, enabling highly controllable generation that extends beyond mere subject preservation to encompass additional conditions. 95. Conclusion 
+
+In this work, we systematically define the multi-concept video customization task and establish a comprehensive benchmark for future research. We present Disco-LoRA, a novel framework that enables the disentangled learning and flexible recombination of content, style, and motion. By leveraging an Iterative Dual-LoRA Disentanglement Framework for concept separation and a Z-score-based statistical regularization for LoRA weight distribution alignment, our method successfully mitigates interference between heterogeneous modalities during composition. Extensive experiments demonstrate that Disco-LoRA maintains the base model’s generative flexibility while consistently delivering high-quality, text-aligned out-puts. Future work will focus on scaling Disco-LoRA to support a larger number of concurrent concepts. 
+
+References 
+
+[1] Stephen Batifol, Andreas Blattmann, Frederic Boesel, Sak-sham Consul, Cyril Diagne, Tim Dockhorn, Jack English, Zion English, Patrick Esser, Sumith Kulal, et al. Flux. 1 kontext: Flow matching for in-context image generation and editing in latent space. arXiv e-prints , pages arXiv–2506, 2025. 3 [2] Yuxuan Bian, Xin Chen, Zenan Li, Tiancheng Zhi, Shen Sang, Linjie Luo, and Qiang Xu. Video-as-prompt: Uni-fied semantic control for video generation. arXiv preprint arXiv:2510.20888 , 2025. 3 [3] Andreas Blattmann, Tim Dockhorn, Sumith Kulal, Daniel Mendelevitch, Maciej Kilian, Dominik Lorenz, Yam Levi, Zion English, Vikram Voleti, Adam Letts, et al. Stable video diffusion: Scaling latent video diffusion models to large datasets. arXiv preprint arXiv:2311.15127 , 2023. 2, 3 [4] Fangda Chen, Shanshan Zhao, Chuanfu Xu, and Long Lan. Jointtuner: Appearance-motion adaptive joint train-ing for customized video generation. arXiv preprint arXiv:2503.23951 , 2025. 3, 7 [5] Haoxin Chen, Yong Zhang, Xiaodong Cun, Menghan Xia, Xintao Wang, Chao Weng, and Ying Shan. Videocrafter2: Overcoming data limitations for high-quality video diffu-sion models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 7310– 7320, 2024. 2 [6] Nadav Z Cohen, Oron Nir, and Ariel Shamir. Conditional balance: Improving multi-conditioning trade-offs in image generation. In Proceedings of the Computer Vision and Pat-tern Recognition Conference , pages 2641–2650, 2025. 3 [7] Timoth´ ee Darcet, Maxime Oquab, Julien Mairal, and Piotr Bojanowski. Vision transformers need registers, 2023. 3 [8] Google DeepMind. Introducing veo 3, our video generation model with expanded creative controls – including native au-dio and extended videos. [Online], 2025. 2, 9 [9] Yarden Frenkel, Yael Vinker, Ariel Shamir, and Daniel Cohen-Or. Implicit style-content separation using b-lora. In 
+
+European Conference on Computer Vision , pages 181–198. Springer, 2024. 3 [10] Rinon Gal, Yuval Alaluf, Yuval Atzmon, Or Patashnik, Amit Haim Bermano, Gal Chechik, and Daniel Cohen-or. An image is worth one word: Personalizing text-to-image gener-ation using textual inversion. In The Eleventh International Conference on Learning Representations , 2022. 3 [11] Yu Gao, Haoyuan Guo, Tuyen Hoang, Weilin Huang, Lu Jiang, Fangyuan Kong, Huixia Li, Jiashi Li, Liang Li, Xi-aojie Li, et al. Seedance 1.0: Exploring the boundaries of video generation models. arXiv preprint arXiv:2506.09113 ,2025. 9 [12] Yuchao Gu, Xintao Wang, Jay Zhangjie Wu, Yujun Shi, Yun-peng Chen, Zihan Fan, Wuyou Xiao, Rui Zhao, Shuning Chang, Weijia Wu, et al. Mix-of-show: Decentralized low-rank adaptation for multi-concept customization of diffusion models. Advances in Neural Information Processing Sys-tems , 36:15890–15902, 2023. 3 [13] Jonathan Ho and Tim Salimans. Classifier-free diffusion guidance. arXiv preprint arXiv:2207.12598 , 2022. 7 [14] Wenyi Hong, Ming Ding, Wendi Zheng, Xinghan Liu, and Jie Tang. Cogvideo: Large-scale pretraining for text-to-video generation via transformers. In ICLR , 2023. 2 [15] Edward J Hu, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, Weizhu Chen, et al. Lora: Low-rank adaptation of large language models. In International Conference on Learning Representations , 2021. 3 [16] Chi-Pin Huang, Yen-Siang Wu, Hung-Kai Chung, Kai-Po Chang, Fu-En Yang, and Yu-Chiang Frank Wang. Video-mage: Multi-subject and motion customization of text-to-video diffusion models. In Proceedings of the Computer Vision and Pattern Recognition Conference , pages 17603– 17612, 2025. 2, 3, 5 [17] Ziqi Huang, Yinan He, Jiashuo Yu, Fan Zhang, Chenyang Si, Yuming Jiang, Yuanhan Zhang, Tianxing Wu, Qingyang Jin, Nattapol Chanpaisit, et al. Vbench: Comprehensive bench-mark suite for video generative models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 21807–21818, 2024. 7, 4 [18] Jaeseok Jeong, Junho Kim, Yunjey Choi, Gayoung Lee, and Youngjung Uh. Visual style prompting with swapping self-attention. arXiv preprint arXiv:2402.12974 , 2024. 3 [19] Yuming Jiang, Tianxing Wu, Shuai Yang, Chenyang Si, Dahua Lin, Yu Qiao, Chen Change Loy, and Ziwei Liu. Videobooth: Diffusion-based video generation with image prompts. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 6689– 6700, 2024. 3 [20] Nikita Karaev, Ignacio Rocco, Benjamin Graham, Natalia Neverova, Andrea Vedaldi, and Christian Rupprecht. Co-tracker: It is better to track together. In European conference on computer vision , pages 18–35. Springer, 2024. 4 [21] Levon Khachatryan, Andranik Movsisyan, Vahram Tade-vosyan, Roberto Henschel, Zhangyang Wang, Shant Navasardyan, and Humphrey Shi. Text2video-zero: Text-to-image diffusion models are zero-shot video generators. In 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 15954–15964, 2023. 3 [22] Yuval Kirstain, Adam Polyak, Uriel Singer, Shahbuland Ma-tiana, Joe Penna, and Omer Levy. Pick-a-pic: An open 
+
+10 dataset of user preferences for text-to-image generation. Ad-vances in neural information processing systems , 36:36652– 36663, 2023. 4 [23] Baolu Li, Yiming Zhang, Qinghe Wang, Liqian Ma, Xi-aoyu Shi, Xintao Wang, Pengfei Wan, Zhenfei Yin, Yun-zhi Zhuge, Huchuan Lu, et al. Vfxmaster: Unlocking dy-namic visual effect generation via in-context learning. arXiv preprint arXiv:2510.25772 , 2025. 3 [24] Wei Li, Yiheng Zhang, Fuchen Long, Zhaofan Qiu, Ting Yao, Xiaoyan Sun, and Tao Mei. Reactid: Synchronizing realistic actions and identity in personalized video genera-tion. In The Fourteenth International Conference on Learn-ing Representations . 3 [25] Wei Li, Hebei Li, Yansong Peng, Siying Wu, Yueyi Zhang, and Xiaoyan Sun. Create anything anywhere: Layout-controllable personalized diffusion model for multiple sub-jects. In 2025 IEEE International Conference on Multimedia and Expo (ICME) , pages 1–6, 2025. 3 [26] Ziqiang Li, Jun Li, Lizhi Xiong, Zhangjie Fu, and Zechao Li. A comprehensive survey on visual concept mining in text-to-image diffusion models. arXiv preprint arXiv:2503.13576 ,2025. 3 [27] Yaron Lipman, Ricky TQ Chen, Heli Ben-Hamu, Maximil-ian Nickel, and Matt Le. Flow matching for generative mod-eling. arXiv preprint arXiv:2210.02747 , 2022. 3 [28] Chang Liu, Viraj Shah, Aiyu Cui, and Svetlana Lazebnik. Unziplora: Separating content and style from a single image. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 16776–16785, 2025. 2, 3, 7, 8 [29] Kai Liu, Wei Li, Lai Chen, Shengqiong Wu, Yanhao Zheng, Jiayi Ji, Fan Zhou, Jiebo Luo, Ziwei Liu, Hao Fei, et al. Javisdit: Joint audio-video diffusion transformer with hierar-chical spatio-temporal prior synchronization. arXiv preprint arXiv:2503.23377 , 2025. 3 [30] Yue Ma, Yingqing He, Xiaodong Cun, Xintao Wang, Siran Chen, Xiu Li, and Qifeng Chen. Follow your pose: Pose-guided text-to-video generation using pose-free videos. In 
+
+Proceedings of the AAAI Conference on Artificial Intelli-gence , pages 4117–4125, 2024. 3 [31] Yue Ma, Hongyu Liu, Hongfa Wang, Heng Pan, Yingqing He, Junkun Yuan, Ailing Zeng, Chengfei Cai, Heung-Yeung Shum, Wei Liu, et al. Follow-your-emoji: Fine-controllable and expressive freestyle portrait animation. In SIGGRAPH Asia 2024 Conference Papers , pages 1–12, 2024. [32] Yue Ma, Kunyu Feng, Zhongyuan Hu, Xinyu Wang, Yucheng Wang, Mingzhe Zheng, Xuanhua He, Chenyang Zhu, Hongyu Liu, Yingqing He, et al. Controllable video generation: A survey. arXiv preprint arXiv:2507.16869 ,2025. [33] Yue Ma, Kunyu Feng, Xinhua Zhang, Hongyu Liu, David Junhao Zhang, Jinbo Xing, Yinhan Zhang, Ayden Yang, Zeyu Wang, and Qifeng Chen. Follow-your-creation: Empowering 4d creation through video inpainting. arXiv preprint arXiv:2506.04590 , 2025. [34] Yue Ma, Yingqing He, Hongfa Wang, Andong Wang, Leqi Shen, Chenyang Qi, Jixuan Ying, Chengfei Cai, Zhifeng Li, Heung-Yeung Shum, et al. Follow-your-click: Open-domain regional image animation via motion prompts. In Proceed-ings of the AAAI Conference on Artificial Intelligence , pages 6018–6026, 2025. 3 [35] Yue Ma, Yulong Liu, Qiyuan Zhu, Ayden Yang, Kunyu Feng, Xinhua Zhang, Zhifeng Li, Sirui Han, Chenyang Qi, and Qifeng Chen. Follow-your-motion: Video motion transfer via efficient spatial-temporal decoupled finetuning. arXiv preprint arXiv:2506.05207 , 2025. 3 [36] Yue Ma, Zexuan Yan, Hongyu Liu, Hongfa Wang, Heng Pan, Yingqing He, Junkun Yuan, Ailing Zeng, Chengfei Cai, Heung-Yeung Shum, et al. Follow-your-emoji-faster: To-wards efficient, fine-controllable, and expressive freestyle portrait animation. arXiv preprint arXiv:2509.16630 , 2025. 3[37] Yue Ma, Xinyu Wang, Qianli Ma, Qinghe Wang, Mingzhe Zheng, Xiangpeng Yang, Hao Li, Chongbo Zhao, Jixuan Ying, Harry Yang, et al. Group editing: Edit multiple im-ages in one go. arXiv preprint arXiv:2603.22883 , 2026. 3 [38] Yue Ma, Zhikai Wang, Tianhao Ren, Mingzhe Zheng, Hongyu Liu, Jiayi Guo, Mark Fong, Yuxuan Xue, Zixi-ang Zhao, Konrad Schindler, et al. Fastvmt: Eliminat-ing redundancy in video motion transfer. arXiv preprint arXiv:2602.05551 , 2026. 3 [39] Ziheng Ouyang, Zhen Li, and Qibin Hou. K-lora: Unlock-ing training-free fusion of any subject and style loras. arXiv preprint arXiv:2502.18461 , 2025. 3 [40] William Peebles and Saining Xie. Scalable diffusion models with transformers. In Proceedings of the IEEE/CVF inter-national conference on computer vision , pages 4195–4205, 2023. 3, 7 [41] Ryan Po, Guandao Yang, Kfir Aberman, and Gordon Wet-zstein. Orthogonal adaptation for modular customization of diffusion models. In Proceedings of the IEEE/CVF con-ference on computer vision and pattern recognition , pages 7964–7973, 2024. 3 [42] Dustin Podell, Zion English, Kyle Lacey, Andreas Blattmann, Tim Dockhorn, Jonas M¨ uller, Joe Penna, and Robin Rombach. Sdxl: Improving latent diffusion mod-els for high-resolution image synthesis. arXiv preprint arXiv:2307.01952 , 2023. 3 [43] Jordi Pont-Tuset, Federico Perazzi, Sergi Caelles, Pablo Ar-bel´ aez, Alex Sorkine-Hornung, and Luc Van Gool. The 2017 davis challenge on video object segmentation. arXiv preprint arXiv:1704.00675 , 2017. 4 [44] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et al. Learn-ing transferable visual models from natural language super-vision. In ICML , pages 8748–8763. PMLR, 2021. 7, 4 [45] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Bj¨ orn Ommer. High-resolution image synthesis with latent diffusion models. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 10684–10695, 2022. 3 [46] Aniket Roy, Shubhankar Borse, Shreya Kadambi, Debas-mit Das, Shweta Mahajan, Risheek Garrepalli, Hyojin Park, Ankita Nayak, Rama Chellappa, Munawar Hayat, et al. 
+
+11 Duolora: Cycle-consistent and rank-disentangled content-style personalization. arXiv preprint arXiv:2504.13206 ,2025. 2, 3 [47] Nataniel Ruiz, Yuanzhen Li, Varun Jampani, Yael Pritch, Michael Rubinstein, and Kfir Aberman. Dreambooth: Fine tuning text-to-image diffusion models for subject-driven generation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 22500– 22510, 2023. 3, 4, 8 [48] Team Seedance, Heyi Chen, Siyan Chen, Xin Chen, Yan-fei Chen, Ying Chen, Zhuo Chen, Feng Cheng, Tianheng Cheng, Xinqi Cheng, et al. Seedance 1.5 pro: A native audio-visual joint generation foundation model. arXiv preprint arXiv:2512.13507 , 2025. 9 [49] Viraj Shah, Nataniel Ruiz, Forrester Cole, Erika Lu, Svet-lana Lazebnik, Yuanzhen Li, and Varun Jampani. Ziplora: Any subject in any style by effectively merging loras. In 
+
+European Conference on Computer Vision , pages 422–438. Springer, 2024. 2, 3 [50] Uriel Singer, Adam Polyak, Thomas Hayes, Xi Yin, Jie An, Songyang Zhang, Qiyuan Hu, Harry Yang, Oron Ashual, Oran Gafni, et al. Make-a-video: Text-to-video generation without text-video data. In The Eleventh International Con-ference on Learning Representations , 2023. 3 [51] Kihyuk Sohn, Nataniel Ruiz, Kimin Lee, Daniel Castro Chin, Irina Blok, Huiwen Chang, Jarred Barber, Lu Jiang, Glenn Entis, Yuanzhen Li, et al. Styledrop: Text-to-image generation in any style. arXiv preprint arXiv:2306.00983 ,2023. 4, 3 [52] Gowthami Somepalli, Anubhav Gupta, Kamal Gupta, Shra-may Palta, Micah Goldblum, Jonas Geiping, Abhinav Shri-vastava, and Tom Goldstein. Measuring style similarity in diffusion models. arXiv preprint arXiv:2404.01292 , 2024. 7, 4 [53] Jiaming Song, Chenlin Meng, and Stefano Ermon. Denois-ing diffusion implicit models. In International Conference on Learning Representations , 2021. 7 [54] Yeji Song, Wonsik Shin, Junsoo Lee, Jeesoo Kim, and No-jun Kwak. Save: Protagonist diversification with s tructure a gnostic v ideo e diting. In European Conference on Com-puter Vision , pages 41–57. Springer, 2024. 3 [55] Kling Team, Jialu Chen, Yuanzheng Ci, Xiangyu Du, Zipeng Feng, Kun Gai, Sainan Guo, Feng Han, Jingbin He, Kang He, et al. Kling-omni technical report. arXiv preprint arXiv:2512.16776 , 2025. 9 [56] Team Wan, Ang Wang, Baole Ai, Bin Wen, Chaojie Mao, Chen-Wei Xie, Di Chen, Feiwu Yu, Haiming Zhao, Jianxiao Yang, et al. Wan: Open and advanced large-scale video gen-erative models. arXiv preprint arXiv:2503.20314 , 2025. 3, 7, 9 [57] Haofan Wang, Peng Xing, Renyuan Huang, Hao Ai, Qixun Wang, and Xu Bai. Instantstyle-plus: Style transfer with content-preserving in text-to-image generation. arXiv preprint arXiv:2407.00788 , 2024. 3 [58] Qinghe Wang, Xu Jia, Xiaomin Li, Taiqing Li, Liqian Ma, Yunzhi Zhuge, and Huchuan Lu. Stableidentity: Inserting anybody into anywhere at first sight. IEEE Transactions on Multimedia , 2025. 3 [59] Qinghe Wang, Baolu Li, Xiaomin Li, Bing Cao, Liqian Ma, Huchuan Lu, and Xu Jia. Characterfactory: Sampling consis-tent characters with gans for diffusion models. IEEE Trans-actions on Image Processing , 2025. 3 [60] Qinghe Wang, Yawen Luo, Xiaoyu Shi, Xu Jia, Huchuan Lu, Tianfan Xue, Xintao Wang, Pengfei Wan, Di Zhang, and Kun Gai. Cinemaster: A 3d-aware and controllable frame-work for cinematic text-to-video generation. In Proceedings of the Special Interest Group on Computer Graphics and In-teractive Techniques Conference Conference Papers , pages 1–10, 2025. [61] Qinghe Wang, Xiaoyu Shi, Baolu Li, Weikang Bian, Quande Liu, Huchuan Lu, Xintao Wang, Pengfei Wan, Kun Gai, and Xu Jia. Multishotmaster: A controllable multi-shot video generation framework. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,pages 16268–16278, 2026. 3 [62] Wenchuan Wang, Mengqi Huang, Yijing Tu, and Zhen-dong Mao. Dualreal: Adaptive joint training for loss-less identity-motion fusion in video customization. arXiv preprint arXiv:2505.02192 , 2025. 2, 3 [63] Yujie Wei, Shiwei Zhang, Zhiwu Qing, Hangjie Yuan, Zhi-heng Liu, Yu Liu, Yingya Zhang, Jingren Zhou, and Hong-ming Shan. Dreamvideo: Composing your dream videos with customized subject and motion. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 6537–6549, 2024. 2, 3 [64] Jianzong Wu, Xiangtai Li, Yanhong Zeng, Jiangning Zhang, Qianyu Zhou, Yining Li, Yunhai Tong, and Kai Chen. Mo-tionbooth: Motion-aware customized text-to-video genera-tion. In The Thirty-eighth Annual Conference on Neural In-formation Processing Systems , 2024. 3 [65] Tao Wu, Yong Zhang, Xintao Wang, Xianpan Zhou, Guang-cong Zheng, Zhongang Qi, Ying Shan, and Xi Li. Custom-crafter: Customized video generation with preserving mo-tion and concept composition abilities. In Proceedings of the AAAI Conference on Artificial Intelligence , pages 8469– 8477, 2025. 3 [66] Yi Wu, Ziqiang Li, Heliang Zheng, Chaoyue Wang, and Bin Li. Infinite-id: Identity-preserved personalization via id-semantics decoupling paradigm. In European Conference on Computer Vision , pages 279–296. Springer, 2024. 3 [67] Mengling Xu, Jie Wang, Ming Tao, Bing-Kun Bao, and Changsheng Xu. Cookgalip: Recipe controllable generative adversarial clips with sequential ingredient prompts for food image generation. IEEE Transactions on Multimedia , 2024. 3[68] Mengling Xu, Ming Tao, and Bing-Kun Bao. Chain-of-cooking: Cooking process visualization via bidirectional chain-of-thought guidance. In Proceedings of the 33rd ACM International Conference on Multimedia , pages 9287–9295, 2025. [69] Mengling Xu, Sisi You, Yaning Li, and Bing-Kun Bao. Pro-cessmaker: A generalized process visualization framework with adaptive sequence steps on diffusion transformers. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition , pages 25699–25708, 2026. 3 
+
+12 [70] Xuancheng Xu, Ming Tao, and Bing-Kun Bao. Clgc: Con-tinuous layout guidance for consistent text-to-video editing. In 2025 IEEE International Conference on Multimedia and Expo (ICME) , pages 1–6. IEEE, 2025. 7 [71] Xuancheng Xu, Yaning Li, Sisi You, and Bing-Kun Bao. Smrabooth: Subject and motion representation alignment for customized video generation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 16130–16141, 2026. 3 [72] Yu Xu, Fan Tang, Juan Cao, Yuxin Zhang, Oliver Deussen, Weiming Dong, Jintao Li, and Tong-Yee Lee. B4m: Break-ing low-rank adapter for making content-style customiza-tion. ACM Transactions on Graphics , 44(2):1–17, 2025. 3 [73] An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao, Chengen Huang, Chenxu Lv, et al. Qwen3 technical report. arXiv preprint arXiv:2505.09388 , 2025. 3 [74] Jiahui Yang, Yongjia Ma, Donglin Di, Jianxun Cui, Hao Li, Wei Chen, Yan Xie, Xun Yang, and Wangmeng Zuo. Qr-lora: Efficient and disentangled fine-tuning via qr decomposition for customized generation. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 17587– 17597, 2025. 3 [75] Shiyuan Yang, Liang Hou, Haibin Huang, Chongyang Ma, Pengfei Wan, Di Zhang, Xiaodong Chen, and Jing Liao. Direct-a-video: Customized video generation with user-directed camera movement and object motion. In ACM SIG-GRAPH 2024 Conference Papers , pages 1–12, 2024. 3 [76] Zhuoyi Yang, Jiayan Teng, Wendi Zheng, Ming Ding, Shiyu Huang, Jiazheng Xu, Yuanming Yang, Wenyi Hong, Xiao-han Zhang, Guanyu Feng, et al. Cogvideox: Text-to-video diffusion models with an expert transformer. arXiv preprint arXiv:2408.06072 , 2024. 3 [77] Danah Yatim, Rafail Fridman, Omer Bar-Tal, Yoni Kasten, and Tali Dekel. Space-time diffusion features for zero-shot text-driven motion transfer. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,pages 8466–8476, 2024. 4 [78] Shiyi Zhang, Junhao Zhuang, Zhaoyang Zhang, Ying Shan, and Yansong Tang. Flexiact: Towards flexible action control in heterogeneous scenarios. In Proceedings of the Special Interest Group on Computer Graphics and Interactive Tech-niques Conference Conference Papers , pages 1–11, 2025. 2, 8[79] Shiyi Zhang, Yiji Cheng, Tiankai Hang, Zijin Yin, Runze He, Yu Xu, Wenxun Dai, Yunlong Lin, Chunyu Wang, Qinglin Lu, et al. Meta-cot: Enhancing granularity and generaliza-tion in image editing. In Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition , pages 38004–38015, 2026. 3 [80] Xuying Zhang, Yutong Liu, Yangguang Li, Renrui Zhang, Yufei Liu, Kai Wang, Wanli Ouyang, Zhiwei Xiong, Peng Gao, Qibin Hou, et al. Tar3d: Creating high-quality 3d assets via next-part prediction. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 5134– 5145, 2025. [81] Xuying Zhang, Yupeng Zhou, Kai Wang, Yikai Wang, Zhen Li, Shaohui Jiao, Daquan Zhou, Qibin Hou, and Ming-Ming Cheng. Ar-1-to-3: Single image to consistent 3d object via next-view prediction. In Proceedings of the IEEE/CVF In-ternational Conference on Computer Vision , pages 26273– 26283, 2025. 3 [82] Yuxin Zhang, Weiming Dong, Fan Tang, Nisha Huang, Haibin Huang, Chongyang Ma, Tong-Yee Lee, Oliver Deussen, and Changsheng Xu. Prospect: Prompt spectrum for attribute-aware personalization of diffusion models. ACM Transactions on Graphics (TOG) , 42(6):1–14, 2023. 3 [83] Rui Zhao, Yuchao Gu, Jay Zhangjie Wu, David Jun-hao Zhang, Jia-Wei Liu, Weijia Wu, Jussi Keppo, and Mike Zheng Shou. Motiondirector: Motion customization of text-to-video diffusion models. In European Conference on Computer Vision , pages 273–290. Springer, 2024. 3, 4, 8 [84] Dian Zheng, Ziqi Huang, Hongbo Liu, Kai Zou, Yinan He, Fan Zhang, Lulu Gu, Yuanhan Zhang, Jingwen He, Wei-Shi Zheng, et al. Vbench-2.0: Advancing video generation benchmark suite for intrinsic faithfulness. arXiv preprint arXiv:2503.21755 , 2025. 7 [85] Tianrui Zhu, Shiyi Zhang, Jiawei Shao, and Yansong Tang. Kv-edit: Training-free image editing for precise background preservation. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 16607–16617, 2025. 3[86] Tianrui Zhu, Shiyi Zhang, Zhirui Sun, Jingqi Tian, and Yan-song Tang. Memorize-and-generate: Towards long-term consistency in real-time video generation. arXiv preprint arXiv:2512.18741 , 2025. 3 
+
+13 Disco-LoRA: Disentangled Composition of Content, Style, and Motion for Multi-concept Video Customization 
+
+# Supplementary Material 
+
+6. Overall 
+
+The supplementary material includes the following sec-tions: • Details of our methods and experiments. • Limitations, Discussion and Future Work of our method. • A demo video introducing our work comprehensively. • A folder containing some videos generated by our model. • A folder containing the subset of our benchmark. 
+
+7. Details of our methods and experiments 
+
+7.1. Hyperparameters 
+
+For the Iterative Dual-LoRA Disentanglement Framework, we address two sub-tasks. In Content-Style Disentangle-ment, we train the content LoRA ( ∆Wc) for 3 epochs with 
+
+Tl = 0 .5T and Th = T , and the style LoRA ( ∆Ws) for 4 epochs with Tl = 0 .4T and Th = 0 .8T . For Content-Motion Disentanglement, the motion LoRA ( ∆Wm) is trained for 5 epochs with Tl = 0 .5T and Th = T . Re-garding the Z-Score-Based Statistical Regularization, We set the regularization hyperparameters to λmag = 1 .0 and 
+
+λtrend = 0 .05 to balance the magnitudes of different loss components. We also introduce a scaling factor of s = 10 .0
+
+to match the numerical range. 
+
+7.2. User Study 
+
+During the user study, we provide each case video gener-ated by DreamBooth(WAN), MotionDirector(WAN), Un-zipLoRA+FlexiAct, and our Disco-LoRA for evaluation based on five questions. Each question is rated on a scale from 1 to 5 for the following criteria: (1) The accuracy of generating the video to match the text descriptions ( Prompt Alignment ). (2) Consistency between the generated video and the provided motion mode ( Motion Similarity ). (3) The similarity between the main content of the generated video and the reference image provided ( Content Similarity ). (4) The similarity between the main style/material of the gen-erated video and the reference image provided ( Style Simi-larity ). (5) The overall quality of the video ( Video Quality ). Fig. 9 shows the format of our questionnaire. 
+
+7.3. Qualitative Evaluation For Ablation Study 
+
+To assess the contribution of each component within Disco-LoRA, we conducted comprehensive ablation studies focus-ing on its core modules, as summarized in Fig. 10. While the quantitative results were discussed in the main text, here (a) 
+
+> (b)
+
+Figure 9. Human evaluation questionnaire format. (a) presents the reference subject image, reference video, and the customized video generated by the model. Participants are then asked to com-plete the evaluation form in (b), rating the quality of the generated video based on Prompt Alignment, Motion Similarity, Appearance Similarity and Video Quality. [Task1]: “A <o18> terracotta warrior , made of <m10> glass , is <v4> running through a sunlit ancient courtyard scattered with shattered ceramic fragments and overgrown moss, where shafts of golden light pierce through crumbling stone archways, highlighting the translucent, fragile contours of its crystalline form.”  
+
+> Content Motion
+> Style
+
+w/o. C.P 
+
+w/o. T.A.M 
+
+w/o. 𝑳𝑳 𝒕𝒕𝒕𝒕𝒕𝒕𝒕𝒕𝒕𝒕 
+
+w/o. 𝑳𝑳 𝒎𝒎 𝒕𝒕 𝒎𝒎 
+
+Disco -LoRA 
+
+Figure 10. Qualitative Evaluation For Ablation Study. 
+
+we evaluate the effectiveness of each module from a quali-tative perspective. 
+
+Effect of Complementary Prompting Strategy.(C.P) The complementary prompting strategy is crucial for promoting the learning of each concept. In the absence of this con-straint, the disentanglement LoRA cannot learn its respec-tive concepts effectively. As a result, generation degener-ates to relying exclusively on the WAN’s native semantic 1Frame 
+
+> Denoise step (a) Frame
+> Denoise step
+> (b)
+
+Figure 11. Visualization of the denoising timesteps for Style. (a) The denoising process for material styles. In the early stages of diffusion, the model focuses on generating low-frequency infor-mation such as object position and contours, while in the later stages, it synthesizes specific object textures. (b) The denoising process for artistic styles. Similarly, the model prioritizes struc-tural elements in the early stages, but shifts to generating global stylistic details in the final steps. 
+
+priors. 
+
+Effect of Time-aware Masking Strategy.(T.A.M) The time-aware masking strategy effectively distinguishes and constrains the disentanglement of different concepts. In the absence of this strategy, the Style LoRA tends to overfit the appearance information of the reference artistic image. For instance, the anomalous appearance of a ’thumb-up’ ges-ture results from the model overfitting to the global shape of the material during style learning, leading to structurally implausible generations. 
+
+Effect of Ltrend . The Ltrend loss is designed to constrain the optimization trajectory of each LoRA, ensuring adher-ence to the original trend. Removing this constraint hinders the model’s ability to accurately capture individual con-cepts, leading to suboptimal similarity performance across all provided reference concepts. 
+
+Effect of Lmag . The purpose of Lmag is to regularize the magnitude of different LoRAs, ensuring their means remain consistent so that every provided concept is adequately rep-resented in the final video. Without the Lmag constraint, the Content LoRA dominates the generation process; for instance, the Terracotta Warriors in the figure fail to exhibit any of the intended stylistic attributes. 
+
+7.4. Iterative Dual-LoRA Disentanglement 
+
+While Sec. 3.3 primarily focuses on the training of ∆Wc
+
+with its algorithm, our framework also involves learning the style ( ∆Ws) and motion ( ∆Wm) components. To provide a comprehensive view of the training process, we present the algorithms for these additional components here: Algo-rithm 2 details the optimization of ∆Ws, and Algorithm 3 outlines the procedure for ∆Wm.down W up W    
+
+> Target LoRA
+> down Wup W
+> LoRA to be disentangled
+> “<o14> toy ”“in <s> plushie style ”
+> No use of Time-aware Masking Strategy
+> 𝒕𝒕 ∼ 𝓤𝓤 𝟎𝟎 𝑻𝑻
+> Prompt :“A dog in <s> plushie style is on the sofa.”
+> Backbone
+> (WAN2.1)
+> Our Time-aware Masking Strategy
+> 𝒕𝒕 ∼ 𝓤𝓤 𝟎𝟎 𝑻𝑻 𝒍𝒍
+> Incorrect overfitting to full-image features .
+> Reference features cannot be accurately described by prompt.
+> Our method effectively separates style features through Time-aware Masking Strategy.
+
+Figure 12. Ablation study on the Time-aware Masking Strategy. This study demonstrates that our strategy enables the two Lo-RAs to focus on their respective text-aligned features, success-fully achieving disentanglement. Without distinguishing between timesteps, the auxiliary LoRA overfits to the entire frame, render-ing the target LoRA ineffective during inference. 
+
+ALGORITHM 2: Iterative Dual-LoRA Disentanglement for ∆Ws
+
+Require: Total epochs N
+
+Require: Pre-trained weights W0, training data D
+
+Require: Style LoRA ∆Ws (Target LoRA) and Content LoRA 
+
+∆Wc (LoRA to be disentangled) 
+
+Require: Prompts Ps (e.g., “A ⟨content ⟩, in ⟨style ⟩”) 
+
+Require: Prompts Pc (e.g., “A ⟨content ⟩”) 
+
+Require: Timestep thresholds Tl, T h and total timesteps T ,where 0 ≤ Tl ≤ Th ≤ T
+
+1: for each training epoch i ∈ N do //Phase 1: Update Content LoRA 
+
+2: for each training step or batch x ∈ D do 
+
+3: Freeze ∆Ws; Update ∆Wc
+
+4: Sample timestep t ∼ U (Tl, T h)
+
+5: W ← W0 + ∆ Wc + StopGrad (∆ Ws)
+
+6: Lc ← L diff (x, P c, t ; W )
+
+7: ∆Wc ← ∆Wc − η ∂Lc
+
+> ∂∆Wc
+
+8: end for //Phase 2: Update Style LoRA 
+
+9: for each training step or batch x ∈ D do 
+
+10: Update ∆Ws; Freeze ∆Wc
+
+11: Sample timestep t ∼ U (0 , T l)
+
+12: W ← W0 + StopGrad (∆ Wc) + ∆ Ws
+
+13: Ls ← L diff (x, P s, t ; W )
+
+14: ∆Ws ← ∆Ws − η ∂Ls
+
+> ∂∆Ws
+
+15: end for 
+
+16: end for 
+
+17: Return ∆Ws
+
+In Sec. 3.3, we introduce the Time-aware Masking Strat-egy. By leveraging the inherent denoising properties of diffusion models, we explicitly distinguish the learning of different concepts across varying timesteps t ∼ U (0 , T ).Specifically, we target motion during the early denoising stage (high noise levels, large t), where the model focuses on establishing object positioning and overall scene layout 2ALGORITHM 3: Iterative Dual-LoRA Disentanglement for ∆Wm
+
+Require: Total epochs N
+
+Require: Pre-trained weights W0, training data D
+
+Require: Motion LoRA ∆Wm (Target LoRA) and Content LoRA ∆Wc (LoRA to be disentangled) 
+
+Require: Prompts Pm (e.g., “ ⟨content ⟩, ⟨motion ⟩”) 
+
+Require: Prompts Pc (e.g., “ ⟨content ⟩”) 
+
+Require: Timestep thresholds tl, t h and total timesteps T , where 
+
+0 ≤ Tl ≤ Th ≤ T 
+
+> 1:
+
+for each training epoch i ∈ N do //Phase 1: Update Content LoRA  
+
+> 2:
+
+for each training batch X ∈ D do  
+
+> 3:
+
+Freeze ∆Wm; Update ∆Wc 
+
+> 4:
+
+x ← X[0] //Get the first frame  
+
+> 5:
+
+Sample timestep t ∼ U (Tl, T h))  
+
+> 6:
+
+W ← W0 + ∆ Wc 
+
+> 7:
+
+Lc ← L diff (x, P c, t ; W ) 
+
+> 8:
+
+∆Wc ← ∆Wc − η ∂Lc 
+
+> ∂∆Wc
+> 9:
+
+end for //Phase 2: Update Motion LoRA  
+
+> 10:
+
+for each training step or batch X ∈ D do  
+
+> 11:
+
+Update ∆Wc; Freeze ∆Wm 
+
+> 12:
+
+Sample timestep t ∼ U (0 , T l) 
+
+> 13:
+
+W ← W0 + StopGrad (∆ Wc) + ∆ Wm 
+
+> 14:
+
+Lm ← L diff (X, P m, t ; W ) 
+
+> 15:
+
+∆Wm ← ∆Wm − η ∂Lm 
+
+> ∂∆Wm
+> 16:
+
+end for  
+
+> 17:
+
+end for  
+
+> 18:
+
+Return ∆Wm
+
+(Fig. 11). Subsequently, we capture content during the in-termediate stage (medium noise levels, moderate t), as ob-jects begin to exhibit distinct contours and specific morpho-logical characteristics. Finally, we focus on style in the late stage (low noise levels, small t). Once the object’s shape and appearance are largely determined, the model shifts its attention to fine-grained details such as color tones and tex-tures. This progression remains consistent across different domains, including materials (Fig. 11(a)) and artistic styles (Fig. 11(b)). Furthermore, as shown in Fig. 12, our Time-aware Mask-ing Strategy enables the two LoRAs to focus on their re-spective text-aligned features. Without distinguishing be-tween timesteps, the disentangling LoRA overfits to the en-tire frame, rendering the target LoRA ineffective during inference. Our selection of timesteps leverages the find-ings from [82], effectively disentangling different concepts within the same image. 
+
+7.5. Benchmark build pipeline 
+
+In Sec. 3.2, we briefly introduced the data sources and the construction process of our benchmark. In this sec-tion, we provide a detailed elaboration of this pipeline, as illustrated in Fig. 13. First, we collected 20 distinct con-tent images from the existing image personalization bench-mark, DreamBench [47]. For style references, we gathered 22 categories of distinct artistic style images from Style-Drop [51], and 10 images with significant material tex-tures from internet searches and Prospect [82]. Further-more, we curated videos featuring distinct object motion from the Davis [7] dataset. Obtaining data with fixed cam-era movements proved challenging, as camera motion is of-ten coupled with subject movement. To address this, we collected aerial footage of static objects from the internet, which meets our requirements. Additionally, we sourced I2V camera motion results from the open-source VAP [2] dataset. Since the raw quality of the VAP dataset was sub-optimal, we manually filtered the data to ensure usability. Subsequently, we manually categorized the collected data following the taxonomy defined in Sec. 3.2: divid-ing Style into Material Style and Artistic Style, and Motion into Object Motion and Camera Movement. For each data sample, we manually assigned a specific label to represent the target concept and drafted a detailed descriptive caption to supervise the reconstruction loss during training. Finally, to generate test prompts for the four tasks, we employed the Qwen3-MAX [73] model. Specifically, each task requires combining three distinct concepts. To en-sure flexibility and diversity in these combinations, we ran-domly sampled three concept categories from our labels for each instance. We guided Qwen3-MAX to generate the test prompts using the following instruction: 
+
+You are a creative prompt generator. Your task is to: 1. I will provide you with three elements: the object, the ma-terial, and the motion. For example: <o1> plushie bear , <m1> soft fabric , <v1> running . I will combine these three elements into a complete JSON-formatted prompt. 2. Generate a suitable background that complements these components. 3. Combine the components and background into a coherent, detailed im-age generation prompt. The specific format should be: A <object> , made of <material> , is <motion> <background> .The prompt should: • Include all the provided components naturally placed in the scene • Describe a realistic and harmonious background • Use natural English language • Keep the component identifiers (like <i1> , <s1> ,
+
+<m1> , <o1> , <v1> , <c1> ) in the final prompt. Please generate a complete image generation prompt based on the following JSON input. Generate a back-ground that fits these components and combine every-thing into one cohesive prompt following the format: A <object> , made of <material> , is <motion> <background> 
+
+3Data Collection (From existing dataset&website) 
+
+Content  Style  Motion 
+
+Manual classification and labeling 
+
+Generate test prompt 
+
+> … Combine the components and background into a coherent, detailed video generation prompt…
+
+Deduplication  
+
+> Human Instruction Labels
+
+Qwen3-MAX 
+
+Random Selection 
+
+Benchmark for Multi-concept Video Customizaton 
+
+Generate for four Tasks 
+
+Content  Style  Motion 
+
+<o1> bear 
+
+<o5> dog 
+
+<o17> tortoise 
+
+in <s8> oil painting style 
+
+made of <m5> colorful glass 
+
+<v1> riding a bike 
+
+<v6> lifting weights 
+
+<c1> camera moves around Figure 13. Construction pipeline of our benchmark. 
+
+7.6. Details for Metrics 
+
+We establish a comprehensive evaluation framework across three dimensions: Semantic Alignment, Motion Quality and Perceptual Quality, using nine metrics. • Semantic Alignment. (1) CLIP-T: This metric evaluates the alignment between text prompts and generated videos by calculating the average frame-wise cosine similarity between their embeddings extracted via the CLIP [44] model. (2) CLIP-I(S): This metric quantifies the visual similarity between the reference style images and the gen-erated video frames. It computes the cosine similarity of their embeddings using the CLIP image encoder [44]. (3) CLIP-I(C): Similar to CLIP-I(S), this metric mea-sures the visual correspondence between the reference content images and the generated video frames based on their CLIP image embeddings. (4) CLIP-I(A): This met-ric represents the overall performance by calculating the arithmetic mean of CLIP-I(S) and CLIP-I(C). (5) CSD: 
+
+This metric [52] evaluates the pure stylistic alignment be-tween the reference style images and the generated video frames using Contrastive Style Descriptors. Unlike CLIP-based metrics that may entangle style with semantic con-tent, CSD extracts representations using a Vision Trans-former (ViT) backbone trained via multi-label contrastive learning to specifically capture style-related visual at-tributes (e.g., colors, textures, and brushstrokes) while remaining invariant to the underlying semantic content. The metric computes the cosine similarity (or dot prod-uct) between the embeddings of the generated frames and the reference images. • Motion Quality. (1) Motion Fidelity: Evaluates the consistency of motion patterns by leveraging Co-Tracker3 [20], a model designed for diffusion-motion-transfer [77]. (2) Subject Consistency: Assesses whether the appearance of the subject (e.g., characters) remains consistent across different frames in the video, as implemented in VBench [17]. (3) Motion Smoothness: 
+
+Evaluates the temporal coherence of the generated videos by quantifying frame-to-frame motion consistency, fol-lowing the implementation in VBench [17]. • Perceptual Quality. (1) PickScore: Predicts human preference scores using PickScore [22], with results aver-aged at the frame level. (2) Aesthetic Quality: Measures artistic merit using the LAION aesthetic predictor, imple-mented via VBench [17]. (3) Imaging Quality: Eval-uates distortions in generated frames, such as overexpo-sure, noise, and blurriness, as assessed via VBench [17]. 
+
+8. Limitations, Discussion and Future Work 
+
+Limitations. While Disco-LoRA demonstrates excep-tional performance in disentangling and customizing con-tent, style, and motion for videos, its current exploration is primarily confined to a specific triad of concepts. A lim-itation lies in the scalability of concept composition. We have not yet extensively investigated the framework’s ef-ficacy when scaling to a higher number of simultaneous concepts (e.g., combining 4 or 5 distinct elements). Fur-thermore, our current scope focuses heavily on the primary subject and its dynamics, without fully exploring the dis-entanglement of other critical visual dimensions, such as complex background environments or specific lighting con-ditions. This restricts the framework’s potential for holistic 4A cup on the table, camera moves around .                       
+
+> Acup on the table, camera moves around .
+> WAN 2.1 -1.3B
+> T2 V
+> Disco -LoRA
+> Acup on the table, camera zooms in .
+> WAN 2.1 -1.3B
+> T2 V
+> Disco -LoRA
+> Acup on the table, camera zooms in .
+
+Figure 14. Comparison with backbone with camera control. 
+
+scene construction. 
+
+Discussion. (1) As illustrated in Fig. 14, we observe that the base model WAN2.1-1.3B-T2V lacks the capability for precise text-driven camera motion control. However, by in-tegrating our trained Motion LoRA, we successfully enable accurate text-guided camera control on this base model. (2) Although methods like VideoMage [16] achieve multi-subject customization, they report an inability to extend this capability to non-subject concepts (e.g., style and material). Furthermore, their complex training pipelines and closed-source code pose significant challenges for reproducibil-ity. Disco-LoRA pioneers the exploration of this limita-tion, successfully achieving customized video generation across diverse concepts—a task that even current commer-cial models cannot fully accomplish. (3) Moreover, our method has strong generalizability. Although our exper-iments are exclusively conducted on WAN2.1-1.3B, ana-lyzing the distribution trends of LoRA weights across DiT layers and applying Z-Score Statistical Regularization al-lows our approach to be effectively adapted to different base models. 
+
+Future Work. To address these limitations and advance the field, our future research will focus on two key direc-tions. First, we aim to push the boundaries of composi-tional generation by scaling Disco-LoRA to handle a larger number of concurrent concepts, rigorously testing its sta-bility and disentanglement capabilities in high-complexity scenarios. Second, we plan to broaden the scope of dis-entanglement beyond object-centric attributes. We intend to incorporate additional dimensions such as background synthesis and lighting control into our framework, thereby achieving a more comprehensive and fine-grained control over the entire video generation process. 5Content  Motion  Generated Videos 
+
+[Task1]: “A <o1> bear , made of <m5> colorful glass , is <v3> running through a sun-dappled forest clearing where rays of light refract off its shimmering surface, casting rainbow patterns on the mossy ground and surrounding ferns.” 
+
+> Style
+
+[Task1]: “A <o7> dog , made of <m7> carved wood , is <v4> running through a sun-dappled forest trail lined with moss-covered stones and fallen autumn leaves, where shafts of golden light filter through the canopy above, highlighting the grain and texture of its wooden form.” 
+
+> Style Style
+
+[Task1]: “A <o10> duck , made of <m4> rusty metal , is <v8> playing the guitar on a weathered wooden porch at sunset, surrounded by overgrown wildflowers and scattered autumn leaves, with warm golden light casting long shadows and highlighting the metallic patina of its feathers.” 
+
+> Style
+
+[Task1]: “A <o20> wolf , made of <m9> colorful clay , is <v9> playing the piano in a whimsical, sunlit music room filled with floating musical notes, mismatched vintage instruments, and shelves lined with tiny handmade sculptures, all bathed in warm golden light that highlights the textured, vibrant hues of its clay body.” Figure 15. Additional qualitative results for Task 1. We generated a diverse set of customized videos to validate our approach. These samples highlight the accurate extraction of target concepts and the robust generalization of our model. Content  Motion  Generated Videos 
+
+[Task2]: “A <o20> wolf , is <v5> running through a moonlit pine forest with snow-dusted ground and faint mist swirling around the trees, in <s6> line drawing style .” 
+
+> Style
+
+[Task2]: “A <o16> teddy bear , is <v8> playing the guitar on a sun-dappled forest clearing with mossy tree stumps and wildflowers swaying in a gentle breeze, in <s14> painting style .” 
+
+> Style
+
+[Task2]: “A <o15> panda , is <v1> riding a bike along a sun-dappled country lane lined with wildflowers and tall oak trees, in <s5> oil painting style . ” 
+
+> Style
+
+[Task2]: “A <o11> cat , is <v6> lifting weights in a cozy, sunlit home gym with wooden floors, vintage dumbbells stacked nearby, and a large window casting soft golden light through sheer curtains, in <s2> watercolor painting style .” 
+
+> Style
+
+Figure 16. Additional qualitative results for Task 2. We generated a diverse set of customized videos to validate our approach. These samples highlight the accurate extraction of target concepts and the robust generalization of our model. 
+
+6Content  Motion  Generated Videos 
+
+[Task3]: “A <o2> cat , made of <m10> glass , is perched on a sleek, minimalist windowsill overlooking a softly blurred cityscape at twilight, with ambient light refracting through its transparent form, <c3> camera moves around .” 
+
+> Style
+
+[Task3]: “A <o19> bear , made of <m3> gold , is perched atop a crystalline glacier under a twilight sky streaked with auroras, <c6> camera moves left .” 
+
+> Style
+
+[Task3]: “A <o17> tortoise , made of <m2> glossy and green-glazed ceramic , is resting on a bed of smooth river stones beside a tranquil koi pond surrounded by mossy rocks and delicate bamboo shoots, <c4> camera moves right . ” 
+
+> Style
+
+[Task3]: “A <o14> toy , made of <m7> carved wood , is resting on a sunlit rustic windowsill overlooking a quiet countryside meadow dotted with wildflowers and old oak trees, <c4> camera moves down .”  
+
+> Style
+> Move left
+> Move around
+> Move down
+> Move right
+
+Figure 17. Additional qualitative results for Task 3. We generated a diverse set of customized videos to validate our approach. These samples highlight the accurate extraction of target concepts and the robust generalization of our model. Content  Motion  Generated Videos 
+
+[Task4]: “A <o15> panda , is sitting peacefully on a mossy rock beside a gently flowing mountain stream surrounded by misty bamboo groves and soft ferns, in <s1> watercolor painting style , <c8> camera moves up .” 
+
+> Style
+
+[Task4]: “A <o12> cat , is perched on a sunlit windowsill overlooking a quiet autumn garden with golden leaves drifting gently to the ground, in <s8> oil painting style ,
+
+<c3> camera moves around .” 
+
+> Style
+
+[Task4]: “A <o18> terracotta warrior , is standing amid the neon-lit ruins of an ancient temple overtaken by futuristic megastructures and holographic billboards, in <s19> cyberpunk style , <c10> camera zooms out . ” 
+
+> Style
+
+[Task4]: “A <o13> cat , is perched on a sunlit windowsill overlooking a quiet autumn street with falling leaves and soft shadows, in <s22> sketch style, <c5> camera moves forward .”  
+
+> Style
+> Move around
+> Move up
+> Zoom out
+> Move forward
+
+Figure 18. Additional qualitative results for Task 4. We generated a diverse set of customized videos to validate our approach. These samples highlight the accurate extraction of target concepts and the robust generalization of our model. 
+
+7

@@ -1,0 +1,1314 @@
+Title: CoDMD: Copula-aware Distribution Matching Distillation for Fast Video Generation
+
+URL Source: https://arxiv.org/pdf/2606.21982v1
+
+Published Time: Tue, 23 Jun 2026 01:37:28 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+# CoDMD: Copula-aware Distribution Matching Distillation for Fast Video Generation 
+
+Wenhu Zhang 1 Kun Cheng 2∗ Changyuan Wang 3 Shiyao Li 5 Yuechen Zhang 4
+
+Wenbo Li 4 Jiajun Zha 1 Jingyi Zhang 2 Kang Zhao 2 Jiaya Jia 1†
+
+1HKUST 2Wan Team, Alibaba Group 3THU 4CUHK 5 XDU Project page: https://andrew-zhang98.github.io/CoDMD_page 
+
+## Abstract 
+
+Few-step distillation for video diffusion models has attracted significant attention, driven by the urgent demand for efficient deployment in real-world scenarios. However, Distribution Matching Distillation (DMD), a leading paradigm, tends to degrade under limited NFE budgets, manifesting in video generation as layout instability, oversaturation, and broken motion dynamics. We trace this failure to a structural limitation: standard DMD is an intra-sample distribution-matching objective with coordinate-wise gradients, and thus imposes no explicit constraint on the relational geometry across batch elements or temporal frames, leaving the underlying copula largely unregulated. Combined with the mode-seeking tendency of its reverse-KL objective, this absence of relational guidance makes DMD prone to collapsing into local optima in the few-step regime. Motivated by this insight, we propose Copula-aware DMD (CoDMD), a lightweight relational regularizer that reuses score estimates already produced by the frozen teacher and the online fake model to construct pairwise relation matrices across samples and frames. These are matched through a supplementary distributional objective that requires no additional networks, datasets, or sampling trajectories. On the Wan-2.1-T2V model series at 1.3B & 14B scales, CoDMD distills 50-step teachers into 4-step students, achieving an approximate 25 × speed-up while attaining VBench scores of 84.46 & 84.87, outperforming prior trajectory-based (rCM 82.81 & 84.05) and distribution-based (DMD 83.38 & 83.81) methods. DMD Ours        
+
+> (1) A tilt-up from the feet of a statue to its majestic head , showcasing its grandeur and craftsmanship. (2) A cheetah accelerating to full speed while chasing its prey.
+> (3) Macro shot of a volcano erupting in a coffee cup.
+> (5) A man and woman walking hand in hand under a starry sky with a bucket in the background.
+> DMD Ours
+> (6) Hyperrealistic monster that closes its mouth.
+> (7) An astronaut fighting a monster.
+> (4) A pile of beans scattered on the cutting board transforms into mini soldiers.
+
+Figure 1: Sampled 4-step videos. DMD suffers from (1) failed camera motion ; (2) super slow action ;(3,4) broken layouts ; (5,6,7) oversaturation and (4,7) instruction misalignment . On the VBench radar, 
+
+CoDMD (84.46) outperforms previous methods, i.e., DMD (83.38) and rCM (82.81) , on most of the dimensions, with the largest gains on dynamic degree , color and multiple objects . Best zoomed in. 
+
+> ∗
+
+Project leader, †Corresponding author Preprint. 
+
+> arXiv:2606.21982v1 [cs.CV] 20 Jun 2026
+
+## 1 Introduction 
+
+Diffusion-based generative models have recently emerged as a leading paradigm for both image and video synthesis [ 2, 4 , 5, 9, 21 , 27 , 32 ], driven by their favorable scaling behavior and superior perceptual fidelity. However, their practical deployment is hampered by increasing spatial resolutions, longer clip durations, and the iterative denoising process, which typically requires 50–100 forward passes per sample. To bridge this gap, a growing body of work pursues few-step distillation, which compresses the number of function evaluations (NFE) required at inference time and aims to deliver an efficient yet high-fidelity media generator. Among existing few-step distillation paradigms, Distribution Matching Distillation (DMD) [ 39 ] aligns the student-induced distribution with that of the teacher through a distributional objective, rather than enforcing strict timestep-by-timestep trajectory consistency. When the number of inference steps is aggressively reduced (e.g., 4 steps or fewer), however, DMD exhibits a pronounced tendency toward mode collapse, manifesting in the image domain as oversaturation and reduced sample diversity. Several recent efforts augment DMD with auxiliary training paradigms to recover the lost quality. DMD2 [ 38 ] introduces a GAN loss to sharpen details. DMDR [ 8 ] combines DMD with reinforcement learning to improve overall fidelity. rCM [ 44 ] jointly trains DMD with consistency models to mitigate mode collapse. DP-DMD [ 34 ] introduces a two-stage pipeline with v-prediction to pursue diversity. While these approaches partially relieve the collapse symptoms, they have primarily been designed for the general or image-domain generation. The substantially more challenging regime of few-step video distillation, in contrast, remains relatively underexplored from a DMD perspective. Applying DMD to video generation amplifies image-domain defects into more conspicuous failures. As shown in Fig. 1, DMD often exhibits (i) compromised motion fidelity (failed camera motion, overly slow actions), (ii) structural inconsistencies (broken layouts, oversaturation), and (iii) semantic misalignment with the input prompt under the 4-step budget. To articulate this deficiency precisely, we invoke Sklar’s theorem [ 18 , 24 ], which decomposes any joint distribution into its marginal distributions and a copula that fully encodes their dependence structure. From this perspective, high-quality video generation requires not only realistic local appearance (the marginals) but also faithful dependence among frames, objects, layouts, and motions (the copula). Standard DMD provides distributional supervision at the level of individual generated samples, yet it imposes no explicit constraint on the pairwise relational geometry (e.g., distances or angles) across frames or across samples. Consequently, two student distributions can appear nearly indistinguishable under marginal or pointwise sample-level criteria while exhibiting substantially different temporal, spatial, or semantic couplings. This under-constrained relational degree of freedom is particularly detrimental for video. Motion strength, camera trajectory, object interaction, and layout persistence are all expressed through copulas rather than isolated per-frame statistics. Weakly regulated copulas therefore manifest as unstable dynamics, broken layouts, over-smoothed or weakened motion, and inconsistent semantic alignment. This issue is further exacerbated by the reverse-KL objective underlying DMD: reverse-KL aggressively penalizes the student for placing probability mass in regions weakly supported by the teacher, but does not symmetrically penalize missed teacher-supported modes that the student fails to cover [ 16 , 34 , 35 ]. Under stringent NFE budgets, where the student’s expressive capacity is already constrained, this asymmetry biases optimization toward overly concentrated local optima that retain only dominant patterns while discarding weaker yet semantically important variations. Together, the lack of explicit copula constraints and the mode-seeking [ 1] tendency of reverse-KL make standard DMD particularly brittle in the few-step video regime. Guided by this diagnosis, we propose Copula-aware DMD (CoDMD), a lightweight copula-aware regularizer that augments DMD without introducing any auxiliary networks, datasets, or sampling trajectories. Our key observation is that, within every DMD iteration, the score functions of both the frozen teacher and the online fake model are already evaluated for the standard distribution-matching loss. The relational structure of the teacher distribution can therefore be extracted essentially for free. Concretely, CoDMD reuses these score estimates to construct pairwise relation matrices at two complementary granularities: across batch elements and across temporal frames within each video. A supplementary distributional objective then aligns the student’s relation matrices with the teacher’s relational geometry, explicitly regularizing the structure that standard DMD leaves under-constrained. By encouraging the student to preserve the teacher’s relational variability across both batch and 2frame, this objective discourages degenerate concentration on a narrow subset of outputs, thereby empirically counteracting the mode-seeking bias of reverse-KL. We evaluate CoDMD on Wan-2.1-T2V diffusion model series at both 1.3B & 14B scales. CoDMD distills 50-step teachers into 4-step students while maintaining strong visual quality, achieving an approximate 25 × lossless acceleration. On VBench, it attains total scores of 84.46 & 84.87, outper-forming trajectory-based methods such as rCM (82.81 & 84.05) and distribution-based algorithms such as DMD (83.38 & 83.81), with notable gains in dynamic degree (+15), color (+2.8), and multiple objects (+3.7). Our contributions are as follows: • We provide a copula perspective on why few-step DMD is fragile in video generation: intra-sample coordinate-wise supervision does not explicitly preserve the relational structure required by motion, layout, and semantics, while the reverse-KL objective further encourages overly concentrated solutions under limited NFE budgets. • We propose Copula-aware DMD (CoDMD), a lightweight copula-aware regularizer for DMD that matches teacher-student pairwise relations across batch elements and temporal frames using score estimates already computed in standard training, requiring no extra networks, data, or sampling trajectories. • Across two scales of the Wan-2.1-T2V model series, CoDMD consistently improves few-step video distillation, achieving ∼25 × speed-up while outperforming prior trajectory-based and distribution-based methods on the VBench total score and across most dimensions. 
+
+## 2 Related Work 
+
+Video diffusion and few-step acceleration. Modern video generators rest on diffusion and flow-matching formulations [ 4, 11 , 12 , 27 ] realized by spatio-temporal transformer backbones [ 2 , 10 ,23 , 32 , 37 ]. They reach strong fidelity, but require tens to hundreds of denoising steps per clip, which is prohibitive for interactive deployment. Training-free samplers such as DDIM [ 25 ] and DPM-Solver [ 15 , 42 ] shorten the trajectory but still need many steps to remain visually satisfactory. Training-based distillation falls into two families: trajectory-matching methods that align the student along the sampling path [ 3 , 13 , 14 , 22 , 26 , 28 ], and distribution-matching methods that align student and teacher at the data-distribution level. Our work builds on the latter. 
+
+Distribution Matching Distillation and its remedies. DMD [ 38 , 39 ] updates the student via a score-as-target surrogate whose gradient is given by the score difference between a frozen teacher and a learnable fake model [ 33 ]. DMD preserves fine-grained details well in single-image distillation, but its naive few-step use often suffers from oversaturation and mode collapse [ 14 , 38 , 39 ]. These issues become more severe in video generation, where motion weakens, layouts become unstable, and sampled clips grow mutually similar. Recent remedies improve DMD by combining it with additional paradigms, such as distribution-shaping rewards [ 8], consistency training [ 28 , 44 ], and two-stage pipelines [ 34 ]. While effective, these approaches add extra models, trajectories, or training stages on top of DMD, leaving the underlying coordinate-wise score objective largely unchanged. In contrast, CoDMD strengthens the DMD objective itself rather than wrapping it with auxiliary machinery. A parallel line of work extends DMD-style training to autoregressive long-video generation [ 6, 36 , 40 ]. These methods are largely orthogonal to our few-step setting, but their emphasis on temporal error accumulation further highlights the importance of improving the underlying DMD objective, since weak supervision can compound over long horizons. 
+
+Relational supervision under computation budgets. Relational supervision has long been rec-ognized as a powerful tool for knowledge transfer especially under strict computation budgets, as it captures the structural geometry, e.g., pairwise distances, angles, and affinity matrices between sam-ples rather than just individual predictions [ 20 , 31 ]. Relational Knowledge Distillation [ 19 ] matches pairwise distances and triplet angles between teacher and student features. Relation Networks [ 29 ]and similarity-preserving distillation [ 31 ] align sample affinity matrices. Contrastive representation distillation [ 30 ] transfers structure through mutual-information bounds. These foundational works motivate our use of similarity matrices as effective carriers of relational information. While, under the NFE-constrained setting in diffusion, the conventional single-teacher paradigm with feature-space matching becomes inadequate. Generative score distillation is intrinsically a triplet-network problem, 3Backward Propagation          
+
+> to Student
+> Student
+> Noise
+> Fake
+> Model Teacher
+> Diffusion
+> Batch of
+> Sample
+> Relation
+> Frame
+> Relation
+> 𝐒 real
+> batch 𝐒 fake
+> batch
+> 𝐒 real
+> frame 𝐒 fake
+> frame
+> Sample
+> Matching
+> Distillation
+> Frame
+> Matching
+> Distillation
+> ℒrel
+> batch
+> ℒrel
+> frame
+> Video
+> 𝑠 fake 𝑠 real
+> Distribution
+> Matching
+> Distillation
+> ℒDMD
+> DMD CoDMD
+> 𝑝 real
+> 𝑝 fake
+> 𝑝 real
+> 𝑝 fake
+> 𝑠 fake
+> Batch of 𝑠 real
+
+Figure 2: Left: Training pipeline of CoDMD. Beyond standard LDMD , we reuse the real and fake scores to build relational matrices at batch and frame granularities, yielding two supplementary copula losses Lbatch rel and Lframe rel . Right: DMD aligns fake elements to preal but scrambles their pairwise geometry (crossed edges). CoDMD additionally preserves the real structure among these elements. driven by the dynamic residual gap between a frozen teacher and a fake distribution. Furthermore, to seamlessly integrate with DMD, the supervision must be adapted from the conventional feature space to the score distribution space. CoDMD addresses this by lifting the teacher–fake residual from point-wise coordinates to pairwise copula-aware relations. To the best of our knowledge, we are the first to introduce relational preserve insight into the score distillation paradigms. 
+
+## 3 Method 
+
+We first review DMD as a score-as-target surrogate (§3.1), then diagnose why this coordinate-wise recipe leaves the relational geometry of the teacher’s score field less constrained (§3.2). Guided by this analysis, we propose Copula-aware DMD ((§3.3)), which lifts the surrogate from coordinates to pairwise similarity matrices at two complementary granularities. Figure 2 gives an overview. 
+
+3.1 Preliminaries: DMD as a coordinate-wise score-as-target surrogate Notation. Let x0 ∼ preal denote a clean video and qt(xt | x0) = N (αtx0, σ 2 
+
+> t
+
+I) a variance-preserving Gaussian diffusion process indexed by t ∈ [0 , 1] . A pretrained teacher denoiser μreal (xt, t )
+
+provides the perturbed score sreal (xt, t ) = −(xt − αtμreal )/σ 2 
+
+> t
+
+. A few-step student generator 
+
+Gθ : Rdz → RF ×C×H×W produces x = Gθ (z) from z ∼ N (0, I), and an auxiliary denoiser 
+
+μϕ
+
+> fake
+
+(xt, t ) is trained online with Lϕ 
+
+> denoise
+
+= ∥μϕ
+
+> fake
+
+(xt, t ) − x∥22 to track the outputs of students and provide the corresponding fake score sfake .
+
+Distribution-matching gradient. DMD minimizes the reverse-KL divergence DKL (pfake ∥ preal ),whose gradient admits an expectation over coordinate-wise score differences [33]: 
+
+∇θ DKL ≃ Ez,t 
+
+h
+
+wtαt
+
+ sfake (xt, t ) − sreal (xt, t ) · ∂G θ (z)
+
+∂θ 
+
+i
+
+, (1) where xt denotes the diffused student output and wt represents a noise-level weighting. 
+
+Score-as-target surrogate. In practice, Eq. (1) is realized through a reconstruction loss that avoids explicitly computing the student Jacobian during the forward pass. Define the update direction 
+
+∆(x) ≜ wtαt
+
+ sfake (xt, t ) − sreal (xt, t ), (2) and the score-as-target surrogate loss 
+
+LDMD = 12 x − stopgrad  x − ∆(x) 22. (3) Since the target is treated as a constant, ∇θ LDMD = ∆(x) · ∂θ Gθ (z) exactly recovers Eq. (1) : the KL gradient is realized by nudging x toward x − ∆(x). Crucially, ∆ is evaluated coordinate-wise :at every spatial–temporal location it pulls the student’s marginal density toward preal in isolation, with no term comparing values across locations. 43.2 Why coordinate-wise supervision is insufficient: a copula perspective 
+
+We now formalize why the coordinate-wise structure of Eq. (3) is consequential for video. Our argument proceeds in three steps: (i) Sklar’s theorem isolates a copula score that DMD does not explicitly supervise; (ii) reverse-KL amplifies this gap into mode collapse under the few-step constraint; (iii) a pairwise relational statistic admits a closed-form penalty for the resulting collapse. 
+
+Sklar’s theorem and the marginal–copula factorization. Sklar’s theorem [ 18 , 24 ] states that any continuous joint p(y) on RD admits a unique decomposition 
+
+p(y) = 
+
+ DY
+
+> i=1
+
+f (i)(yi)
+
+
+
+· c F (1) (y1), . . . , F (D)(yD ), (4) where f (i), F (i) are the marginal PDF (Probability Density Function) and CDF (Cumulative Dis-tribution Function) of coordinate i, and c : [0 , 1] D → R≥0 is the copula density that encodes all cross-coordinate dependence and its underlying structure is invariant to coordinate-wise transforma-tions of the marginals. Taking ∇ log p yields 
+
+∇y log p(y) = 
+
+ ∂∂y i
+
+log f (i)(yi)
+
+Di=1 
+
+| {z } 
+
+> =: smarg (y)
+
++ ∇y log c F (1) (y1), . . . , F (D)(yD )| {z } 
+
+> =: scop (y)
+
+. (5) While DMD implicitly targets the joint score, its sample-wise coordinate-wise objective treats the regression of elements independently. This lacks explicit high-order relational constraints to directly supervise the complex cross-coordinate relations encoded in scop , making the structural knowledge transfer less efficient. 
+
+Marginal matching alone does not identify relational structure. A two-frame video (X1, X 2)
+
+with U ∼ N (0 , 1) and P : ( X1, X 2) = ( U, U ), Q : ( X1, X 2) = ( U, −U ) has identical per-frame marginals under P and Q, yet EP [X1X2] = 1 versus EQ[X1X2] = −1. Any objective that depends only on per-coordinate distributions assigns the same value to P and Q, and is blind to which temporal relation the student learns (Appendix F). For video, this non-identifiability propagates to the failure cases in Figure 1. 
+
+Reverse-KL amplifies the gap via mode-seeking behavior. DMD minimizes the reverse-KL divergence, which is inherently mode-seeking [ 1, 35 ]. For a teacher mixture P = PKk=1 πkPk
+
+with disjoint supports and a student restricted to single-component approximants {P1, . . . , P K },
+
+DKL (Pj ∥ P ) = − log πj , so the optimum is the component with the largest mixture weight (Ap-pendix F). More generally, DKL (Qj ∥ P ) = DKL (Qj ∥ Pj ) − log πj for any Qj on component j:reverse-KL trades fit against weight but never penalizes the absence of other modes. In the few-step regime, a small NFE budget restricts the reachable student family, making this collapse directly actionable: the generator covers one dominant mode and drops others. 
+
+Relational matching penalizes collapsed solutions. Let d(z, z ′) be a symmetric distance in the score space and D(Q) = EZ,Z ′∼Q[d(Z, Z ′)] . If the teacher score distribution P has modes with intra-mode distance ≤ ϵ and cross-mode distance ≥ ∆, then for any single-mode student Q = Pj ,
+
+D(P ) − D (Q) ≥ ∆
+
+
+
+1 − XKk=1 π2
+
+> k
+
+
+
+− ϵ. (6) The factor (1 − P 
+
+> k
+
+π2
+
+> k
+
+) measures the teacher’s relational diversity, approaching 1 for many well-separated modes. A single-mode student therefore incurs a discrepancy that reverse-KL ignores but a pairwise objective directly measures. Eq. (6) is the quantitative motivation for CoDMD: an explicit relational regularizer assigns a non-trivial cost to the loss of cross-mode geometry that DMD alone leaves free. The next section realizes this signal within the existing DMD workflow. 
+
+3.3 Copula-aware DMD (CoDMD) 
+
+The analysis above motivates a regularizer based on pairwise statistics. We instantiate it with cosine similarity matrices computed directly from the score-based denoiser predictions. 5Algorithm 1: CoDMD training procedure. 
+
+Input: Pretrained teacher μreal ; denoising step list T = {t1, . . . , t K }; relational weights λbatch , λ frame .
+
+Output: Trained few-step generator Gθ . 
+
+> 1
+
+Gθ ← copyWeights (μreal ), μ ϕ 
+
+> fake
+
+← copyWeights (μreal ) // Initialization  
+
+> 2
+
+while not converged do  
+
+> 3
+
+x ← Gθ
+
+ z ∼ N (0, I), T  ; // few-step backward simulation  
+
+> 4
+
+if is generator update step then  
+
+> 5
+
+LDMD ← DMDL OSS (μreal , μ ϕ
+
+> fake
+
+, x) ; // Eq. (3)  
+
+> 6
+
+Lbatch rel ← L general  
+
+> rel
+
+(μreal , μ ϕ
+
+> fake
+
+, x, batch ) ; // Eq. (9)  
+
+> 7
+
+Lframe rel ← L general  
+
+> rel
+
+(μreal , μ ϕ
+
+> fake
+
+, x, frame ) ; // Eq. (10)  
+
+> 8
+
+Ltotal ← L DMD + λbatch Lbatch rel + λframe Lframe rel ; // Eq. (11)  
+
+> 9
+
+Gθ ← update (Gθ , Ltotal ) 
+
+> 10
+
+Sample t ∼ U (0 , 1) ;;  
+
+> 11
+
+xt ← forwardDiffusion (stopgrad (x), t ); 
+
+> 12
+
+Lϕ 
+
+> denoise
+
+← ∥ μϕ
+
+> fake
+
+(xt, t ) − stopgrad (x)∥22 ; // update fake score every step  
+
+> 13
+
+μϕ 
+
+> fake
+
+← update (μϕ
+
+> fake
+
+, Lϕ
+
+> denoise
+
+)
+
+Relational analogue of x: the similarity matrix. Every DMD training step evaluates three quantities that carry distribution-level information: the student output x = Gθ (z), the teacher prediction μreal (xt, t ), and the fake model prediction μϕ
+
+> fake
+
+(xt, t ). We construct pairwise cosine similarity matrices from these score-space outputs at two granularities. At the batch level , each generated sample x(b) ∈ RF ×C×H×W is averaged over its temporal and spatial dimensions ( F, H, W ), preserving the channel dimension to form a C-dimensional vector. This yields B vectors per quantity. After gathering across all GPUs to Bg vectors, we compute the 
+
+Bg × Bg cosine similarity matrix, where pairwise similarities are measured along the C channels. At the frame level , only the spatial dimensions ( H, W ) of each sample are averaged per frame, while the channel dimension remains intact, yielding F vectors of size C per sample. An F × F cosine similarity matrix is then computed per sample to capture inter-frame relations. As shown in Fig. 2, we denote the resulting similarity matrices as Sbatch stu , Sbatch real , Sbatch fake (batch level) and Sframe stu , Sframe real , Sframe fake 
+
+(frame level, per sample b), built respectively from x, sfake (xt, t ), and sreal (xt, t ).
+
+Relational analogue of the score difference. In standard DMD, the perturbation ∆(x) is the coordinate-wise score difference sfake − sreal . Its relational counterpart is simply 
+
+∆S ≜ Sfake − Sreal , (7) which measures how the fake-model’s pairwise relations deviate from those of the teacher. This difference is computed separately for the batch-level and frame-level matrices. 
+
+Relational score-as-target surrogate. We form a detached target by nudging Sstu along −∆S and define the relational loss as the KL divergence between the softmax distributions: 
+
+Lgeneral  
+
+> rel
+
+≜ KL  Ptgt Pstu 
+
+, with Ptgt ≜ softmax  τ −1[Sstu −∆S], Pstu ≜ softmax  τ −1Sstu 
+
+,
+
+(8) where τ > 0 is a temperature and the gradient through Ptgt is stopped. A first-order expansion in 
+
+τ −1 shows that the gradient of Eq. (8) with respect to Sstu is proportional to ∆S = Sfake − Sreal (see Appendix F.5). Chaining through Sstu and back to Gθ yields a gradient of the same form as Eq. (1) ,with the coordinate-wise difference (sfake − sreal ) replaced by the relational difference (Sfake − Sreal ).We instantiate the above construction at two granularities that correspond to the two under-constrained axes identified in §3.2. Applying Eq. (8) to the batch-level similarity matrices over Bg videos gives 
+
+Lbatch rel = KL  Pbatch tgt Pbatch stu 
+
+. (9) This term injects batch-level relational supervision that is absent from the coordinate-wise DMD gradient. By aligning the pairwise relational geometry of the student to the teacher–critic residual on 6Table 1: VBench results for Wan-2.1-T2V on 480p resolution. A full per-attribute breakdown is provided in Appendix C, where CoDMD leads on the majority of individual VBench dimensions.                                                                                   
+
+> Model Resolution NFE TimeCost ↓Quality Score ↑
+> Semantic Score ↑
+> Total Score ↑
+> Wan2.1-T2V-1.3B
+> Teacher (Pretrained) 832 ×480 ×81 50 ×2270s 84.43 80.73 83.69 DMD [39] 832 ×480 ×81 411s 84.53 78.78 83.38 DCM [17] 832 ×480 ×81 618s 83.12 74.33 81.36 sCM [14] 832 ×480 ×81 618s 83.42 72.98 81.33 rCM [44] 832 ×480 ×81 411s 83.72 79.18 82.81 AVD [41] 832 ×480 ×81 411s 84.73 79.80 83.75 CoDMD (Ours) 832 ×480 ×81 411s 85.50 80.27 84.46
+> Wan2.1-T2V-14B
+> Teacher (Pretrained) 832 ×480 ×81 50 ×2710s 84.71 81.75 84.12 DMD [39] 832 ×480 ×81 427s 84.56 80.84 83.81 sCM [14] 832 ×480 ×81 644s 83.48 74.01 81.52 rCM [44] 832 ×480 ×81 427s 84.97 80.35 84.05 AVD [41] 832 ×480 ×81 427s 84.19 82.07 83.89 CoDMD (Ours) 832 ×480 ×81 427s 85.55 82.12 84.87
+
+the same batch, it constrains how the student’s score field varies across the samples drawn in each step—the axis that the coordinate-wise gradient leaves free. Applying the same construction to the per-sample frame-level matrices over F frames gives 
+
+Lframe rel = 1
+
+B
+
+> B
+
+X
+
+> b=1
+
+KL  Pframe ,(b) 
+
+> tgt
+
+Pframe ,(b)
+
+> stu
+
+. (10) No cross-GPU communication is required for this term. It directly counters the motion degradation diagnosed in §3.2 by enforcing that temporal similarity patterns follow the teacher–fake residual. 
+
+Final objective. As standard DMD, the fake model μϕ 
+
+> fake
+
+is trained with the denoising loss Lϕ
+
+> denoise
+
+to track the moving generator distribution. For the generator Gθ , the final objective is 
+
+Ltotal = LDMD + λbatch Lbatch rel + λframe Lframe rel . (11) where LDMD denotes the coordinate-wise DMD surrogate in Eq. (3) , and λbatch , λ frame ≥ 0 are weighting hyperparameters. Algorithm 1 summarizes the full training procedure. Since the similarity matrices are introduced only during training, inference remains identical to that of the original few-step generator. 
+
+## 4 Experiments 
+
+4.1 Experimental setup Models & Data. We distill the official Wan-2.1-T2V teachers (1.3B and 14B) [ 32 ], both released as 50-step models with classifier-free guidance ( 50 ×2 NFE), into 4-step students. All clips are generated at 832 ×480 , 81 frames (5 s at 16 fps). The distribution-matching loss uses text descriptions from a mixed corpus of public videos and never accesses the raw videos themselves, following [38, 39]. 
+
+Training & Evaluation. We train all models using the AdamW optimizer with β1 = 0 .9 and 
+
+β2 = 0 .999 , a classifier-free guidance (CFG) scale of 3.5, and BF16 mixed-precision training on 32 GPUs. The relational temperature is set to τ = 0 .1, and the two relational weights are fixed at 
+
+λbatch = λframe = 0 .1. Full training hyperparameters are provided in Table 4 in the Appendix. For evaluation, we follow the VBench protocol [ 7, 43 ] and report quality, semantic, and total scores. All baselines are re-evaluated in a unified codebase under BF16 precision for a fair comparison. Specifically, we use the official checkpoints for rCM and DCM. Since the official weights for sCM and AVD are not publicly available, we evaluate our reproduced implementations of these methods based on their released codebases and paper descriptions. DMD serves as our primary strong baseline. 7(1)  A person using a screwdriver to assemble a piece of furniture,         
+
+> carefully tightening each screw.
+> T=0s T=2.5s T=5s
+> (2) Humans walking into a dragon‘s open jaws descending into
+> the underworld .
+> T=0s T=2.5s T=5s
+> Ours  rCM  DMD  Teacher
+> (3) Dynamic Degree across training.
+> (4) VBench Total Score across training.
+> Motion Collapse!
+
+Figure 3: Left: Our CoDMD produces more faithful motion, stronger prompt alignment, and more realistic color than previous methods (i.e., DMD and rCM). Owing to the copula-aware relational objective, our output also matches the teacher’s visual structure more closely, e.g., (1)screw turns inward; (2) dragon exhales fire. Right: VBench metrics across training iterations. CoDMD sustains high scores throughout training, while DMD undergoes a sharp collapse in dynamic degree. 
+
+4.2 Main Results Quantitative comparison. Table 1 reports VBench results against trajectory-based samplers (sCM [ 14 ], rCM [ 44 ]) and distribution-based methods (DMD [ 39 ], DCM [ 17 ], AVD [ 41 ]). Our CoDMD achieves the best total score at both model scales, reaching 84.46 on 1.3B and 84.87 on 14B. Compared with the DMD baseline, the gains are about +1 .1 points at both scales. The full per-attribute breakdown is provided in Appendix C, where CoDMD leads on the majority of indi-vidual VBench dimensions. The improvement is more pronounced on the semantic axis than on the quality axis. This trend matches the diagnosis, that the semantic aspects such as spatial layout, object persistence, and motion plausibility depend more strongly on relational geometry, which is explicitly constrained by our copula-aware supervision. 
+
+Qualitative comparison. We compare videos generated by DMD, rCM, and CoDMD in Fig. 1 and Fig. 3 (left). DMD shows several recurring failure modes, including static camera motion, unnaturally slow dynamics, structural breakdown, and oversaturation. rCM improves some of these issues but introduces its own artifacts, especially broken hand structures and semantic misalignments. In contrast, CoDMD produces more faithful motion, better semantic alignment, and more realistic color rendering. 
+
+Copula-aware loss analysis. Fig. 3 further dissects how the two granularities of our relational loss provide complementary regularization. On the left, the batch-level copula loss enforces the student to preserve the relational geometry among video samples defined by the teacher. This explicitly aligns the student’s output with the teacher’s visual structure: (1) the screw’s inward rotation and (2) the 
+
+dragon’s fire-breathing faithfully mirror the teacher’s visual patterns, confirming that sample-level relational matching recovers the copula structure. On the right, DMD undergoes a sharp mode collapse in dynamic degree during training, a direct symptom of reverse-KL mode-seeking that drives the generator toward static, low-motion outputs. CoDMD sustains consistently high dynamic degree Table 2: Ablation study on relational–loss variants. We add the batch–level loss Lbatch rel and the frame–level loss Lframe rel to the DMD baseline individually and jointly. The last row (“Variant”) applies the relational objective directly between student and teacher features (no score–difference term).                                     
+
+> Method NFE Dynamic ↑Quality ↑Semantic ↑Total ↑
+> DMD 471.1 84.5 78.8 83.4 DMD + Lbatch rel 483.1 85.1 79.4 84.0 DMD + Lframe rel 493.3 85.0 76.8 83.9
+> DMD + Lrel (Ours) 486.1 85.5 80.3 84.5
+> DMD + Ldirect rel (Variant) 488.6 84.7 79.0 83.8
+
+8throughout training, demonstrating that the frame-level relational penalty effectively mitigates motion collapse and preserves the teacher’s temporal diversity. 
+
+Figure 4: User study results. We report the win rate of CoDMD against others in pairwise blind comparisons. 
+
+User study. To complement the au-tomated metrics, we conduct a blind pairwise user study with 25 evalua-tors. Each participant is presented with a pair of videos generated from the same prompt in randomised left– right order, and asked to select the one with better visual quality and 
+
+semantic alignment . As shown in Fig. 4, CoDMD is preferred over DMD in 81.8% of comparisons and over rCM in 74.4%, confirming that our distilled model delivers perceptu-ally meaningful improvements over existing methods. Against the 50-step teacher, the win rate reaches 51.3%, indicating that our methods closely approaches the full-step generation quality. Details are available in Appendix. D. 
+
+4.3 Ablation studies The two granularities are complementary. Table 2 isolates each component under the same setting. The DMD baseline reaches 83.4 in total score with dynamic degree 71.1. Adding only Lbatch rel 
+
+improves all metrics and raises the total to 84.0, while adding only Lframe rel yields the largest motion gain (dynamic degree 93.3) but reduces semantic score by 2.0, indicating that temporal relational matching alone can over-emphasize motion at the expense of prompt alignment. Combining both losses gives the best total of 84.5, with dynamic degree settling at 86.1 and semantic score peaking at 80.3, consistent with the complementary roles analyzed in §3.2. 
+
+The score-as-target form is essential. Replacing the teacher–fake residual with direct matching between student and teacher score similarity matrices lowers the total score to 83.8, only slightly above DMD. As discussed in Appendix F.5, direct relational matching removes the real-versus-fake distribution-matching signal and therefore provides much weaker supervision. Table 3: Sensitivity to λ on (1.3B, 4-step).                   
+
+> λbatch , λ frame Qual. ↑Sem. ↑Total ↑
+> 0 (DMD) 84.53 78.78 83.38 0.1 85.50 80.27 84.46
+> 0.2 85.04 80.42 84.12 0.5 84.79 80.40 83.91 1.0 83.87 78.00 82.70
+
+Sensitivity to relational loss weight. Table 3 varies the shared weight λ = λbatch = λframe from 0 (pure DMD) to 1.0. Any nonzero λ improves over the DMD baseline, with the best total score at λ=0 .1
+
+and the best semantic score at λ=0 .2. Performance remains robust across [0 .1, 0.5] , confirming that the relational objective provides a stable benefit without sensitive tuning. At λ=1 .0 the relational term overwhelms the coordinate-wise DMD signal, causing a notable drop in scores. We adopt λ=0 .1 as the default throughout all other experiments. 
+
+## 5 Conclusion 
+
+We identified that standard DMD’s objective leaves the copula structure across batch elements and temporal frames less constrained. Combined with reverse-KL mode-seeking, this gap drives few-step video generators toward layout instability, oversaturation, and motion collapse. We addressed it with Copula-aware DMD, which lifts DMD’s score-as-target surrogate from coordinates to pairwise similarity matrices at batch and frame granularities, reusing score predictions already computed at each step without extra networks, data, or inference overhead. On Wan-2.1-T2V series, CoDMD distills 50-step teachers into 4-step students that outperform prior methods on VBench across different attributes. Ablations confirm the two granularities are complementary and the score-as-target formulation is essential. We discuss the limitations and future works in Appendix G. 9References 
+
+[1] Christopher M Bishop and Nasser M Nasrabadi. Pattern recognition and machine learning , volume 4. Springer, 2006. [2] Andreas Blattmann, Tim Dockhorn, Sumith Kulal, Daniel Mendelevitch, Maciej Kilian, Dominik Lorenz, Yam Levi, Zion English, Vikram Voleti, Adam Letts, et al. Stable video diffusion: Scaling latent video diffusion models to large datasets. arXiv preprint arXiv:2311.15127 , 2023. [3] Patrick Esser et al. Scaling rectified flow transformers for high-resolution image synthesis. In ICML , 2024. [4] Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. Advances in neural information processing systems , 33:6840–6851, 2020. [5] Jonathan Ho, William Chan, Chitwan Saharia, Jay Whang, Ruiqi Gao, Alexey Gritsenko, Diederik P Kingma, Ben Poole, Mohammad Norouzi, David J Fleet, et al. Imagen video: High definition video generation with diffusion models. arXiv preprint arXiv:2210.02303 , 2022. [6] Xun Huang, Zhengqi Li, Guande He, Mingyuan Zhou, and Eli Shechtman. Self forcing: Bridging the train-test gap in autoregressive video diffusion, 2025. URL https://arxiv.org/abs/2506.08009 .[7] Ziqi Huang, Yinan He, Jiashuo Yu, Fan Zhang, Chenyang Si, Yuming Jiang, Yuanhan Zhang, Tianxing Wu, Qingyang Jin, Nattapol Chanpaisit, Yaohui Wang, Xinyuan Chen, Limin Wang, Dahua Lin, Yu Qiao, and Ziwei Liu. VBench: Comprehensive benchmark suite for video generative models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024. [8] Dengyang Jiang, Dongyang Liu, Zanyi Wang, Qilong Wu, Liuzhuozheng Li, Hengzhuang Li, Xin Jin, David Liu, Changsheng Lu, Zhen Li, et al. Distribution matching distillation meets reinforcement learning. 
+
+arXiv preprint arXiv:2511.13649 , 2025. [9] Tero Karras, Miika Aittala, Timo Aila, and Samuli Laine. Elucidating the design space of diffusion-based generative models. Advances in neural information processing systems , 35:26565–26577, 2022. [10] Weijie Kong, Qi Tian, Zijian Zhang, Rox Min, Zuozhuo Dai, Jin Zhou, Jiangfeng Xiong, Xin Li, Bo Wu, Jianwei Zhang, et al. Hunyuanvideo: A systematic framework for large video generative models. arXiv preprint arXiv:2412.03603 , 2024. [11] Yaron Lipman et al. Flow matching for generative modeling. In ICLR , 2023. [12] Xingchao Liu, Chengyue Gong, and Qiang Liu. Flow straight and fast: Learning to generate and transfer data with rectified flow. arXiv preprint arXiv:2209.03003 , 2022. [13] Xingchao Liu, Xiwen Zhang, Jianzhu Ma, Jian Peng, et al. Instaflow: One step is enough for high-quality diffusion-based text-to-image generation. In The Twelfth International Conference on Learning Representations , 2023. [14] Cheng Lu and Yang Song. Simplifying, stabilizing and scaling continuous-time consistency models. arXiv preprint arXiv:2410.11081 , 2024. [15] Cheng Lu, Yuhao Zhou, Fan Bao, Jianfei Chen, Chongxuan Li, and Jun Zhu. Dpm-solver: A fast ode solver for diffusion probabilistic model sampling in around 10 steps. Advances in neural information processing systems , 35:5775–5787, 2022. [16] Yanzuo Lu, Yuxi Ren, Xin Xia, Shanchuan Lin, Xing Wang, Xuefeng Xiao, Andy J. Ma, Xiaohua Xie, and Jian-Huang Lai. Adversarial distribution matching for diffusion distillation towards efficient image and video synthesis, 2025. URL https://arxiv.org/abs/2507.18569 .[17] Zhengyao Lv, Chenyang Si, Tianlin Pan, Zhaoxi Chen, Kwan-Yee K Wong, Yu Qiao, and Ziwei Liu. Dual-expert consistency model for efficient and high-quality video generation. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 14983–14993, 2025. [18] Roger B Nelsen. An introduction to copulas . Springer, 2006. [19] Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho. Relational knowledge distillation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 3967–3976, 2019. [20] Baoyun Peng, Xiao Jin, Jiaheng Liu, Dongsheng Li, Yichao Wu, Yu Liu, Shunfeng Zhou, and Zhaoning Zhang. Correlation congruence for knowledge distillation. In Proceedings of the IEEE/CVF international conference on computer vision , pages 5007–5016, 2019. 
+
+10 [21] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Björn Ommer. High-resolution image synthesis with latent diffusion models. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 10684–10695, 2022. [22] Tim Salimans and Jonathan Ho. Progressive distillation for fast sampling of diffusion models. arXiv preprint arXiv:2202.00512 , 2022. [23] Team Seedance, De Chen, Liyang Chen, Xin Chen, Ying Chen, Zhuo Chen, Zhuowei Chen, Feng Cheng, Tianheng Cheng, Yufeng Cheng, et al. Seedance 2.0: Advancing video generation for world complexity. 
+
+arXiv preprint arXiv:2604.14148 , 2026. [24] M Sklar. Fonctions de répartition à n dimensions et leurs marges. In Annales de l’ISUP , volume 8, pages 229–231, 1959. [25] Jiaming Song, Chenlin Meng, and Stefano Ermon. Denoising diffusion implicit models. In International Conference on Learning Representations , 2021. [26] Yang Song and Prafulla Dhariwal. Improved techniques for training consistency models. arXiv preprint arXiv:2310.14189 , 2023. [27] Yang Song, Jascha Sohl-Dickstein, Diederik P Kingma, Abhishek Kumar, Stefano Ermon, and Ben Poole. Score-based generative modeling through stochastic differential equations. In ICLR , 2021. [28] Yang Song, Prafulla Dhariwal, Mark Chen, and Ilya Sutskever. Consistency models. 2023. [29] Flood Sung, Yongxin Yang, Li Zhang, Tao Xiang, Philip HS Torr, and Timothy M Hospedales. Learning to compare: Relation network for few-shot learning. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 1199–1208, 2018. [30] Yonglong Tian, Dilip Krishnan, and Phillip Isola. Contrastive representation distillation. arXiv preprint arXiv:1910.10699 , 2019. [31] Frederick Tung and Greg Mori. Similarity-preserving knowledge distillation. In Proceedings of the IEEE/CVF international conference on computer vision , pages 1365–1374, 2019. [32] Team Wan, Ang Wang, Baole Ai, Bin Wen, Chaojie Mao, Chen-Wei Xie, Di Chen, Feiwu Yu, Haiming Zhao, Jianxiao Yang, et al. Wan: Open and advanced large-scale video generative models. arXiv preprint arXiv:2503.20314 , 2025. [33] Zhengyi Wang, Cheng Lu, Yikai Wang, Fan Bao, Chongxuan Li, Hang Su, and Jun Zhu. Prolific-dreamer: High-fidelity and diverse text-to-3d generation with variational score distillation. arXiv preprint arXiv:2305.16213 , 2023. [34] Tianhe Wu, Ruibin Li, Lei Zhang, and Kede Ma. Diversity-preserved distribution matching distillation for fast visual synthesis. arXiv preprint arXiv:2602.03139 , 2026. [35] Yilun Xu, Weili Nie, and Arash Vahdat. One-step diffusion models with f -divergence distribution matching. 
+
+arXiv preprint arXiv:2502.15681 , 2025. [36] Shuai Yang, Wei Huang, Ruihang Chu, Yicheng Xiao, Yuyang Zhao, Xianbang Wang, Muyang Li, Enze Xie, Yingcong Chen, Yao Lu, et al. Longlive: Real-time interactive long video generation. arXiv preprint arXiv:2509.22622 , 2025. [37] Zhuoyi Yang, Jiayan Teng, Wendi Zheng, Ming Ding, Shiyu Huang, Jiazheng Xu, Yuanming Yang, Wenyi Hong, Xiaohan Zhang, Guanyu Feng, et al. Cogvideox: Text-to-video diffusion models with an expert transformer. arXiv preprint arXiv:2408.06072 , 2024. [38] Tianwei Yin, Michaël Gharbi, Taesung Park, Richard Zhang, Eli Shechtman, Fredo Durand, and Bill Freeman. Improved distribution matching distillation for fast image synthesis. Advances in neural information processing systems , 37:47455–47487, 2024. [39] Tianwei Yin, Michaël Gharbi, Richard Zhang, Eli Shechtman, Fredo Durand, William T Freeman, and Taesung Park. One-step diffusion with distribution matching distillation. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 6613–6623, 2024. [40] Tianwei Yin, Qiang Zhang, Richard Zhang, William T Freeman, Fredo Durand, Eli Shechtman, and Xun Huang. From slow bidirectional to fast autoregressive video diffusion models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 22963–22974, 2025. 
+
+11 [41] Yuyang You, Yongzhi Li, Jiahui Li, Yadong Mu, Quan Chen, and Peng Jiang. Adaptive video distillation: Mitigating oversaturation and temporal collapse in few-step generation. arXiv preprint arXiv:2603.21864 ,2026. [42] Qinsheng Zhang and Yongxin Chen. Fast sampling of diffusion models with exponential integrator. arXiv preprint arXiv:2204.13902 , 2022. [43] Dian Zheng, Ziqi Huang, Hongbo Liu, Kai Zou, Yinan He, Fan Zhang, Yuanhan Zhang, Jingwen He, Wei-Shi Zheng, Yu Qiao, and Ziwei Liu. VBench-2.0: Advancing video generation benchmark suite for intrinsic faithfulness. arXiv preprint arXiv:2503.21755 , 2025. [44] Kaiwen Zheng, Yuji Wang, Qianli Ma, Huayu Chen, Jintao Zhang, Yogesh Balaji, Jianfei Chen, Ming-Yu Liu, Jun Zhu, and Qinsheng Zhang. Large scale diffusion distillation via score-regularized continuous-time consistency. arXiv preprint arXiv:2510.08431 , 2025. 
+
+12 Appendix for Copula-aware Distribution Matching Distillation 
+
+§A More Visual Comparisons 
+
+§B Training Hyperparameters (Table 4) §C Full VBench Attribute Breakdown (Table 5) §D User Study Details 
+
+§E Compute Resources 
+
+§F Theoretical Analysis 
+
+F.1 Marginal matching does not identify relational structure F.2 Reverse-KL selects dominant modes under restricted families F.3 Relational matching penalizes collapsed solutions F.4 Gradient derivation of the relational loss §G Limitation and Future work 
+
+§H Notation Table (Table 6) 
+
+## A More visual comparisons. An astronaut runs on the surface of the moon, the low angle shot shows the vast background of the moon, the movement is smooth and appears lightweight. 
+
+A man riding a horse through the Gobi Desert with a beautiful sunset behind him, movie quality. 
+
+A couple runs through a sudden downpour, laughing and splashing in puddles as they try to find shelter. 
+
+Basketball through hoop then explodes. 
+
+> rCM DMD Ours rCM DMD Ours
+
+A person surfing on a wave of stars in outer space. 
+
+A zoom-out from a single leaf on a tree to reveal the entire forest, showcasing the vastness and diversity of the woodland. 
+
+> rCM DMD Ours
+
+13 Macro shot of a volcano erupting in a coffee cup. 
+
+> rCM DMD Ours
+
+A pile of beans scattered on the cutting board transforms into mini soldiers. 
+
+Hyperrealistic monster that closes its mouth. 
+
+A man and woman walking hand in hand under a starry sky with a bucket in the background. 
+
+> rCM DMD Ours
+
+A person is biting into a juicy apple, the juice dripping down their chin. 
+
+An astronaut fighting a monster. 
+
+> rCM DMD Ours
+
+A chandelier made of crystal prisms, casting a dazzling array of light beams and rainbows across the room. 
+
+> rCM DMD Ours
+
+A girl is blowing a kiss to the camera. B Training Hyperparameters 
+
+Table 4: Training configurations for Wan2.1 T2V. 
+
+Hyper-parameter 1.3B 14B 
+
+Batch Size 128 64 Learning Rate (student) 2e-6 2e-6 Learning Rate (fake score) 4e-7 4e-7 CFG Scale 3.5 3.5 Student Update Frequency 5 5Maximal Simulation Steps 4 414 Table 5: Full VBench attribute-level results on Wan-2.1-T2V at 1.3B and 14B scales. All scores are reported as percentages. Orange columns denote our CoDMD. 
+
+Wan2.1-T2V-1.3B Wan2.1-T2V-14B 
+
+Attribute Teacher rCM DMD Ours Teacher rCM DMD Ours 
+
+Subject Consistency 93.46 94.11 95.18 96.08 93.58 94.87 96.14 95.92 Background Consistency 96.29 93.88 94.65 94.23 96.76 94.44 95.44 95.03 Temporal Flickering 99.05 97.53 99.30 98.26 98.90 97.66 99.21 98.37 Motion Smoothness 97.97 97.75 98.50 98.67 98.02 97.83 98.54 98.51 
+
+Dynamic Degree 67.22 83.06 71.11 86.11 68.61 85.28 64.44 81.39 
+
+Aesthetic Quality 68.94 64.60 64.89 65.53 69.28 66.78 66.36 66.94 Imaging Quality 67.58 66.80 68.05 67.99 67.82 69.37 68.04 68.62 Object Class 91.01 93.86 94.05 95.11 92.63 96.39 96.58 96.28 
+
+Multiple Objects 78.17 78.35 78.72 81.88 83.58 82.50 84.36 86.08 
+
+Human Action 96.80 97.20 96.80 97.60 98.40 99.20 99.40 99.40 
+
+Color 85.00 82.82 83.76 86.52 85.35 82.63 80.37 85.19 
+
+Spatial Relationship 81.12 76.86 76.24 78.41 81.96 78.19 79.30 84.00 
+
+Scene 56.56 54.56 50.86 54.20 53.82 53.66 53.75 54.62 
+
+Appearance Style 22.88 21.49 21.60 21.25 23.59 21.72 22.49 21.71 Temporal Style 25.90 25.08 25.05 25.35 25.73 25.19 25.23 25.92 Overall Consistency 27.09 26.60 26.63 26.57 27.34 26.85 26.99 27.14 Quality Score 84.43 83.72 84.53 85.50 84.71 84.97 84.56 85.55 
+
+Semantic Score 80.73 79.18 78.78 80.27 81.75 80.35 80.84 82.12 
+
+Total Score 83.69 82.81 83.38 84.46 84.12 84.05 83.81 84.87 
+
+## C Full VBench Attribute Breakdown 
+
+Table 5 reports the per-attribute VBench scores for all compared methods at both the 1.3B and 14B scales. CoDMD achieves the highest total score at both scales and leads on the majority of individual attributes, with the most pronounced gains on dynamic degree , color , multiple objects , and spatial relationship . The teacher retains advantages on a few stability-oriented metrics such as background consistency and temporal flickering , which reflects the inherent trade-off between motion richness and frame-level steadiness under reduced NFE. 
+
+## D User Study Details 
+
+To complement the automated metrics, we conduct a blind pairwise user study to compare CoDMD with DMD, rCM, and the 50-step teacher. The study involves 25 evaluators. In each trial, a participant is shown two videos generated from the same text prompt, with the left–right display order randomized. The source methods are hidden from the participant. The participant is asked to judge which video is better with respect to visual quality and semantic alignment to the prompt. We use the following instruction for all participants: You will be shown two videos generated from the same text prompt. Please compare the two videos and select the one that is better overall, considering both visual quality and semantic alignment to the prompt. The presentation order is randomized, and the source methods are not disclosed. Please make your judgment only based on the displayed videos and the prompt. The evaluation is conducted in a blind manner. Each participant reviews video pairs from multiple method comparisons, including CoDMD versus DMD, CoDMD versus rCM, and CoDMD versus the teacher model. We record the pairwise preference rate of CoDMD over each baseline. The aggregated results are reported in Fig. 4. 15 This study is minimal risk. Participants are only asked to compare generated videos and no sensitive personal information is collected. Participation is voluntary, and participants may stop at any time. 
+
+Compensation. All participants received compensation according to local institutional practice. 
+
+Ethics review. No formal IRB or equivalent approval was obtained for this minimal-risk study. 
+
+Interface. The user study is conducted with a local side-by-side comparison interface that displays the prompt together with two generated videos. The interface supports both desktop and mobile layouts, with A/B video panels adapted to different screen sizes for convenient access across devices. An anonymized screenshot of the interface is shown in Fig. 5. 
+
+Figure 5: Anonymized interface used in the blind pairwise user study. The interface displays the prompt together with two generated videos in randomized left–right order and supports both desktop and mobile layouts. 
+
+## E Compute Resources 
+
+Each main training in the manuscript is conducted on 32 NVIDIA A100 GPUs with 80GB memory and takes approximately 1.5 days. We report the compute configuration for the experiments in the paper, while additional exploratory runs may require extra compute beyond the final reported settings. 
+
+## F Theoretical Analysis 
+
+This appendix supplies the formal statements and proofs of the three propositions introduced in §3.2 of the main paper. These results identify the structural mechanism behind DMD’s fragility in the few-step video regime and motivate the design choices in CoDMD. Let X = ( X1, . . . , X F ) denote a video with F frames, P the teacher-induced distribution and Q the student-induced distribution, with Pt, Q t the frame-wise marginals. For a symmetric distance d(·, ·)
+
+on score-based features, the pairwise relational statistic 
+
+D(Q) = EZ,Z ′∼Q
+
+d(Z, Z ′)
+
+captures the relational geometry of a distribution. This statistic is evaluated at two granularities in CoDMD: across batch elements and across temporal frames (§3.3). 
+
+F.1 Marginal Matching Does Not Identify Relational Structure 
+
+We first formalize the limitation of coordinate-wise or marginal supervision. 16 Proposition 1 (Relational non-identifiability under marginal matching) . There exist two video distributions P and Q such that 
+
+Pt = Qt, ∀t ∈ { 1, . . . , T },
+
+but their temporal relational structures differ. Consequently, any training objective that depends only on the frame-wise marginals {Qt}Tt=1 cannot distinguish Q from P .Proof. It suffices to construct a two-frame example. Let U ∼ N (0 , 1) and define 
+
+P : (X1, X 2) = ( U, U ),
+
+while 
+
+Q : (X1, X 2) = ( U, −U ).
+
+For both distributions, each individual frame marginal is standard Gaussian: 
+
+P1 = P2 = Q1 = Q2 = N (0 , 1) .
+
+Hence any objective depending only on the frame-wise marginals assigns the same value to P and Q.However, their temporal relations are different. For example, 
+
+EP [X1X2] = 1 , EQ[X1X2] = −1.
+
+Equivalently, the expected squared frame difference satisfies 
+
+EP
+
+(X1 − X2)2 = 0 , EQ
+
+(X1 − X2)2 = 4 .
+
+Thus the two distributions have identical frame-wise marginals but opposite temporal dependence. This proves that marginal matching alone does not identify relational structure. Motion, layout consistency and semantic coherence depend on couplings among frames and among generated samples; these couplings can change even when all individual marginals remain matched. 
+
+F.2 Reverse-KL Selects Dominant Modes Under Restricted Families 
+
+We next formalize the mode-seeking behavior of reverse-KL in a restricted family. Unlike an informal statement about “mode collapse”, the following result gives an exact calculation. 
+
+Proposition 2 (Reverse-KL selection in a disjoint mixture) . Let the teacher distribution be a mixture 
+
+P =
+
+> K
+
+X
+
+> k=1
+
+πkPk, πk > 0,
+
+> K
+
+X
+
+> k=1
+
+πk = 1 ,
+
+where the component distributions Pk have disjoint supports Ak. Suppose the student family is restricted to single-component approximants 
+
+Qsingle = {P1, . . . , P K }.
+
+Then 
+
+DKL (Pj ∥ P ) = − log πj .
+
+Therefore, 
+
+arg min 
+
+> Q∈Q single
+
+DKL (Q ∥ P ) = Pj⋆ , j⋆ ∈ arg max  
+
+> j
+
+πj .
+
+That is, reverse-KL selects a dominant mixture component rather than covering all teacher-supported components. Proof. Since the supports are disjoint, for x ∈ Aj we have 
+
+p(x) = πj pj (x).
+
+Therefore, 
+
+DKL (Pj ∥ P ) = 
+
+Z
+
+> Aj
+
+pj (x) log pj (x)
+
+p(x) dx 
+
+=
+
+Z
+
+> Aj
+
+pj (x) log pj (x)
+
+πj pj (x) dx 
+
+=
+
+Z
+
+> Aj
+
+pj (x) log 1
+
+πj
+
+dx 
+
+= − log πj .
+
+Thus minimizing DKL (Pj ∥P ) is equivalent to maximizing πj , proving the claim. 17 This result captures the precise sense in which reverse-KL is mode-seeking under a restricted student family. A more general version holds: if Qj is supported on Aj , then DKL (Qj ∥P ) = 
+
+DKL (Qj ∥Pj ) − log πj . Reverse-KL therefore trades off per-component fit against mixture weight, but never penalizes the absence of uncovered modes. A slightly more general version is also useful. If a candidate Qj is supported on Aj , then 
+
+DKL (Qj ∥ P ) = DKL (Qj ∥ Pj ) − log πj .
+
+Thus reverse-KL trades off how well Qj fits component Pj against the mixture weight πj , but still does not directly penalize the absence of other components. 
+
+F.3 Relational Matching Penalizes Collapsed Solutions 
+
+We now show that pairwise relational matching provides a mechanism that standard reverse-KL lacks: it can penalize a student that collapses to one component of a multi-relation teacher distribution. Let d(z, z ′) be a nonnegative symmetric distance in feature space, and define 
+
+D(Q) = EZ,Z ′∼Q
+
+d(Z, Z ′).
+
+For the teacher mixture P = PKk=1 πkPk, we have 
+
+D(P ) = 
+
+> K
+
+X
+
+> a=1
+> K
+
+X
+
+> b=1
+
+πaπbEZ∼Pa, Z ′∼Pb
+
+d(Z, Z ′).
+
+The terms with a̸ = b encode cross-mode relational diversity. 
+
+Proposition 3 (Relational penalty for single-mode collapse) . Assume the teacher distribution is a mixture P = PKk=1 πkPk with disjoint relational modes. Suppose that for some constants 0 ≤ ϵ < ∆,
+
+EZ,Z ′∼Pk
+
+d(Z, Z ′) ≤ ϵ, ∀k, 
+
+while for all a̸ = b,
+
+EZ∼Pa, Z ′∼Pb
+
+d(Z, Z ′) ≥ ∆.
+
+Then any single-mode student Q = Pj satisfies 
+
+D(Q) − D (P ) ≥ ∆
+
+
+
+1 −
+
+> K
+
+X
+
+> k=1
+
+π2
+
+> k
+
+
+
+− ϵ. 
+
+In particular, when the teacher has multiple well-separated relational modes, a single-mode student incurs a nonzero relational discrepancy. Proof. For the teacher distribution, 
+
+D(P ) = 
+
+> K
+
+X
+
+> k=1
+
+π2
+
+> k
+
+EZ,Z ′∼Pk [d(Z, Z ′)] + X
+
+> a̸=b
+
+πaπbEZ∼Pa,Z ′∼Pb [d(Z, Z ′)] 
+
+≥ X
+
+> a̸=b
+
+πaπb∆= ∆ 
+
+
+
+1 −
+
+> K
+
+X
+
+> k=1
+
+π2
+
+> k
+
+
+
+.
+
+For a single-mode student Q = Pj , by assumption, 
+
+D(Q) = EZ,Z ′∼Pj [d(Z, Z ′)] ≤ ϵ. 
+
+Therefore, 
+
+D(P ) − D (Q) ≥ ∆
+
+
+
+1 −
+
+> K
+
+X
+
+> k=1
+
+π2
+
+> k
+
+
+
+− ϵ, 
+
+which proves the claim. This result formalizes why pairwise relational matching complements DMD. Reverse-KL may select a dominant component under the restricted few-step student family; a relational objective measures the loss of cross-mode geometry through pairwise distances or similarities. 18 F.4 Implication for CoDMD 
+
+The three propositions jointly justify the design decisions in §3.3. Proposition 1 shows that coordinate-wise supervision cannot identify temporal or batch-level relational geometry. Proposition 2 shows that reverse-KL selects a dominant mode under the restricted few-step student family. Proposition 3 shows that pairwise relational matching assigns a nonzero cost to single-mode concentration whenever the teacher contains multiple relational modes. CoDMD therefore instantiates this relational penalty via the score-as-target surrogate of Eq. (8) , applied at two complementary granularities (batch and frame) that together regularize the degrees of freedom DMD leaves unconstrained. The gradient structure of this construction is formalized in Appendix F.5. 
+
+F.5 Gradient Derivation of the Relationship-Distillation Loss 
+
+This appendix proves the claim made in §3.3: the gradient of the relationship-distillation loss Lrel with respect to the student similarity matrix Sstu is, to first order in τ −1, proportional to the relational score difference ∆S = Sfake − Sreal . This makes the analogy with the DMD gradient (1) mathematically precise: CoDMD and DMD are two instances of the same score-as-target construction, applied at different granularities (coordinates vs. pairwise interactions). Let Sstu , Sreal , Sfake ∈ RN ×N be the cosine similarity matrices of §3.3, and ∆S = Sfake − Sreal . For brevity, write 
+
+A = τ −1Sstu , B = τ −1 Sstu − ∆S
+
+ = A − τ −1∆S.
+
+Both matrices are passed through a row-wise softmax, and the gradient through the target Ptgt is detached: 
+
+Pi, : 
+
+> stu
+
+= σ(Ai, :), Pi, : 
+
+> tgt
+
+= stopgrad  σ(Bi, :),
+
+where σ(v)j = evj / P 
+
+> k
+
+evk denotes the softmax along a row. The relationship-distillation loss (Eq. (8)) is the row-averaged KL, 
+
+Lrel = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+KL  Pi, : 
+
+> tgt
+
+Pi, :
+
+> stu
+
+ = 1
+
+N
+
+> N
+
+X
+
+> i=1
+> N
+
+X
+
+> j=1
+
+P i
+
+> tgt ,j
+
+log P i 
+
+> tgt ,j
+
+− log P i
+
+> stu ,j
+
+. (12) We will compute ∂Lrel /∂ Sstu in two steps: (1) the exact closed-form gradient, then (2) its first-order expansion in the small parameter τ −1∆S.
+
+Step 1: Exact gradient via the softmax Jacobian 
+
+Because Ptgt is detached, only log P i 
+
+> stu ,j
+
+in Eq. (12) carries gradient. Fix a row i and recall the standard log-softmax identity 
+
+log P i 
+
+> stu ,j
+
+= Aij − log X
+
+> k
+
+eAik .
+
+Differentiating with respect to Aim yields 
+
+∂ log P i
+
+> stu ,j
+
+∂A im 
+
+= 1[j = m] − P i
+
+> stu ,m
+
+. (13) Substituting Eq. (13) into the row-i contribution of Eq. (12) (and using P 
+
+> j
+
+P i 
+
+> tgt ,j
+
+= 1 ), 
+
+∂∂A im 
+
+h
+
+−X
+
+> j
+
+P i 
+
+> tgt ,j
+
+log P i
+
+> stu ,j
+
+i
+
+= − X
+
+> j
+
+P i
+
+> tgt ,j
+
+ 1[j = m] − P i
+
+> stu ,m
+
+
+
+= P i 
+
+> stu ,m
+
+− P i
+
+> tgt ,m
+
+. (14) Chaining through Aim = τ −1(Sstu )im ,
+
+∂Lrel 
+
+∂(Sstu )im 
+
+= 1
+
+N τ 
+
+ P i 
+
+> stu ,m
+
+− P i
+
+> tgt ,m
+
+. (15) This is exact for any τ > 0. The student is updated only where its softmax-normalised relational profile differs from the (detached) target profile, mirroring DMD’s principle of “update only where critic and teacher disagree.” 19 Step 2: First-order expansion in τ −1
+
+To make the link with the score difference ∆S explicit, we expand Ptgt − Pstu in powers of δi =
+
+τ −1(∆S)i, :. The expansion is informative when the per-row entries of δi are moderate; we verify this empirically in the “When does the linearisation hold” paragraph below. 
+
+Softmax differential. The Jacobian of the softmax at a point v ∈ RN is the well-known matrix 
+
+J(v) = diag( σ(v)) − σ(v) σ(v)⊤. (16) Setting v = Ai, : and noting that Bi, : = Ai, : − δi, a first-order Taylor expansion gives 
+
+σ(Bi, :) = σ(Ai, :) − J(Ai, :) δi + O ∥δi∥2. (17) Hence 
+
+Pi, : 
+
+> tgt
+
+− Pi, : 
+
+> stu
+
+= −J(Ai, :) δi + O ∥δi∥2. (18) 
+
+Substituting into the exact gradient. Plugging Eq. (18) into Eq. (15), 
+
+∂Lrel 
+
+∂(Sstu )im 
+
+= 1
+
+N τ 
+
+ P i 
+
+> stu ,m
+
+− P i
+
+> tgt ,m
+
+
+
+= 1
+
+N τ 
+
+J(Ai, :) δi 
+
+> m
+
++ O(τ −3)= 1
+
+N τ 2
+
+J(Ai, :) ( ∆S)i, : 
+
+> m
+
++ O(τ −3), (19) where we used δi = τ −1(∆S)i, :. In matrix form, 
+
+∇Sstu Lrel = 1
+
+N τ 2 M(Sstu ; τ ) ∆S + O(τ −3), (20) where the row-wise positive semidefinite preconditioner M(Sstu ; τ ) collects the row-Jacobians 
+
+J(τ −1Si, :
+
+> stu
+
+).
+
+Interpretation. Eq. (20) establishes the central claim: to first order in τ −1, the gradient of Lrel on 
+
+Sstu is a PSD linear map applied to the relational score difference ∆S. Two consequences follow. 
+
+(i) Direction. The matrix M is row-wise PSD (it is the softmax-Jacobian at Ai, :), so for each row i
+
+the gradient points along the same half-space as ∆i, : 
+
+> S
+
+up to a bounded reweighting. A gradient-descent step on θ therefore moves the student similarities along −∆S = Sreal − Sfake .
+
+(ii) Vanishing supervision. Whenever critic and teacher agree relationally, ∆S → 0 and the gradient vanishes; the student is updated only where they disagree. This is the relational analogue of the DMD property that the gradient (1) vanishes whenever sfake = sreal .
+
+Step 3: Mirroring the DMD gradient via the chain rule 
+
+To complete the parallel with Eq. (1) , chain Eq. (20) through the construction of Sstu and the generator. Recall that Sstu = S(¯ x) with ¯x(b) = pool  Gθ (z(b)), so 
+
+∂Lrel 
+
+∂θ = X
+
+> b
+
+∂Lrel 
+
+∂Sstu 
+
+| {z } 
+
+> Eq. (20)
+
+: ∂Sstu 
+
+∂ ¯x(b)
+
+| {z } 
+
+> cos-sim Jac.
+
+· ∂ ¯x(b)
+
+∂G θ (z(b))
+
+| {z }
+
+> linear pool
+
+· dG θ (z(b))
+
+dθ , (21) where “ :” denotes the matrix Frobenius pairing. Substituting Eq. (20), 
+
+∂Lrel 
+
+∂θ ∝ X
+
+> b
+
+∆S (propagated through bilinear pool/cosine) · dG θ (z(b))
+
+dθ + O(τ −3). (22) Compare with the DMD gradient (1), 
+
+∇θ DKL ≃ Ez,t 
+
+h
+
+wtαt(sfake − sreal )
+
+| {z } 
+
+> ∆(x)
+> dG θ(z)
+> dθ
+
+i
+
+.
+
+20 Both gradients have the same structure 
+
+ score-difference signal  ×  generator Jacobian ,
+
+with ∆(x) and ∆S playing identical roles at coordinate level and at relational level respectively. This formalises the statement in §3.3 that DMD and CoDMD are not analogies but instances of one score-as-target construction at two different granularities. 
+
+When does the linearisation hold? Eq. (20) is a Taylor expansion in τ −1∆S. The remainder is O(τ −3) uniformly on bounded similarity matrices because the softmax has bounded second derivatives. In our experiments we use τ = 0 .1 and observe per-row ∥∆S∥∞ typically below 0.4,so τ −1∆S is bounded and the expansion is informative as a guide to the optimiser even though the optimisation itself uses the exact gradient (15). 
+
+Why the loss is not just an MSE on Sstu . A simpler choice would be to write 12 ∥Sstu −
+
+stopgrad( Sstu − ∆S)∥2 
+
+> F
+
+, mirroring Eq. (3) . Its gradient with respect to Sstu equals ∆S directly, while the softmax-KL gradient of Eq. (20) is proportional to ∆S up to the PSD preconditioner M.Both are therefore driven by the same underlying signal, but the softmax-KL form has two practical advantages on similarity matrices: (a) row-wise softmax normalisation cancels global scale and bias in S, so the loss is invariant to overall feature norms; and (b) the temperature τ controls how peaked the relational target is, which empirically stabilises training when ∆S is noisy at early steps. Eq. (15) shows that this stability comes at no cost in fidelity to the score-as-target principle. 
+
+Granularity-specific instantiations. The same derivation applies row-wise to both Lbatch rel (N = Bg)and Lframe rel (N = F ), so the conclusion of Eq. (20) carries through unchanged for the two granularities used in our final loss Eq. (11) . The only difference is which axis is contracted by the pooling operator 
+
+∂ ¯x/∂G θ (z) in Eq. (21). 
+
+## G Limitations and Future Work 
+
+Representation granularity. The relational matrices in CoDMD are constructed from globally pooled representations that average over spatial and channel dimensions. This pooling discards fine-grained spatial detail, such as local texture patterns and per-region layout structure. Replacing the global average with learned or attention-based pooling could retain richer spatial information and strengthen the relational signal, potentially improving performance on spatially demanding metrics such as object consistency and scene composition. 
+
+Loss weighting. The two relational weights λbatch and λframe are currently set as fixed hyperparam-eters throughout training. An adaptive schedule that adjusts the batch-to-frame balance according to training dynamics, for instance by monitoring the ratio of relational and coordinate-wise gradient norms, may further stabilize training and reduce the need for manual tuning. 
+
+Scope of validation. We have validated CoDMD on 4-step text-to-video distillation with the Wan-2.1 diffusion backbone at two parameter scales. Extending the copula-aware relational recipe to single-step generators, flow-matching formulations, image-to-video conditioning, and long-form video synthesis are natural next directions. These settings introduce additional challenges, such as single-step capacity constraints and long-horizon temporal error accumulation, that may require granularity-specific adaptations of the relational objective. 
+
+Broader impact. As with all advances that lower the sampling cost of video generators, faster inference enables beneficial applications in creative tools, and content production, but also lowers the barrier for generating synthetic media at scale. Deployments should pair efficiency gains with provenance tracking, watermarking, and content-safety mechanisms to mitigate potential misuse. 21 H Notation Table 
+
+Table 6: Notation used throughout the paper. 
+
+Symbol Dimension Description Video data & dimensions 
+
+F, C, H, W N Number of frames,channels, height, width 
+
+x0 RF ×C×H×W Clean video from the real distribution preal 
+
+z Rdz Standard Gaussian noise input to the generator 
+
+x(b) RF ×C×H×W b-th generated video, x(b) = Gθ (z(b))
+
+xt RF ×C×H×W Diffused video at noise level t ∈ [0 , 1] 
+
+B, Bg N Per-GPU and global batch size 
+
+Diffusion & Score 
+
+t R Continuous noise level 
+
+αt, σ t R Noise schedule coefficients; α2 
+
+> t
+
++ σ2 
+
+> t
+
+= 1 , αT ≈ 0
+
+μreal — Frozen teacher denoiser (pre-trained, not updated) 
+
+μϕ 
+
+> fake
+
+— Online fake denoiser, trained to track pfake 
+
+sreal RF ×C×H×W Score of real distribution: −(xt − αtμreal )/σ 2
+
+> t
+
+sfake RF ×C×H×W Score of fake distribution: −(xt − αtμϕ
+
+> fake
+
+)/σ 2
+
+> t
+
+wt R Noise-level weighting for the KL gradient 
+
+DMD Loss 
+
+∆(x) RF ×C×H×W Coordinate-wise score-difference perturbation 
+
+LDMD R Score-as-target surrogate: 12 ∥x − stopgrad( x − ∆)∥22
+
+Lϕ 
+
+> denoise
+
+R Denoising loss for fake model: ∥μϕ
+
+> fake
+
+(xt, t ) − x∥22
+
+Copula & CoDMD 
+
+f (i), F (i) — Marginal PDF and CDF of the i-th coordinate 
+
+c(·) — Copula density on [0 , 1] D
+
+smarg RD Marginal (coordinate-wise) component of the score 
+
+scop RD Copula (dependency) component of the score 
+
+Relational Loss 
+
+Sbatch stu/real/fake RBg×Bg Batch-level cosine similarity matrices from x, μreal (xt, t ), μϕ
+
+> fake
+
+(xt, t )
+
+Sframe stu/real/fake RF ×F Frame-level cosine similarity matrices from x(b), μreal (x(b) 
+
+> t
+
+, t ), μϕ
+
+> fake
+
+(x(b) 
+
+> t
+
+, t )
+
+∆S RN ×N Relational score-difference: Sfake − Sreal 
+
+τ R>0 Temperature for row-wise softmax 
+
+Ptgt RN ×N Row-wise softmax distribution of target (stop-grad) 
+
+Pstu RN ×N Row-wise softmax distribution of student 
+
+Lbatch rel R Batch-level relational loss ( N = Bg); Eq. (9) 
+
+Lframe rel R Frame-level relational loss ( N = F , averaged over B); Eq. (10) 
+
+Ltotal R Generator objective: LDMD + λbatch Lbatch rel + λframe Lframe rel ; Eq. (11) 
+
+λbatch , λ frame R≥0 Weights of the batch- and frame-level relational losses 22

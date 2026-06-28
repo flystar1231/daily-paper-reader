@@ -1,0 +1,177 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-28T21:19:42.590449+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.21982v1",
+      "source": "arxiv",
+      "title": "CoDMD: Copula-aware Distribution Matching Distillation for Fast Video Generation",
+      "abstract": "Few-step distillation for video diffusion models has attracted significant attention, driven by the urgent demand for efficient deployment in real-world scenarios. However, Distribution Matching Distillation (DMD), a leading paradigm, tends to degrade under limited NFE budgets, manifesting in video generation as layout instability, oversaturation, and broken motion dynamics. We trace this failure to a structural limitation: standard DMD is an intra-sample distribution-matching objective with coordinate-wise gradients, and thus imposes no explicit constraint on the relational geometry across batch elements or temporal frames, leaving the underlying copula largely unregulated. Combined with the mode-seeking tendency of its reverse-KL objective, this absence of relational guidance makes DMD prone to collapsing into local optima in the few-step regime. Motivated by this insight, we propose Copula-aware DMD (CoDMD), a lightweight relational regularizer that reuses score estimates already produced by the frozen teacher and the online fake model to construct pairwise relation matrices across samples and frames. These are matched through a supplementary distributional objective that requires no additional networks, datasets, or sampling trajectories. On the Wan-2.1-T2V model series at 1.3B & 14B scales, CoDMD distills 50-step teachers into 4-step students, achieving an approximate 25$\\times$ speed-up while attaining VBench scores of 84.46 & 84.87, outperforming prior trajectory-based (rCM 82.81 & 84.05) and distribution-based (DMD 83.38 & 83.81) methods.",
+      "authors": [
+        "Wenhu Zhang",
+        "Kun Cheng",
+        "Changyuan Wang",
+        "Shiyao Li",
+        "Yuechen Zhang",
+        "Wenbo Li",
+        "Jiajun Zha",
+        "Jingyi Zhang",
+        "Kang Zhao",
+        "Jiaya Jia"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-20T10:33:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.21982v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "addresses quality degradation in video generation distillation; proposes copula-aware DMD to improve layout stability and motion dynamics",
+      "llm_evidence_cn": "解决视频生成蒸馏中质量退化问题；提出Copula感知分布匹配蒸馏改善布局稳定性和运动动态",
+      "llm_evidence": "解决视频生成蒸馏中质量退化问题；提出Copula感知分布匹配蒸馏改善布局稳定性和运动动态",
+      "canonical_evidence": "解决视频生成蒸馏中质量退化问题；提出Copula感知分布匹配蒸馏改善布局稳定性和运动动态",
+      "llm_tldr_en": "Identifies that standard Distribution Matching Distillation fails in few-step video generation due to lack of copula constraints; proposes CoDMD which enforces relational geometry across frames to improve layout and motion quality.",
+      "llm_tldr_cn": "该论文发现标准分布匹配蒸馏在少步视频生成中会导致布局不稳定和运动动态破碎，根源在于缺乏对批次间或帧间关系的约束。提出CoDMD，引入Copula感知约束以调节帧间几何关系，从而提升生成视频的布局稳定性和运动连贯性。实验验证了该方法在有限NFE下显著改善视觉质量，为视频生成质量评估提供了新的视角。",
+      "llm_tldr": "该论文发现标准分布匹配蒸馏在少步视频生成中会导致布局不稳定和运动动态破碎，根源在于缺乏对批次间或帧间关系的约束。提出CoDMD，引入Copula感知约束以调节帧间几何关系，从而提升生成视频的布局稳定性和运动连贯性。实验验证了该方法在有限NFE下显著改善视觉质量，为视频生成质量评估提供了新的视角。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.22371v2",
+      "source": "arxiv",
+      "title": "ZeroGVC: Zero-Shot Generative Video Compression with Autoregressive Diffusion Priors",
+      "abstract": "Recent generative video compression methods leverage powerful generative priors to achieve perceptually pleasing reconstructions. However, most existing approaches require additional training to adapt generative models to produce realistic reconstructions from compact representations. In this paper, we propose ZeroGVC, a zero-shot generative video compression framework that leverages pretrained autoregressive diffusion priors for low-delay video reconstruction. ZeroGVC encodes the first frame of each group of pictures (GOP) with an image codec and represents subsequent P-frames through Codebook-Guided Autoregressive Latent Compression. This design is motivated by our observation that the compression scheme of denoising diffusion codebook models is effective in few-step consistency sampling. By selecting compact combinations of reproducible codebook noise vectors, ZeroGVC steers the latent denoising trajectory toward the target P-frame while allowing the decoder to reproduce the same trajectory in only a few denoising steps. In addition, we design an optional bidirectional reference mode that mitigates error propagation by leveraging the next I-frame context without introducing any additional bitrate overhead. Extensive experiments on standard video compression benchmarks demonstrate that ZeroGVC achieves superior perceptual reconstruction quality at ultra-low bitrates without any additional training.",
+      "authors": [
+        "Yixin Gao",
+        "Xiaohan Pan",
+        "Lin Liu",
+        "Xin Li",
+        "Zhibo Chen",
+        "Qi Tian"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-06-21T07:46:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.22371v2",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "evaluates video compression quality using generative priors, involves quality metrics",
+      "llm_evidence_cn": "使用生成先验评估视频压缩质量，涉及质量指标。",
+      "llm_evidence": "使用生成先验评估视频压缩质量，涉及质量指标。",
+      "canonical_evidence": "使用生成先验评估视频压缩质量，涉及质量指标。",
+      "llm_tldr_en": "ZeroGVC achieves zero-shot generative video compression using pretrained autoregressive diffusion priors, evaluated for perceptual quality.",
+      "llm_tldr_cn": "ZeroGVC提出零样本生成式视频压缩框架，利用预训练自回归扩散先验实现低延迟重建，通过码本引导自回归潜在压缩表示后续帧，在感知质量上表现优异。",
+      "llm_tldr": "ZeroGVC提出零样本生成式视频压缩框架，利用预训练自回归扩散先验实现低延迟重建，通过码本引导自回归潜在压缩表示后续帧，在感知质量上表现优异。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.23545v1",
+      "source": "arxiv",
+      "title": "UI-LIC: A Unified Framework for Evaluating Learned Image Compression Models",
+      "abstract": "The evaluation and comparison of Learned Image Compression (LIC) systems is complicated by heterogeneous software stacks, varying training conditions, and divergent evaluation methodologies. To address these challenges, we introduce UI-LIC, an open-source software framework for evaluating LIC models. We integrate six high-performance LIC models, and provide a centralized controller for performing training, inference, and analysis with shared configuration parameters. Our GUI program offers a streamlined interface to evaluate these models alongside traditional video intra-frame encoders, equalizing the compressed bitrates and calculating quality metrics such as PSNR, SSIM, VMAF, and LPIPS. Finally, we provide an interactive image analyzer with configurable quality heatmap overlays. Our framework lowers barriers to further LIC research, unlocking comparative metrics and subjective analysis with a single setup command. The open-source software is released under the MIT license and is available at github.com/BaylorMultimediaLab/UI-LIC.",
+      "authors": [
+        "Nicholas J. Nolen",
+        "Luc Trudeau",
+        "Andrew C. Freeman"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM"
+      ],
+      "published": "2026-06-22T16:18:00+00:00",
+      "link": "https://arxiv.org/pdf/2606.23545v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "evaluates image compression models with metrics like PSNR, SSIM, VMAF; extends to video intra-frame encoding",
+      "llm_evidence_cn": "使用PSNR、SSIM、VMAF等指标评估图像压缩模型，并涉及视频帧内编码。",
+      "llm_evidence": "使用PSNR、SSIM、VMAF等指标评估图像压缩模型，并涉及视频帧内编码。",
+      "canonical_evidence": "使用PSNR、SSIM、VMAF等指标评估图像压缩模型，并涉及视频帧内编码。",
+      "llm_tldr_en": "UI-LIC provides a unified evaluation framework for learned image compression, integrating common metrics and a GUI for comparing with video intra-frame encoders.",
+      "llm_tldr_cn": "UI-LIC提出了一个统一的开源评估框架，集成了六种高性能学习图像压缩模型，支持PSNR、SSIM、VMAF、LPIPS等质量指标计算，并提供交互式分析工具，便于与传统视频帧内编码器对比。",
+      "llm_tldr": "UI-LIC提出了一个统一的开源评估框架，集成了六种高性能学习图像压缩模型，支持PSNR、SSIM、VMAF、LPIPS等质量指标计算，并提供交互式分析工具，便于与传统视频帧内编码器对比。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.26668v1",
+      "source": "arxiv",
+      "title": "Disco-LoRA: Disentangled Composition of Content, Style, and Motion for Multi-concept Video Customization",
+      "abstract": "Video customization based on Text-to-Video (T2V) models aims to learn specific features from reference data to generate controllable videos. While significant strides have been made in image stylization and video motion customization, simultaneously controlling multiple concepts, such as content, style, and motion, remains a major challenge. In this work, we systematically define the task of multi-concept video customization, which requires the joint control of content, style, and motion. To facilitate research in this area, we construct a comprehensive benchmark and propose Disco-LoRA, a unified framework designed to tackle this problem by disentangling and flexibly recombining different concepts in two stages: (1) We decompose the objective into two sub-tasks: Content-Style and Content-Motion. Each sub-task is addressed using our Iterative Dual-LoRA Disentanglement Framework, which effectively disentangles distinct concepts within the data. (2) We identify layer-wise weight trends as crucial for LoRA identity, while weight magnitudes dictate composability. To harmonize these scales, we propose a Z-score-based statistical regularization that aligns weight distributions, preserving layer-wise trends while minimizing interference between different LoRAs. Extensive experiments show that Disco-LoRA excels in multi-concept video customization, effectively preserving appearance, style, and motion for controllable text-to-video generation.",
+      "authors": [
+        "Xuancheng Xu",
+        "Gengyun Jia",
+        "Bing-Kun Bao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-25T07:01:05+00:00",
+      "link": "https://arxiv.org/pdf/2606.26668v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "constructs a benchmark for multi-concept video customization, enabling evaluation of content, style, motion control",
+      "llm_evidence_cn": "构建了多概念视频定制基准，用于评估内容、风格和运动控制能力。",
+      "llm_evidence": "构建了多概念视频定制基准，用于评估内容、风格和运动控制能力。",
+      "canonical_evidence": "构建了多概念视频定制基准，用于评估内容、风格和运动控制能力。",
+      "llm_tldr_en": "Disco-LoRA defines multi-concept video customization and constructs a benchmark; it proposes a framework to disentangle content, style, and motion for controlled generation.",
+      "llm_tldr_cn": "本文系统定义了多概念视频定制任务，并构建了综合基准。提出Disco-LoRA框架，通过两阶段解耦内容、风格和运动，实现对多个概念的联合控制，在自定义视频生成中取得优异效果。",
+      "llm_tldr": "本文系统定义了多概念视频定制任务，并构建了综合基准。提出Disco-LoRA框架，通过两阶段解耦内容、风格和运动，实现对多个概念的联合控制，在自定义视频生成中取得优异效果。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

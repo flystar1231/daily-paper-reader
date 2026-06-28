@@ -1,0 +1,144 @@
+Title: UI-LIC: A Unified Framework for Evaluating Learned Image Compression Models
+
+URL Source: https://arxiv.org/pdf/2606.23545v1
+
+Published Time: Tue, 23 Jun 2026 03:37:05 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# UI-LIC: A Unified Framework for Evaluating Learned Image Compression Models 
+
+# Nicholas J. Nolen 
+
+Nicholas_Nolen1@baylor.edu Baylor University Waco, Texas, USA 
+
+# Luc Trudeau 
+
+luc.trudeau@gmail.com Université du Québec à Rimouski Rimouski, Québec, Canada 
+
+# Andrew C. Freeman 
+
+andrew_freeman@baylor.edu Baylor University Waco, Texas, USA 
+
+## Abstract 
+
+The evaluation and comparison of Learned Image Compression (LIC) systems is complicated by heterogeneous software stacks, varying training conditions, and divergent evaluation methodolo-gies. To address these challenges, we introduce UI-LIC, an open-source software framework for evaluating LIC models. We inte-grate six high-performance LIC models, and provide a central-ized controller for performing training, inference, and analysis with shared configuration parameters. Our GUI program offers a streamlined interface to evaluate these models alongside traditional video intra-frame encoders, equalizing the compressed bitrates and calculating quality metrics such as PSNR, SSIM, VMAF, and LPIPS. Finally, we provide an interactive image analyzer with con-figurable quality heatmap overlays. Our framework lowers barriers to further LIC research, unlocking comparative metrics and sub-jective analysis with a single setup command. The open-source software is released under the MIT license and is available at github.com/BaylorMultimediaLab/UI-LIC. 
+
+## CCS Concepts 
+
+• Computing methodologies → Image compression ; Machine learning ; • General and reference → Evaluation .
+
+## Keywords 
+
+learned image compression, software framework, quality assess-ment, reproducibility, model evaluation, image analysis 
+
+## 1 Introduction 
+
+Learned image compression (LIC) has become an active research area, with many teams proposing new models, training procedures, entropy models, and perceptual optimization strategies. However, comparing LIC systems remains difficult in practice. Published re-sults are often produced using different software stacks, training datasets, evaluation datasets, objective metrics, and implementa-tion assumptions. As a result, differences in reported compression performance may reflect not only the underlying model, but also variations in training conditions, evaluation methodology, or ex-perimental infrastructure. This problem is particularly important for LIC because training data and optimization procedures are central to the final perfor-mance of a model. Unlike conventional image and video codecs, where a fixed codec implementation can often be evaluated di-rectly on a shared test set, learned codecs require both training and evaluation to be considered part of the experimental protocol. To address this need, we present the Unified Interface for Learned Image Compression ( UI-LIC ), an open-source software framework for training, evaluating, and comparing learned image compres-sion models. The framework is intended for LIC researchers and practitioners who need to compare models using common datasets, common evaluation scripts, and common reporting tools. It pro-vides a unified interface for integrating model-specific training and evaluation code while preserving the flexibility needed to support heterogeneous LIC implementations. UI-LIC currently integrates six learned image compression mod-els through a common training and evaluation interface. Experi-ments are specified using JSON configuration files, which define the models, datasets, jobs, and relevant parameters. A dispatcher system parses these configurations and executes the selected train-ing and evaluation tasks. The framework also provides objective metric reporting, including common quality metrics such as PSNR, SSIM [ 14 ], VMAF [ 11 ], and LPIPS [ 16 ], together with visual inspec-tion tools for analyzing reconstruction quality and spatial error distributions. In addition to comparing LIC models with one an-other, the framework can be used to compare learned approaches against reference implementations of conventional codecs such as H.264/AVC [ 15 ], H.265/HEVC [ 13 ], and AV1 [ 5]. This paper de-scribes the motivation, design, main features, and intended use of UI-LIC [3]. 
+
+## 2 Background and Motivation 
+
+Learned image compression (LIC) emerged from the idea of re-placing hand-designed components of conventional image codecs with deep learning models trained for rate-distortion optimization. Instead of relying entirely on manually designed prediction, trans-form, and reconstruction tools, LIC models learn compact latent representations from data and reconstruct images using neural syn-thesis models. This data-driven approach has led to rapid progress, but it also introduces new challenges for reproducible evaluation. Evaluating LIC models is more complex than evaluating conven-tional codecs. In traditional image and video compression, a fixed encoder and decoder can often be evaluated directly on a shared test set, and observed coding gains can usually be attributed to differences in codec design or encoder configuration. In LIC, how-ever, the training dataset, training objective, model architecture, optimization procedure, checkpoint selection, and evaluation im-plementation can all influence the final rate-distortion performance. As a result, it is not always clear whether a reported gain comes from the compression model itself, from improved training data, from a different optimization objective, or from differences in the evaluation pipeline. Recent generative approaches further complicate this evaluation problem. Diffusion-based and other generative compression models 
+
+> arXiv:2606.23545v1 [cs.MM] 22 Jun 2026 Nicholas J. Nolen, Luc Trudeau, and Andrew C. Freeman
+
+Figure 1: Before and after StableCodec’s generative compres-sion [ 17 ]. The resulting compressed image (right) has high visual quality and semantic similarity, but the faces are heav-ily distorted and the text is incoherent. 
+
+may produce reconstructions that are visually plausible while dif-fering from the reference image in semantically meaningful ways. These differences are sometimes described as hallucinations: con-tent generated by the model that was not present in the original image. Fig. 1 illustrates this type of artifact. Such examples highlight the need for evaluation tools that combine objective metrics with visual inspection, since high perceptual quality does not always imply faithful reconstruction of the source. Objective quality metrics remain central to image and video codec evaluation because subjective human evaluation is costly, time-consuming, and difficult to reproduce. The most widely used distortion metric is peak signal-to-noise ratio (PSNR), which is simple to compute but does not account for important character-istics of human visual perception. More perceptually motivated metrics have therefore been proposed, including the structural sim-ilarity index measure (SSIM)[ 14 ], video multi-method assessment fusion (VMAF)[ 11 ], and learned perceptual image patch similar-ity (LPIPS) [ 16 ]. However, different metrics can rank compression methods differently, especially when comparing models trained with different losses or perceptual objectives. In practice, reproducing and comparing LIC models is also com-plicated by software heterogeneity. Existing models are often dis-tributed as separate repositories with different dependencies, Python environments, configuration formats, training scripts, checkpoint conventions, preprocessing steps, and evaluation commands. Inte-grating several models into a single experimental study can there-fore require substantial engineering effort before any scientific comparison can be performed. These challenges motivate the Unified Interface for LIC, an open-source framework designed to train and evaluate multiple LIC models under common experimental conditions. The framework provides a unified interface for training models on shared datasets, computing common objective quality metrics, visually inspecting reconstructed images, and highlighting spatial artifacts identified by different metrics. The goal is to make LIC comparison more re-producible, while helping researchers analyze why different models perform well under some metrics but not others. 
+
+## 2.1 Integrated Codecs 
+
+To demonstrate the functionality of the framework, we include six Learned Image Compression models: Efficient Learned Image Compression (ELIC) [ 6 , 8], StableCodec [ 17 ], TCM [ 12 ], HPCM [ 10 ], DCVC-RT intra [7], and RwkvCompress [4]. Additionally, we include hooks for intra-frame coding with the following traditional codecs, via FFmpeg [ 2]: AVC/H.264 [ 9] with 
+
+x264 and NVENC ; HEVC/H.265 [ 13 ] with x265 and NVENC ; and AV1 [5] with SVTAV1 and NVENC .
+
+## 3 Software Backbone 
+
+Our framework is a modular, decoupled system that separates model training, inference, and visualization. We aim for simple usability, reproducibility, and extensibility. Our core software is implemented in Python 3.10. 
+
+Setup. With a single-command quick start script, the user can automatically set up a virtual environment for each model and download official pretrained weights. This also creates a virtual environment for the metrics evaluation, including a Docker con-tainer for the VMAF metric. Each model thus maintains the package versions specified by the original authors, so we do not break com-patibility (e.g., with conflicting Python or CUDA versions). 
+
+Argument Parsing Interface. To simplify the execution of the various model training and evaluation scripts, we provide a base interface for argument parsing. [][] This interface provides a unified method for building training and testing commands, validating parameters, and executing the commands within various Conda environments set up for compatibility with implemented Learned Image Compression (LIC) models. 
+
+Training and Testing Interfaces. The training and testing inter-faces for each LIC model inherit from a centralized base interface. With alias definitions in the base interface, we map model-specific variables to global arguments such as epoch count, learning rate, and dataset paths. Each interface enforces a list of additional re-quired arguments that bypass default assignment, ensuring that mandatory parameters are supplied by the user prior to initializa-tion. 
+
+Configuring Jobs. Our job configuration script simplifies the con-struction of training and inference job argument files. The user can specify the models and parameters to be executed for each job. First, the user enters global arguments which are shared by all interfaces. Then, the user may optionally override our suggested default arguments for the remaining parameters of each model. 
+
+Job Dispatcher. The dispatcher component loads the interfaces from the provided interface directories along with an argument file that dictates the training and testing jobs to be executed. When an argument file has been loaded into the dispatcher, it check that all of the model’s required arguments have been provided. It then prompts the user to choose which classes of jobs to execute. 
+
+Model Implementation Changes. Our primary modifications to the models’ reference code are as follows: 
+
+• DCVC-RT intra: Developed dedicated intra-frame training and inference scripts 
+
+• StableCodec: Standardized testing to use ImageFolder rather than H5Database. Implementation to convert epochs UI-LIC: A Unified Framework for Evaluating Learned Image Compression Models 
+
+Figure 2: The GUI interface for our evaluation pipeline, showing LPIPS feature map overlays for two LICs. 
+
+to steps so epochs can be passed to StableCodec’s native training implementation. 
+
+• ELIC and TCM: Developed evaluation script to streamline saving bitstream and decoded representations. 
+
+• All: Replaced hard-coded file paths, added input validation, and extended error handling. In addition, we introduce evaluation driver scripts for each model. These scripts allowed us to unify the process of evaluating our im-age metrics by outputting encoded images into specified directories. 
+
+## 4 Evaluation Pipeline 
+
+Our evaluation pipeline spans LIC model inference, traditional codecs, quality metric calculation, and error map generation. One can initiate an evaluation task in the command line using a JSON arguments file, or via our GUI program (Sec. 4.3). 
+
+## 4.1 Metrics and Error Maps 
+
+The following metrics are integrated in each testing interface: 
+
+• Objective: Peak Signal to Noise Ratio ( PSNR ) (weighted and YUV components) and Structural Similarity Index Mea-sure (SSIM) [14] 
+
+• Perceptual: Video Multi-Method Assessment Fusion ( VMAF ) [ 11 ] and Learned Perceptual Image Patch Similarity (LPIPS) [16] 
+
+• Efficiency: Compressed bits-per-pixel (bpp), inference la-tency In addition to an overall LPIPS score for each image, the evalua-tion script decomposes the five feature layers of the LPIPS AlexNet backbone. The lower layers roughly correspond to high-frequency features such as edges and fine textures, while the higher layers correspond to low frequency and semantic features. We save these feature maps as separate images to enable interactive error anal-ysis in our GUI program (Sec. 4.3, below). We also produce error maps for the Mean Squared Error ( MSE ), block-based SSIM , and normalized image gradients. 
+
+## 4.2 Rate-Driven QP Optimization for Traditional Codecs 
+
+Some LIC models do not inherently support variable-rate compres-sion. In these cases, higher compression ratios may require addi-tional sets of model weights. Traditional codecs, in contrast, provide granular rate-distortion control via a Quantization Parameter ( QP ). In our evaluation script, the user may enable bitrate equalization .When enabled, the system first encodes the dataset with each LIC .Then, for each image the smallest compressed bitrate is identified from the LIC models’ weights. This bitrate becomes the target for the traditional codecs. Each of these codecs may be invoked repeat-edly in a QP search process, until we have produced an encoded image as close as possible to the target bitrate. Tab. 1 shows auto-mated inference results from our framework on the Kodak dataset [1 ] with bitrate equalization.Through the reported metrics, our soft-ware enhances observability for performance trade-offs between LIC models and traditional codecs. For example, we can see that DCVC-RT offers the best all-around performance under the tested configurations, being the only model to outperform the traditional codecs on all quality metrics at an equal bitrate. 
+
+## 4.3 Interactive Evaluation Tool 
+
+To streamline the usability of our framework and analysis tools, we provide a robust Graphical User Interface (GUI) as shown in Fig. 2. The GUI is implemented in Python with the Tkinter library. 
+
+Inference and Evaluation. To begin, the user selects a ground truth image dataset. Then, the user may selectively enable the Nicholas J. Nolen, Luc Trudeau, and Andrew C. Freeman 
+
+Model bpp PSNR ↑ SSIM ↑ LPIPS ↓ VMAF ↑
+
+HPCM 1.25 42.23 0.952 0.07 92.58 AV1 1.25 40.97 0.949 0.06 93.40 
+
+AVC 1.26 40.50 0.946 0.06 93.20 HEVC 1.25 40.83 0.949 0.06 92.63 LIC-TCM 1.33 42.50 0.955 0.06 93.16 AV1 1.33 41.29 0.953 0.06 93.79 
+
+AVC 1.33 40.83 0.949 0.06 93.59 HEVC 1.34 41.23 0.953 0.05 93.10 RwkvComp. 1.27 42.29 0.953 0.06 93.01 AV1 1.27 41.04 0.950 0.06 93.52 
+
+AVC 1.27 40.57 0.946 0.06 93.28 HEVC 1.28 40.97 0.950 0.05 92.80 StableCodec 0.03 27.56 0.572 0.17 22.62 AV1 0.11 31.30 0.713 0.39 50.30 AVC 0.18 32.29 0.748 0.32 60.59 
+
+HEVC 0.13 32.14 0.741 0.33 56.15 DCVC-RT 0.47 39.21 0.917 0.11 89.74 
+
+AV1 0.47 36.23 0.877 0.16 82.56 AVC 0.47 35.72 0.866 0.16 82.00 HEVC 0.47 36.29 0.878 0.14 81.86 ELIC 0.31 32.48 0.828 0.24 74.94 
+
+AV1 0.31 32.15 0.832 0.22 74.80 AVC 0.31 31.76 0.819 0.22 74.25 HEVC 0.31 32.23 0.835 0.20 74.59 
+
+Table 1: Average codec performance on the Kodak dataset with pre-trained LIC weights and bitrate equalization. 
+
+desired LIC models and traditional codecs to perform encoding. Optionally, the user may provide a path for a directory with existing image reconstructions; this allows one to derive the quality metrics and heat maps for codecs not yet integrated in our framework (e.g., codecs being developed by a researcher). By default, our interface exposes only the most common inference settings for each codec, such as potential QP values and model weights paths. The user can enter “advanced mode,” however, which exposes additional settings. The program attempts to pre-fill the model weights path with the most likely option for each codec (e.g., if a weights filename includes the word “best”). Once the user is satisfied with the configuration, a start button press initiates the inference commands for the selected codecs. If bitrate equalization is enabled (Sec. 4.2), the traditional codecs are executed last. 
+
+Visualization. Once encoding, decoding, and metric evaluation are complete, the user can visualize the results. The user can se-lect an image from the inference dataset, then select two codecs for a side-by-side comparison with a sliding mask. The left image defaults to the ground truth input. The metrics for a decoded im-age are displayed by default under the codec name. The user may choose to visualize an image error map (Sec. 4.1) produced during the metric evaluation stage. These can be viewed either as stan-dalone images or as semi-transparent overlays atops the decoded images. Each layer for the LPIPS feature maps is represented with a distinct color, and each may be toggled independently. With the LPIPS error map visualizations enabled in Fig. 2, we can see in this example that StableCodec (left) performs better than HPCM (right) at representing the noise in the sky region, but performs worse at object representation due to its underlying generative model. 
+
+Metric Reports. Finally, we provide an interface to view the quan-titative metric reports. Here, the user can see the performance of each codec across the entire dataset and compare the average results of the codecs. 
+
+## 5 Conclusion and Future Work 
+
+Learned image compression models are more difficult to evaluate than conventional codecs because training data, optimization objec-tives, model checkpoints, and evaluation pipelines can all influence the final compression performance. In addition, recent generative LIC models may introduce artifacts such as hallucinations, where the reconstructed image contains plausible visual content that was not present in the reference. These challenges motivate tools that support both reproducible objective evaluation and visual analysis. In this paper, we presented the Unified Interface for LIC ( UI-LIC ), an open-source software framework for training, evaluating, and comparing learned image compression models under common ex-perimental conditions. The framework enables multiple LIC models to be trained on shared datasets and evaluated using common ob-jective quality metrics, while also providing visual tools to inspect reconstruction artifacts and spatial error patterns. It also supports comparisons with conventional image and video codecs, allow-ing learned models to be analyzed within a broader compression context. The framework reduces the engineering effort required to repro-duce and compare LIC models, which can save considerable time for researchers entering the field. By providing a common interface for training, evaluation, metric reporting, and visual inspection, UI-LIC aims to make LIC research more accessible, transparent, and reproducible. Future work will focus on integrating additional LIC models, improving the visual analysis tools, and extending the framework to support more automated benchmark generation. We also plan to continue improving documentation and usability so that the frame-work can serve as practical shared infrastructure for the learned compression community. 
+
+## References             
+
+> [1] 2010. True Color Kodak Images. https://r0k.us/graphics/kodak/ [2] 2024. FFmpeg. https://ffmpeg.org/ [3] Baylor Multimedia Lab. 2026. Unified Interface For Learned Image Compression (LIC). https://github.com/BaylorMultimediaLab/UI-LIC. Open-source software repository, accessed 28 May 2026. [4] Donghui Feng, Zhengxue Cheng, Shen Wang, Ronghua Wu, Hongwei Hu, Guo Lu, and Li Song. 2025. Linear Attention Modeling for Learned Image Compression. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 1–10. https://arxiv.org/abs/2502.05741 [5] Jingning Han, Bohan Li, Debargha Mukherjee, Ching-Han Chiang, Adrian Grange, Cheng Chen, Hui Su, Sarah Parker, Sai Deng, Urvang Joshi, Yue Chen, Yunqing Wang, Paul Wilkins, Yaowu Xu, and James Bankoski. 2021. A Technical Overview of AV1. doi:10.48550/arXiv.2008.06091 arXiv:2008.06091 [eess]. [6] Dailan He, Ziming Yang, Weikun Peng, Rui Ma, Hongwei Qin, and Yan Wang. 2022. Elic: Efficient learned image compression with unevenly grouped space-channel contextual adaptive coding. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition . 5718–5727. [7] Zhaoyang Jia, Bin Li, Jiahao Li, Wenxuan Xie, Linfeng Qi, Houqiang Li, and Yan Lu. 2025. Towards Practical Real-Time Neural Video Compression. In IEEE/CVF
+
+UI-LIC: A Unified Framework for Evaluating Learned Image Compression Models 
+
+Conference on Computer Vision and Pattern Recognition, CVPR 2025, Nashville, TN, USA, June 11-25, 2024 .[8] Wei Jiang. 2022. Unofficial ELIC. https://github.com/JiangWeibeta/ELIC. [9] H. Kalva. 2006. The H.264 Video Coding Standard. IEEE Multimedia 13, 4 (Oct. 2006), 86–90. doi:10.1109/MMUL.2006.93 [10] Yuqi Li, Haotian Zhang, Li Li, and Dong Liu. 2025. Learned Image Compression with Hierarchical Progressive Context Modeling. arXiv preprint arXiv:2507.19125 
+
+(2025). [11] Zhi Li, Anne Aaron, Ioannis Katsavounidis, Anush Krishna Moorthy, and Megha Manohara. 2016. Toward a Practical Perceptual Video Quality Metric. Net-flix Technology Blog. https://techblog.netflix.com/2016/06/toward-practical-perceptual-video.html Introduces Video Multi-Method Assessment Fusion (VMAF). [12] Jinming Liu, Heming Sun, and Jiro Katto. 2023. Learned Image Compression with Mixed Transformer-CNN Architectures. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition . 1–10. [13] Gary J. Sullivan, Jens-Rainer Ohm, Woo-Jin Han, and Thomas Wiegand. 2012. Overview of the High Efficiency Video Coding (HEVC) Standard. IEEE Transac-tions on Circuits and Systems for Video Technology 22, 12 (Dec. 2012), 1649–1668. doi:10.1109/TCSVT.2012.2221191 [14] Zhou Wang, A.C. Bovik, H.R. Sheikh, and E.P. Simoncelli. 2004. Image quality assessment: from error visibility to structural similarity. IEEE Transactions on Image Processing 13, 4 (April 2004), 600–612. doi:10.1109/TIP.2003.819861 [15] Thomas Wiegand, Gary J. Sullivan, Gisle Bjontegaard, and Ajay Luthra. 2003. Overview of the H.264/AVC Video Coding Standard. IEEE Transactions on Circuits and Systems for Video Technology 13, 7 (2003), 560–576. doi:10.1109/TCSVT.2003. 815165 [16] Richard Zhang, Phillip Isola, Alexei A. Efros, Eli Shechtman, and Oliver Wang. 2018. The Unreasonable Effectiveness of Deep Features as a Perceptual Metric. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition .586–595. [17] Tianyu Zhang, Xin Luo, Li Li, and Dong Liu. 2025. StableCodec: Taming One-Step Diffusion for Extreme Image Compression. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) . 17379–17389.
