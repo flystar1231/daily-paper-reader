@@ -6,35 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-28
-- 运行时间：2026-06-28 21:22:00 UTC
+- 最新运行日期：2026-06-29
+- 运行时间：2026-06-29 20:46:45 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：0
-- 速读区：4
+- 本次总论文数：1
+- 精读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-1) 今日速读4篇论文，聚焦视频生成与压缩评估，其中视频生成方向研究亮眼。
-2) 推荐关注《CoDMD》基于Copula匹配蒸馏的快速视频生成方法（7.0分），以及《ZeroGVC》零样本视频压缩新思路。
-3) 普通读者可优先精读CoDMD，其加速视频生成的技术对创作工具有直接参考价值。
-- 详情：[/202606/28/README](/202606/28/README)
+今日精读1篇高分论文《MemoBench》，聚焦动态变化环境中的世界建模基准测试。
+
+该论文提出了评估模型在持续变化场景下世界建模能力的新基准，值得关注。
+
+建议关注该基准的设计思路与评估结果，为研究动态环境下的AI建模提供参考。
+- 详情：[/202606/29/README](/202606/29/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [MemoBench: Benchmarking World Modeling in Dynamically Changing Environments](/202606/29/2606.27537v1-memobench-benchmarking-world-modeling-in-dynamically-changing-environments)  
+   标签：评分：8.0/10、query:vgen-metrics
+   evidence：视频生成模型世界建模评估基准
 
 ### 速读区论文标签
-1. [CoDMD: Copula-aware Distribution Matching Distillation for Fast Video Generation](/202606/28/2606.21982v1-codmd-copula-aware-distribution-matching-distillation-for-fast-video-generation)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：解决视频生成蒸馏中质量退化问题；提出Copula感知分布匹配蒸馏改善布局稳定性和运动动态
-2. [ZeroGVC: Zero-Shot Generative Video Compression with Autoregressive Diffusion Priors](/202606/28/2606.22371v2-zerogvc-zero-shot-generative-video-compression-with-autoregressive-diffusion-priors)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：使用生成先验评估视频压缩质量，涉及质量指标。
-3. [UI-LIC: A Unified Framework for Evaluating Learned Image Compression Models](/202606/28/2606.23545v1-ui-lic-a-unified-framework-for-evaluating-learned-image-compression-models)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：使用PSNR、SSIM、VMAF等指标评估图像压缩模型，并涉及视频帧内编码。
-4. [Disco-LoRA: Disentangled Composition of Content, Style, and Motion for Multi-concept Video Customization](/202606/28/2606.26668v1-disco-lora-disentangled-composition-of-content-style-and-motion-for-multi-concept-video-customization)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：构建了多概念视频定制基准，用于评估内容、风格和运动控制能力。
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,64 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-29T20:44:18.228541+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2606.27537v1",
+      "source": "arxiv",
+      "title": "MemoBench: Benchmarking World Modeling in Dynamically Changing Environments",
+      "abstract": "Video generation models aspire to simulate dynamic environments, and several benchmarks now evaluate memory consistency across frames. However, most assess consistency only while the target remains in view, and the few that force objects out of view evaluate static scenes where nothing changes during occlusion. To bridge this gap, we introduce MemoBench, a diagnostic benchmark built around the disappear-and-reappear paradigm in dynamically changing environments: a target object undergoes a physical process, disappears from view, and must be correctly recovered in its updated state upon reappearance. We curate 360 ground-truth clips spanning synthetic and real-world scenes, and design an evaluation suite combining automated metrics with VQA-based assessment across four diagnostic pillars. Evaluation of eight state-of-the-art models reveals key insights and open challenges regarding memory consistency under the disappear-and-reappear paradigm.",
+      "authors": [
+        "Haoyu Chen",
+        "Kaichen Zhou",
+        "Hang Hua",
+        "Kaile Zhang",
+        "Jingwen Qian",
+        "Wufei Ma",
+        "Haonan Chen",
+        "Chunjiang Liu",
+        "Yizhou Zhao",
+        "Xiaoyuan Wang",
+        "Weiyue Li",
+        "Alan Yuille",
+        "Paul Pu Liang",
+        "Yilun Du"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-25T20:37:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.27537v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for evaluating video generation world models",
+      "llm_evidence_cn": "视频生成模型世界建模评估基准",
+      "llm_evidence": "视频生成模型世界建模评估基准",
+      "canonical_evidence": "视频生成模型世界建模评估基准",
+      "llm_tldr_en": "Introduces MemoBench, a benchmark evaluating video generation models' world modeling in dynamic environments, using automated metrics and VQA-based evaluation on 360 curated clips.",
+      "llm_tldr_cn": "现有视频生成模型基准仅评估物体在视野内的记忆一致性，忽略动态变化场景中物体消失再出现的情况。为此提出MemoBench，一个围绕消失-再现范式构建的诊断基准，包含360个合成与真实场景剪辑，结合自动指标与基于VQA的评估项，用于衡量模型在动态环境中的世界建模能力。该基准可揭示模型在物体状态变化后的恢复缺陷，为视频生成评估提供更全面的诊断工具。",
+      "llm_tldr": "现有视频生成模型基准仅评估物体在视野内的记忆一致性，忽略动态变化场景中物体消失再出现的情况。为此提出MemoBench，一个围绕消失-再现范式构建的诊断基准，包含360个合成与真实场景剪辑，结合自动指标与基于VQA的评估项，用于衡量模型在动态环境中的世界建模能力。该基准可揭示模型在物体状态变化后的恢复缺陷，为视频生成评估提供更全面的诊断工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}

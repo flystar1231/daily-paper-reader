@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-29",
+  "date": "2026-06-29",
+  "generated_at": "2026-06-29T20:46:52",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/29/2606.27537v1-memobench-benchmarking-world-modeling-in-dynamically-changing-environments",
+      "section": "deep",
+      "title_en": "MemoBench: Benchmarking World Modeling in Dynamically Changing Environments",
+      "authors": "Haoyu Chen, Kaichen Zhou, Hang Hua, Kaile Zhang, Jingwen Qian, Wufei Ma, Haonan Chen, Chunjiang Liu, Yizhou Zhao, Xiaoyuan Wang, Weiyue Li, Alan Yuille, Paul Pu Liang, Yilun Du",
+      "date": "2026-06-25",
+      "pdf": "https://arxiv.org/pdf/2606.27537v1",
+      "score": "8.0",
+      "evidence": "视频生成模型世界建模评估基准",
+      "tldr": "现有视频生成模型的世界模型评估主要关注目标在视野内的记忆一致性，忽略动态遮挡场景。本文提出MemoBench基准，基于消失-再现范式，要求模型在目标经历物理变化并消失后正确恢复其更新状态。收集360个合成与真实视频，结合自动指标和VQA评估四个诊断维度。评估8个SOTA模型发现，动态遮挡下记忆一致性严重不足，揭示关键挑战，为动态环境世界建模提供标准化诊断工具。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video generation models aspire to simulate dynamic environments, and several benchmarks now evaluate memory consistency across frames. However, most assess consistency only while the target remains in view, and the few that force objects out of view evaluate static scenes where nothing changes during occlusion. To bridge this gap, we introduce MemoBench, a diagnostic benchmark built around the disappear-and-reappear paradigm in dynamically changing environments: a target object undergoes a physical process, disappears from view, and must be correctly recovered in its updated state upon reappearance. We curate 360 ground-truth clips spanning synthetic and real-world scenes, and design an evaluation suite combining automated metrics with VQA-based assessment across four diagnostic pillars. Evaluation of eight state-of-the-art models reveals key insights and open challenges regarding memory consistency under the disappear-and-reappear paradigm.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
