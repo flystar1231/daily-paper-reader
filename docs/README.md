@@ -6,28 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-29
-- 运行时间：2026-06-29 20:46:45 UTC
+- 最新运行日期：2026-06-30
+- 运行时间：2026-06-30 22:15:21 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：4
 - 精读区：1
-- 速读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日精读1篇高分论文《MemoBench》，聚焦动态变化环境中的世界建模基准测试。
-
-该论文提出了评估模型在持续变化场景下世界建模能力的新基准，值得关注。
-
-建议关注该基准的设计思路与评估结果，为研究动态环境下的AI建模提供参考。
-- 详情：[/202606/29/README](/202606/29/README)
+今日精读1篇、速读3篇，聚焦多智能体动力学与视频生成新基准。最值得看精读《A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models》（8.0分），速读中《Your Data Manifold is Secretly a Reward Model》（7.0分）探讨数据流形作为隐式奖励模型。建议优先阅读精读论文了解多智能体世界模型评估，再浏览速读中的文本到视频生成及视频到代码推理工作。
+- 详情：[/202606/30/README](/202606/30/README)
 
 ### 精读区论文标签
-1. [MemoBench: Benchmarking World Modeling in Dynamically Changing Environments](/202606/29/2606.27537v1-memobench-benchmarking-world-modeling-in-dynamically-changing-environments)  
+1. [A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models](/202606/30/2606.28757v1-a-physics-grounded-benchmark-for-multi-agent-dynamics-in-world-models)  
    标签：评分：8.0/10、query:vgen-metrics
-   evidence：视频生成模型世界建模评估基准
+   evidence：基于物理的生成视频动力学评估基准
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Your Data Manifold is Secretly a Reward Model: Shell-LCC for Text-to-Video Generation](/202606/30/2606.30248v1-your-data-manifold-is-secretly-a-reward-model-shell-lcc-for-text-to-video-generation)  
+   标签：评分：7.0/10、query:vgen-metrics
+   evidence：利用数据流形作为奖励信号提升视频生成质量
+2. [Animation2Code: Evaluating Temporal Visual Reasoning in Video-to-Code Generation](/202606/30/2606.28593v1-animation2code-evaluating-temporal-visual-reasoning-in-video-to-code-generation)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：提出两个人类对齐指标（外观相似性和时间相似性）用于评估视频质量
+3. [DTI: Dynamic Trajectory Initialization for Generative Face Video Super-Resolution](/202606/30/2606.29198v1-dti-dynamic-trajectory-initialization-for-generative-face-video-super-resolution)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：讨论了通用感知指标的局限性并提出提升保真度的方法
 
 
 <div class="dpr-home-promo-card">

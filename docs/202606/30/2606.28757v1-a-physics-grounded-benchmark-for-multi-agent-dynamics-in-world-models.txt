@@ -1,0 +1,810 @@
+Title: A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models
+
+URL Source: https://arxiv.org/pdf/2606.28757v1
+
+Published Time: Tue, 30 Jun 2026 00:30:41 GMT
+
+Number of Pages: 34
+
+Markdown Content:
+# A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 
+
+Nuo Chen 1*, Lulin Liu 1,2*, Zihao Li 3, Ziyao Zeng 4, Zihao Zhu 1,Wenyan Cong 5, Junyuan Hong 6,7, Yunhao Yang 5, Zhengzhong Tu 1,Yan Wang 8, Boris Ivanovic 8, Marco Pavone 8,9, Zhangyang Wang 5,Yang Zhou 1, Zhiwen Fan 1 
+
+> 1
+
+Texas A&M University 2 University of Minnesota  
+
+> 3
+
+Marquette University 4 Yale University  
+
+> 5
+
+University of Texas at Austin 6 Massachusetts General Hospital  
+
+> 7
+
+Harvard Medical School 8 NVIDIA 9 Stanford University 
+
+Project Website : https://crash-twin.github.io/ 
+
+Abstract. Generative world models hold immense promise as scalable simulators for autonomous systems, particularly for synthesizing rare but safety-critical multi-agent interactions, such as vehicle collisions. How-ever, current evaluation paradigms index heavily on visual fidelity and se-mantic alignment, leaving a critical blind spot: they cannot reliably quan-tify whether generated dynamics actually obey the fundamental physical laws required for reliable simulation. Assessing this physical plausibility is inherently difficult due to a lack of physical metrics and the challenge of extracting metric-scale kinematics from uncalibrated video rollouts. To bridge this gap, we introduce CrashTwin , a physics-grounded eval-uation framework designed to stress-test the physical trustworthiness of world models. CrashTwin couples a diverse dataset of multi-agent col-lision scenarios, comprising 25K controllable synthetic and 12K in-the-wild real-world collision sequences with a novel calibration-free recon-struction pipeline, enabling the recovery of 3D physical attributes di-rectly from world model rollouts. We propose a diagnostic suite that sys-tematically evaluates three dimensions: spatio-temporal consistency, mo-mentum and kinetic energy conservation, and world-dynamics integrity. Extensive benchmarking of state-of-the-art models reveals a crucial in-sight: high perceptual quality frequently masks severe physical violations during complex interactions. By quantitatively exposing these failure modes, CrashTwin provides a vital diagnostic tool for developing physi-cally grounded world models capable of reliable real-world simulation. 
+
+## 1 Introduction 
+
+Generative world models [26, 57, 59, 61, 71] have emerged as promising tools for scalable simulation in autonomous driving, offering a pathway to synthe-size safety-critical corner cases that are rare in the real world [1, 63]. For these  
+
+> *
+
+Equal contribution. 
+
+> arXiv:2606.28757v1 [cs.CV] 27 Jun 2026
+
+2 N. Chen et al. 2AFC Score           
+
+> 0.85
+> 0.80
+> 0.75
+> 0.70
+> 0.65
+> 0.60
+> 0.55
+> 0.50
+> 𝑬 𝒘𝒂𝒓𝒑 𝑱 𝑬 𝑱 𝒑 𝑱 𝑯 𝑫 𝒂𝒅 Imag.
+> Qual. 𝑺 𝑰𝑫 Aest.
+> Qual. 𝑬 𝒅𝒊𝒗
+> 0.55
+> 0.61
+> 0.69
+> 0.72
+> 0.73
+> 0.74
+> 0.76
+> 0.82
+> 0.79
+> Cosmos -Predict2 -14B
+> Wan 2.2 5B
+> Wan 2.1 14B
+> Cosmos -Predict2 -2B
+> Ego Physical
+> Attributes
+> Multi -agent Physical
+> Attributes
+> Traj. Reconstruction Physical -grounded Eval.
+> CrashTwin Text Description
+> Kinematic Actions
+> Uncalibrated
+> Videos
+> 25k Syn./12k Real
+
+Fig. 1: CrashTwin Benchmark. Left illustrates the content of CrashTwin and the proposed evaluation pipeline that extracts physical attributes from uncalibrated videos to enable physics-grounded evaluation. Middle shows the two-alternative-forced-choice(2AFC Score), demonstrating that metrics derived from physical dynam-ics, indicated by colored bars, align more strongly with human preferences for physical realism compared to conventional visual quality proxies shown in grayscale. Right 
+
+compares representative world models, revealing that both small and large models ex-hibit notable deficiencies across the proposed physics-grounded criteria. 
+
+rollouts to be actionable in downstream data curation, they must not only ex-hibit high visual fidelity but also strictly adhere to physical laws. However, the current evaluation paradigm predominantly indexes on perceptual quality and semantic alignment [29,54,70]. Consequently, a critical blind spot remains: severe violations of fundamental physics frequently go undetected under standard vi-sual assessments. Furthermore, these conventional visual metrics correlate poorly with human judgments of physical realism, as illustrated in Fig. 1. Rigorously quantifying this physical plausibility is inherently difficult, par-ticularly in safety-critical scenarios. Existing frameworks often circumvent the underlying mechanics by relying on generalized visual proxies, including distri-butional similarity metrics such as Fréchet Video Distance [54] and appearance-focused benchmark scores such as the aesthetic and imaging quality [29, 54], or vision-language models (VLMs) as judges [5], which remain brittle under vi-sual ambiguity and are insufficient for precise physical validation [38, 45]. The fundamental bottleneck lies in physical observability: to rigorously verify adher-ence to physical laws, one must extract metric-scale kinematics, such as precise trajectories, velocities, and angular motion. Yet, recovering these 3D physical at-tributes from uncalibrated monocular videos is a highly ill-posed problem, requir-ing the disentanglement of ego-motion, camera intrinsics, and multi-agent dy-namics without explicit physical sensors. This difficulty is severely compounded during complex interactions featuring rapid relative motion and heavy occlusion. Furthermore, current video generation benchmarks primarily consist of general-domain or benign driving clips, lacking the targeted, safety-critical data required to expose these specific dynamic failures. To address these methodological and data bottlenecks, we focus on vehicle-to-vehicle collisions as a representative task for evaluating multi-agent physical interactions. This setting provides a rigorous stress test for generative world models, as physical impacts induce abrupt, coupled state changes whose post-A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 3
+
+contact evolution is tightly governed by classical conservation laws [7, 9]. By fo-cusing on these multi-agent interactions, we establish a mathematically grounded environment for quantitative analysis, yielding consistent geometric priors and clear kinematic constraints [72]. Because these specific scenarios are inherently physics-dependent, verifying their structural integrity is a crucial prerequisite before such world models can be trusted as reliable simulators. In this work, we present CrashTwin , a comprehensive evaluation frame-work designed to quantify the physical integrity of world model rollouts. To en-sure both rigorous control and real-world relevance, we construct an ever large dataset that contains comprehensive text descriptions, poses indicating agent positions and states, and kinematic action labels, built from 25K synthetic se-quences generated via a physically grounded pipeline [13] and 12K diverse in-the-wild traffic incident videos. To overcome the challenge of evaluating uncalibrated world-model rollouts, we develop a calibration-free reconstruction pipeline that leverages vision foundation models to reliably recover physical attributes under complex interactions. Building upon these recovered 3D trajectories, we intro-duce a standardized diagnostic protocol evaluating three core dimensions: spatio-temporal consistency, momentum and energy conservation, and world-dynamics integrity. Extensive benchmarking demonstrates that our metrics expose phys-ical failure modes largely invisible to appearance-based evaluations, offering an orthogonal diagnostic signal for developing physically trustworthy world models. Our contributions are threefold: 
+
+– We introduce CrashTwin , a large-scale benchmark coupling controllable synthetic data with unconstrained real-world collision videos, directly ad-dressing the lack of safety-critical data in current evaluation paradigms. 
+
+– We develop a physics-grounded evaluation framework featuring a calibration-free reconstruction pipeline to recover metric-scale physical attributes from monocular videos, resolving the bottleneck of uncalibrated measurement to enable the precise evaluation of spatio-temporal consistency, momentum con-servation, energy dissipation, and world dynamics. 
+
+– We systematically benchmark representative world models under this pro-tocol, providing quantitative diagnoses of their physical failure modes and demonstrating that our metrics align significantly better with human pref-erence judgments regarding physical realism. 
+
+## 2 Related Works 
+
+Video Generation and World Models. Video generation has advanced rapidly with diffusion and autoregressive transformers, enabling high-fidelity text-to-video across diverse domains [23, 51]. In autonomous driving, world models like GAIA-1, DriveDreamer-2, and Epona simulate controllable, multi-view traffic scenes with long-horizon rollouts, while egocentric simulators such as PlayerOne and GEM synthesize first-person videos from user motion or object controls 4 N. Chen et al. Spatial -temporal Violations Momentum and Energy Violations World Dynamic Violations         
+
+> Cosmos
+> Predict2 14B Google Veo 3.1 Wan 2.1 –14B SkyReel 1.3B Cosmos
+> Predict2 2B
+> Hailuo 2.3 Seeddance
+> V1 Pro
+> Rigid
+> Distortion
+> Temporal
+> Warping
+> Momentum
+> Imbalance
+> Angular
+> Inconsistency
+> Energy
+> Increase
+> Appearance
+> Drift
+> Identity
+> Merge
+
+Fig. 2: Failure cases of existing world models revealed by our benchmark. 
+
+Each region highlights a distinct type of physical breakdown, including violations of spatio-temporal consistency, departures from momentum and energy conservation around impact, and breakdowns of world-dynamics integrity such as unstable identi-ties or appearances. These patterns illustrate the characteristic ways in which current methods deviate from physically consistent behavior. 
+
+[24, 26, 29, 53, 68, 69]. Yet appearance fidelity does not guarantee physical valid-ity. Recent crash-oriented video generation models attempt to address safety-critical scenarios but fundamentally sidestep true physical simulation. For in-stance, DrivingGen [20] is text-driven and does not fix the first-frame, prevent-ing controlled comparisons of physical outcomes. Similarly, AVD2 [35] focuses on extreme ego-centric self-collisions where vital pre- and post-impact kinematic information is effectively destroyed, making their physical fidelity inherently untestable. Furthermore, methods like OAVD [14] and Ctrl-Crash [18] strictly condition generation on comprehensive temporal bounding boxes. By providing the temporal object trajectories as input conditions, these models perform ap-pearance completion within predefined constraints rather than actual physical simulation. Because these specialized models either rely on strong physical pri-ors or generate untestable ego-collisions, they lack the capacity for generalized physical reasoning. Consequently, benchmarking them for physical consistency is inherently meaningless, as the physics are either dictated by the input con-ditions or completely unrecoverable. Instead, evaluating the physical character-istics of unconstrained world models remains a critical open challenge. Studies show that current models often ignore kinematics and violate momentum during collisions [5, 31, 39]. This has motivated hybrids that embed classical rigid-body simulators and benchmarks that test whether generated trajectories obey funda-mental laws rather than only look plausible [5,39,43]. Our CrashTwin benchmark advances this direction by explicitly quantifying spatio temporal consistency, mo-mentum and energy conservation, and instance level structural integrity during complex vehicle collisions. A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 5
+
+Physical-grounded Evaluation. Most evaluation in world modeling is still perception-centric, prioritizing appearance fidelity, temporal coherence, and preference align-ment over adherence to physical laws and dynamics. Distributional and percep-tual scores such as FID, FVD, and embedding- or quality-based measures focus on visual realism instead of law adherence [25, 54], and comprehensive bench-marks like VBench and DEVIL mainly decompose visible quality, including iden-tity consistency, motion smoothness, temporal stability, and dynamics coherence, rather than testing mechanics [29,36]. Recent “physics-aware” work follows three lines: (i) using LLMs or multimodal transformers as commonsense judges of plau-sibility [5,31,64]; (ii) heuristic proxies enforcing optical-flow or multi-frame depth and pose consistency [40, 62]; and (iii) scripted scenarios that flag violations or probe conservation in simplified collisions [5,31,43]. These approaches are largely indirect or qualitative, avoid directly measuring physical quantities, are prompt-or design-sensitive, and rarely localize errors in space and time, which ham-pers reproducibility and objective comparison [29,40,43,62]. The limitations are especially severe in collision scenes, where models still show ghosting through ob-stacles, momentum-inconsistent velocity changes, and invalid contact geometry even when appearance scores are high [5, 31]. This gap motivates physical-law-grounded verification with localized diagnosis. We introduce CrashTwin, which directly tests spatio-temporal consistency, momentum and energy conservation, and world-dynamics integrity in predicted collision events, providing quantitative localized checks that current metrics overlook and supporting progress toward deployable world models for planning and decision-making [21, 68]. 
+
+## 3 Principles of the New Evaluation Protocol 
+
+The proposed CrashTwin is a physics grounded framework for analyzing and evaluating crash events. Section 3.1 first presents three dimensions of physi-cal behavior and their associated evaluation metrics. Unlike prior evaluations that focus on image, patch, or pixel level accuracy, CrashTwin instead mea-sures physical quantities and tests physical laws and contact constraints using measurable signals, localizing violations around first contact and reporting their magnitudes through physics-grounded metrics. Next, Section 3.2 introduces a carefully controlled CARLA based data generation pipeline supplemented with a real world crash corpus. Finally, Section 3.3 details the calibration free recon-struction pipeline that recovers the necessary physical attributes from uncali-brated videos to support these evaluations. 
+
+3.1 Physical-Grounded Evaluation 
+
+We study physics-grounded behavior across three complementary dimensions: spatio-temporal consistency, momentum and energy conservation, and world-dynamics integrity, as illustrated in Fig. 3. Together, these dimensions provide a comprehensive measure of how well generated collisions adhere to physical laws, 6 N. Chen et al. Physics -grounded Evaluation                
+
+> Initial World State
+> Unrealistic
+> motion flow?
+> Physics law
+> violation?
+> Instance
+> switching /
+> ID loss?
+> In the video, a police car ahead
+> drives straight through the
+> intersection while an oncoming
+> ambulance also drives straight into
+> the crossing lane, causing a side -to -
+> side collision on a dry road in clear
+> weather, with the police car moving
+> at 20 km/h and the ambulance at
+> 40 km/h.
+
+World -Model Rollouts under Safety -Critical Scenarios          
+
+> World Models Rollouts Physics Check
+> [Visual Context]
+> [Textual Prompt]
+> Crash Report
+> Controllable
+> CARLA Suite
+> Diverse
+> Sources
+> Synthesized
+> Real -World
+> Post -Training Evidence -Support
+> Safety -Critical Scenarios
+> qLinear Momentum Conservation
+> qAngular Momentum Conservation
+> qKinetic Energy Conservation
+> Momentum and Energy Conservation
+> qInstance Stability
+> qAppearance Drift
+> World -Dynamics Integrity
+> qTemporal Consistency
+> qSpatial Consistency
+> Spatio -Temporal Consistency
+
+Fig. 3: Overview of the CrashTwin framework. We derive safety-critical collision from national pre-crash statistics and instantiate them in both a controllable CARLA suite and a diverse real-world corpus. Current world models often violate physical principles in these rollouts, motivating our physics-grounded evaluation framework that measures spatio-temporal consistency, momentum and energy conservation, and world-dynamics integrity. Guided by these metrics, post-training improves physical fidelity. 
+
+assessing whether motion remains continuous and bounded, impacts satisfy con-servation principles, and interacting instances maintain stable, non-penetrating identities throughout the event. 
+
+Spatio-Temporal Consistency We aim to evaluate whether generated motion is smooth and plausible, through temporal coherence , ensuring continuous motion over time, and spatial rigidity , requiring foreground instances keep consistent geometry and scale without unrealistic expansion or compression. 
+
+Determining Temporal Consistency. We measure temporal coherence using a 
+
+flow warping error , which quantifies how well pixels propagated by optical flow match their corresponding observations in the next frame: 
+
+Ewarp = 1
+
+|Ω|
+
+X
+
+p∈Ω
+
+It(p) − It+1 (p + Ft→t+1 (p)) , (1) where Ω denotes all pixels within the instance mask, It denotes the image at frame t, and Ft→t+1 is the optical flow from frame t to t+1 .
+
+Evaluating Spatial Consistency. We evaluate spatial rigidity using the divergence of the velocity field , which measures local expansion and compression within the foreground region: 
+
+Ediv = 1
+
+|Ω|
+
+X
+
+p∈Ω
+
+∇xu(p) + ∇y v(p) , (2) A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 7
+
+where (u, v ) = Ft→t+1 (p) are the flow components. Lower divergence indicates stronger preservation of rigid-body geometry. All computations are performed within instance masks [48] using modern optical-flow estimators [58]. 
+
+Momentum and Energy Conservation The content generated by world models should preserve momentum and energy within the collision window; oth-erwise the impact fails to respect conservation laws. We therefore apply three checks: (1) linear momentum conservation , (2) angular momentum conservation 
+
+and (3) kinetic energy conservation . Together, these indicators assess whether motion transitions around impact remain consistent with vehicle dynamics and collision physics, verifying that generated behaviors follow physically plausible laws under dominant inter-vehicle impulses and negligible external forces. 
+
+(1) Linear Momentum Conservation. For each vehicle  i with mass  mi and pre-/post-impact velocities  v− 
+
+> i
+
+and  v+ 
+
+> i
+
+, the total momentum before and after collision is  p− = P 
+
+> i
+
+miv− 
+
+> i
+
+and  p+ = P 
+
+> i
+
+miv+ 
+
+> i
+
+. Their difference  ∆p = p+ − p− measures translational imbalance, and the normalized residual 
+
+Jp = ∥∆p ∥
+
+P 
+
+> i
+
+mi∥v− 
+
+> i
+
+∥ (3) quantifies momentum loss or gain relative to pre-impact motion. The evaluation is performed within a short collision window  ∆t , during which external forces (e.g., tire friction or aerodynamic drag) contribute negligible impulse compared with inter-vehicle contact. Under this quasi-closed condition, linear momentum can be treated as approximately conserved [50]. Small  Jp values indicate physi-cally consistent velocity transitions dominated by a single collision impulse, while larger values imply missing or unbalanced dynamics. 
+
+(2) Angular Momentum Conservation. We evaluate rotational consistency under the same impulse-window assumption by computing angular momentum about the contact point  c. For each vehicle  i with yaw moment of inertia  Iz,i , yaw rate 
+
+ωi, position  ri, and velocity  vi, the total angular momentum is 
+
+Hc =
+
+> n
+
+X
+
+> i=1
+
+(Iz,i ωi + mi(ri − c)×vi) , (4a) 
+
+JH = ∥H+ 
+
+> c
+
+− H− 
+
+> c
+
+∥∥H− 
+
+> c
+
+∥ + ε . (4b) Here  (ri − c)×vi denotes the scalar 2D cross product capturing the rotational effect of translational motion around  c. Low  JH values indicate that angular momentum transfer is physically consistent with rigid-body impact dynamics, while large values imply unbalanced or nonphysical torque generation. The small constant ε prevents division by zero when pre-impact angular momentum is negligible, ensuring numerical stability. 8 N. Chen et al. 
+
+(3) Kinetic Energy Conservation. We verify that total kinetic energy does not increase during impact, consistent with the dissipative nature of real collisions. The total kinetic energy and its normalized residual are 
+
+Ek = 12
+
+> n
+
+X
+
+> i=1
+
+mi∥vi∥2, (5a) 
+
+JE = max 
+
+
+
+0, E+ 
+
+> k
+
+− E−
+
+> k
+
+E−
+
+> k
+
+
+
+. (5b) Here JE serves as a penalty that activates only when kinetic energy increases; 
+
+JE = 0 for E+ 
+
+> k
+
+≤ E− 
+
+> k
+
+and grows proportionally with any unphysical energy gain. 
+
+World-Dynamics Integrity We evaluate world-dynamics integrity to test whether each instance maintains a stable identity and consistent appearance through impact, ensuring coherent behavior at the instance level. Intuitively, a physically plausible collision should preserve the integrity of object identities and avoid sudden visual changes unexplained by the generated dynamics. We examine two complementary dimensions: Instance Stability , which measures the temporal persistence of tracked instances, and Appearance Drift , which evaluates the smoothness and temporal coherence of instance-level visual features over the trajectory. 
+
+Instance Stability. We evaluate instance stability by measuring how consistently an instance retains the same identity throughout the collision. We implement this using the Simpson index: let ck,i denote the number of frames in which instance i is assigned ID k, Ni = P 
+
+> k
+
+ck,i , and fk,i = ck,i /N i. The score is 
+
+S(i)ID = X
+
+> k
+
+f 2 
+
+> k,i
+
+∈ [0 , 1] , (6) where 1 indicates a fully stable identity and lower values reflect fragmentation. Tracking associations are obtained using CenterTrack [73]. 
+
+Appearance Drift. To capture appearance over time, we use SAM2 to obtain instance masks [48], and then assess instance-level visual coherence by tracking how the CLIP features of each vehicle evolve along its full visible trajectory. For each instance i, let {Xi,t } denote the sequence of masked crops and let 
+
+ˆzi,t = ϕ(Xi,t )/∥ϕ(Xi,t )∥2 be the L2-normalized CLIP embedding at frame t.Given the ordered embedding path {ˆzi,t 1 , ˆzi,t 2 , . . . , ˆzi,t T }, we compute the frame-to-frame angular deviation using θi,k = arccos( ⟨ˆzi,t k , ˆzi,t k+1 ⟩) for consecutive frames k. The appearance drift score for instance i is defined as 
+
+D(i)ad = 1
+
+T − 1 
+
+> T−1
+
+X
+
+> k=1
+
+θi,k , (7) with lower values indicating smoother and more temporally stable appearance evolution. The video-level Dad is computed as a frame-count-weighted average over all tracked instances. A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 9Video I nstance       
+
+> Segmentation
+> 3D Object Tracking
+> Metric Depth
+> Estimation
+> Ego -motion
+> Compensation
+> Track
+> Re -linking
+> Instance Depth Extraction
+> 3D Track Fragments
+> Bbox Depth
+> Correction
+> 2D Instance Track 3D Instance
+> Track
+> Relative
+> Dynamic
+> Kalman
+> Filtering
+> Global Dynamic
+> Reconstruction
+> Collision Actor
+> Selection
+> Intrinsic
+> Estimation Ego -motion
+> Pre -crash Crash window Post -crash Collision Detection Physic -grounded Evaluation
+> Public
+> Media
+> Global Dynamic
+> Reconstruction Pipeline
+> Physical
+> Engine
+> Visual
+> Odometry
+> Uncalibrated Input Video
+> ↑
+> ↑
+> Result
+
+Fig. 4: Global dynamic reconstruction pipeline. The system reconstructs the 3D dynamics of collision participants from uncalibrated accident videos, where camera parameters, scene scale, and ego-motion are not directly available. We combine 3D tracking, video segmentation, metric depth estimation, and visual odometry to obtain coherent per-actor trajectories. Tracking fragments are re-linked to maintain identity continuity, metric depth restores real-world scale, and ego-motion compensation maps relative motion into a global coordinate system. The resulting global trajectories de-fine the pre-crash, crash, and post-crash window and support reliable computation of physical quantities used in our physics-based evaluation. 
+
+3.2 CrashTwin Data Collection and Composition 
+
+To evaluate collision understanding of world models under both controllable syn-thetic settings and in-the-wild conditions, we construct CrashTwin by combining a CARLA-based crash generator with a curated real-world crash corpus. 
+
+Collision Data Collection Pipeline. Our collision data collection pipeline in-cludes both simulated and real-world sources. In simulation, we reproduce seven high-frequency intersection collision types based on national pre-crash statis-tics [2]. Using CARLA, built on Unreal Engine 5, CrashTwin simulates scalable, high-fidelity scenes where vehicles approach from diverse directions and speeds. Each case is parameterized by initial position, velocity, and orientation, with stochastic perturbations that vary timing and contact geometry. The simulator enforces rigid-body dynamics with frictional contact and records full logs of ve-hicle states, 3D bounding boxes, segmentation, depth, and optical flow, enabling reproducible, physics-based evaluation. For real-world data, we collect diverse crash videos from public online sources and clean the raw data to obtain crash videos in varied environments such as intersections, highways, and rural roads. Each video is temporally segmented around the impact moment and annotated with detailed captions describing vehicle motion and scene context. Together, these simulated and real-world streams form a comprehensive and physically interpretable foundation for benchmarking collision understanding. 
+
+Data Composition and Statistics. Our final collection includes approximately 25K synthetic and 12K real-world crash sequences. The synthetic subset cov-ers 7 representative intersection collision configurations derived from national 10 N. Chen et al. 
+
+Table 1: Accident video dataset comparison. We summarize prior datasets by release year, scale (#clips and #frames), whether object bounding boxes are provided (Bboxes), whether tracklets are provided (Tracklet), whether text descriptions are pro-vided (TT), and whether the data are real or synthetic (R/S).                                                                                           
+
+> Dataset Year #Clips #Frames Bboxes Tracklet TT R/S DAD [8] 2016 1,750 175K ✓RA3D [66] 2019 3,757 208K ✓RGTACrash [34] 2019 7,720 –✓SVIENA 2[4] 2019 15,000 2.25M ✓SCTA [67] 2020 1,935 –✓RCCD [6] 2021 1,381 75K ✓✓RTRA [37] 2022 560 –✓RDADA-2000 [15] 2022 2,000 658K ✓RDoTA [65] 2022 5,586 732K partial ✓RROL [32] 2023 1,000 100K ✓RDeepAccident [56] 2023 –57K ✓SCTAD [42] 2023 1,100 –✓SMM-AU [14] 2023 11,217 2.19M ✓✓R
+> Ours 2026 38,349 7.04M ✓✓✓Both Bboxes object bounding boxes. Tracklet short-term bounding-box trajectories with identity linkage. TT text descriptions. R/S real or synthetic.
+
+pre-crash typologies, spanning diverse approach angles, impact geometries, and environmental conditions such as weather and illumination. Each synthetic event is recorded at 30 Hz with full state logs, segmentation, depth, and optical flow, ensuring frame-level physical observability. The real-world subset contains 12K curated crash clips sourced from online videos, featuring varied environments in-cluding urban intersections, highways, and rural roads. Each clip is temporally segmented around the impact frame and captioned to describe vehicle motion, collision timing, and scene context. Together, these two complementary sources provide a balanced corpus that combines physically controlled synthetic data for quantitative evaluation with visually rich real-world data for assessing real-ism and generalization. We provide further details and a few data samples in the supplementary materials. A detailed comparison with prior accident video datasets is summarized in Tab. 1. 
+
+3.3 Global Dynamic Reconstruction Pipeline. 
+
+To consistently evaluate both generated crash content and web-scale real videos, which are typically uncalibrated, we build a calibration-free pipeline that re-constructs the 3D dynamics of the collision participants from raw video, as il-lustrated in Fig. 4. Conventional 2D/3D detection and tracking pipelines often fail under the large viewpoint changes, motion blur, and occlusions present in crash footage, making them unreliable for physics analysis. Our pipeline instead integrates multiple vision foundation models which remains robust under rapid motion and provides metric trajectories for subsequent physics-based evaluation. 
+
+Actor Selection. For each collision, we must first determine the pair of vehicles that will collide, using the initial frame of the sequence. Automatic identification A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 11 
+
+Table 2: CrashTwin Evaluation Leaderboard. Open-source models are evaluated on CrashTwin-Eval, while proprietary models are evaluated on CrashTwin-Eval-Mini due to API and rate-limit constraints. Metrics are grouped into three physical families. Lower is better unless marked with ↑.                                                                      
+
+> Spatio-temporal Consistency Momentum & Energy Conservation World-dynamics Integrity
+> Models Warp Error Flow Divergence Momentum Residual Angular Residual Energy Gain Instance Stability App. Drift
+> Ewarp ↓Ediv ↓Jp↓JH↓JE↓SID ↑Dad ↓
+> Open-Source Models
+> SkyReel-1.3B [10] 0.0227 0.6103 0.9566 0.9628 0.9457 0.6660 0.3592 Wan 2.1-14B [55] 0.0179 0.6320 0.8235 0.8494 0.7864 0.6760 0.3117 Wan 2.2-5B [55] 0.0145 0.5959 0.8899 0.8975 0.8649 0.7254 0.3109
+> Cosmos-Predict2-2B [3] 0.0240 0.6748 0.8890 0.8954 0.8590 0.6129 0.3462 Cosmos-Predict2-14B [3] 0.0117 0.7180 0.6828 0.7629 0.6047 0.6737 0.3327
+> Proprietary Models
+> Google Veo 3.1 [17] 0.0097 0.6202 0.7743 0.8011 0.7460 0.7232 0.3075 Hailuo 2.3 [22] 0.0151 0.6143 0.7664 0.7812 0.7285 0.6203 0.2968
+> Seedance V1 Pro [16] 0.0166 0.6130 0.7725 0.7837 0.7209 0.6007 0.3002
+
+of collision participants is not yet reliable for current vision-language models, especially under occlusion and rapid motion. We therefore use simulator ground-truth identities in synthetic clips, and annotate collision actors manually in real crash videos. These identities are released with the test set to ensure consistent actor selection across all evaluation methods. 
+
+Tracking Fragments. We obtain initial 3D track fragments for the selected ac-tors using a 3D object tracker. These fragments provide coarse estimates of the underlying dynamics but often break under strong acceleration, occlusion, and rapid directional changes that are typical of collision events. 
+
+Relinking and Correction. To obtain coherent trajectories, fragmented 3D seg-ments are relinked using video instance segmentation, which provides more re-liable identity continuity under rapid motion. Metric depth is then applied to refine geometry and restore real-world scale, yielding stable relative 3D dynamics in the camera coordinate frame. 
+
+Global Dynamics. Relative trajectories are transformed into a global coordinate system by composing them with ego motion estimated through visual odometry. A Kalman filter is then applied to smooth positions and orientations, producing stable global dynamics for both actors. 
+
+Collision Detection. Given the reliable global trajectories, we monitor the dis-tance between the two actors and mark the first moment it falls within a safety threshold, which defines the start of the collision window. A short pre-crash, crash, and post-crash segment is then extracted and passed to our physics-based evaluation. See more details in our supplementary materials. 12 N. Chen et al. Base Model Post -trained Model Base Model Post -trained Model   
+
+> Fig. 5: Qualitative comparison before and after physics post-training. Left:
+> The base model lets the van pass through the other vehicle without transferring lateral momentum, while the post-trained model produces a realistic rightward push. Right:
+> In a mild real crash, the base model shows appearance distortion and deformation, whereas the post-trained model preserves stable geometry and identity.
+
+Benchmark Protocol. For all evaluations, we estimate camera intrinsics with MapAnything [33], obtain ego motion using DROID-SLAM [52] combined with metric-scale correction from Metric3D V2 [28], generate initial 3D object tracks with CenterTrack [73], and use SAM2 [48] to produce instance masks for relinking and refinement. These components together provide the 3D trajectories required by the physics-based metrics in Section 3.1. Collision timing is defined as the first frame in which the inter-vehicle distance falls below a predefined safety threshold. For clips where no contact occurs, collision-based momentum and energy metrics can become numerically unstable, so we assign a fixed penalty value in all non-collision cases. 
+
+## 4 Experiments 
+
+4.1 Datasets 
+
+To study how current world models perform on physically realistic collisions and how to reduce the gap between generated and real crash videos, we benchmark them on the proposed CrashTwin test split under our evaluation protocol. As summarized in Tab. 1, prior accident video datasets are restricted in scale and confined to a single data source, lacking both the volume and cross-domain diver-sity necessary for unified evaluation and model adaptation. To bridge this gap, CrashTwin contains 38K crash events, including both 25.6K synthetic and 12.6K A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 13 
+
+Table 3: Reconstruction accuracy on simulated crashes. Since no publicly ac-cessible models exist for uncalibrated collision scenarios, we incrementally add compo-nents to a basic tracking baseline. We report mean absolute trajectory error (ATE) in 3D for both scene-level and instance-level dynamics.                        
+
+> Model Configuration Scene-level ATE (m) ↓Instance-level ATE (m) ↓
+> SE (3) Sim (3) SE (3) Sim (3)
+> Basic 3D Tracking [73] 11.71 9.38 3.89 1.98 + Instance Relinking 5.96 5.10 3.73 1.89 + Kalman Filtering 5.61 4.68 3.29 1.47 + Metric Depth Correction 5.48 3.70 2.63 0.91
+
+real-world sequences, and is divided into a training split for model development and a held-out test split for evaluation. We construct a comprehensive evaluation set, CrashTwin-Eval , comprising 300 synthetic and 44 real-world videos. Each clip provides two annotated collision actors in the first frame and a textual description of the impact configuration. To accommodate closed-source models with high inference cost or limited access quotas, we further define a smaller evaluation partition, CrashTwin-Eval-Mini ,which contains randomly sampled 100 synthetic and 16 real-world videos. Both subsets are sampled from the CrashTwin test split and are used for quantitative benchmarking, while the remaining data serve as training samples. We report the physics-grounded metrics defined in Section 3.1. 
+
+4.2 Leaderboard Comparison. 
+
+We benchmark representative world models, including the open-source SkyReel-1.3B [10], Wan 2.1 [55], and Cosmos-Predict2 [3], on the CrashTwin-Eval subset, as well as proprietary models Veo 3.1 [17], Hailuo [22], and Seeddance [16], on the CrashTwin-Eval-Mini subset. Tab. 2 shows that momentum and energy resid-uals remain noticeably high across all methods, indicating that current models still struggle to exchange momentum and energy in a physically consistent way, even when some achieve relatively strong spatio-temporal consistency and world-dynamics integrity. As illustrated by the Hailuo 2.3 example in Fig. 2, the scene remains tempo-rally stable with consistent identities, yet the blue truck suddenly aligns with the sedan after impact, causing its lateral momentum to vanish. In the Seedance V1 Pro case, the police vehicle preserves appearance and identity throughout the sequence, but undergoes an implausible yaw reversal after contact, revealing a clear angular-momentum inconsistency. The Veo 3.1 example further shows two vehicles nearly coming to rest at impact before accelerating again, producing an unphysical increase in kinetic energy despite otherwise coherent frames. This gap indicates that maintaining spatio-temporal smoothness and stable object identities is easier for current world models than producing physically correct momentum and energy exchanges. It highlights the necessity of physics-grounded evaluation to reveal failures that perceptual metrics cannot capture. 14 N. Chen et al. 
+
+Table 4: Effect of post training. Metrics are grouped into three physical families. Lower is better unless marked with ↑.                                   
+
+> Spatio-temporal Consistency Momentum & Energy Conservation World-dynamics Integrity
+> Model Variant Warp Error Flow Div. Momentum Residual Angular Residual Energy Gain Instance Stability App. Drift
+> Ewarp ↓Ediv ↓Jp↓JH↓JE↓SID ↑Dad ↓
+> Base (w/o Post-training) 0.0240 0.6748 0.8890 0.8954 0.8590 0.6129 0.3462 Base (w/ Post-training) 0.0085 0.6279 0.6479 0.7296 0.5534 0.7746 0.2953
+> Ground Truth Reference 0.0075 0.6549 0.3089 0.4620 0.2502 0.8010 0.2819
+
+Effect of Post-Training. We fine-tune pretrained models on our CrashTwin train-ing split using physical consistency objectives that regularize flow-based tempo-ral coherence, spatial rigidity, and short-window momentum and energy resid-uals. Post-training brings clear gains across all physical dimensions. As seen in Tab. 4, most spatio-temporal and world-dynamics metrics move closer to the ground-truth reference, and momentum consistency also improves. This indicates that post-training improves spatio-temporal consistency and world-dynamics in-tegrity more than momentum and energy conservation, reinforcing that spatio-temporal smoothness and stable identities are easier to achieve than physically correct momentum and energy exchange. A representative qualitative example in Fig. 5 further shows that post-training restores lateral momentum transfer and stabilizes instance appearance. 
+
+4.3 Effectiveness of the Proposed Reconstruction 
+
+As no publicly accessible model can recover metric-scale dynamics from uncal-ibrated severe-collision videos, we build a basic 3D tracking baseline [73] and incrementally add our components. Tab. 3 shows large drift under heavy oc-clusion for the baseline, which is steadily reduced by instance relinking, Kalman filtering, and metric depth correction. We report SE (3) and Sim (3) errors to re-flect accuracy with fixed scale and up to a global similarity transform. The final instance-level error reaches a sub-meter regime, supporting that our pipeline re-covers stable kinematics for physics-grounded evaluation. Additional qualitative results are included in the supplementary materials. 
+
+## 5 Conclusions 
+
+This paper has introduced a physics-based benchmark for world models in crash scenarios, enabling a fine-grained examination of how generative rollouts behave under real physical constraints. We have demonstrated that our benchmark re-veals systematic weaknesses in current models, particularly in momentum ex-change, energy transfer, and post-impact dynamics, even when their visual pre-dictions appear coherent. This is achieved by decomposing crash dynamics into interpretable physical metrics and by providing a pipeline that highlights where A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 15 
+
+and how physical violations arise around high-force events. Our study shows that post-training reduces violations more in spatio-temporal consistency and world-dynamics integrity than in momentum and energy exchange, motivat-ing stronger physics priors and more reliable dynamic modeling. Altogether, CrashTwin serves as a diagnostic tool that combines data curation, physical at-tribute estimation, and physics-grounded metrics to bring physical fidelity to the forefront of world-model evaluation, paving the way for future models that are not only visually plausible but physically trustworthy. 
+
+## 6 Technical Appendices and Supplementary Material 
+
+– Section A details the proposed physics-based evaluation metrics and provides visualizations that show how violations of each metric manifest in generated rollouts and real crash videos 
+
+– Section B describes the curation of our dataset, including controllable syn-thetic collisions generated by a physically grounded engine and in-the-wild real-world traffic accidents collected from public media, along with their tex-tual captions and the overall dataset composition and statistics. 
+
+– Section C presents the global dynamic reconstruction pipeline for uncali-brated collision videos, covering 3D tracking fragments, metric depth refine-ment, ego-motion compensation, Kalman smoothing, and the extraction of pre-crash, crash, and post-crash windows. 
+
+– Section D analyzes performance by collision type, regrouping seven script-level intersection variants into three geometry-based collision families and reporting per-category physics-grounded metrics. 
+
+– Section E reports additional robustness analyses, including evaluator cali-bration, reconstruction sensitivity, friction-aware and window-size ablations, synthetic-oracle reconstruction validation with runtime, and synthetic/real split evaluation. 
+
+– Section F summarizes the 2AFC human study, including the protocol, basic statistics, and the annotation interface. 
+
+– Section G outlines the post-training setup for adapting the video-to-world model to collision scenarios, summarizing the model configuration, training corpus, and distributed optimization strategy. 
+
+## A Evaluation Metric Details 
+
+A.1 Physics-Grounded Metric Configuration 
+
+Evaluation Protocol. All physics-grounded metrics are computed on reconstructed 3D trajectories and instance masks of the selected annotated collision actors in CrashTwin-Eval and CrashTwin-Eval-Mini. For open-source models, we evaluate on a fixed set of 344 crash scenarios, including 300 synthetic simulations and 44 
+
+real-world videos. Proprietary models are assessed on a disjoint subset of 116 sce-narios ( 100 synthetic and 16 real) due to API and rate-limit constraints. Before 16 N. Chen et al. 
+
+reconstruction, every rollout is converted to a common video format, resized to 
+
+1920 ×1080 , and temporally resampled to 20 FPS. All metrics that involve tempo-ral derivatives operate on this unified time grid in the common global coordinate frame produced by our pipeline. The impact time is localized by detecting the first frame of the first valid contact event between the two reconstructed vehicles, where a frame t is considered in contact when ∥p1(t)−p2(t)∥2 ≤ 1.2( r1 +r2), with 
+
+p1(t) and p2(t) denoting the reconstructed 3D centers of the two vehicles and 
+
+ri = 12 ∥[hi, w i, l i]∥2 denoting the effective radius of vehicle i computed from the median height hi, width wi, and length li of its 3D boxes along the trajectory, and this condition must hold for three consecutive frames; subsequent metrics are evaluated in short pre- and post-impact windows around this frame so that scores remain comparable across real and synthetic crashes, while samples with no valid contact event receive a fixed penalty of 1.0 for each collision-dependent metric, namely Jp, JH , and JE .
+
+Spatio-temporal consistency metrics. On the temporally normalized 20 FPS grid described above, we consider all consecutive frame pairs along the selected an-notated vehicle tracks and estimate dense optical flow between the original RGB frames. All computations are restricted to per-frame instance masks predicted by SAM2 [48] for the two actors, with a small erosion to reduce boundary arti-facts, and frame pairs whose eroded masks contains fewer than 150 valid pixels are treated as invalid and skipped during metric computation. For Ediv , we com-pute the divergence of the flow field and take the median absolute divergence inside the mask for each frame pair, then normalize the resulting per-pair se-ries for each instance by its 95 th percentile and clip it to [0 , 1] before averaging over time and over the selected actors. The temporal warping error Ewarp reuses the same cached flow fields together with the temporal-warping routine and for-ward/backward consistency checks from [58], and we report the mean warping error over all valid frame pairs in each scenario. 
+
+Momentum and energy conservation metrics. For the momentum- and energy-based metrics, we adopt a fixed, symmetric collision window around the localized 3D impact frame. In all experiments we use 5 frames before and 5 frames after impact, which correspond to 0.25 s on each side at 20 FPS, and we apply this configuration uniformly to all models and scenarios. Within this window, pre-and post-impact translational and rotational velocities are obtained from the Kalman-smoothed 3D trajectories and yaw angles. Vehicle masses and inertial parameters for the two collision actors are fixed once the actors are selected, us-ing simulator metadata for synthetic clips and category-level nominal estimates from VLM-identified vehicle types for real-world clips. The contact point c is approximated at the first-contact frame from the two reconstructed actor boxes, and each vehicle’s center of mass is taken as the box center. These quantities are then reused across all momentum-based metrics. The residuals Jp and JH
+
+are then computed, using these windowed pre- and post-impact quantities. The kinetic-energy term JE uses the same velocity estimates, normalizes the change A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 17 
+
+Table 5: Reference-anchored normalized display. Scores are normalized for read-ability, with higher values indicating better performance.                                                                
+
+> Spatio-temporal Consistency Momentum & Energy Conservation World-dynamics Integrity
+> Model Warp Error Flow Divergence Momentum Residual Angular Residual Energy Gain Instance Stability App. Drift
+> Ewarp Ediv JpJHJESID Dad
+> SkyReel-1.3B 53.2 61.7 50.0 50.0 50.0 63.0 50.0 Wan 2.1-14B 64.8 75.5 58.2 59.1 59.2 65.0 74.6 Wan 2.2-5B 73.0 52.6 54.1 55.2 54.6 74.9 75.0 Cosmos-Predict2-2B 50.0 77.4 54.2 55.4 55.0 52.4 56.7 Cosmos-Predict2-14B 79.8 50.0 66.9 66.0 69.6 64.6 63.7 Google Veo 3.1 84.7 68.0 61.3 62.9 61.5 74.5 76.8 Hailuo 2.3 71.6 64.3 61.7 64.5 62.5 53.9 82.3 Seedance V1 Pro 67.9 63.4 61.4 64.3 62.9 50.0 80.5
+
+in kinetic energy by the pre-impact energy with a small stabilizing constant, and clips the result to [0 , 1] to avoid undue influence from rare large deviations. 
+
+World-dynamics integrity metrics. For the world-dynamics metrics, we keep the definitions of ID stability SID and appearance drift Dad unchanged and specify only the implementation details. Tracker IDs are obtained by linking Center-Track [73] trajectories with SAM2 [48] masks, and we include a dedicated label for missing detections so that gaps in tracking are treated consistently in the Simpson [49] index used for SID . For Dad , SAM2 masks are used to extract masked RGB crops for each actor; we discard frames whose mask covers less than 0.05% of the image area and uniformly subsample at most 64 valid frames per vehicle to limit redundancy. Each crop is resized to 224 × 224 and embed-ded using a CLIP image encoder [46] based on the ViT-B/32 architecture from OpenCLIP. We compute the angular distance between consecutive embeddings and average these angles along the trajectory to obtain a per-vehicle drift score, and the final Dad is a frame-count-weighted average of these scores over the selected collision actors. 
+
+Normalized metric display. To make small-valued metrics easier to compare across metric families, we provide a reference-anchored display of the main leaderboard in Tab. 5. All columns are converted so that higher is better. The ground-truth reference defines a practical upper anchor of 90, and the weakest evaluated model defines 50. For Ediv , whose ground-truth reference is non-zero, we score closeness to this reference. This table is for display only, and all con-clusions use the raw metric values. The normalized view makes the cross-family tradeoffs more visible. Cosmos-Predict2-14B obtains the strongest momentum-and-energy scores, while Google Veo 3.1 and Hailuo 2.3 are more competitive on appearance-related metrics. This confirms that the benchmark exposes complementary failure modes rather than a single dominant visual-quality axis. 18 N. Chen et al. 
+
+Qualitative intuition. To complement the formal definitions above and the ag-gregate scores reported in the main paper, we provide qualitative visualizations in Fig. 6 that illustrate how typical low-score failures manifest in concrete crash rollouts. These examples justify the design of each physics-grounded metric, clarify which kinds of violations it is most sensitive to, and explain why the corresponding numerical values are meaningful diagnostic signals rather than abstract scalar quantities. We include these visual cases in the supplementary material because they require more space than is available in the main paper and provide additional interpretability for readers who wish to inspect the met-rics more closely. We briefly summarize the characteristic error pattern shown in each column of Fig. 6: 
+
+– Temporal warping. The first column of Fig. 6 shows frames in which a severely distorted vehicle appears abruptly in free space, as if geometry from a future time step had been injected into an earlier frame while the rest of the scene remains in a pre-impact state. This violates temporal continuity and indicates a breakdown of frame-to-frame alignment. 
+
+– Rigid distortion. The second column illustrates non-physical soft-body de-formation, where vehicles stretch, compress, or twist as if made of elastic material rather than rigid bodies. Both the red pickup and the white van exhibit near-complete geometric collapse under impact, which is inconsistent with realistic crash-induced damage. 
+
+– Momentum imbalance. In the third column, the striking vehicle retains nearly all of its pre-impact speed after contact, whereas the impacted vehicle exhibits very limited forward displacement or deflection. The resulting post-impact motion contradicts the expected redistribution of linear momentum between the two actors. 
+
+– Angular inconsistency. The fourth column shows a case where the con-tacted vehicle’s rear swings laterally while its front remains effectively fixed in place, so that the car appears to rotate around an incorrect pivot. This behavior is inconsistent with the torque direction and rotation center induced by the actual contact point. 
+
+– Energy increase. The fifth column depicts vehicles that exhibit exagger-ated motion immediately after collision, accompanied by strong motion blur and enlarged displacements. This pattern reflects a non-physical increase in kinetic energy within the system instead of the expected dissipation. 
+
+– Appearance drift. The sixth column shows a vehicle whose rear geometry gradually changes from a sedan-like profile into a taller, SUV-shaped contour as the sequence progresses. Such temporal drift in shape, texture, and overall visual identity reveals long-horizon inconsistencies in appearance modeling for a single physical object. 
+
+– Identity instability. The last column visualizes identity switches, where the same black vehicle transitions from ID=1 to ID=6. These discontinu-ities indicate failures in tracking the same physical object with a consistent instance-level identity, motivating the design of the ID stability metric. A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 19 Rigid 
+
+> Distortion
+> Temporal
+> Warping
+> Momentum
+> Imbalance
+> Angular
+> Inconsistency
+> Energy
+> Increase
+> Appearance
+> Drift
+> Identity
+> Switch
+
+Fig. 6: Qualitative illustration of typical failure patterns captured by our physics-grounded evaluation metrics. Each column visualizes a generated crash sequence that obtains a low score for the corresponding metric, covering temporal warping, rigid distortion, momentum imbalance, angular inconsistency, non-physical energy increase, appearance drift, and identity instability, and providing an intuitive reference for interpreting our physics-grounded evaluation. 
+
+Together, these qualitative examples provide concrete reference points for in-terpreting the quantitative physics-grounded scores reported in later tables and figures, and they help relate metric values to recognizable physical and percep-tual failure modes in generated crash videos. 
+
+## B Data Curation 
+
+Synthetic collision videos. We instantiate seven intersection collision types de-rived from the NHTSA pre-crash typology using parametric CARLA [13] scripts on multiple four-way and T-junction across the CARLA simulator’s Town 10 urban map. Each scenario contains two vehicles that undergo the collision and a third vehicle that simply follows behind as an observer. We enumerate com-binations of vehicle models and turning or straight-line speeds between 25 and 50 km/h in 5 km/h increments, randomly shuffle all candidates with a fixed seed, and sub-sample about 34.3K scenarios; after simulation we discard cases where no collision occurs, yielding roughly 25K synthetic crash clips. These clips are in-cluded in the CrashTwin training split, and a 300-clip subset from the remainder forms the synthetic component of our core evaluation set, together with logged simulator states for the involved vehicles. 
+
+Real-world crash videos. In addition to the synthetic scenarios, we collect 12,683 real-world crash clips from public online platforms that host dashcam-like and traffic-camera footage. Since many uploads are compilation-style videos contain-ing multiple accidents, we apply Gemini 2.5 Flash [11] to automatically identify 20 N. Chen et al. 
+
+Table 6: Per-collision-category physics-grounded metrics on synthetic inter-sections in CrashTwin-Eval. For each collision family we compare a baseline world model and our method in terms of spatio-temporal consistency ( Ewarp ↓, Ediv ↓), mo-mentum and energy conservation ( Jp ↓, JH ↓, JE ↓), and world-dynamics integrity (SID ↑, Dad ↓). Lower values indicate better performance for all error terms and higher values are better for SID . Right-angle crossing and opposing-path / head-on-like conflicts exhibit the largest gains in physics-grounded metrics, while shallow-angle sideswipe / glancing collisions remain the most challenging.                                                            
+
+> Spatio-temporal Consistency Momentum & Energy Conservation World-dynamics Integrity
+> Collision category Model Warp Error Flow Div. Momentum Residual Angular Residual Energy Gain Instance Stability App. Drift
+> Ewarp ↓Ediv ↓Jp↓JH↓JE↓SID ↑Dad ↓
+> Right-angle cross. Baseline 0.0301 0.6665 0.9538 0.9551 0.9296 0.6017 0.3480 Ours 0.0096 0.6216 0.6111 0.6694 0.4898 0.7515 0.3053 Opposing-path / head-on-like Baseline 0.0229 0.6667 0.8447 0.8690 0.8042 0.6177 0.3462 Ours 0.0082 0.6325 0.6460 0.7449 0.5218 0.8316 0.2871 Sideswipe / glancing Baseline 0.0262 0.6744 0.9427 0.9355 0.9141 0.5894 0.3611 Ours 0.0090 0.6173 0.6332 0.7358 0.5638 0.7572 0.2944
+
+the start and end of each individual collision and extract a short clip around that event, yielding temporally localized crash snippets. We use 44 clips as the real component of our evaluation sets, while the remaining 12,639 clips are used in the CrashTwin training splits alongside the synthetic data. The real-world portion covers a broad range of road geometries and traffic conditions, including urban intersections, multilane highways, and lower-speed urban or rural segments. 
+
+Captions and metadata. Synthetic clips are annotated with text generated di-rectly from simulator metadata to describe the collision type, involved vehicles, and physical parameters such as approach speeds. For real world clips, we apply Gemini 2.5 Flash to produce textual summaries that capture the scene context, participants, and pre impact motion. Beyond textual descriptions, the dataset metadata incorporates time varying kinematic action labels represented by per frame 3D bounding boxes for the colliding vehicles. These geometric trajecto-ries implicitly encode the evolving physical state of the actors, capturing their precise position, orientation, velocity, and motion paths over time. While these physical signals are directly exported from the simulation engine for synthetic clips, they are recovered using our proposed pipeline for the real world clips. Together, the semantic captions and structured kinematic metadata provide a concrete foundation to support scenario understanding, rigorous evaluation, and detailed qualitative analysis. 
+
+## C Global Dynamic Reconstruction Methodology 
+
+This section describes the global dynamic reconstruction pipeline that underpins our physics-based metrics. Starting from an uncalibrated crash video and the two annotated collision actors, the pipeline recovers temporally smooth, metric 3D trajectories and yaw angles in a common world coordinate frame. Reconstruc-tion proceeds in four stages: track re-linking to obtain temporally consistent 3D A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 21 3D Track 
+
+> Fragments
+> 3D
+> Instance
+> Track
+> Relative
+> Dynamic
+> Raw Global
+> Dynamic
+> Global
+> Dynamic
+> Ego -motion
+> Compensation
+> Bbox Depth
+> Correction
+> Kalman
+> Filtering
+> Track
+> Re -linking
+
+Fig. 7: Global dynamic reconstruction stages. For a representative collision, we visualize the intermediate 3D trajectories after each stage of the reconstruction pipeline. From top to bottom, the rows show initial 3D track fragments, re-linked 3D instance tracks guided by SAM2 masks, relative dynamics after metric depth correction, raw global trajectories after ego motion compensation, and the final Kalman-smoothed global dynamics in the world coordinate frame. The figure illustrates how the pipeline progressively removes identity switches, depth-scale errors, and ego-motion artefacts to yield stable world-frame trajectories that are suitable for physics-based evaluation. 
+
+instance tracks, metric depth correction to recover physically meaningful rela-tive motion, ego-motion compensation to map trajectories into a global frame, and Kalman filtering [30] to suppress residual noise and outliers. The resulting trajectories serve as the sole input for the momentum, energy, and angular mo-mentum scores in the main paper. Fig. 7 visualizes these four stages and shows how the pipeline progressively converts fragmented, noisy tracks into robust global dynamics suitable for physics-based evaluation. 
+
+C.1 Implementation Details 
+
+We briefly summarize implementation choices that are not detailed in the main paper. In all cases we reconstruct only the two collision actors. For synthetic scenarios we use simulator-provided actor identifiers. For real crashes annotators select the two vehicles in the first frame; these identities are then fixed and used to filter both detector outputs and SAM2 [48] mask tracks. 
+
+Track relinking. We use SAM2 video masks as long-range identity cues and treat monocular 3D detector tracks as candidates that can be merged. For each frame, we derive a tight 2D box from the SAM2 mask and compare it with the 2D pro-jections of all detection boxes using an overlap score defined as the maximum of intersection-over-union and containment. Matches with overlap below a re-laxed threshold (0.1) are ignored; the remaining matches are grouped into runs of consecutive frames, and we keep only runs whose per-frame overlap exceeds a 22 N. Chen et al. 
+
+stricter threshold (0.2) and whose length is at least six frames. We then greedily select the longest high-overlap runs and relabel their detections with a single tracking identifier tied to the SAM2 car, discarding short isolated matches as spurious. This procedure is applied only to the two annotated collision actors, so it resolves ID switches within their trajectories without changing which physical vehicles are evaluated, and corresponds to the second row of Fig. 7, where the relinked instance tracks are visualized. 
+
+Metric depth correction. Depth maps are predicted with Metric3D [28]. When a SAM2 mask is available, we randomly sample up to K = 2000 pixels inside the mask; otherwise we sample inside the projected 2D detector box. Sampled depths are filtered by percentile clipping at the 5th and 95th percentiles and by an absolute range constraint [1 m , 200 m] . If fewer than 20 valid samples re-main, the frame is marked unreliable and the original monocular depth is kept. Otherwise, we compute a truncated median of the remaining depths and update only the distance of the 3D box center along the viewing ray, leaving the 2D footprint, box size, and yaw unchanged. This improves metric scale and relative spacing between vehicles without introducing artificial changes in object shape, and corresponds to the third row of Fig. 7, where the raw and depth-corrected trajectories are visualized. 
+
+Ego-motion composition and global coordinates. Camera motion is estimated with DROID-SLAM [52]. Since SLAM is up to an unknown scale, we align it to metric depth by a least-squares fit between SLAM-inferred depths for static background points and Metric3D predictions. The first valid camera pose after SLAM initialization is fixed as the origin of a world coordinate system; the world 
+
+z-axis is kept vertical. For each frame, the 3D box center in camera coordinates is transformed with the corresponding camera-to-world matrix to obtain raw global trajectories for both actors. We also transform finite-difference velocities, which are later used directly in momentum and energy computation. This stage corresponds to the fourth row of Fig. 7, where the raw global trajectories after ego-motion compensation are visualized. 
+
+Kalman smoothing of positions and yaw. Finally, we apply probabilistic smooth-ing to reduce frame-level jitter. For each actor we run a standard forward Kalman filter followed by a Rauch–Tung–Striebel (RTS) [47] backward pass on a constant-velocity state xt = [ pt, vt]⊤ ∈ R6 with white-noise acceleration. Pro-cess and observation covariances are chosen such that a displacement of roughly one vehicle length over five frames is treated as typical; the physics-based metrics are insensitive to moderate changes of these hyperparameters. Yaw angles are handled separately: we first unwrap them to a continuous sequence, run a one-dimensional Kalman filter on yaw and yaw rate, skip updates in frames where the 3D box yaw is unstable (strong occlusion or near-frontal views), and finally wrap the result back to [−π, π ]. The smoothed world-frame positions and yaw sequences correspond to the bottom row of Fig. 7 and are the trajectories used in all momentum-, energy-, and angular-momentum-based scores. A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 23  
+
+> Fig. 8: Additional qualitative reconstruction results. Each column corresponds to one scenario. The top row shows the ground-truth bird’s-eye-view trajectories, and the bottom row shows our reconstructed trajectories. Black denotes the observer ve-hicle, while red and blue denote the two collision actors. Across diverse cases, the reconstructed trajectories preserve the overall interaction geometry, collision location, and coarse post-impact motion trends with good fidelity.
+
+C.2 Additional Qualitative Reconstruction Results 
+
+To complement the stage-wise visualization in Fig. 7, we provide additional qual-itative reconstruction results on representative collision scenarios in Fig. 8. Each column shows one scenario, with the top row denoting the ground-truth bird’s-eye-view trajectories and the bottom row showing our reconstructed global tra-jectories. In all panels, the black trajectory denotes the observer vehicle, while the red and blue trajectories denote the two collision actors. These examples illustrate that the proposed reconstruction pipeline recovers the overall interac-tion geometry, including vehicle approach patterns, collision regions, and coarse post-impact motion trends, across diverse crash cases. 
+
+## D Collision-Type Analysis 
+
+In the main paper we report aggregate results over the full CrashTwin test split. Here we provide a more fine-grained analysis by collision type and visu-alise representative examples. Our CARLA scripts instantiate seven directional intersection collision variants derived from the NHTSA pre-crash typology [2]. These script-level types differ in which arm the counterpart vehicle uses (on-coming, left, or right), whether the ego vehicle proceeds straight, turns left, or turns right, and whether the layout is a four-leg or a T-junction. For analysis we regroup these seven variants into three geometry-based collision families accord-ing to the relative heading and impact angle between the two collision actors: near right-angle crossing impacts, opposing-path or head-on-like conflicts, and shallow-angle sideswipe or glancing collisions. 24 N. Chen et al. 
+
+D.1 Collision-Category Experimental Results 
+
+We aggregate the seven script-level intersection types into three collision cate-gories: 
+
+– Right-angle crossing. The lead accident vehicle proceeds straight and is struck from the side by a vehicle that crosses from the left or from the right at approximately a right angle on a four-leg intersection. These correspond to the two “straight versus crossing straight” script variants and yield classic T-bone impacts. 
+
+– Opposing-path / head-on-like conflicts. The lead accident vehicle turns left and collides almost frontally with an oncoming straight vehicle or with a vehicle approaching from the left arm in such a way that the relative heading at impact is close to opposing. This category groups two script variants (left-turn versus oncoming straight, and left-turn versus left-arm straight, on both four-leg and T-junction layouts) whose approach geometry is closer to a head-on or front-corner conflict than to a pure side impact. 
+
+– Shallow-angle sideswipe / glancing collisions. Both vehicles travel in roughly the same direction at impact and primarily graze along their sides while turning or merging. This category includes the remaining three script variants (left-turn versus right-arm straight, right-turn versus oncoming left-turn, and right-turn versus left-arm straight, each on four-leg and T-junction layouts), where the two actors follow similar turning paths and only make shallow-angle contact. For each collision category we recompute the main evaluation metrics on the corresponding subset of synthetic intersections and compare our post-trained model to the baseline world model [3]. Table 6 reports representative physics-grounded scores for each category. Numerically, right-angle crossing and opposing-path categories show the most pronounced relative gains. For right-angle crossings, our model reduces the mo-mentum residual from 0.95 to 0.61 and the energy-gain score from 0.93 to 0.49 ,while also lowering the warp error from 0.03 to 0.01 and increasing ID stability from 0.60 to 0.75 . Opposing-path configurations exhibit similarly strong im-provements: Jp drops from 0.84 to 0.65 , JE from 0.80 to 0.52 , and SID increases from 0.62 to 0.83 , accompanied by a reduction in appearance drift from 0.35 
+
+to 0.29 . In these two categories, the approach geometry and impact configura-tion are tightly constrained by the intersection layout, so more accurate global reconstruction of approach and rebound motion directly translates into lower momentum and energy residuals and more stable identities. Shallow-angle sideswipe and glancing collisions remain comparatively more challenging. Although our model still lowers Jp from 0.94 to 0.63 and JE from 
+
+0.91 to 0.56 , and improves SID from 0.59 to 0.76 with a noticeable reduction in appearance drift from 0.36 to 0.29 , the residual momentum and energy scores re-main higher than in right-angle crossings and the flow-divergence and appearance metrics show smaller absolute gains. This pattern reflects the intrinsic ambigu-ity of near-parallel trajectories and shallow contact angles, where small errors A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 25 
+
+in lateral offset, depth, or mask alignment can change a light sideswipe into an apparent near-miss, and are therefore less easily corrected by improvements in the reconstruction pipeline. 
+
+## E Additional Robustness Analyses 
+
+This section reports additional robustness analyses used to validate the reliability of our reconstruction-based evaluator. These analyses are not used to redefine the benchmark metrics; they quantify calibration, error propagation, physical-model choices, window sensitivity, and reconstruction cost. 
+
+E.1 Evaluator Calibration and Confidence 
+
+We compare scores computed from simulator metadata and from reconstructed outputs on the same synthetic videos in Tab. 7. The gap measures calibration error, while the confidence intervals of benchmark means remain smaller than the median model gaps for the reported metrics. 
+
+Table 7: Evaluator calibration and score confidence. Simulator scores use simu-lator metadata, while reconstruction scores use the full reconstruction pipeline on the same synthetic videos.                      
+
+> Metric Simulator metadata Reconstruction pipeline 95% confidence interval Median model gap
+> Jp0.0805 0.2721 ±0.0401 0.1034
+> JH0.2067 0.3259 ±0.0370 0.0714
+> JE0.0000 0.2051 ±0.0505 0.1214
+> SID 1.0000 0.8076 ±0.0209 0.0482
+> Dad 0.2710 0.2810 ±0.0119 0.0236
+
+The largest gaps appear in the collision-dependent physics scores, which is ex-pected because they require metric-scale motion recovery from monocular videos. However, the confidence intervals of benchmark means remain below the median model gaps for all reported metrics, indicating that reconstruction error is not large enough to explain the main performance differences. 
+
+E.2 Reconstruction Sensitivity Analysis 
+
+We perturb reconstructed 3D vehicle states to test how reconstruction errors propagate to physics scores. The 1× perturbation scale is estimated from syn-thetic scenes by matching reconstructed vehicle frames to simulator annotations and measuring attribute differences, including center/depth, yaw/size, and track-ing failures. We also scale the combined perturbation to 2× and 5× as stress tests. As shown in Tab. 8, empirical 1× combined noise yields controlled changes, while larger perturbations produce larger deviations. 26 N. Chen et al. 
+
+Table 8: Reconstruction sensitivity analysis. Entries report mean absolute score changes after perturbing reconstructed 3D states.                                  
+
+> Perturbation source Scale Mean |∆J p|Mean |∆J H|Mean |∆J E|
+> Center/depth 1×0.138 0.206 0.101 Orient./size 1×0.000 0.087 0.000 Tracking 1×0.055 0.073 0.062 Combined 1×0.165 0.232 0.141 Combined 2×0.235 0.291 0.214 Combined 5×0.311 0.350 0.319
+
+Table 9: Friction-aware momentum ablation. We report raw and friction-aware 
+
+Jp values, together with the resulting rank changes.                                
+
+> Model Raw
+> Jp
+> Friction-aware
+> Jp
+> Change
+> ∆J p
+> Raw rank Friction-aware rank Rank shift
+> Cosmos-Predict2-14B 0.6828 0.5661 -0.1167 110Wan 2.1-14B 0.8235 0.7756 -0.0479 220Cosmos-Predict2-2B 0.8890 0.8566 -0.0323 34+1 Wan 2.2-5B 0.8899 0.8563 -0.0336 43-1 SkyReel-1.3B 0.9566 0.9434 -0.0132 550
+
+The perturbation study shows that position and depth errors mainly affect 
+
+Jp and JE through velocity estimation, while orientation and size errors primar-ily influence JH . Tracking failures have smaller but non-negligible effects, and the monotonic increase from 1× to 5× confirms that the evaluator responds to reconstruction degradation in the expected direction. 
+
+E.3 Friction-Aware Momentum Ablation 
+
+Exact tire-friction recovery from uncalibrated video is under-constrained because rolling or sliding friction mode and road condition are unobserved. We therefore test a conservative friction-aware correction by subtracting the maximum tire-road impulse Ifric = P 
+
+> i
+
+μm ig∆t from the momentum residual, using μ = 0 .8 as a standard accident-reconstruction value [60]. Table 9 shows that friction-aware residuals remain large and the ranking is nearly unchanged. The correction lowers Jp for every model, but the remaining friction-aware residuals are still large. Thus, tire-road friction explains only a limited part of the momentum violations, and the original ranking is stable except for one swap between two very close models. 
+
+E.4 Window-Size Ablation 
+
+To validate our impact-window choice, we ablate Jp, JH , and JE with ±3, ±5,and ±7 frame windows, where ±X denotes X frames before and after impact. Shorter windows stay closer to the impact and include less post-impact sliding, while longer windows include more post-impact motion and yield slightly larger residuals. We use ±5 frames because it aligns with the short post-event Delta-V window in the U.S. federal event-data-recorder standard [44]. Table 10 shows A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 27 
+
+Table 10: Window-size ablation. Ranks are reported in the ±3/ ± 5/ ± 7 order.                                                                
+
+> Model Metric ±3
+> frames
+> ±5
+> frames
+> ±7
+> frames Rank
+> Cosmos-Predict2-14B
+> Jp0.6605 0.6856 0.7089 1/1/1
+> JH0.7088 0.7522 0.7677 1/1/1
+> JE0.6021 0.5967 0.5971 1/1/1 Wan 2.1-14B
+> Jp0.7984 0.8138 0.8272 2/2/2
+> JH0.8182 0.8335 0.8448 2/2/2
+> JE0.7636 0.7688 0.7736 2/2/2 Wan 2.2-5B
+> Jp0.8749 0.8853 0.8943 3/3/4
+> JH0.8811 0.8901 0.8995 3/3/4
+> JE0.8491 0.8567 0.8628 3/4/4 Cosmos-Predict2-2B
+> Jp0.8754 0.8871 0.8940 4/4/3
+> JH0.8876 0.8917 0.8990 4/4/3
+> JE0.8524 0.8532 0.8533 4/3/3 SkyReel-1.3B
+> Jp0.9380 0.9382 0.9391 5/5/5
+> JH0.9427 0.9461 0.9484 5/5/5
+> JE0.9227 0.9212 0.9138 5/5/5
+
+Table 11: Synthetic oracle reconstruction validation and runtime. Errors are measured against simulator metadata on matched synthetic clips; runtime is measured per video on one NVIDIA RTX A5000 GPU.                       
+
+> Configuration Mean absolute error Runtime (s/video) Inter-vehicle distance (m) Inter-vehicle velocity (m/s) Closing velocity (m/s) Vehicle speed (m/s)
+> CenterTrack 7.31 26.29 25.54 17.95 13.27 + Instance Relinking 5.97 19.48 18.79 15.21 35.03 + Kalman Filtering 5.73 6.18 6.10 4.95 40.89 + Metric Depth Correction 3.09 3.92 3.98 4.09 167.55
+
+stable model ordering across these choices, supporting the middle ±5 setting as a stable benchmark choice. 
+
+E.5 Synthetic Oracle Reconstruction Validation and Runtime 
+
+We further validate our reconstruction pipeline on synthetic clips with simulator ground truth. Beyond the trajectory ATE reported in the main paper, Tab. 11 reports inter-vehicle distance, relative velocity, closing velocity, and per-vehicle speed errors. The results show that Kalman filtering brings the largest velocity gains, while metric depth correction gives the largest distance gain. The same table reports cumulative runtime per video on one NVIDIA RTX A5000 GPU, showing the accuracy-compute tradeoff of each added module. 
+
+E.6 Synthetic and Real Split Evaluation 
+
+To separate simulator-controlled and in-the-wild evaluation settings, we report synthetic and real split results in Tab. 12. The split results show that synthetic and real clips stress different aspects of the models: several models obtain lower 28 N. Chen et al. 
+
+Table 12: Synthetic and real split evaluation. Open-source models are evaluated on 300 synthetic and 44 real clips, while proprietary models are evaluated on 100 synthetic and 16 real clips due to API limits. Lower values are better except for SID .                                                                                                                        
+
+> Spatio-temporal Consistency Momentum & Energy Conservation World-dynamics Integrity
+> Model Subset Warp Error Flow Div. Momentum Residual Angular Residual Energy Gain Instance Stability App. Drift
+> Ewarp ↓Ediv ↓Jp↓JH↓JE↓SID ↑Dad ↓
+> SkyReel-1.3B Synthetic 0.0229 0.6175 0.9564 0.9640 0.9440 0.6637 0.3555 Real 0.0214 0.5606 0.9579 0.9545 0.9577 0.6850 0.3845 Wan 2.1-14B Synthetic 0.0188 0.6287 0.8306 0.8498 0.7866 0.6792 0.3118 Real 0.0104 0.6582 0.7524 0.8466 0.7848 0.6528 0.3108 Wan 2.2-5B Synthetic 0.0155 0.5939 0.9073 0.9087 0.8834 0.7229 0.3132 Real 0.0071 0.6097 0.7453 0.8210 0.7388 0.7422 0.2951 Cosmos-Predict2-2B Synthetic 0.0263 0.6690 0.9111 0.9180 0.8796 0.6036 0.3514 Real 0.0081 0.7156 0.6993 0.7373 0.7146 0.6765 0.3098 Cosmos-Predict2-14B Synthetic 0.0124 0.7195 0.6855 0.7629 0.5950 0.6749 0.3333 Real 0.0071 0.7078 0.6583 0.7630 0.6741 0.6651 0.3285 Google Veo 3.1 Synthetic 0.0105 0.6184 0.7740 0.7862 0.7379 0.7367 0.3073 Real 0.0044 0.6309 0.7774 0.9004 0.8000 0.6330 0.3090 Hailuo 2.3 Synthetic 0.0166 0.6130 0.7725 0.7837 0.7209 0.6007 0.3002 Real 0.0053 0.6225 0.7112 0.7648 0.7797 0.7428 0.2739
+
+visual warp errors on real clips, while physics scores remain challenging in both splits. This supports reporting the two settings separately rather than averaging away their distinct failure patterns. 
+
+## F Human Evaluation. 
+
+To better quantify how our physics-based metrics relate to perceptual judgments, we conduct a two-alternative forced-choice (2AFC) [19] user study, following re-cent work [12] on human evaluation for video generation. We recruit 10 graduate participants, each of whom annotates around 100 queries, yielding a total of 1,000 pairwise responses. For every query, we present two rollouts from the same initial scenario side by side, anonymize model identities, and ask annotators: “Which video seems more physically reasonable?”. The web interface used in this study is illustrated in Fig. 9. Let T be the total number of annotated pairs, and let (At, B t, y t) denote the two rollouts and the human choice for pair t ∈ { 1, . . . , T }, where yt ∈ { A, B }. For a given metric k, which induces a deterministic preference mk(At, B t) ∈ { A, B }
+
+on each pair, we define its 2AFC accuracy as 
+
+Acc (k) 
+
+> 2AFC
+
+= 1
+
+T
+
+> T
+
+X
+
+> t=1
+
+1mk(At, B t) = yt
+
+, (8) where 1[·] is the indicator function. This is the standard 2AFC proportion-correct measure: it directly reflects how often the metric selects the same rollout as human annotators. In all our analyses, we simply use Acc (k) 
+
+> 2AFC
+
+as the human-alignment score for metric k, and report these scores for both physics-based and appearance-A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 29  
+
+> Fig. 9: User interface for the human 2AFC study. Each page displays two rollouts from the same scenario (left: A, right: B) with anonymized model identities, together with the question “Which video seems more physically reasonable?” and radio buttons for selecting A or B. Annotators can replay both videos before answering, and a progress bar at the top indicates completion status of the session.
+
+based metrics to compare how well each family agrees with human judgements of physical realism. 
+
+## G Post Training Details 
+
+Post training is performed on the Cosmos Predict2 2B video to world model [3] with LoRA [27] on 8 × A100 GPUs. LoRA is configured with rank 16 and alpha 16 and is injected into the attention projections together with the 2 MLP layers inside each transformer block. The post-training corpus consists of collision-focused video clips with at least 93 frames. Clips shorter than 93 frames are padded by repeating the final frame until reaching a length of 93, after which all clips are resized to 704 ×1280 . Training uses batch size 1 under fully sharded data parallelism with context parallel size 4. Optimization relies on Fused AdamW [41] with a learning rate of 2−9.5 together with a linear schedule over 10000 iterations. During inference the LoRA weights are merged into the base model and the standard video to world generation pipeline is applied. 
+
+Acknowledgements. This work was supported in part by GPU hardware and cloud credits provided to the Texas A&M University PHAI Lab and TACO Lab through the NVIDIA Academic Grant Program. We also acknowledge computa-tional resources provided by the Texas A&M VISION GPU Cluster. Z. Fan was 30 N. Chen et al. 
+
+supported in part by research gifts from Meta and the US AI Glasses Impact Grants program. J. Hong is supported by NAIRR250526. Z. Wang is supported by DAPRA ANSR (RTX CW2231110), DARPA TIAMAT (HR0011-24-9-0431), ARL StAmant (W911NF-23-S-0001), as well as the NSF AI Institute for Foun-dations of Machine Learning (IFML). 
+
+## References 
+
+1. Waymo safety report. Tech. rep., Waymo LLC (Dec 2021), https://storage. googleapis.com/waymo- uploads/files/documents/safety/2021- 12- waymo-safety-report.pdf , accessed 2026-03-04 2. Administration, N.H.T.S., et al.: Pre-crash scenario typology for crash avoidance research. DOT HS 810 (767), 4 (2007) 3. Agarwal, N., Ali, A., Bala, M., Balaji, Y., Barker, E., Cai, T., Chattopadhyay, P., Chen, Y., Cui, Y., Ding, Y., et al.: Cosmos world foundation model platform for physical ai. arXiv preprint arXiv:2501.03575 (2025) 4. Aliakbarian, M.S., Saleh, F.S., Salzmann, M., Fernando, B., Petersson, L., Ander-sson, L.: Viena: A driving anticipation dataset. In: Asian Conference on Computer Vision. pp. 449–466. Springer (2018) 5. Bansal, H., Lin, Z., Xie, T., Zong, Z., Yarom, M., Bitton, Y., Jiang, C., Sun, Y., Chang, K.W., Grover, A.: Videophy: Evaluating physical commonsense for video generation. arXiv preprint arXiv:2406.03520 (2024) 6. Bao, W., Yu, Q., Kong, Y.: Uncertainty-based traffic accident anticipation with spatio-temporal relational learning. In: Proceedings of the 28th ACM International Conference on Multimedia. pp. 2682–2690 (2020) 7. Brach, R.M., Brach, R.M.: A review of impact models for vehicle collision (1987) 8. Chan, F.H., Chen, Y.T., Xiang, Y., Sun, M.: Anticipating accidents in dashcam videos. In: Asian conference on computer vision. pp. 136–153. Springer (2016) 9. Chatterjee, A.: Rigid body collisions: some general considerations, new collision laws, and some experimental data. Cornell University (1997) 10. Chen, G., Lin, D., Yang, J., Lin, C., Zhu, J., Fan, M., Zhang, H., Chen, S., Chen, Z., Ma, C., et al.: Skyreels-v2: Infinite-length film generative model. arXiv preprint arXiv:2504.13074 (2025) 11. Comanici, G., Bieber, E., Schaekermann, M., Pasupat, I., Sachdeva, N., Dhillon, I., Blistein, M., Ram, O., Zhang, D., Rosen, E., et al.: Gemini 2.5: Pushing the frontier with advanced reasoning, multimodality, long context, and next generation agentic capabilities. arXiv preprint arXiv:2507.06261 (2025) 12. Cong, W., Zhu, H., Wang, P., Liu, B., Xu, D., Wang, K., Pan, D.Z., Wang, Y., Fan, Z., Wang, Z.: Can test-time scaling improve world foundation model? arXiv preprint arXiv:2503.24320 (2025) 13. Dosovitskiy, A., Ros, G., Codevilla, F., Lopez, A., Koltun, V.: Carla: An open urban driving simulator. In: Conference on robot learning. pp. 1–16. PMLR (2017) 14. Fang, J., Li, L.l., Zhou, J., Xiao, J., Yu, H., Lv, C., Xue, J., Chua, T.S.: Abductive ego-view accident video understanding for safe driving perception. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 22030–22040 (2024) 15. Fang, J., Yan, D., Qiao, J., Xue, J., Yu, H.: Dada: Driver attention prediction in driving accident scenarios. IEEE transactions on intelligent transportation systems 
+
+23 (6), 4959–4971 (2021) A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 31 16. Gao, Y., Guo, H., Hoang, T., Huang, W., Jiang, L., Kong, F., Li, H., Li, J., Li, L., Li, X., et al.: Seedance 1.0: Exploring the boundaries of video generation models. arXiv preprint arXiv:2506.09113 (2025) 17. Google DeepMind: Veo 3.1. Technical report, Google DeepMind (2026), https: //blog.google/innovation-and-ai/technology/ai/veo-3-1-ingredients-to-video/ , released: January 13, 2026. Accessed: March 5, 2026 18. Gosselin, A., Luo, G.Y., Lara, L., Golemo, F., Nowrouzezahrai, D., Paull, L., Jolicoeur-Martineau, A., Pal, C.: Ctrl-crash: Controllable diffusion for realistic car crashes. arXiv preprint arXiv:2506.00227 (2025) 19. Green, D.M., Swets, J.A., et al.: Signal detection theory and psychophysics, vol. 1. Wiley New York (1966) 20. Guo, Z., Zhou, Y., Gou, C.: Drivinggen: Efficient safety-critical driving video gen-eration with latent diffusion models. In: 2024 IEEE International Conference on Multimedia and Expo (ICME). pp. 1–6. IEEE (2024) 21. Hafner, D., Lillicrap, T., Fischer, I., Villegas, R., Ha, D., Lee, H., Davidson, J.: Learning latent dynamics for planning from pixels. In: International conference on machine learning. pp. 2555–2565. PMLR (2019) 22. HailuoAI: Hailuo. https://hailuoai.video/ (2024), accessed: 2025-02-24 23. Han, H., Li, S., Chen, J., Yuan, Y., Wu, Y., Deng, Y., Leong, C.T., Du, H., Fu, J., Li, Y., et al.: Video-bench: Human-aligned video generation benchmark. In: Pro-ceedings of the Computer Vision and Pattern Recognition Conference. pp. 18858– 18868 (2025) 24. Hassan, M., Stapf, S., Rahimi, A., Rezende, P., Haghighi, Y., Brüggemann, D., Katircioglu, I., Zhang, L., Chen, X., Saha, S., et al.: Gem: A generalizable ego-vision multimodal world model for fine-grained ego-motion, object dynamics, and scene composition control. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 22404–22415 (2025) 25. Heusel, M., Ramsauer, H., Unterthiner, T., Nessler, B., Hochreiter, S.: Gans trained by a two time-scale update rule converge to a local nash equilibrium. Advances in neural information processing systems 30 (2017) 26. Hu, A., Russell, L., Yeo, H., Murez, Z., Fedoseev, G., Kendall, A., Shotton, J., Corrado, G.: Gaia-1: A generative world model for autonomous driving. arXiv preprint arXiv:2309.17080 (2023) 27. Hu, E.J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., Chen, W., et al.: Lora: Low-rank adaptation of large language models. Iclr 1(2), 3 (2022) 28. Hu, M., Yin, W., Zhang, C., Cai, Z., Long, X., Chen, H., Wang, K., Yu, G., Shen, C., Shen, S.: Metric3d v2: A versatile monocular geometric foundation model for zero-shot metric depth and surface normal estimation. IEEE Transactions on Pattern Analysis and Machine Intelligence 46 (12), 10579–10596 (2024) 29. Huang, Z., He, Y., Yu, J., Zhang, F., Si, C., Jiang, Y., Zhang, Y., Wu, T., Jin, Q., Chanpaisit, N., et al.: Vbench: Comprehensive benchmark suite for video gener-ative models. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 21807–21818 (2024) 30. Kalman, R.E.: A new approach to linear filtering and prediction problems (1960) 31. Kang, B., Yue, Y., Lu, R., Lin, Z., Zhao, Y., Wang, K., Huang, G., Feng, J.: How far is video generation from world model: A physical law perspective, 2024. URL https://arxiv. org/abs/2411.02385 2, 36 32. Karim, M.M., Yin, Z., Qin, R.: An attention-guided multistream feature fusion network for early localization of risky traffic agents in driving videos. IEEE Trans-actions on Intelligent Vehicles 9(1), 1792–1803 (2023) 32 N. Chen et al. 33. Keetha, N., Müller, N., Schönberger, J., Porzi, L., Zhang, Y., Fischer, T., Knapitsch, A., Zauss, D., Weber, E., Antunes, N., et al.: Mapanything: Univer-sal feed-forward metric 3d reconstruction. arXiv preprint arXiv:2509.13414 (2025) 34. Kim, H., Lee, K., Hwang, G., Suh, C.: Crash to not crash: Learn to identify dan-gerous vehicles using a simulator. In: Proceedings of the AAAI Conference on Artificial Intelligence. vol. 33, pp. 978–985 (2019) 35. Li, C., Zhou, K., Liu, T., Wang, Y., Zhuang, M., Gao, H.a., Jin, B., Zhao, H.: Avd2: Accident video diffusion for accident video description. In: 2025 IEEE International Conference on Robotics and Automation (ICRA). pp. 13289–13296. IEEE (2025) 36. Liao, M., Ye, Q., Zuo, W., Wan, F., Wang, T., Zhao, Y., Wang, J., Zhang, X., et al.: Evaluation of text-to-video generation models: A dynamics perspective. Advances in Neural Information Processing Systems 37 , 109790–109816 (2024) 37. Liu, C., Li, Z., Chang, F., Li, S., Xie, J.: Temporal shift and spatial attention-based two-stream network for traffic risk assessment. IEEE Transactions on Intelligent Transportation Systems 23 (8), 12518–12530 (2021) 38. Liu, M., Zhang, W.: Is your video language model a reliable judge? arXiv preprint arXiv:2503.05977 (2025) 39. Liu, S., Ren, Z., Gupta, S., Wang, S.: Physgen: Rigid-body physics-grounded image-to-video generation. In: European Conference on Computer Vision. pp. 360– 378. Springer (2024) 40. Liu, Y., Cun, X., Liu, X., Wang, X., Zhang, Y., Chen, H., Liu, Y., Zeng, T., Chan, R., Shan, Y.: Evalcrafter: Benchmarking and evaluating large video generation models. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 22139–22149 (2024) 41. Loshchilov, I., Hutter, F.: Decoupled weight decay regularization. arXiv preprint arXiv:1711.05101 (2017) 42. Luo, H., Wang, F.: A simulation-based framework for urban traffic accident detec-tion. In: ICASSP 2023-2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP). pp. 1–5. IEEE (2023) 43. Meng, F., Liao, J., Tan, X., Shao, W., Lu, Q., Zhang, K., Cheng, Y., Li, D., Qiao, Y., Luo, P.: Towards world simulator: Crafting physical commonsense-based benchmark for video generation. arXiv preprint arXiv:2410.05363 (2024) 44. National Highway Traffic Safety Administration: 49 CFR §563.7, Data Elements. 
+
+https://www.ecfr.gov/current/title-49/subtitle-B/chapter-V/part-563/ section-563.7 
+
+45. Puyin, L., Xiang, T., Mao, E., Wei, S., Chen, X., Masood, A., Fei-Fei, L., Adeli, E.: Quantiphy: A quantitative benchmark evaluating physical reasoning abilities of vision-language models. arXiv preprint arXiv:2512.19526 (2025) 46. Radford, A., Kim, J.W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A., Mishkin, P., Clark, J., et al.: Learning transferable visual models from natural language supervision. In: International conference on machine learning. pp. 8748–8763. PmLR (2021) 47. Rauch, H.E., Tung, F., Striebel, C.T.: Maximum likelihood estimates of linear dynamic systems. AIAA journal 3(8), 1445–1450 (1965) 48. Ravi, N., Gabeur, V., Hu, Y.T., Hu, R., Ryali, C., Ma, T., Khedr, H., Rädle, R., Rolland, C., Gustafson, L., et al.: Sam 2: Segment anything in images and videos. arXiv preprint arXiv:2408.00714 (2024) 49. Simpson, E.H.: Measurement of diversity. nature 163 (4148), 688–688 (1949) 50. Stronge, W.J.: Impact mechanics. Cambridge university press (2018) A Physics-Grounded Benchmark for Multi-Agent Dynamics in World Models 33 51. Sun, K., Huang, K., Liu, X., Wu, Y., Xu, Z., Li, Z., Liu, X.: T2v-compbench: A comprehensive benchmark for compositional text-to-video generation. In: Proceed-ings of the Computer Vision and Pattern Recognition Conference. pp. 8406–8416 (2025) 52. Teed, Z., Deng, J.: Droid-slam: Deep visual slam for monocular, stereo, and rgb-d cameras. Advances in neural information processing systems 34 , 16558–16569 (2021) 53. Tu, Y., Luo, H., Chen, X., Bai, X., Wang, F., Zhao, H.: Playerone: Egocentric world simulator. arXiv preprint arXiv:2506.09995 (2025) 54. Unterthiner, T., Van Steenkiste, S., Kurach, K., Marinier, R., Michalski, M., Gelly, S.: Towards accurate generative models of video: A new metric & challenges. arXiv preprint arXiv:1812.01717 (2018) 55. Wan, T., Wang, A., Ai, B., Wen, B., Mao, C., Xie, C.W., Chen, D., Yu, F., Zhao, H., Yang, J., et al.: Wan: Open and advanced large-scale video generative models. arXiv preprint arXiv:2503.20314 (2025) 56. Wang, T., Kim, S., Wenxuan, J., Xie, E., Ge, C., Chen, J., Li, Z., Luo, P.: Deepac-cident: A motion and accident prediction benchmark for v2x autonomous driving. In: Proceedings of the AAAI Conference on Artificial Intelligence. vol. 38, pp. 5599–5606 (2024) 57. Wang, X., Zhu, Z., Huang, G., Chen, X., Zhu, J., Lu, J.: Drivedreamer: Towards real-world-drive world models for autonomous driving. In: European conference on computer vision. pp. 55–72. Springer (2024) 58. Wang, Y., Lipson, L., Deng, J.: Sea-raft: Simple, efficient, accurate raft for optical flow. In: European Conference on Computer Vision. pp. 36–54. Springer (2024) 59. Wang, Y., He, J., Fan, L., Li, H., Chen, Y., Zhang, Z.: Driving into the future: Mul-tiview visual forecasting and planning with world model for autonomous driving. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 14749–14759 (2024) 60. Warner, C.Y., Smith, G.C., James, M.B., Germane, G.J.: Friction applications in accident reconstruction. Tech. rep., SAE Technical Paper (1983) 61. Wen, Y., Zhao, Y., Liu, Y., Jia, F., Wang, Y., Luo, C., Zhang, C., Wang, T., Sun, X., Zhang, X.: Panacea: Panoramic and controllable video generation for autonomous driving. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 6902–6912 (2024) 62. Wu, J.Z., Fang, G., Wu, H., Wang, X., Ge, Y., Cun, X., Zhang, D.J., Liu, J.W., Gu, Y., Zhao, R., et al.: Towards a better metric for text-to-video generation. arXiv preprint arXiv:2401.07781 (2024) 63. Xu, R., Lin, H., Jeon, W., Feng, H., Zou, Y., Sun, L., Gorman, J., Tolstaya, E., Tang, S., White, B., et al.: Wod-e2e: Waymo open dataset for end-to-end driving in challenging long-tail scenarios. arXiv preprint arXiv:2510.26125 (2025) 64. Xue, Q., Yin, X., Yang, B., Gao, W.: Phyt2v: Llm-guided iterative self-refinement for physics-grounded text-to-video generation. In: Proceedings of the Computer Vision and Pattern Recognition Conference. pp. 18826–18836 (2025) 65. Yao, Y., Wang, X., Xu, M., Pu, Z., Wang, Y., Atkins, E., Crandall, D.J.: Dota: Unsupervised detection of traffic anomaly in driving videos. IEEE transactions on pattern analysis and machine intelligence 45 (1), 444–459 (2022) 66. Yao, Y., Xu, M., Wang, Y., Crandall, D.J., Atkins, E.M.: Unsupervised traffic acci-dent detection in first-person videos. In: 2019 IEEE/RSJ International conference on intelligent robots and systems (IROS). pp. 273–280. IEEE (2019) 67. You, T., Han, B.: Traffic accident benchmark for causality recognition. In: Euro-pean Conference on Computer Vision. pp. 540–556. Springer (2020) 34 N. Chen et al. 68. Zhang, K., Tang, Z., Hu, X., Pan, X., Guo, X., Liu, Y., Huang, J., Yuan, L., Zhang, Q., Long, X.X., et al.: Epona: Autoregressive diffusion world model for autonomous driving. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 27220–27230 (2025) 69. Zhao, G., Wang, X., Zhu, Z., Chen, X., Huang, G., Bao, X., Wang, X.: Drivedreamer-2: Llm-enhanced world models for diverse driving video generation. In: Proceedings of the AAAI Conference on Artificial Intelligence. vol. 39, pp. 10412–10420 (2025) 70. Zheng, D., Huang, Z., Liu, H., Zou, K., He, Y., Zhang, F., Gu, L., Zhang, Y., He, J., Zheng, W.S., et al.: Vbench-2.0: Advancing video generation benchmark suite for intrinsic faithfulness. arXiv preprint arXiv:2503.21755 (2025) 71. Zheng, W., Chen, W., Huang, Y., Zhang, B., Duan, Y., Lu, J.: Occworld: Learning a 3d occupancy world model for autonomous driving. In: European conference on computer vision. pp. 55–72. Springer (2024) 72. Zhou, J., Peng, H., Lu, J.: Collision model for vehicle motion prediction after light impacts. Vehicle System Dynamics 46 (S1), 3–15 (2008) 73. Zhou, X., Koltun, V., Krähenbühl, P.: Tracking objects as points. In: European conference on computer vision. pp. 474–490. Springer (2020)
