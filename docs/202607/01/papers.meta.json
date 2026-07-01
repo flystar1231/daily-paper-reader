@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-01",
+  "date": "2026-07-01",
+  "generated_at": "2026-07-01T21:55:46",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/01/2606.27537v2-memobench-benchmarking-world-modeling-in-dynamically-changing-environments",
+      "section": "deep",
+      "title_en": "MemoBench: Benchmarking World Modeling in Dynamically Changing Environments",
+      "authors": "Haoyu Chen, Kaichen Zhou, Hang Hua, Kaile Zhang, Jingwen Qian, Wufei Ma, Haonan Chen, Chunjiang Liu, Yizhou Zhao, Xiaoyuan Wang, Weiyue Li, Alan Yuille, Paul Pu Liang, Yilun Du",
+      "date": "2026-06-25",
+      "pdf": "https://arxiv.org/pdf/2606.27537v2",
+      "score": "9.0",
+      "evidence": "面向视频生成世界建模的评测基准，结合自动指标与视觉问答",
+      "tldr": "现有视频生成模型记忆一致性基准多限于目标可见时，忽略动态场景中物体消失后状态变化。MemoBench聚焦消失-再现范式，在物理过程改变后评估模型对物体状态的记忆。基于360个合成与真实视频，结合自动指标和VQA四个诊断支柱评估八个SOTA模型，发现显著记忆不一致问题。该基准为动态世界建模提供了重要评测框架和开放挑战。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video generation models aspire to simulate dynamic environments, and several benchmarks now evaluate memory consistency across frames. However, most assess consistency only while the target remains in view, and the few that force objects out of view evaluate static scenes where nothing changes during occlusion. To bridge this gap, we introduce MemoBench, a diagnostic benchmark built around the disappear-and-reappear paradigm in dynamically changing environments: a target object undergoes a physical process, disappears from view, and must be correctly recovered in its updated state upon reappearance. We curate 360 ground-truth clips spanning synthetic and real-world scenes, and design an evaluation suite combining automated metrics with VQA-based assessment across four diagnostic pillars. Evaluation of eight state-of-the-art models reveals key insights and open challenges regarding memory consistency under the disappear-and-reappear paradigm.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/01/2606.31933v1-no-place-to-hide-benchmarking-video-hallucination-with-background-controlled-pairs",
+      "section": "deep",
+      "title_en": "No Place to Hide: Benchmarking Video Hallucination with Background-Controlled Pairs",
+      "authors": "Haojian Huang, Harold Haodong Chen, Meng Luo, Junjia Du, Shanqing Xu, Ziheng Chen, Yanxiang Huang, Yinchuan Li, Ying-Cong Chen",
+      "date": "2026-06-30",
+      "pdf": "https://arxiv.org/pdf/2606.31933v1",
+      "score": "9.0",
+      "evidence": "针对生成视频的幻觉评估基准",
+      "tldr": "现有视频幻觉评估基准忽略视觉背景一致性，导致无法准确归因模型错误。本文提出VidPair-Halluc基准，通过PairFlow流水线生成背景高度相似但前景语义截然不同的视频对，覆盖时空推理的十个语义方面。构建了1K高质量对抗视频对和11K时空问答对，评估主流大视频模型发现其在对抗性设定下普遍存在细粒度理解困难。该基准提供了更严格的视频幻觉评估控制，揭示了当前模型的不足。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We introduce VidPair-Halluc, a new benchmark for evaluating video hallucination in large video models (LVMs) under rigorous and controlled conditions. Unlike previous benchmarks that primarily rely on text-based perturbations or adversarial questions while neglecting the consistency of visual backgrounds, VidPair-Halluc features video pairs with highly similar backgrounds but distinctly different foreground semantics, enabling precise attribution of model errors to genuine hallucination rather than background variation. The benchmark is constructed through PairFlow, a pipeline that leverages recent advances in text-to-image and video generation to systematically compose stories, generate coherent video clips, and assemble them into adversarial pairs. Covering both spatial and temporal reasoning across ten semantic aspects, VidPair-Halluc comprises 1K high-quality adversarial video pairs and 11K spatio-temporal QA pairs with control over background and foreground variations. Evaluations on mainstream LVMs show persistent difficulty with robust fine-grained video understanding in adversarial settings, and code and data are available at the https://jethrojames.github.io/VidPair-Halluc/.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/01/2606.29162v1-spatially-localized-image-degradation-embeddings-for-image-quality-assessment",
+      "section": "quick",
+      "title_en": "Spatially Localized Image Degradation Embeddings for Image Quality Assessment",
+      "authors": "Krishna Srikar Durbha, Hassene Tmar, Ping-Hao Wu, Ioannis Katsavounidis, Alan C. Bovik",
+      "date": "2026-06-28",
+      "pdf": "https://arxiv.org/pdf/2606.29162v1",
+      "score": "7.0",
+      "evidence": "图像质量评估方法，具有空间局部性，可迁移至视频",
+      "tldr": "现有自监督图像质量评估方法对全局均匀失真敏感，但对空间局部和共存失真不敏感。为此，提出SLIDE-IQA，采用双分支Vision Transformer框架，在对比预训练中注入空间有界失真，并引入阈值边界排除机制。仅用合成数据预训练即显著提升对局部失真的敏感性，在NR-IQA基准上达到与现有SSL模型竞争的性能。该方法弥补了现有编码器的表征盲点，提升了实用性。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Self-supervised learning (SSL) currently drives state-of-the-art performance in no-reference image quality assessment (NR-IQA). However, standard SSL pipelines uniformly apply synthetic distortions across the entire image field, which can limit their sensitivity to spatially localized and co-occurring degradations encountered in real-world content. In this work, we empirically expose this representational blind spot across existing state-of-the-art encoders, demonstrating their reduced sensitivity to spatially bounded image degradations. To bridge this gap, we introduce Spatial Localized Image Degradation Embeddings for Image Quality Assessment (SLIDE-IQA). SLIDE-IQA employs a dual-branch Vision Transformer framework that injects spatially bounded degradations into a contrastive pretraining objective. To handle the spatial complexity of these degradations, we introduce a Threshold-Bounded Exclusion Mechanism, a representational design choice that resolves structural conflicts arising from spatially localized distortions to ensure the latent space respects both degradation type and spatial scale. Finally, we show that SLIDE-IQA's synthetic-only pretraining significantly improves sensitivity to localized distortions, while achieving competitive performance on NR-IQA benchmarks against existing SSL NR-IQA models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

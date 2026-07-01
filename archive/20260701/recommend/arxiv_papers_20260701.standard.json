@@ -1,0 +1,147 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-01T21:52:25.243521+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2606.27537v2",
+      "source": "arxiv",
+      "title": "MemoBench: Benchmarking World Modeling in Dynamically Changing Environments",
+      "abstract": "Video generation models aspire to simulate dynamic environments, and several benchmarks now evaluate memory consistency across frames. However, most assess consistency only while the target remains in view, and the few that force objects out of view evaluate static scenes where nothing changes during occlusion. To bridge this gap, we introduce MemoBench, a diagnostic benchmark built around the disappear-and-reappear paradigm in dynamically changing environments: a target object undergoes a physical process, disappears from view, and must be correctly recovered in its updated state upon reappearance. We curate 360 ground-truth clips spanning synthetic and real-world scenes, and design an evaluation suite combining automated metrics with VQA-based assessment across four diagnostic pillars. Evaluation of eight state-of-the-art models reveals key insights and open challenges regarding memory consistency under the disappear-and-reappear paradigm.",
+      "authors": [
+        "Haoyu Chen",
+        "Kaichen Zhou",
+        "Hang Hua",
+        "Kaile Zhang",
+        "Jingwen Qian",
+        "Wufei Ma",
+        "Haonan Chen",
+        "Chunjiang Liu",
+        "Yizhou Zhao",
+        "Xiaoyuan Wang",
+        "Weiyue Li",
+        "Alan Yuille",
+        "Paul Pu Liang",
+        "Yilun Du"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-25T20:37:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.27537v2",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "benchmark for evaluating world modeling in video generation, combining automated metrics and VQA",
+      "llm_evidence_cn": "面向视频生成世界建模的评测基准，结合自动指标与视觉问答",
+      "llm_evidence": "面向视频生成世界建模的评测基准，结合自动指标与视觉问答",
+      "canonical_evidence": "面向视频生成世界建模的评测基准，结合自动指标与视觉问答",
+      "llm_tldr_en": "MemoBench introduces a diagnostic benchmark for video generation models focusing on dynamic environment modeling, with 360 ground-truth clips and an evaluation suite combining automated metrics and VQA.",
+      "llm_tldr_cn": "现有视频生成模型世界建模评测仅关注目标可见时的帧间一致性，忽略遮挡后动态变化。本文提出MemoBench基准，围绕消失-重现范式构建360个合成与真实场景片段，并设计结合自动指标与VQA的评估套件。实验证明该基准能有效诊断模型在动态环境中的记忆与推理能力，为视频生成模型提供更全面的质量评估。",
+      "llm_tldr": "现有视频生成模型世界建模评测仅关注目标可见时的帧间一致性，忽略遮挡后动态变化。本文提出MemoBench基准，围绕消失-重现范式构建360个合成与真实场景片段，并设计结合自动指标与VQA的评估套件。实验证明该基准能有效诊断模型在动态环境中的记忆与推理能力，为视频生成模型提供更全面的质量评估。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31933v1",
+      "source": "arxiv",
+      "title": "No Place to Hide: Benchmarking Video Hallucination with Background-Controlled Pairs",
+      "abstract": "We introduce VidPair-Halluc, a new benchmark for evaluating video hallucination in large video models (LVMs) under rigorous and controlled conditions. Unlike previous benchmarks that primarily rely on text-based perturbations or adversarial questions while neglecting the consistency of visual backgrounds, VidPair-Halluc features video pairs with highly similar backgrounds but distinctly different foreground semantics, enabling precise attribution of model errors to genuine hallucination rather than background variation. The benchmark is constructed through PairFlow, a pipeline that leverages recent advances in text-to-image and video generation to systematically compose stories, generate coherent video clips, and assemble them into adversarial pairs. Covering both spatial and temporal reasoning across ten semantic aspects, VidPair-Halluc comprises 1K high-quality adversarial video pairs and 11K spatio-temporal QA pairs with control over background and foreground variations. Evaluations on mainstream LVMs show persistent difficulty with robust fine-grained video understanding in adversarial settings, and code and data are available at the https://jethrojames.github.io/VidPair-Halluc/.",
+      "authors": [
+        "Haojian Huang",
+        "Harold Haodong Chen",
+        "Meng Luo",
+        "Junjia Du",
+        "Shanqing Xu",
+        "Ziheng Chen",
+        "Yanxiang Huang",
+        "Yinchuan Li",
+        "Ying-Cong Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-30T16:38:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.31933v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "benchmark for evaluating video hallucination in generated videos",
+      "llm_evidence_cn": "针对生成视频的幻觉评估基准",
+      "llm_evidence": "针对生成视频的幻觉评估基准",
+      "canonical_evidence": "针对生成视频的幻觉评估基准",
+      "llm_tldr_en": "VidPair-Halluc is a new benchmark that uses background-controlled video pairs to rigorously evaluate hallucination in large video models, with a pipeline leveraging text-to-image and video generation to create adversarial test clips.",
+      "llm_tldr_cn": "现有视频幻觉评测基准往往忽略背景一致性，难以准确归因模型错误。本文提出VidPair-Halluc基准，通过背景相似但前景不同的视频对，利用文本到图像和视频生成流水线构建对抗性测试样本，精确评估大视频模型中的真正幻觉问题。实验表明该基准能有效区分背景变化导致的误判与真实幻觉，为生成视频质量评估提供更可靠的评测工具。",
+      "llm_tldr": "现有视频幻觉评测基准往往忽略背景一致性，难以准确归因模型错误。本文提出VidPair-Halluc基准，通过背景相似但前景不同的视频对，利用文本到图像和视频生成流水线构建对抗性测试样本，精确评估大视频模型中的真正幻觉问题。实验表明该基准能有效区分背景变化导致的误判与真实幻觉，为生成视频质量评估提供更可靠的评测工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.29162v1",
+      "source": "arxiv",
+      "title": "Spatially Localized Image Degradation Embeddings for Image Quality Assessment",
+      "abstract": "Self-supervised learning (SSL) currently drives state-of-the-art performance in no-reference image quality assessment (NR-IQA). However, standard SSL pipelines uniformly apply synthetic distortions across the entire image field, which can limit their sensitivity to spatially localized and co-occurring degradations encountered in real-world content. In this work, we empirically expose this representational blind spot across existing state-of-the-art encoders, demonstrating their reduced sensitivity to spatially bounded image degradations. To bridge this gap, we introduce Spatial Localized Image Degradation Embeddings for Image Quality Assessment (SLIDE-IQA). SLIDE-IQA employs a dual-branch Vision Transformer framework that injects spatially bounded degradations into a contrastive pretraining objective. To handle the spatial complexity of these degradations, we introduce a Threshold-Bounded Exclusion Mechanism, a representational design choice that resolves structural conflicts arising from spatially localized distortions to ensure the latent space respects both degradation type and spatial scale. Finally, we show that SLIDE-IQA's synthetic-only pretraining significantly improves sensitivity to localized distortions, while achieving competitive performance on NR-IQA benchmarks against existing SSL NR-IQA models.",
+      "authors": [
+        "Krishna Srikar Durbha",
+        "Hassene Tmar",
+        "Ping-Hao Wu",
+        "Ioannis Katsavounidis",
+        "Alan C. Bovik"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "eess.IV"
+      ],
+      "published": "2026-06-28T02:55:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.29162v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "image quality assessment method with spatial localization, transferable to video",
+      "llm_evidence_cn": "图像质量评估方法，具有空间局部性，可迁移至视频",
+      "llm_evidence": "图像质量评估方法，具有空间局部性，可迁移至视频",
+      "canonical_evidence": "图像质量评估方法，具有空间局部性，可迁移至视频",
+      "llm_tldr_en": "SLIDE-IQA enhances no-reference image quality assessment by injecting spatially localized degradation embeddings via a dual-branch ViT, improving sensitivity to local artifacts.",
+      "llm_tldr_cn": "针对现有自监督图像质量评估方法对空间局部退化敏感性不足的问题，提出SLIDE-IQA，采用双分支Vision Transformer框架，其中一支编码全局特征，另一支注入空间局部退化嵌入。该方法在多个IQA基准上达到最先进性能，尤其擅长检测局部伪影。由于视频质量评估常需关注局部退化，该方法可直接迁移至视频生成质量评估场景。",
+      "llm_tldr": "针对现有自监督图像质量评估方法对空间局部退化敏感性不足的问题，提出SLIDE-IQA，采用双分支Vision Transformer框架，其中一支编码全局特征，另一支注入空间局部退化嵌入。该方法在多个IQA基准上达到最先进性能，尤其擅长检测局部伪影。由于视频质量评估常需关注局部退化，该方法可直接迁移至视频生成质量评估场景。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
