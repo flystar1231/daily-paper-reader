@@ -6,31 +6,30 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-01
-- 运行时间：2026-07-01 21:55:38 UTC
+- 最新运行日期：2026-07-02
+- 运行时间：2026-07-02 21:21:16 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：2
+- 本次总论文数：2
+- 精读区：1
 - 速读区：1
 
 ### 今日简报（AI）
-今日精读两篇9.0高分论文，分别聚焦动态环境世界建模基准和视频幻觉检测基准，还速读一篇图像质量评估新方法。  
-最值得关注的方向是动态世界建模与视频幻觉检测——这两个领域是多模态评估的当前瓶颈与热点。  
-普通读者建议优先阅读两篇精读论文，了解前沿评估方法及其实际影响。
-- 详情：[/202607/01/README](/202607/01/README)
+今日重点关注两项模型评测基准：动态环境世界建模与长期视频质量理解。
+
+精读推荐《MemoBench》（8.0/10），聚焦动态变化环境下的世界建模能力；速读可看《LongVQUBench》（6.0/10），关注视觉语言模型对长视频质量的评估。
+
+建议优先精读《MemoBench》，了解当前模型在环境快速变化时的表现差距。
+- 详情：[/202607/02/README](/202607/02/README)
 
 ### 精读区论文标签
-1. [MemoBench: Benchmarking World Modeling in Dynamically Changing Environments](/202607/01/2606.27537v2-memobench-benchmarking-world-modeling-in-dynamically-changing-environments)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：面向视频生成世界建模的评测基准，结合自动指标与视觉问答
-2. [No Place to Hide: Benchmarking Video Hallucination with Background-Controlled Pairs](/202607/01/2606.31933v1-no-place-to-hide-benchmarking-video-hallucination-with-background-controlled-pairs)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：针对生成视频的幻觉评估基准
+1. [MemoBench: Benchmarking World Modeling in Dynamically Changing Environments](/202607/02/2606.27537v3-memobench-benchmarking-world-modeling-in-dynamically-changing-environments)  
+   标签：评分：8.0/10、query:vgen-metrics
+   evidence：提出视频生成模型基准测试，包含自动化指标和VQA评估套件
 
 ### 速读区论文标签
-1. [Spatially Localized Image Degradation Embeddings for Image Quality Assessment](/202607/01/2606.29162v1-spatially-localized-image-degradation-embeddings-for-image-quality-assessment)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：图像质量评估方法，具有空间局部性，可迁移至视频
+1. [LongVQUBench: Benchmarking Long-Term Video Quality Understanding of Vision-Language Models](/202607/02/2607.01086v1-longvqubench-benchmarking-long-term-video-quality-understanding-of-vision-language-models)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：长时视频质量理解基准
 
 
 <div class="dpr-home-promo-card">

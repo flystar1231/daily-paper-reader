@@ -1,0 +1,104 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-02T21:18:49.918545+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2606.27537v3",
+      "source": "arxiv",
+      "title": "MemoBench: Benchmarking World Modeling in Dynamically Changing Environments",
+      "abstract": "Video generation models aspire to simulate dynamic environments, and several benchmarks now evaluate memory consistency across frames. However, most assess consistency only while the target remains in view, and the few that force objects out of view evaluate static scenes where nothing changes during occlusion. To bridge this gap, we introduce MemoBench, a diagnostic benchmark built around the disappear-and-reappear paradigm in dynamically changing environments: a target object undergoes a physical process, disappears from view, and must be correctly recovered in its updated state upon reappearance. We curate 360 ground-truth clips spanning synthetic and real-world scenes, and design an evaluation suite combining automated metrics with VQA-based assessment across four diagnostic pillars. Evaluation of eight state-of-the-art models reveals key insights and open challenges regarding memory consistency under the disappear-and-reappear paradigm.",
+      "authors": [
+        "Haoyu Chen",
+        "Kaichen Zhou",
+        "Hang Hua",
+        "Kaile Zhang",
+        "Jingwen Qian",
+        "Wufei Ma",
+        "Haonan Chen",
+        "Chunjiang Liu",
+        "Yizhou Zhao",
+        "Xiaoyuan Wang",
+        "Weiyue Li",
+        "Alan Yuille",
+        "Paul Pu Liang",
+        "Yilun Du"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-25T20:37:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.27537v3",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for video generation models with automated metrics and VQA evaluation suite",
+      "llm_evidence_cn": "提出视频生成模型基准测试，包含自动化指标和VQA评估套件",
+      "llm_evidence": "提出视频生成模型基准测试，包含自动化指标和VQA评估套件",
+      "canonical_evidence": "提出视频生成模型基准测试，包含自动化指标和VQA评估套件",
+      "llm_tldr_en": "MemoBench introduces a diagnostic benchmark and evaluation suite (automated metrics + VQA) for assessing world modeling in video generation under dynamically changing environments with occlusion.",
+      "llm_tldr_cn": "针对视频生成模型的世界建模能力，MemoBench提出了一个诊断基准，聚焦物体消失后再出现的动态场景。与其他仅评估静态遮挡或物体始终可见的基准不同，该方法要求在物体经过物理变化后正确恢复其状态。评估套件结合自动指标与基于视觉问答（VQA）的语义判断，为视频生成模型在复杂动态下的时序一致性提供了更全面的衡量标准，直接服务于视频生成评估需求。",
+      "llm_tldr": "针对视频生成模型的世界建模能力，MemoBench提出了一个诊断基准，聚焦物体消失后再出现的动态场景。与其他仅评估静态遮挡或物体始终可见的基准不同，该方法要求在物体经过物理变化后正确恢复其状态。评估套件结合自动指标与基于视觉问答（VQA）的语义判断，为视频生成模型在复杂动态下的时序一致性提供了更全面的衡量标准，直接服务于视频生成评估需求。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.01086v1",
+      "source": "arxiv",
+      "title": "LongVQUBench: Benchmarking Long-Term Video Quality Understanding of Vision-Language Models",
+      "abstract": "The evaluation of long-term video quality understanding remains an open challenge for large vision-language models (LVLMs). Existing video quality benchmarks predominantly focus on short clips and isolated distortions, overlooking the temporal continuity, cumulative degradation, and reasoning complexity inherent in long-duration content. To address these limitations, we present LongVQUBench, a comprehensive benchmark for long-term video quality understanding. LongVQUBench contains over 1200 diverse videos spanning movies, documentaries, surveillance footage, egocentric recordings, and animated content, accompanied by 1500 multiple-choice and open-ended questions for validation and testing. To assess perceptual reasoning across different temporal scopes, we introduce three progressively complex evaluation levels: (i) local event quality understanding (LQU) for analyzing localized distortions; (ii) cross-event quality reasoning (CQR) for integrating multiple degraded events; and (iii) global quality understanding (GQU) for holistic perceptual evaluation over extended durations. Furthermore, a needle distortion question-answering (NDQA) paradigm is embedded across all three levels, where spatial or temporal artifacts are sparsely inserted to probe fine-grained detection and reasoning capabilities. Extensive experiments on 14 state-of-the-art LVLMs reveal significant performance degradation with increasing video length and reasoning depth, highlighting their limited capacity for long-range temporal integration and perceptual attribution. We envision LongVQUBench as a foundational step toward the systematic, hierarchical, and explainable evaluation of LVLMs' long-term video quality understanding.",
+      "authors": [
+        "Arpita Nema",
+        "Hanwei Zhu",
+        "Xi Zhang",
+        "Weisi Lin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-01T15:40:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.01086v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmark for long-term video quality understanding",
+      "llm_evidence_cn": "长时视频质量理解基准",
+      "llm_evidence": "长时视频质量理解基准",
+      "canonical_evidence": "长时视频质量理解基准",
+      "llm_tldr_en": "Presents LongVQUBench, a benchmark with 1200+ videos and 1500 questions for evaluating long-term video quality understanding in vision-language models.",
+      "llm_tldr_cn": "针对现有视频质量基准局限于短片段和孤立失真，忽视了长时内容的时间连续性和累积退化，提出LongVQUBench，包含1200余部多样视频和1500道多选/开放式问题，用于评估视觉语言模型对长时视频质量的感知推理能力。",
+      "llm_tldr": "针对现有视频质量基准局限于短片段和孤立失真，忽视了长时内容的时间连续性和累积退化，提出LongVQUBench，包含1200余部多样视频和1500道多选/开放式问题，用于评估视觉语言模型对长时视频质量的感知推理能力。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
