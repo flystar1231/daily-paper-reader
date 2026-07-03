@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-03",
+  "date": "2026-07-03",
+  "generated_at": "2026-07-03T20:24:43",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/03/2606.27537v4-memobench-benchmarking-world-modeling-in-dynamically-changing-environments",
+      "section": "quick",
+      "title_en": "MemoBench: Benchmarking World Modeling in Dynamically Changing Environments",
+      "authors": "Haoyu Chen, Kaichen Zhou, Hang Hua, Kaile Zhang, Jingwen Qian, Wufei Ma, Haonan Chen, Chunjiang Liu, Yizhou Zhao, Xiaoyuan Wang, Weiyue Li, Alan Yuille, Paul Pu Liang, Yilun Du",
+      "date": "2026-06-25",
+      "pdf": "https://arxiv.org/pdf/2606.27537v4",
+      "score": "7.0",
+      "evidence": "视频生成模型评估基准包含自动指标",
+      "tldr": "现有视频生成模型的世界模型评估多局限于静态场景或目标始终可见，无法测试动态变化中目标消失后需更新状态的记忆一致性。为此，MemoBench构建'消失-重现'诊断范式，目标经历物理过程后消失，再现时须以更新后的物理状态正确恢复。基于360个合成与真实场景片段，结合自动指标与VQA评估四个诊断支柱，系统衡量记忆一致性。评估八个SOTA模型揭示了显著缺陷与开放挑战，为动态世界建模提供了更全面且具挑战性的评估基准。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video generation models aspire to simulate dynamic environments, and several benchmarks now evaluate memory consistency across frames. However, most assess consistency only while the target remains in view, and the few that force objects out of view evaluate static scenes where nothing changes during occlusion. To bridge this gap, we introduce MemoBench, a diagnostic benchmark built around the disappear-and-reappear paradigm in dynamically changing environments: a target object undergoes a physical process, disappears from view, and must be correctly recovered in its updated state upon reappearance. We curate 360 ground-truth clips spanning synthetic and real-world scenes, and design an evaluation suite combining automated metrics with VQA-based assessment across four diagnostic pillars. Evaluation of eight state-of-the-art models reveals key insights and open challenges regarding memory consistency under the disappear-and-reappear paradigm.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/03/2606.30557v1-ecovideo-entropy-orchestrated-video-generation-paradigm-in-cloud-edge-dynamics",
+      "section": "quick",
+      "title_en": "EcoVideo: Entropy-Orchestrated Video Generation Paradigm in Cloud-Edge Dynamics",
+      "authors": "Jiayu Chen, Hengyi Zhang, Maoliang Li, Minyu Li, Zihao Zheng, Xuanzhe Liu, Guojie Luo, Xiang Chen",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.30557v1",
+      "score": "6.0",
+      "evidence": "基于熵的关键帧选择进行云边解耦的视频生成方法",
+      "tldr": "DiT视频生成因全帧去噪延迟高，现有云边方法无法利用帧间相似性且不能自适应系统动态。EcoVideo利用自注意力熵无训练估计帧信息密度，由云大模型去噪稀疏高熵关键帧，边缘轻量模型通过运动感知插值重建并细化其余帧，并根据带宽和算力自适应调整关键帧预算与细化深度。实验表明，在低带宽边缘场景下实现最高2.9倍端到端加速，同时保持较高质量。该工作为云边协同视频生成提供了新的自适应范式。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "DiT video generation is latency-intensive due to iterative full-frame denoising, while prior cloud-edge methods largely rely on static inter-step decoupling and cannot leverage inter-frame similarity or adapt to system dynamics. We propose EcoVideo, an entropy-orchestrated framework for dynamic inter-frame decoupling: early-stage self-attention entropy provides a training-free estimate of frame-wise information density for frame selection; a cloud large model denoises sparse high-entropy keyframes; and an edge lightweight model reconstructs the remaining frames via motion-aware interpolation with refinement for temporal stability. EcoVideo further adapts the keyframe budget and edge refinement depth to real-time bandwidth and compute availability, optimizing end-to-end latency under constraints. Experiments on representative DiT video generators show improved quality--efficiency trade-offs and up to 2.9x end-to-end speedup in low-bandwidth, compute-limited edge settings. Code is available at https://github.com/IF-LAB-PKU/EcoVideo.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

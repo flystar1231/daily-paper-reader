@@ -1,0 +1,107 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-03T20:22:12.439083+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.27537v4",
+      "source": "arxiv",
+      "title": "MemoBench: Benchmarking World Modeling in Dynamically Changing Environments",
+      "abstract": "Video generation models aspire to simulate dynamic environments, and several benchmarks now evaluate memory consistency across frames. However, most assess consistency only while the target remains in view, and the few that force objects out of view evaluate static scenes where nothing changes during occlusion. To bridge this gap, we introduce MemoBench, a diagnostic benchmark built around the disappear-and-reappear paradigm in dynamically changing environments: a target object undergoes a physical process, disappears from view, and must be correctly recovered in its updated state upon reappearance. We curate 360 ground-truth clips spanning synthetic and real-world scenes, and design an evaluation suite combining automated metrics with VQA-based assessment across four diagnostic pillars. Evaluation of eight state-of-the-art models reveals key insights and open challenges regarding memory consistency under the disappear-and-reappear paradigm.",
+      "authors": [
+        "Haoyu Chen",
+        "Kaichen Zhou",
+        "Hang Hua",
+        "Kaile Zhang",
+        "Jingwen Qian",
+        "Wufei Ma",
+        "Haonan Chen",
+        "Chunjiang Liu",
+        "Yizhou Zhao",
+        "Xiaoyuan Wang",
+        "Weiyue Li",
+        "Alan Yuille",
+        "Paul Pu Liang",
+        "Yilun Du"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-25T20:37:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.27537v4",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "benchmark for evaluating video generation models with automated metrics",
+      "llm_evidence_cn": "视频生成模型评估基准包含自动指标",
+      "llm_evidence": "视频生成模型评估基准包含自动指标",
+      "canonical_evidence": "视频生成模型评估基准包含自动指标",
+      "llm_tldr_en": "MemoBench benchmarks world modeling in dynamically changing environments for video generation models, using automated metrics and VQA to evaluate memory consistency under occlusion.",
+      "llm_tldr_cn": "视频生成模型需模拟动态环境，但现有基准仅评估目标可见时的记忆一致性，忽略了遮挡时场景变化的挑战。MemoBench提出消失-重现范式，包含360个真实与合成视频，结合自动指标和VQA评估模型在动态变化中恢复物体状态的能力。实验表明当前模型在此任务上存在显著不足，为视频生成评估提供了新标准。",
+      "llm_tldr": "视频生成模型需模拟动态环境，但现有基准仅评估目标可见时的记忆一致性，忽略了遮挡时场景变化的挑战。MemoBench提出消失-重现范式，包含360个真实与合成视频，结合自动指标和VQA评估模型在动态变化中恢复物体状态的能力。实验表明当前模型在此任务上存在显著不足，为视频生成评估提供了新标准。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.30557v1",
+      "source": "arxiv",
+      "title": "EcoVideo: Entropy-Orchestrated Video Generation Paradigm in Cloud-Edge Dynamics",
+      "abstract": "DiT video generation is latency-intensive due to iterative full-frame denoising, while prior cloud-edge methods largely rely on static inter-step decoupling and cannot leverage inter-frame similarity or adapt to system dynamics. We propose EcoVideo, an entropy-orchestrated framework for dynamic inter-frame decoupling: early-stage self-attention entropy provides a training-free estimate of frame-wise information density for frame selection; a cloud large model denoises sparse high-entropy keyframes; and an edge lightweight model reconstructs the remaining frames via motion-aware interpolation with refinement for temporal stability. EcoVideo further adapts the keyframe budget and edge refinement depth to real-time bandwidth and compute availability, optimizing end-to-end latency under constraints. Experiments on representative DiT video generators show improved quality--efficiency trade-offs and up to 2.9x end-to-end speedup in low-bandwidth, compute-limited edge settings. Code is available at https://github.com/IF-LAB-PKU/EcoVideo.",
+      "authors": [
+        "Jiayu Chen",
+        "Hengyi Zhang",
+        "Maoliang Li",
+        "Minyu Li",
+        "Zihao Zheng",
+        "Xuanzhe Liu",
+        "Guojie Luo",
+        "Xiang Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-29T16:51:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.30557v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "video generation paradigm with cloud-edge decoupling using entropy-based keyframe selection",
+      "llm_evidence_cn": "基于熵的关键帧选择进行云边解耦的视频生成方法",
+      "llm_evidence": "基于熵的关键帧选择进行云边解耦的视频生成方法",
+      "canonical_evidence": "基于熵的关键帧选择进行云边解耦的视频生成方法",
+      "llm_tldr_en": "EcoVideo proposes an entropy-orchestrated framework for video generation that decouples frames into cloud-keyframes and edge-interpolation, adapting to bandwidth and compute.",
+      "llm_tldr_cn": "DiT视频生成延迟高，现有云边方法无法利用帧间相似性。EcoVideo提出熵编排框架，利用自注意力熵估计帧信息密度，由云端大模型生成稀疏关键帧，边缘轻量模型通过运动感知插值重建其余帧，并自适应调整关键帧预算和边缘细化深度。实验表明该方法在保证质量的同时显著降低延迟。",
+      "llm_tldr": "DiT视频生成延迟高，现有云边方法无法利用帧间相似性。EcoVideo提出熵编排框架，利用自注意力熵估计帧信息密度，由云端大模型生成稀疏关键帧，边缘轻量模型通过运动感知插值重建其余帧，并自适应调整关键帧预算和边缘细化深度。实验表明该方法在保证质量的同时显著降低延迟。",
+      "llm_tags": [
+        "query:vgen-metrics:composite"
+      ],
+      "matched_query_tag": "query:vgen-metrics:composite",
+      "matched_query_text": "Papers central to 视频生成评价指标与透明视频生成, especially work that connects or combines: techniques for generating transparent or alpha channel videos; evaluating quality of generated videos; metrics for alpha channel in video generation; metrics for evaluating video generation models; quality of transparent videos in generation; video quality assessment methods for generated videos; What evaluation metrics are suitable for transparent video generation?; How to measure the quality of alpha channels in generated videos?; evaluation metrics for video generation models; methods for transparent video generation.",
+      "matched_requirement_id": "req-composite-vgen-metrics",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -6,30 +6,31 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-02
-- 运行时间：2026-07-02 21:21:16 UTC
+- 最新运行日期：2026-07-03
+- 运行时间：2026-07-03 20:24:36 UTC
 - 运行状态：成功
 - 本次总论文数：2
-- 精读区：1
-- 速读区：1
+- 精读区：0
+- 速读区：2
 
 ### 今日简报（AI）
-今日重点关注两项模型评测基准：动态环境世界建模与长期视频质量理解。
+今日浏览2篇速读论文，重点关注动态环境下的世界模型基准测评。
 
-精读推荐《MemoBench》（8.0/10），聚焦动态变化环境下的世界建模能力；速读可看《LongVQUBench》（6.0/10），关注视觉语言模型对长视频质量的评估。
+推荐优先阅读《MemoBench》（7.0分），其针对动态变化场景的世界建模评估方法值得关注。
 
-建议优先精读《MemoBench》，了解当前模型在环境快速变化时的表现差距。
-- 详情：[/202607/02/README](/202607/02/README)
+普通读者可深入研读MemoBench，并留意EcoVideo中云边协同的视频生成思路作为扩展。
+- 详情：[/202607/03/README](/202607/03/README)
 
 ### 精读区论文标签
-1. [MemoBench: Benchmarking World Modeling in Dynamically Changing Environments](/202607/02/2606.27537v3-memobench-benchmarking-world-modeling-in-dynamically-changing-environments)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：提出视频生成模型基准测试，包含自动化指标和VQA评估套件
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [LongVQUBench: Benchmarking Long-Term Video Quality Understanding of Vision-Language Models](/202607/02/2607.01086v1-longvqubench-benchmarking-long-term-video-quality-understanding-of-vision-language-models)  
+1. [MemoBench: Benchmarking World Modeling in Dynamically Changing Environments](/202607/03/2606.27537v4-memobench-benchmarking-world-modeling-in-dynamically-changing-environments)  
+   标签：评分：7.0/10、query:vgen-metrics
+   evidence：视频生成模型评估基准包含自动指标
+2. [EcoVideo: Entropy-Orchestrated Video Generation Paradigm in Cloud-Edge Dynamics](/202607/03/2606.30557v1-ecovideo-entropy-orchestrated-video-generation-paradigm-in-cloud-edge-dynamics)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：长时视频质量理解基准
+   evidence：基于熵的关键帧选择进行云边解耦的视频生成方法
 
 
 <div class="dpr-home-promo-card">
