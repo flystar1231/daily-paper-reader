@@ -6,31 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-03
-- 运行时间：2026-07-03 20:24:36 UTC
+- 最新运行日期：2026-07-04
+- 运行时间：2026-07-04 20:06:47 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：0
-- 速读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-今日浏览2篇速读论文，重点关注动态环境下的世界模型基准测评。
-
-推荐优先阅读《MemoBench》（7.0分），其针对动态变化场景的世界建模评估方法值得关注。
-
-普通读者可深入研读MemoBench，并留意EcoVideo中云边协同的视频生成思路作为扩展。
-- 详情：[/202607/03/README](/202607/03/README)
+今日阅读1篇关于AI生成视频检测中数据集偏差与捷径学习的研究。该论文揭示检测模型过度依赖运动模式等捷径特征，导致泛化能力不足。建议关注如何构建更均衡数据集或设计抗捷径的检测方法。
+- 详情：[/202607/04/README](/202607/04/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [MemoBench: Benchmarking World Modeling in Dynamically Changing Environments](/202607/03/2606.27537v4-memobench-benchmarking-world-modeling-in-dynamically-changing-environments)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：视频生成模型评估基准包含自动指标
-2. [EcoVideo: Entropy-Orchestrated Video Generation Paradigm in Cloud-Edge Dynamics](/202607/03/2606.30557v1-ecovideo-entropy-orchestrated-video-generation-paradigm-in-cloud-edge-dynamics)  
+1. [Dataset Biases and Shortcut Learning in Motion-Based AI-Generated Video Detection](/202607/04/2607.00948v1-dataset-biases-and-shortcut-learning-in-motion-based-ai-generated-video-detection)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：基于熵的关键帧选择进行云边解耦的视频生成方法
+   evidence：分析AI生成视频检测中的偏差，与评估视频质量相关
 
 
 <div class="dpr-home-promo-card">

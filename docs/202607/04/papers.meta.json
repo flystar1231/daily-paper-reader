@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-04",
+  "date": "2026-07-04",
+  "generated_at": "2026-07-04T20:06:53",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/04/2607.00948v1-dataset-biases-and-shortcut-learning-in-motion-based-ai-generated-video-detection",
+      "section": "quick",
+      "title_en": "Dataset Biases and Shortcut Learning in Motion-Based AI-Generated Video Detection",
+      "authors": "Joren Michels, Lode Jorissen, Nick Michiels",
+      "date": "2026-07-01",
+      "pdf": "https://arxiv.org/pdf/2607.00948v1",
+      "score": "6.0",
+      "evidence": "分析AI生成视频检测中的偏差，与评估视频质量相关",
+      "tldr": "AI生成视频视觉质量提升，但现有基于运动的检测器存在严重数据集偏差和捷径学习。研究发现这些检测器过度依赖“AI视频帧间运动更少”的偏差，导致性能在无此偏差的数据集上降至随机水平。空间增强和数据集重平衡也显著降低其性能。相比之下，基于频率的检测器保持稳健，表明频率方法更具泛化潜力。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "The visual quality of AI-generated videos has improved drastically in recent years, making it increasingly difficult for humans to distinguish between real and synthetic media. In this work, we evaluate the robustness and applicability of four state-of-the-art motion-based AI-generated video detectors. We identify significant preprocessing and sampling biases in these methods and demonstrate that they account for a substantial portion of their reported performance. Furthermore, we find that these detectors are highly sensitive to motion patterns specific to their evaluation datasets, where AI-generated videos generally exhibit less inter-frame movement than real videos. We show that for all detectors, performance collapses to near-random levels when evaluated on a dataset that does not contain this motion bias. Additionally, through dataset rebalancing and the application of simple spatial augmentations, we observe severe performance degradation across all evaluated models. In contrast, we find that an existing frequency-based detector maintains strong performance across all evaluated datasets, suggesting that frequency-based approaches may offer a more generalizable path forward for AI-generated video detection. We hope that our work raises awareness towards these vulnerabilities and encourages the development of more representative, unbiased datasets and more robust evaluation protocols.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

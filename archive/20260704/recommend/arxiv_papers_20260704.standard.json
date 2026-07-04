@@ -1,0 +1,54 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-04T20:06:02.101908+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.00948v1",
+      "source": "arxiv",
+      "title": "Dataset Biases and Shortcut Learning in Motion-Based AI-Generated Video Detection",
+      "abstract": "The visual quality of AI-generated videos has improved drastically in recent years, making it increasingly difficult for humans to distinguish between real and synthetic media. In this work, we evaluate the robustness and applicability of four state-of-the-art motion-based AI-generated video detectors. We identify significant preprocessing and sampling biases in these methods and demonstrate that they account for a substantial portion of their reported performance. Furthermore, we find that these detectors are highly sensitive to motion patterns specific to their evaluation datasets, where AI-generated videos generally exhibit less inter-frame movement than real videos. We show that for all detectors, performance collapses to near-random levels when evaluated on a dataset that does not contain this motion bias. Additionally, through dataset rebalancing and the application of simple spatial augmentations, we observe severe performance degradation across all evaluated models. In contrast, we find that an existing frequency-based detector maintains strong performance across all evaluated datasets, suggesting that frequency-based approaches may offer a more generalizable path forward for AI-generated video detection. We hope that our work raises awareness towards these vulnerabilities and encourages the development of more representative, unbiased datasets and more robust evaluation protocols.",
+      "authors": [
+        "Joren Michels",
+        "Lode Jorissen",
+        "Nick Michiels"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-01T13:47:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.00948v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "analyzes biases in AI-generated video detection, related to evaluating video quality",
+      "llm_evidence_cn": "分析AI生成视频检测中的偏差，与评估视频质量相关",
+      "llm_evidence": "分析AI生成视频检测中的偏差，与评估视频质量相关",
+      "canonical_evidence": "分析AI生成视频检测中的偏差，与评估视频质量相关",
+      "llm_tldr_en": "Reveals preprocessing and motion biases in AI-generated video detectors, showing performance collapses when biases are removed.",
+      "llm_tldr_cn": "AI生成视频检测器常用于评估生成视频质量，但本文发现现有检测器存在预处理和运动模式偏差，其性能很大程度上依赖偏差而非真实特征。通过消除偏差，所有检测器性能降为随机水平。本研究警示了依赖检测器评估生成视频质量的潜在问题，为设计更鲁棒的评估指标提供了批判性视角。",
+      "llm_tldr": "AI生成视频检测器常用于评估生成视频质量，但本文发现现有检测器存在预处理和运动模式偏差，其性能很大程度上依赖偏差而非真实特征。通过消除偏差，所有检测器性能降为随机水平。本研究警示了依赖检测器评估生成视频质量的潜在问题，为设计更鲁棒的评估指标提供了批判性视角。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
