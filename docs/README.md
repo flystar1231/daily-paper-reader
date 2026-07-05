@@ -6,24 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-04
-- 运行时间：2026-07-04 20:06:47 UTC
+- 最新运行日期：2026-07-05
+- 运行时间：2026-07-05 21:22:45 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日阅读1篇关于AI生成视频检测中数据集偏差与捷径学习的研究。该论文揭示检测模型过度依赖运动模式等捷径特征，导致泛化能力不足。建议关注如何构建更均衡数据集或设计抗捷径的检测方法。
-- 详情：[/202607/04/README](/202607/04/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202607/05/README](/202607/05/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Dataset Biases and Shortcut Learning in Motion-Based AI-Generated Video Detection](/202607/04/2607.00948v1-dataset-biases-and-shortcut-learning-in-motion-based-ai-generated-video-detection)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：分析AI生成视频检测中的偏差，与评估视频质量相关
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
