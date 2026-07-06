@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-06",
+  "date": "2026-07-06",
+  "generated_at": "2026-07-06T21:43:48",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/06/2606.30557v1-ecovideo-entropy-orchestrated-video-generation-paradigm-in-cloud-edge-dynamics",
+      "section": "deep",
+      "title_en": "EcoVideo: Entropy-Orchestrated Video Generation Paradigm in Cloud-Edge Dynamics",
+      "authors": "Jiayu Chen, Hengyi Zhang, Maoliang Li, Minyu Li, Zihao Zheng, Xuanzhe Liu, Guojie Luo, Xiang Chen",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.30557v1",
+      "score": "8.0",
+      "evidence": "提出使用熵作为视频生成中帧选择的度量",
+      "tldr": "DiT视频生成因迭代全帧去噪而延迟高，传统云边方法静态解耦步骤，无法利用帧间相似性。EcoVideo提出基于自注意力熵的动态帧间解耦框架：训练无关地估计帧信息密度，选择高熵关键帧由云模型去噪，边缘模型运动感知插值重建其余帧，并自适应调整资源分配。实验表明，在低带宽边缘场景下实现2.9倍端到端加速，优化了质量-效率权衡。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "DiT video generation is latency-intensive due to iterative full-frame denoising, while prior cloud-edge methods largely rely on static inter-step decoupling and cannot leverage inter-frame similarity or adapt to system dynamics. We propose EcoVideo, an entropy-orchestrated framework for dynamic inter-frame decoupling: early-stage self-attention entropy provides a training-free estimate of frame-wise information density for frame selection; a cloud large model denoises sparse high-entropy keyframes; and an edge lightweight model reconstructs the remaining frames via motion-aware interpolation with refinement for temporal stability. EcoVideo further adapts the keyframe budget and edge refinement depth to real-time bandwidth and compute availability, optimizing end-to-end latency under constraints. Experiments on representative DiT video generators show improved quality--efficiency trade-offs and up to 2.9x end-to-end speedup in low-bandwidth, compute-limited edge settings. Code is available at https://github.com/IF-LAB-PKU/EcoVideo.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
