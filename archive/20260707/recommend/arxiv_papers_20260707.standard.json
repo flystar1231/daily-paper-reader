@@ -1,0 +1,212 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-07T21:06:06.180952+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.03043v1",
+      "source": "arxiv",
+      "title": "Natural Language Camera Movement Understanding",
+      "abstract": "Understanding camera movement in natural language is critical for training and evaluating video generation models, among other applications. However, we demonstrate that existing vision-language models (VLMs) fail this task in surprising ways, frequently confusing translation with rotation, left with right, and object movement with camera movement. To address these limitations, we establish natural language camera movement understanding as a standalone research task. We introduce a two-level cinematographic taxonomy and an extensive, atomic benchmark featuring both real and synthetic videos. Furthermore, we curate a large-scale, multi-source training set enhanced by targeted camera movement augmentation. Our fine-tuned VLM-8B outperforms Gemini 3.1 Pro by 10% and 11% on our benchmark's real and synthetic videos, respectively. Despite these gains, a significant gap remains relative to human performance, underscoring the need to promote and facilitate future research on natural language camera movement understanding.",
+      "authors": [
+        "Yuwen Tan",
+        "Joey Huang",
+        "Jin Huang",
+        "Haoxiang Li",
+        "Boqing Gong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-03T07:33:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.03043v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for evaluating video generation models via camera movement understanding",
+      "llm_evidence_cn": "通过摄像机运动理解评估视频生成模型的基准",
+      "llm_evidence": "通过摄像机运动理解评估视频生成模型的基准",
+      "canonical_evidence": "通过摄像机运动理解评估视频生成模型的基准",
+      "llm_tldr_en": "Establishes camera movement understanding as a task critical for evaluating video generation models, providing a taxonomy, benchmark, and training set.",
+      "llm_tldr_cn": "本文指出现有视觉语言模型在摄像机运动理解上存在严重缺陷，这直接影响视频生成模型的训练与评估。为此，作者系统定义了摄像机运动理解任务，构建了两级电影摄影分类体系，并创建了包含真实和合成视频的原子化基准。通过有针对性的数据增强，微调后的VLM-8B在基准上超越了Gemini 3.1 Pro。该工作为视频生成评估提供了标准化的摄像机运动评估工具。",
+      "llm_tldr": "本文指出现有视觉语言模型在摄像机运动理解上存在严重缺陷，这直接影响视频生成模型的训练与评估。为此，作者系统定义了摄像机运动理解任务，构建了两级电影摄影分类体系，并创建了包含真实和合成视频的原子化基准。通过有针对性的数据增强，微调后的VLM-8B在基准上超越了Gemini 3.1 Pro。该工作为视频生成评估提供了标准化的摄像机运动评估工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.03960v1",
+      "source": "arxiv",
+      "title": "Reward Lightning: Fast Video Generation via Homologous Preference Distillation",
+      "abstract": "Achieving simultaneous preference alignment and distillation acceleration in video diffusion models remains an open challenge. Existing methods optimize the two objectives over mismatched representation spaces, where improving one objective often compromises the other. To overcome this, we propose Reward Lightning, a unified framework that aligns and accelerates a video diffusion model within a single shared representation. Its central principle is homology: both objectives are evaluated on identical latent features, which mitigates the gradient conflicts that arise when they are optimized over disjoint representations. As a foundational component, we first introduce a latent reward model (LRM) that scores videos directly in the latent space, without decoding back to the pixel space. Building on the LRM, homologous preference distillation (HPD) reuses this shared backbone to perform adversarial distillation and preference alignment jointly, yielding few-step generators that remain faithful and well aligned. Extensive experiments demonstrate that the LRM surpasses pixel-level and latent-level reward baselines by $11.0\\%$ and $14.7\\%$ in preference accuracy, and that Reward Lightning generates high-fidelity videos in merely $1$ to $4$ steps, improving the average VBench score by $2.1\\%$ while leading in text alignment, motion quality, and visual quality. Project page: https://reward-lightning.github.io.",
+      "authors": [
+        "Jiaxiang Cheng",
+        "Bing Ma",
+        "Xuhua Ren",
+        "Kai Yu",
+        "Peng Zhang",
+        "Tianxiang Zheng",
+        "Qinglin Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-04T17:32:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.03960v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes a latent reward model for scoring generated videos",
+      "llm_evidence_cn": "提出潜在奖励模型用于评分生成视频",
+      "llm_evidence": "提出潜在奖励模型用于评分生成视频",
+      "canonical_evidence": "提出潜在奖励模型用于评分生成视频",
+      "llm_tldr_en": "Reward Lightning introduces a latent reward model (LRM) that scores videos in latent space, directly addressing evaluation metrics for video generation.",
+      "llm_tldr_cn": "针对视频扩散模型中对齐与加速目标冲突的问题，Reward Lightning提出同源偏好蒸馏框架，核心是潜在奖励模型（LRM）直接在潜在空间对生成视频评分。该方法统一了偏好对齐和蒸馏加速，为视频生成评估提供了新的指标范式。实验表明该方法在保持质量的同时显著加速生成。",
+      "llm_tldr": "针对视频扩散模型中对齐与加速目标冲突的问题，Reward Lightning提出同源偏好蒸馏框架，核心是潜在奖励模型（LRM）直接在潜在空间对生成视频评分。该方法统一了偏好对齐和蒸馏加速，为视频生成评估提供了新的指标范式。实验表明该方法在保持质量的同时显著加速生成。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.04606v1",
+      "source": "arxiv",
+      "title": "CompressedVQA-AEV: Full-Reference and No-Reference Quality Assessment Models for Asymmetric Encoded Videos",
+      "abstract": "This report presents our solutions to the QoMEX 2026 Grand Challenge on Video Quality Assessment for Asymmetric Encoded Videos, comprising a full-reference (FR) model, CompressedVQA-AEV-FR, and a no-reference (NR) model, CompressedVQA-AEV-NR. The FR approach leverages a Swin-B backbone to extract multi-stage similarity statistics between reference and distorted videos for quality prediction. For the NR setting, our model employs complementary frame-level encoders based on SigLIP2 and Swin-B, followed by temporal mean pooling and cross-fold ensembling to estimate perceptual quality without reference data. Our CompressedVQA-AEV-FR achieves first place in the FR track of QoMEX 2026 Grand Challenge, while CompressedVQA-AEV-NR secures fourth place in the NR track, demonstrating the effectiveness of our proposed models. The code is available at https://github.com/sunwei925/CompressedVQA-AEV.",
+      "authors": [
+        "Wei Sun",
+        "Xingwei Liu",
+        "Dandan Zhu",
+        "Xiangyang Zhu",
+        "Weixia Zhang",
+        "Guangtao Zhai"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV",
+        "cs.MM"
+      ],
+      "published": "2026-07-06T02:23:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.04606v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes full-reference and no-reference VQA models for asymmetric encoded videos, applicable to generated video quality assessment",
+      "llm_evidence_cn": "提出了针对非对称编码视频的全参考和无参考质量评估模型，可应用于生成视频质量评估",
+      "llm_evidence": "提出了针对非对称编码视频的全参考和无参考质量评估模型，可应用于生成视频质量评估",
+      "canonical_evidence": "提出了针对非对称编码视频的全参考和无参考质量评估模型，可应用于生成视频质量评估",
+      "llm_tldr_en": "CompressedVQA-AEV introduces FR and NR video quality assessment models for asymmetric encoded videos, achieving first place in QoMEX 2026 challenge; the NR model is directly applicable to evaluating generated video quality.",
+      "llm_tldr_cn": "针对非对称编码视频质量评估的挑战，本文提出了CompressedVQA-AEV模型，包含全参考（FR）和无参考（NR）两种模式。FR模型基于Swin-B提取多阶段相似性统计进行质量预测；NR模型结合SigLIP2和Swin-B帧级编码器，通过时序平均池化和交叉集成估计感知质量。在QoMEX 2026 Grand Challenge中FR模型获得第一名。该工作提供的无参考方法可有效迁移至生成视频质量评估场景，弥补了生成视频缺乏参考帧的评估需求。",
+      "llm_tldr": "针对非对称编码视频质量评估的挑战，本文提出了CompressedVQA-AEV模型，包含全参考（FR）和无参考（NR）两种模式。FR模型基于Swin-B提取多阶段相似性统计进行质量预测；NR模型结合SigLIP2和Swin-B帧级编码器，通过时序平均池化和交叉集成估计感知质量。在QoMEX 2026 Grand Challenge中FR模型获得第一名。该工作提供的无参考方法可有效迁移至生成视频质量评估场景，弥补了生成视频缺乏参考帧的评估需求。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.04643v1",
+      "source": "arxiv",
+      "title": "Learning Flexible Generalization in Video Quality Assessment by Bringing Device and Viewing Condition Distributions",
+      "abstract": "Video quality assessment (VQA) plays a critical role in optimizing video delivery systems. While numerous objective metrics have been proposed to approximate human perception, the perceived quality strongly depends on viewing conditions and display characteristics. Factors such as ambient lighting, display brightness, and resolution significantly influence the visibility of distortions. In this work, we address the question of the multi-screen quality assessment on mobile devices, as this area still tends to be under-covered. We introduce a first large-scale subjective dataset collected across more than different 300 Android devices, accompanied by metadata on viewing conditions and display properties. We propose a strategy for aggregated score extraction and adaptation of VQA models to device-specific quality estimation. Our results demonstrate that incorporating device and context information enables more accurate and flexible quality prediction, offering new opportunities for fine-grained optimization in streaming services. Ultimately, this work advances the development of perceptual quality models that bridge the gap between laboratory evaluations and the diverse conditions of real-world media consumption. We made the dataset and the code available at https://videoprocessing.github.io/device-viewing-conditions.",
+      "authors": [
+        "Nikolay Safonov",
+        "Dmitriy S. Vatolin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-06T03:56:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.04643v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "video quality assessment considering device and viewing conditions",
+      "llm_evidence_cn": "考虑设备和观看条件的视频质量评估",
+      "llm_evidence": "考虑设备和观看条件的视频质量评估",
+      "canonical_evidence": "考虑设备和观看条件的视频质量评估",
+      "llm_tldr_en": "This paper presents a VQA method that accounts for device and viewing condition variations, directly relevant to evaluating generated video quality.",
+      "llm_tldr_cn": "该论文针对视频质量评估（VQA）问题，首次引入大规模在多种安卓设备上收集的主观数据集，并考虑观看条件和显示属性。该方法可以直接应用于生成视频的质量评估，特别是对于需要跨设备评估的场景，具有很强的实用价值。",
+      "llm_tldr": "该论文针对视频质量评估（VQA）问题，首次引入大规模在多种安卓设备上收集的主观数据集，并考虑观看条件和显示属性。该方法可以直接应用于生成视频的质量评估，特别是对于需要跨设备评估的场景，具有很强的实用价值。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.03069v1",
+      "source": "arxiv",
+      "title": "SafeGuard: A Multi-Agent Perception-Reasoning Framework for Social-Risk AI-Generated Video Detection",
+      "abstract": "As video generation paradigms evolve from localized manipulation to full-scene synthesis, AI-generated video detection becomes increasingly challenging, as forgeries exhibit coherent global structure and high perceptual realism. However, existing benchmarks are biased toward perceptual fidelity and primarily evaluate detectors based on perceptual artifacts, providing limited coverage of scenarios that require reasoning about violations of physical laws, structural coherence, or social logic. This dataset bias shapes current approaches and results in a Perception-Reasoning Gap: artifact-centric models capture low-level statistical irregularities yet lack semantic inference, whereas vision-language models perform semantic reasoning but remain insensitive to fine-grained forensic cues. To bridge this gap, we propose SafeGuard, a multi-agent framework that enables collaborative specialization between forensic perception and semantic reasoning. A hierarchical perceptual solver extracts fine-grained forensic evidence, while a self-reflective verifier enforces consistency between semantic inference and physical plausibility, forming an interpretable evidence chain. To support evaluation, we introduce SafeVid, a novel AI-generated video detection benchmark comprising 20K videos spanning 10 social risk categories, designed to evaluate physical plausibility, structural consistency, and the rationality of social behaviors. Extensive experiments demonstrate the generalization of SafeGuard, improving accuracy on SafeVid by +18.7% and consistently outperforming prior methods across four public benchmarks.",
+      "authors": [
+        "Wenlin Wu",
+        "Sheng Zhou",
+        "Peipei Song",
+        "Wenhao Wang",
+        "Junbin Xiao",
+        "Xun Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-03T08:03:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.03069v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "evaluates AI-generated video detection, related to video generation quality assessment",
+      "llm_evidence_cn": "评估AI生成视频检测，与视频生成质量评估相关",
+      "llm_evidence": "评估AI生成视频检测，与视频生成质量评估相关",
+      "canonical_evidence": "评估AI生成视频检测，与视频生成质量评估相关",
+      "llm_tldr_en": "SafeGuard detects AI-generated videos by integrating perception and reasoning, contributing to evaluation of generated video quality.",
+      "llm_tldr_cn": "SafeGuard提出了多智能体感知-推理框架，用于检测AI生成视频，通过融合低级伪影和高级语义推理来弥补感知-推理差距。该方法可迁移至生成视频质量评估，但主要聚焦检测而非测量。",
+      "llm_tldr": "SafeGuard提出了多智能体感知-推理框架，用于检测AI生成视频，通过融合低级伪影和高级语义推理来弥补感知-推理差距。该方法可迁移至生成视频质量评估，但主要聚焦检测而非测量。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
