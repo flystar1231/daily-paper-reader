@@ -6,35 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-07
-- 运行时间：2026-07-07 21:10:04 UTC
+- 最新运行日期：2026-07-08
+- 运行时间：2026-07-08 20:12:51 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：4
+- 本次总论文数：2
+- 精读区：1
 - 速读区：1
 
 ### 今日简报（AI）
-今日精读4篇、速读1篇，重点关注自然语言控制摄像机运动与视频生成加速两个方向。最值得优先阅读《Natural Language Camera Movement Understanding》（8.0分）和《Reward Lightning: Fast Video Generation via Homologous Preference Distillation》（8.0分），前者探索语言指令驱动镜头运动，后者实现高质量视频高效生成。建议普通读者留意多智能体安全检测框架《SafeGuard》，但需注意其当前评分为6.0仍有提升空间。
-- 详情：[/202607/07/README](/202607/07/README)
+1) 今日聚焦文本到图像模型的像素级密集预测，并关注实时交互视频生成新进展。  
+2) 最值得看的是精读论文「From RGB Generation to Dense Field Readout」，它突破了传统生成范式，将扩散模型用于像素空间密集预测，获得9.0高分。  
+3) 建议普通读者优先精读该文，了解如何从文本生成转向精确的稠密场预测，这是多模态AI的重要方向。
+- 详情：[/202607/08/README](/202607/08/README)
 
 ### 精读区论文标签
-1. [Natural Language Camera Movement Understanding](/202607/07/2607.03043v1-natural-language-camera-movement-understanding)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：通过摄像机运动理解评估视频生成模型的基准
-2. [Reward Lightning: Fast Video Generation via Homologous Preference Distillation](/202607/07/2607.03960v1-reward-lightning-fast-video-generation-via-homologous-preference-distillation)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：提出潜在奖励模型用于评分生成视频
-3. [CompressedVQA-AEV: Full-Reference and No-Reference Quality Assessment Models for Asymmetric Encoded Videos](/202607/07/2607.04606v1-compressedvqa-aev-full-reference-and-no-reference-quality-assessment-models-for-asymmetric-encoded-videos)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：提出了针对非对称编码视频的全参考和无参考质量评估模型，可应用于生成视频质量评估
-4. [Learning Flexible Generalization in Video Quality Assessment by Bringing Device and Viewing Condition Distributions](/202607/07/2607.04643v1-learning-flexible-generalization-in-video-quality-assessment-by-bringing-device-and-viewing-condition-distributions)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：考虑设备和观看条件的视频质量评估
+1. [From RGB Generation to Dense Field Readout: Pixel-Space Dense Prediction with Text-to-Image Models](/202607/08/2607.06553v1-from-rgb-generation-to-dense-field-readout-pixel-space-dense-prediction-with-text-to-image-models)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：讨论使用文本到图像模型在像素空间生成alpha蒙版等密集预测任务
 
 ### 速读区论文标签
-1. [SafeGuard: A Multi-Agent Perception-Reasoning Framework for Social-Risk AI-Generated Video Detection](/202607/07/2607.03069v1-safeguard-a-multi-agent-perception-reasoning-framework-for-social-risk-ai-generated-video-detection)  
+1. [Vidu S1: A Real-Time Interactive Video Generation Model](/202607/08/2607.03118v1-vidu-s1-a-real-time-interactive-video-generation-model)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：评估AI生成视频检测，与视频生成质量评估相关
+   evidence：实时交互视频生成模型，性能优异
 
 
 <div class="dpr-home-promo-card">

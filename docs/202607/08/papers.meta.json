@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-08",
+  "date": "2026-07-08",
+  "generated_at": "2026-07-08T20:13:00",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/08/2607.06553v1-from-rgb-generation-to-dense-field-readout-pixel-space-dense-prediction-with-text-to-image-models",
+      "section": "deep",
+      "title_en": "From RGB Generation to Dense Field Readout: Pixel-Space Dense Prediction with Text-to-Image Models",
+      "authors": "Zanyi Wang, Xin Lin, Haodong Li, Dengyang Jiang, Yijiang Li, Pengtao Xie",
+      "date": "2026-07-07",
+      "pdf": "https://arxiv.org/pdf/2607.06553v1",
+      "score": "9.0",
+      "evidence": "讨论使用文本到图像模型在像素空间生成alpha蒙版等密集预测任务",
+      "tldr": "现有大型文本到图像模型用于密集预测时，常将深度、法线等任务目标编码为RGB图像格式再生成，继承了不必要的生成界面。本文提出ReChannel，保留VAE编码器，移除目标侧解码器，利用已冻结的DiT和任务LoRA，每个令牌直接映射到对应像素块，仅用33K参数的共享线性头即可预测任务原生场。在无三元图抠图、KITTI深度和指代分割上取得新最优结果，速度比编辑加潜在解码方法快2.48倍。表明密集预测可从生成预训练中获益，无需继承RGB生成输出接口。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Large-scale text-to-image models are attractive backbones for dense prediction because RGB generation pretraining learns rich semantic, structural, and geometric priors. Existing generative and editing approaches reuse these priors by casting dense prediction as target generation: annotations such as depth, normals, alpha mattes, masks, and heatmaps are encoded into an RGB-trained VAE latent space and decoded back as image-like targets. We argue this inherits more of the generative output interface than dense prediction requires: unlike RGB synthesis, dense prediction asks for pixel-correct, task-native fields on the same image plane, not new RGB content to be rendered. Our key observation is that a pretrained DiT already organizes RGB inputs through a patch-to-token-to-patch lattice on the image plane, so each token indexes a fixed output patch whose channels can carry task-native quantities instead of RGB appearance. We instantiate this as ReChannel: we keep the VAE encoder for the DiT's input distribution but drop the target-side decoder, adapt the frozen DiT with task LoRA, and map each token to its p x p x K_t pixel-space patch through a shared token-local linear head--about 33K parameters, no spatial mixing. Using FLUX-Klein, we evaluate on six dense prediction tasks and over a dozen benchmarks. This minimal interface sets new state-of-the-art on trimap-free matting, KITTI depth, and referring segmentation, and stays competitive on normals, saliency, and pose. In a matched 4B setting it is more accurate and 2.48x faster than an edit-plus-latent-decode counterpart--dense perception can benefit from generative pretraining without inheriting its output interface.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/08/2607.03118v1-vidu-s1-a-real-time-interactive-video-generation-model",
+      "section": "quick",
+      "title_en": "Vidu S1: A Real-Time Interactive Video Generation Model",
+      "authors": "Jintao Zhang, Kai Jiang, Jintao Chen, Xu Wang, Yang Luo, Yuji Wang, Dechuang Chen, Jungang Li, Chengyang Ye, Marco Chen, Hongzhou Zhu, Min Zhao, Yuxuan Jiang, Zhengkun Huang, Chendong Xiang, Kaiwen Zheng, Haoxu Wang, Xiaohang Wang, Qi Jia, Xin Chen, Yimin Chen, Youhe Jiang, Fangcheng Fu, Zhijie Deng, Fan Bao, Jianfei Chen, Jun Zhu",
+      "date": "2026-07-03",
+      "pdf": "https://arxiv.org/pdf/2607.03118v1",
+      "score": "6.0",
+      "evidence": "实时交互视频生成模型，性能优异",
+      "tldr": "实时交互视频生成面临模糊、漂移等问题，且难以在消费级GPU上部署。Vidu S1基于TurboDiffusion和TurboServe框架，支持用户通过语音指令实时控制数字角色，生成无限长、无畸变的540p视频，帧率高达42FPS。实验表明其在各项指标上均达最优，并满足实时推理要求。该模型已提供在线Demo，为个性化交互视频生成开辟新路径。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We introduce Vidu S1, a real-time interactive video generation model supporting voice control of digital characters. Users can control video generation content at any moment through voice instructions. Vidu S1 supports infinite-length real-time video generation without blurring, drift, or visual distortion. Built with TurboDiffusion and TurboServe, Vidu S1 outputs 540p real-time videos at up to 42 FPS on regular consumer GPUs. Users can upload custom images of real people, anime, and pets, and choose different voice tones for personalized experiences. Experiments show that Vidu S1 achieves the best performance across all test metrics while fully meeting real-time inference requirements. A playable online demo is available at https://vidu.com/vidu-stream.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
