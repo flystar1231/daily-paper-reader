@@ -1,0 +1,186 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-09T21:53:02.279022+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.07196v1",
+      "source": "arxiv",
+      "title": "Validate the Dream Before You Trust Its Verdict: Admissibility for World-Model Simulators",
+      "abstract": "Across robotics, World Models (WMs) are increasingly used to evaluate action policies by simulating the consequences of actions in an imagined world, and returning a success or safety verdict. Yet a verdict is only as trustworthy as the WM that produced it, and the WM itself needs to be certified. In video-generation WMs, fidelity metrics such as Fréchet Video Distance (FVD) reward visual realism, but ignore whether the world responds correctly to the policy's actions, including those unseen in training. Classical simulation-based validation assumes a trusted simulator evaluating an untrusted policy, whereas generative WMs are themselves unverified learned artifacts. Hence, we argue that any WM used as a test oracle must first be accredited before its verdicts can serve as evidence. Building on credibility practices from safety-critical simulation, including Verification, Validation & Accreditation (VV&A), Safety of the Intended Functionality (SOTIF), and scenario-based testing standards, we define an admissibility ladder (L0-L4) that a WM must climb before its closed-loop verdicts are accepted as assurance evidence. Our framework is embodiment-agnostic, and is instantiated in autonomous driving (AD), where assurance methods for traditional simulation are most mature. Applied to two driving WMs, the lower rungs reveal a reversal: the model that ranks higher on visual generation quality (L0) ranks lower on action-following (L1-L2), so visual fidelity does not predict the action-robustness a closed-loop verdict depends on.",
+      "authors": [
+        "Christian Oefinger",
+        "Finn Rasmus Schäfer",
+        "Korbinian Moller",
+        "Mattia Piccinini",
+        "Johannes Betz"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG",
+        "cs.SE"
+      ],
+      "published": "2026-07-08T09:30:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.07196v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "critique of FVD and proposal for WM certification",
+      "llm_evidence_cn": "批评FVD并提议世界模型认证",
+      "llm_evidence": "批评FVD并提议世界模型认证",
+      "canonical_evidence": "批评FVD并提议世界模型认证",
+      "llm_tldr_en": "Validates world-model simulators for video generation by addressing fidelity metric limitations",
+      "llm_tldr_cn": "视频生成世界模型常用FVD等保真度指标衡量视觉真实感，但这些指标忽略了动作响应的正确性。本文指出，生成式世界模型自身是未经验证的学习产物，用作测试预言机前必须经过认证。论文提出一套验证框架，评估世界模型对策略动作的响应正确性，超越了传统视觉指标，为视频生成模型评估提供了新视角。",
+      "llm_tldr": "视频生成世界模型常用FVD等保真度指标衡量视觉真实感，但这些指标忽略了动作响应的正确性。本文指出，生成式世界模型自身是未经验证的学习产物，用作测试预言机前必须经过认证。论文提出一套验证框架，评估世界模型对策略动作的响应正确性，超越了传统视觉指标，为视频生成模型评估提供了新视角。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.02886v1",
+      "source": "arxiv",
+      "title": "SPLIT: Training-Free AI-Generated and Partially Edited Video Detection via Spatial Patch-Level Incoherence and Temporal Roughness",
+      "abstract": "Deploying AI-generated video detectors in real-world services demands an ultra-low false positive rate (FPR) on real videos to avoid falsely rejecting authentic content, a regime where standard metrics such as AUROC fail to reflect actual operating behavior. We introduce Spatial Patch-Level Incoherence and Temporal Roughness (SPLIT), a training-free detector that operates on patch tokens from a frozen vision encoder to detect both fully generated and partially edited videos. SPLIT computes two complementary signals: Two-step Temporal Roughness (TTR), capturing non-smooth patch trajectories via one-step and two-step feature variation contrast, and Local Spatial Motion Incoherence (LSMI), measuring spatially inconsistent temporal changes through gradients of a feature-space motion field. The two are fused multiplicatively with gamma correction to sharpen real-fake separation at strict thresholds. We further propose a service-aligned evaluation protocol based on Fake Recall at fixed FPR with real-only threshold calibration and cross-real threshold transfer. Across three benchmarks (FakeParts, GenVideo, and ViF-Bench), SPLIT achieves the highest Fake Recall at FPR = $0.1\\%$, substantially outperforming supervised and training-free baselines while remaining robust to post-processing with negligible overhead. The code is publicly available at https://github.com/mldljyh/SPLIT .",
+      "authors": [
+        "Jongyeop Hyun",
+        "Hyounghun Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-03T02:34:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.02886v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "training-free AI-generated video detection metrics",
+      "llm_evidence_cn": "无训练AI生成视频检测指标",
+      "llm_evidence": "无训练AI生成视频检测指标",
+      "canonical_evidence": "无训练AI生成视频检测指标",
+      "llm_tldr_en": "Detects AI-generated and edited videos via spatial patch-level incoherence and temporal roughness metrics",
+      "llm_tldr_cn": "真实场景部署AI生成视频检测器需要极低假阳性率，而现有指标如AUROC无法反映实际行为。本文提出SPLIT，一个无需训练的检测器，利用冻结视觉编码器的patch token计算两步时间粗糙度（TTR）和局部空间运动不一致性（LSMI），有效区分完全生成和部分编辑的视频。在多个基准上达到SOTA，且推理开销极低。",
+      "llm_tldr": "真实场景部署AI生成视频检测器需要极低假阳性率，而现有指标如AUROC无法反映实际行为。本文提出SPLIT，一个无需训练的检测器，利用冻结视觉编码器的patch token计算两步时间粗糙度（TTR）和局部空间运动不一致性（LSMI），有效区分完全生成和部分编辑的视频。在多个基准上达到SOTA，且推理开销极低。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04311v1",
+      "source": "arxiv",
+      "title": "Aura: Consistent Multi-Subject Video Generation via VLM-Grounded Semantic Alignment",
+      "abstract": "Subject-driven and multi-element video generation are central to controllable video synthesis, but existing methods still struggle to preserve identity consistency and model complex relationships among multiple subjects. In this paper, we propose Aura, a unified framework for high-fidelity and identity-consistent video generation. To better capture scene dynamics and subject interactions, we introduce AI director-level captions that provide dense and structured descriptions of video content. We further leverage a vision-language model (VLM) with learnable queries to extract multimodal semantic features from textual and visual references, covering both global semantics and fine-grained visual cues. To bridge the representational gap between the VLM and the Diffusion Transformer (DiT), we design a two-stage alignment strategy that progressively maps VLM features into the DiT feature space. For visual conditioning, we adopt token concatenation to inject reference information directly into the generation process. To distinguish heterogeneous subject types and reduce common copy-paste artifacts, we develop a subject-aware RoPE-Shift mechanism. To further differentiate reference images of different categories, we introduce subject-aware learnable tokens. In addition, we introduce Memory Tokens to balance the training signal across examples with different numbers of reference subjects. During inference, Progressive-APG (Adaptive Prompt Guidance) further alleviates oversaturation and improves semantic alignment with user prompts. Finally, we build a high-quality video-subject image dataset through a dedicated data construction pipeline. Extensive experiments show that our method achieves state-of-the-art performance on both single-subject generation and more challenging multi-element scenarios.",
+      "authors": [
+        "Zixiang Zhou",
+        "Zhentao Yu",
+        "Yifeng Ma",
+        "Hongmei Wang",
+        "Wenqing Yu",
+        "Cong Wang",
+        "Zilin Yang",
+        "Rui Chen",
+        "Jiarong Ou",
+        "Yezhou Liu",
+        "Yuan Zhou",
+        "Qinglin Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-05T13:54:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.04311v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multi-subject video generation technique",
+      "llm_evidence_cn": "多主体视频生成技术",
+      "llm_evidence": "多主体视频生成技术",
+      "canonical_evidence": "多主体视频生成技术",
+      "llm_tldr_en": "Aura proposes a VLM-grounded framework for consistent multi-subject video generation, improving identity preservation and interaction modeling.",
+      "llm_tldr_cn": "现有可控视频生成方法在多主体场景下难以保持身份一致性和建模复杂关系。Aura框架通过结合视觉语言模型的查询机制和AI导演级密集描述，有效提取全局与细粒度语义特征，弥合图文表征差异。在多个数据集上的实验验证了其在身份保持和交互建模方面的优越性，推进了高保真视频生成技术的发展。",
+      "llm_tldr": "现有可控视频生成方法在多主体场景下难以保持身份一致性和建模复杂关系。Aura框架通过结合视觉语言模型的查询机制和AI导演级密集描述，有效提取全局与细粒度语义特征，弥合图文表征差异。在多个数据集上的实验验证了其在身份保持和交互建模方面的优越性，推进了高保真视频生成技术的发展。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.06856v1",
+      "source": "arxiv",
+      "title": "Gen4U: Unifying Video Generation and Understanding via Diffusion",
+      "abstract": "Prior work suggests that diffusion representations capture low-level geometry but struggle with high-level semantics. We demonstrate that state-of-the-art video diffusion models overcome this limitation. By systematically probing their intermediate activations using recent mutual-kNN alignment metrics, we reveal a highly structured latent space where visual representations evolve across both network depth and noise levels. We show that while moderate noise levels yield linearly separable global semantics, fine-grained details persist at lower noise levels but become spatially scattered, requiring attention mechanisms to decode. Building on these insights, we introduce Gen4U (Generation for Understanding), a framework that repurposes these generative representations with a single forward pass. Our experiments establish that frozen, large-scale video diffusion models function as highly competitive video encoders across a wide spectrum of tasks, spanning semantic and non-semantic objectives (video classification, depth estimation, camera pose estimation, image and video captioning). Bypassing fine-tuning, Gen4U unifies the generation and understanding paradigms, achieving strong perception performance while fully preserving the model's ability to generate high-quality video.",
+      "authors": [
+        "Michael King",
+        "Aravindh Mahendran",
+        "Matthew Koichi Grimes",
+        "Fedor Kitashov",
+        "Adham Elarabawy",
+        "Pedro Velez",
+        "Maks Ovsjanikov",
+        "Viorica Pătrăucean"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-07T23:17:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.06856v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses mutual-kNN alignment metrics to evaluate video diffusion representations",
+      "llm_evidence_cn": "使用互k近邻对齐度量评估视频扩散表示",
+      "llm_evidence": "使用互k近邻对齐度量评估视频扩散表示",
+      "canonical_evidence": "使用互k近邻对齐度量评估视频扩散表示",
+      "llm_tldr_en": "Gen4U probes video diffusion models with mutual-kNN alignment metrics, revealing structured latent spaces and repurposing generative representations for understanding.",
+      "llm_tldr_cn": "本文挑战了扩散表示仅捕捉低级几何的假设，通过互k近邻对齐度量系统分析视频扩散模型的中间激活。发现其潜在空间高度结构化，中等噪声水平呈现线性可分的全局语义，低噪声水平保留精细细节。基于此提出Gen4U框架，将生成式表示用于理解任务，证明了视频扩散模型在高层次语义上的潜力。",
+      "llm_tldr": "本文挑战了扩散表示仅捕捉低级几何的假设，通过互k近邻对齐度量系统分析视频扩散模型的中间激活。发现其潜在空间高度结构化，中等噪声水平呈现线性可分的全局语义，低噪声水平保留精细细节。基于此提出Gen4U框架，将生成式表示用于理解任务，证明了视频扩散模型在高层次语义上的潜力。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
