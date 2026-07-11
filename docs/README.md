@@ -6,23 +6,19 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-10
-- 运行时间：2026-07-10 21:30:36 UTC
+- 最新运行日期：2026-07-11
+- 运行时间：2026-07-11 21:07:59 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：1
+- 本次总论文数：0
+- 精读区：0
 - 速读区：0
 
 ### 今日简报（AI）
-今日精读一篇高分论文，探索如何用文本到图像模型实现像素级密集预测，评分9.0。  
-核心思路是将RGB生成能力迁移至稠密场读出，在像素空间直接完成分割、深度估计等任务，无需额外解码器。  
-建议关注该方法在具体视觉任务上的性能对比，尤其能否替代传统密集预测框架。
-- 详情：[/202607/10/README](/202607/10/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202607/11/README](/202607/11/README)
 
 ### 精读区论文标签
-1. [From RGB Generation to Dense Field Readout: Pixel-Space Dense Prediction with Text-to-Image Models](/202607/10/2607.06553v2-from-rgb-generation-to-dense-field-readout-pixel-space-dense-prediction-with-text-to-image-models)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：直接处理alpha抠图预测作为密集场读出，与alpha通道生成相关
+- 本次无精读推荐。
 
 ### 速读区论文标签
 - 本次无速读推荐。
