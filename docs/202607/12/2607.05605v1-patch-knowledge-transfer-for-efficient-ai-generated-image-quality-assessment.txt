@@ -1,0 +1,492 @@
+Title: Patch Knowledge Transfer for Efficient AI-Generated Image Quality Assessment
+
+URL Source: https://arxiv.org/pdf/2607.05605v1
+
+Published Time: Wed, 08 Jul 2026 00:10:58 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Patch Knowledge Transfer for Efficient AI-Generated Image Quality Assessment 
+
+Jiquan Yuan 
+
+School of Software and Microelectronics, Peking University, Beijing, China jiquany2023@163.com 
+
+Abstract —With the rapid advancement of image generation technologies, perceptual quality assessment of AI-generated im-ages has emerged as a crucial research direction in computer vision. The core challenge of this task lies in achieving effi-cient quality assessment for massive generated images. Current mainstream approaches exhibit two key limitations: 1) Methods employing complex feature extraction strategies, while improving performance, incur prohibitive computational costs that hinder real-time inference; 2) Simple image scaling-based solutions, despite their computational efficiency, demonstrate significantly inferior assessment accuracy. To address this critical issue, we propose Patch Knowledge Transfer (PKT), a knowledge distillation-based optimization framework that achieves synergis-tic optimization of visual representation capability and inference efficiency through an innovative multi-level knowledge transfer mechanism. Specifically, we design a dual-model architecture: a teacher model with local-global hybrid processing provides high-quality supervision signals, while a student model relying solely on global processing efficiently inherits the teacher’s rep-resentation capacity through multi-level supervision. Extensive experiments conducted on 4 AIGIQA databases demonstrate that the PKT framework enables the student model to maintain performance comparable to the teacher while reducing com-putational costs by 67.7%. Furthermore, compared to existing methods, our approach achieves a superior balance between model efficiency and assessment accuracy. 
+
+Index Terms —AIGIQA, Patch Knowledge Transfer 
+
+I. I NTRODUCTION 
+
+With the rapid advancement of image generation technol-ogy, the number of AI-generated images (AIGIs) has surged, and they are now widely used across various fields. However, the quality of these AIGIs varies greatly, and low-quality AIGIs severely impair user experience. Therefore, efficiently filtering high-quality images from large-scale AIGIs is crucial. To address this, the task of AI-generated image quality assessment (AIGIQA) has gained increasing attention. Most existing methods [1]–[11] process image inputs in two primary ways: 1) global processing, which extracts features directly from the whole image—computationally efficient but prone to loss of fine-grained details; and 2) local–global hybrid process-ing, which aggregates features from multiple local patches and the global image—more accurate but computationally expen-sive and unsuitable for large-scale real-time assessment. This accuracy–efficiency trade-off becomes particularly pronounced for high-resolution images. Thus, we raise the key research question: Is there an innovative approach that can effectively explore and integrate multi-level visual representations (from Resize  QA  
+
+> Model ෝ𝒚
+> Predicted
+> Score
+> …
+> Patch
+> Resize
+> ෝ𝒚
+> Predicted
+> Score
+> Knowledge Distillation
+> Teacher Model
+> Student Model
+> QA
+> Model
+
+(a) PKT 
+
+(b) SRCC vs. FLOPs 
+
+Fig. 1: (a) Illustration of our proposed PKT, which em-ploys a local-global hybrid teacher model to guide a global-only student model. (b) Comparisons with multiple patch-based teacher, baseline, and several existing IQA methods on AGIQA-1K database in terms of SRCC and FLOPs. 
+
+local details to global semantics) while maintaining high computational efficiency? 
+
+To tackle this challenge, we propose Patch Knowledge Transfer (PKT), a knowledge distillation-based framework that unifies comprehensive visual processing with efficient inference. As shown in Fig. 1a, we design a dual-branch architecture: the teacher model employs local–global hybrid processing to build comprehensive quality priors through multi-scale feature extraction; the student model retains only the global processing branch but learns the teacher’s multi-level representational capability via feature distillation. This allows the student model to maintain efficient single-image forward computation while inheriting the teacher’s rich quality arXiv:2607.05605v1 [cs.CV] 6 Jul 2026 discrimination knowledge, ultimately achieving an optimal balance between accuracy and efficiency (Fig. 1). To ensure the student fully assimilates the teacher’s repre-sentations, we design a multi-level knowledge transfer scheme with two core supervision mechanisms: feature-level knowl-edge transfer, which aligns features at the last encoder layer via a feature alignment loss, and output-level knowledge distillation, which minimizes the KL divergence between the two models’ prediction distributions. This hierarchical strategy transfers not only explicit discriminative knowledge but also the teacher’s internal feature extraction paradigm. Extensive experiments on four mainstream AIGIQA databases demonstrate that PKT achieves a better trade-off be-tween efficiency and performance, including AGIQA-1K [12], AGIQA-3K [13], AIGCIQA2023 [14], and PKU-AIGIQA-4K [15]. On AGIQA-1K, compared to the local–global hybrid teacher model, PKT reduces computational cost (FLOPs) by 67.7% while maintaining comparable performance; compared to the global-only baseline, it improves SRCC and PLCC by 0.0098 and 0.0091, respectively, under the same computational budget. Notably, the student model even surpasses the teacher on certain metrics, indicating effective knowledge transfer and performance enhancement. II. R ELATED WORK 
+
+Recent years have witnessed remarkable advancements in the field of AIGIQA. Qu et al. [3] develop IP-IQA, a CLIP-based framework that jointly processes AIGIs and their text prompts. Yuan et al. [5] introduce PSCR, which allows for inter-comparison among images in the database. Zhou et al. 
+
+[9] introduce AMFF-Net, which employs multi-scale image inputs to extract features and predict multiple quality dimen-sions. Peng et al. [6] propose ICPE, an enhanced version of LIQE that incorporates text-image correlation analysis. Yu et al. [7] present SF-IQA, a unique metric combining quality and similarity assessments through score fusion. Yang et al. 
+
+[8] present MoE-AGIQA, a hybrid expert system integrating visual and semantic perception. Tang et al. [16] present CLIP-AGIQA, leveraging CLIP’s multimodal knowledge for quality regression. These methods typically employ sophisticated fea-ture extraction strategies to explore and integrate multi-level visual information (spanning local details to global seman-tics). While such strategies can enhance model performance, they substantially increase computational complexity, making it difficult to meet the real-time inference requirements. In contrast, we propose a knowledge distillation-based optimiza-tion framework PKT in this paper, which achieves efficient inference while ensuring effective processing of multi-level visual information. III. A PPROACH 
+
+In this section, we first introduce the fundamental concepts and problem formulation. Subsequently, we provide a com-prehensive elaboration on the operational mechanism of the proposed Patch Knowledge Transfer (PKT) approach. Fig. 2 illustrates the overall framework of PKT. 
+
+A. Pipeline Overview 
+
+In recent years, the application of the CLIP model in image quality assessment (IQA) has attracted widespread attention [6], [9], [11], [16]–[18]. In this work, both the teacher and student models largely follow the architecture of LIQE. LIQE [18] computes cosine similarity between the image and a struc-tured textual description: “a photo with {q} quality”, where q corresponds to one of five quality levels (bad, poor, fair, good, perfect) associated with five score values V = {vi}5
+
+> i=1
+
+. The similarities are transformed into probabilities via a Softmax function, and a weighted sum is applied to produce the final image quality score. Given an image X, the teacher model samples N image patches Xp = {xip}Ni=1 from the input image and inputs them along with the scaled image Xr to the encoder, while the student model processes only the scaled image. This process can be represented as: 
+
+Ft = EIt (Xp, X r ), (1) 
+
+Fs = EIs (Xr ), (2) Here, Ft = {F it }N +1  
+
+> i=1
+
+and Fs represent the multi-patch image features extracted by the teacher model and the single-scale image features extracted by student model, respectively. EIt
+
+and EIs denote the image encoders of the teacher and stu-dent models, respectively. For the designed text template, the teacher and student models use their respective text encoders to extract text features F Tt and F Ts . Subsequently, we calculate the cosine similarity between the image features and the text features as follows: 
+
+St = F Tt · Ft
+
+∥F Tt ∥∥ Ft∥ , (3) 
+
+Ss = F Ts · Fs
+
+∥F Ts ∥∥ Fs∥ , (4) Here, St = {Sit }N +1  
+
+> i=1
+
+and Ss represent the cosine similarity calculated by the teacher model and the student model, re-spectively. We then use a Softmax function to transform the cosine similarities St = {Sit }N +1  
+
+> i=1
+
+and Ss into probabilities 
+
+Pt = {Pit}N +1  
+
+> i=1
+
+and Ps = {pis}5 
+
+> i=1
+
+for the five quality levels. The output probability distribution Pt = {pit}5 
+
+> i=1
+
+of the teacher model is obtained by averaging the predicted probabilities on five quality levels for all image patches and the scaled image, which can be expressed as: 
+
+Pt = 1
+
+N + 1  
+
+> N+1
+
+X
+
+> i=1
+
+Pit, (5) Finally, we calculate the final predicted score ˆyt and ˆys of the teacher model and the student model through a weighted summation, which can be represented as: 
+
+ˆyt =
+
+> 5
+
+X
+
+> i=1
+
+pit × vi, i = 1 , · · · , 5, (6) 
+
+ˆys =
+
+> 5
+
+X
+
+> i=1
+
+pis × vi, i = 1 , · · · , 5, (7) a photo with {q}        
+
+> qualit y
+> Text Templates
+> Text Feature
+> Input
+> …
+> Text Encoder
+> Imag eEncoder
+> Patc h
+> Resiz e
+> Imag eEncoder
+> …
+> Multi -patch
+> Image Feature
+> Cosine Similarity
+> Softmax
+> Weighted Summation
+> a photo with {q}
+> qualit yText Encoder
+> Cosine Similarity
+> Text Feature
+> Image Feature
+> Softmax
+> Weighted Summation
+
+Teacher Model 
+
+Studen t Model 
+
+> Mea n
+
+𝑭 𝒕 
+
+𝑭 𝒔 
+
+𝑷 𝒕 
+
+𝑷 𝒔 
+
+ෝ𝒚 𝒕 
+
+ෝ𝒚 𝒔 
+
+𝓛 𝒅𝒊𝒔𝒕  𝓛 𝒌𝒍  𝒚 Ground  Trut h
+
+𝓛 𝒎𝒔𝒆 
+
+𝓛 𝒎𝒔𝒆 
+
+𝓛 𝒕𝒆𝒂𝒄𝒉𝒆𝒓 = 𝓛 𝒎𝒔𝒆 (ෝ𝒚 𝒕 , 𝒚 )
+
+𝓛 𝒔𝒕𝒖𝒅𝒆𝒏𝒕 = 𝓛 𝒅𝒊𝒔𝒕 𝑭 𝒔 , 𝑭 𝒕 + 𝓛 𝒌𝒍 𝑷 𝒔 , 𝑷 𝒕 + 𝓛 𝒎𝒔𝒆 (ෝ𝒚 𝒔 , 𝒚 )Fig. 2: The pipeline of the proposed PKT framework. The framework comprises two key components: (1) a teacher model employing a local-global hybrid feature processing mechanism to generate precise supervision signals, and (2) a student model relying solely on global processing that efficiently inherits the teacher’s representational capacity through our designed multi-level supervision mechanism. Specifically, this supervision mechanism achieves dual knowledge transfer: deep representation migration at the feature level coupled with refined knowledge distillation at the output level. 
+
+B. Patch Knowledge Transfer 
+
+This paper introduces Patch Knowledge Transfer, whose key innovation lies in the design of a knowledge distillation mechanism that enables the student model to inherit visual priors extracted from multi-region features by the teacher model, thereby achieving a balance between accuracy and efficiency. The details are as follows. 
+
+Training Loss. The training of the teacher model is achieved by minimizing the Mean Squared Error (MSE) loss between its predicted scores ˆyt and the true quality scores y:
+
+Lteacher = Lmse ( ˆ yt, y ) = ∥ ˆyt − y∥22, (8) In order for the student model to effectively learn from the teacher model’s knowledge, we introduce multi-level supervi-sion during the training process: 1) Feature-level knowledge transfer: By constraining the similarity between last layer features of the student model and the corresponding features of the teacher model; 2) Output-level knowledge distillation: Ensuring that the output probability distribution of the student model approaches the predicted distribution of the teacher model. To align the dimensions between the student and teacher models during feature distillation, we applied a simple average aggregation to multiple features output by the teacher model. Specifically, the overall loss function of the student model can be expressed as: 
+
+Lstudent = Ldist (Fs, F t) + Lkl (Ps, P t) + Lmse ( ˆ ys, y )= (1 − Fs · 1 
+
+> N+1
+
+PN +1  
+
+> i=1
+
+F it
+
+∥Fs∥∥ 1 
+
+> N+1
+
+PN +1  
+
+> i=1
+
+F it ∥ ) + X Ptlog Pt
+
+Ps
+
++ ∥ ˆys − y∥22, (9) Where Ldist is the feature-level similarity loss between the student and teacher models’ last layer outputs, Lkl is the output-level distillation loss between the predicted output probability distributions of the student and teacher models, 
+
+Lmse is the mean squared error loss between the predicted quality score and the true score. 
+
+One-Stage Training and Two-Stage Training. This study explores two knowledge distillation training paradigms: 1) Joint training mode (PKT-1), where the teacher and student models are trained end-to-end with synchronized optimization of parameters, with the objective function being: 
+
+Ltotal = Ldist (Fs, F t) + Lkl (Ps, P t) + Lmse ( ˆ ys, y )+ Lmse ( ˆ yt, y ); (10) 2) Stage-wise training mode (PKT-2), where the teacher model is first trained independently, and its parameters are then fixed to guide the training of the student model. IV. E XPERIMENT 
+
+A. Databases and Evaluation Criteria 
+
+We evaluate our approach on 4 AIGIQA benchmarks, including AGIQA-1K [12], AGIQA-3K [13], AIGCIQA2023 [14], and PKU-AIGIQA-4K [15]. This study employs two widely adopted image quality assessment (IQA) metrics: the Spearman Rank Correlation Coefficient (SRCC) to evaluate prediction monotonicity and the Pearson Linear Correlation Coefficient (PLCC) to assess prediction accuracy. 
+
+B. Implementation Details 
+
+Our experiments are conducted on the NVIDIA A100, using PyTorch 1.11.0 and CUDA 11.3 for both training and testing. The batch size B is set to 8 for training and set to 20 for testing. We utilize the Adam optimizer [19] with a learning rate of 5 × 10 −6 and weight decay of 1 × 10 −3. Unless otherwise specified, the default configurations in this study are as follows: the image encoder employs ViT-B/32 [20], the teacher model adopts an overlapping patch sampling strategy with 9 sampled patches, and a two-stage training strategy is adopted by default during model training. Additionally, data augmentation techniques including random flipping are im-plemented during training. For dataset splitting, we randomly split the dataset into training set and test set at a ratio of 4:1. 
+
+C. Results and Analysis 
+
+Comparisons with SOTA IQA Methods. We conduct exten-sive comparisons between our method and 9 SOTA IQA mod-els: MUSIQ [1], HyperIQA [21], StairIQA [22], MANIQA [2], LIQE [18], Re-IQA [23], PSCR [5], AMFF-Net [9], and CLIP-AGIQA [16]. The experimental results in TABLE VI demon-strate the relative performance across 4 AIGIQA databases, including AGIQA-1K, AGIQA-3K, AIGCIQA2023, and PKU-AIGIQA-4K. Experimental results demonstrate that our pro-posed PKT framework achieves a superior balance between model performance and computational efficiency compared to existing methods, as evidenced by two key aspects: 
+
+(1) Significant Performance Gains at Comparable Com-putational Cost : When compared to methods with similar FLOPs, PKT shows clear performance advantages. For exam-ple, on the AGIQA-1K benchmark:  
+
+> •
+
+PKT-2 vs. HyperIQA: +0.0473 (SRCC) / +0.0275 (PLCC)  
+
+> •
+
+PKT-2 vs. StairIQA: +0.0367 (SRCC) / +0.0288 (PLCC) 
+
+(2) Drastic FLOPs Reduction While Maintaining Com-petitive Performance : Compared to high-performance large models, PKT achieves comparable or better accuracy with significantly lower computational cost. For example, on the AGIQA-1K benchmark:  
+
+> •
+
+PKT-2 vs. MANIQA: -95.98G FLOPs , +0.0203 (SRCC) / +0.0103 (PLCC)  
+
+> •
+
+PKT-2 vs. MUSIQ: -113.88G FLOPs , +0.0501 (SRCC) / +0.0337 (PLCC)  
+
+> •
+
+PKT-2 vs. LIQE: -41.25G FLOPs , +0.008 (SRCC) / +0.007 (PLCC) Notably, our PKT-2 achieves SOTA average performance across 4 benchmark datasets. On the AGIQA-1K and AGIQA-3K databases, PKT-2 exhibits particularly dominant advan-tages, outperforming all competing methods comprehensively. 
+
+Comparisons with Multiple Patch-based Teacher and Base-line. To further validate the effectiveness of our proposed method, we systematically compared it with the teacher model using local-global hybrid processing and the student model without PKT (Baseline). The experiments were comprehen-sively verified using multiple image encoders, including ViT-B/32, ViT-B/16 and ViT-L/14 [20]. As shown in TABLE VII, the teacher model demonstrates superior performance due to its higher computational complexity (e.g., the ViT-L/14 teacher model has FLOPs as high as 540.75G). By introducing the PKT method, the student model not only significantly surpasses the baseline under the same computational cost but also approaches or even exceeds the teacher model’s perfor-mance on multiple metrics (e.g., evaluation results of ViT-B/16 and ViT-L/14), fully demonstrating effectiveness of PKT in knowledge transfer. For example, on the PKU-AIGIQA-4K benchmark, when using ViT-B/32 as the image encoder, our student model achieves performance improvements of 0.0178 and 0.0147 in SRCC and PLCC metrics, respectively, while maintaining comparable computational costs to the baseline. More notably, the proposed method reduces computational costs by 67.7% while achieving performance comparable to the teacher model, highlighting its advantage in balancing model efficiency and performance. 
+
+Study on feature alignment strategies. To thoroughly opti-mize the effectiveness of feature-level knowledge distillation, we conduct a systematic comparative study on different feature alignment strategies. The experimental results are presented in TABLE IX. Our findings demonstrate that, compared to Manhattan and Euclidean Distance minimization approaches, the cosine similarity maximization strategy exhibits signif-icant advantages. This observation can be explained from the perspective of feature space geometry: cosine similarity focuses on directional consistency of feature vectors rather than absolute value matching, allowing the student model to learn the teacher’s feature distribution patterns more flexibly without being constrained by feature scale differences. 
+
+Ablation Study. In this section, we systematically investi-gate the impact of different loss function combinations on model performance, comparing seven distinct configurations. The baseline model employs only Lmse without any teacher knowledge. Ablation studies on loss functions presented in TABLE XV reveal three key findings: First, while Ldist alone underperforms the baseline, its combination with Lmse im-proves SRCC and PLCC by 0.0115 and 0.0089 respectively compared to baseline, demonstrating that feature-level transfer requires task-specific constraints for effective performance gain. Second, Lkl alone surpasses the baseline, confirming the TABLE I: Comparisons with SOTA IQA methods. Results marked with an asterisk (*) are directly taken from [9], while those without an asterisk are reproduced from our experiments. The best and second best performances are bolded and underlined, respectively. 
+
+Method FLOPs #Params AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC MUSIQ [1] 126.52G 78.55M 0.8506 0.8850 0.8338 0.8698 0.8261 0.8382 0.6801 0.6697 HyperIQA [21] 8.67G 27.38M 0.8534 0.8912 0.8495 0.8923 0.8159 0.8212 0.7144 0.7180 StairIQA [22] 5.11G 30.49M 0.8640 0.8899 0.8543 0.8943 0.8313 0.8376 0.7247 0.7145 MANIQA [2] 108.62G 128.51M 0.8804 0.9084 0.8916 0.9194 0.8412 0.8540 0.7800 0.7800 LIQE [18] 53.89G 84.23M 0.8927 0.9117 0.9009 0.9220 0.8608 0.8774 0.8030 0.8001 
+
+Re-IQA* [23] 33.09G 40.29M - - 0.8187 0.8799 0.8144 0.8317 - -PSCR [5] 303.55G 87.60M 0.8902 0.9161 0.8879 0.9204 0.8558 0.8659 0.7895 0.7821 AMFF-Net* [9] 41.48G 51.30M - - 0.8565 0.9050 0.8409 0.8537 - -CLIP-AGIQA [16] 22.90G 84.29M 0.8645 0.8823 0.8939 0.9165 0.8422 0.8501 0.7735 0.7719 PKT-1 12.64G 84.23M 0.8935 0.9066 0.9071 0.9242 0.8560 0.8723 0.7900 0.7851 PKT-2 12.64G 84.23M 0.9007 0.9187 0.9077 0.9269 0.8554 0.8695 0.8005 0.7978 
+
+TABLE II: Comparisons with multiple patch-based teacher and baseline. FLOPs calculation only includes the parameters actually used during inference. Best results for each backbone are highlighted in bold. 
+
+Backbone Method FLOPs AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC ViT-B/32 Baseline 12.64G 0.8884 0.9029 0.9044 0.9236 0.8495 0.8671 0.7827 0.7831 Teacher 39.16G 0.9017 0.9137 0.9103 0.9292 0.8612 0.8795 0.8069 0.8057 
+
+Student 12.64G 0.9007 0.9187 0.9077 0.9269 0.8554 0.8695 0.8005 0.7978 ViT-B/16 Baseline 20.96G 0.8935 0.9025 0.9134 0.9310 0.8589 0.8731 0.8109 0.8095 Teacher 122.39G 0.8917 0.9079 0.9110 0.9297 0.8628 0.8763 0.8236 0.8156 
+
+Student 20.96G 0.8953 0.9076 0.9127 0.9319 0.8599 0.8748 0.8177 0.8113 ViT-L/14 Baseline 73.69G 0.8819 0.8949 0.9195 0.9367 0.8692 0.8802 0.8262 0.8237 Teacher 540.75G 0.9036 0.9145 0.9199 0.9364 0.8707 0.8835 0.8271 0.8221 Student 73.69G 0.8939 0.9103 0.9233 0.9395 0.8685 0.8816 0.8282 0.8269 
+
+TABLE III: Study on feature alignment strategies for feature-level knowledge transfer. Best results are highlighted in bold.                  
+
+> Method AGIQA-1K AGIQA-3K SRCC PLCC SRCC PLCC Manhattan Distance 0.8956 0.9143 0.9060 0.9237 Euclidean Distance 0.8902 0.9122 0.9072 0.9246 Cosine Similarity 0.9007 0.9187 0.9077 0.9269
+
+direct efficacy of output-level distillation. Third, the combined use of all three losses achieves optimal performance, validating our multi-level distillation strategy - feature-level and output-level knowledge transfer exhibit complementary effects, whose synergy maximizes distillation benefits. 
+
+D. Visualization and Analysis 
+
+To further demonstrate the effectiveness of our method, we first visualize the score prediction results of the baseline model and our proposed PKT method on the test set of the PKU-AIGIQA-4K database using scatter plots, as shown in Fig. TABLE IV: Ablation Study. Best results are highlighted in bold.                                                   
+
+> Method AGIQA-1K AGIQA-3K
+> Ldist Lkl Lmse SRCC PLCC SRCC PLCC
+> ✓--0.8364 0.8658 0.8766 0.9066 -✓-0.8951 0.9174 0.9036 0.9225 --✓0.8884 0.9029 0.9044 0.9236 -✓✓0.8922 0.9128 0.9057 0.9241
+> ✓-✓0.8999 0.9118 0.9067 0.9252
+> ✓✓-0.9001 0.9189 0.9054 0.9260
+> ✓✓✓0.9007 0.9187 0.9077 0.9269
+
+3. We observed that, compared to the baseline model, the predicted points of the proposed method are more densely distributed near the diagonal, which intuitively reflects that the student model using the PKT method achieves higher prediction accuracy. Additionally, we provide a comparison of the inference time between the student and teacher models trained using the proposed method, as shown in TABLE XVI. Predicted Score      
+
+> 012345
+> 0
+> 1
+> 2
+> 3
+> 4
+> 5
+> True Score
+> SRCC:0.7827
+> PLCC:0.7831
+
+(a) Baseline Predicted Score       
+
+> 012345
+> 0
+> 1
+> 2
+> 3
+> 4
+> 5
+> True Score
+> SRCC:0.8005
+> PLCC:0.7978
+
+(b) PKT 
+
+Fig. 3: Visualization of score prediction scatter plots for Baseline and PKT methods on the PKU-AIGIQA-4K database. ‘Baseline’ denotes the student model without PKT, while ‘PKT’ denotes the student model with PKT. TABLE V: Comparison of inference time between the student model and the teacher model. 
+
+Model Batch Size Patch Resolution Inference Time Teacher 20 10 224 × 224 61.05ms Student 20 1 224 × 224 21.98ms 
+
+Taking the teacher model as the baseline, the student model requires, on average, only 36% of the inference time for evaluating the same number of images. This means that, while achieving comparable or even superior performance to the teacher model, the student model improves inference efficiency by 64%. These results further validate the effectiveness of our method. V. C ONCLUSION 
+
+This paper presents PKT, a knowledge distillation-based optimization framework that addresses the critical challenge of balancing efficiency and accuracy in AIGIQA task. The proposed framework employs a teacher-student architecture with multi-level supervision during training to achieve efficient knowledge transfer. Extensive experiments on 4 AIGIQA benchmarks demonstrate that PKT outperforms existing IQA methods, maintaining high accuracy while significantly im-proving inference efficiency - particularly suitable for de-ployment scenarios with stringent real-time requirements. We expect the introduction of PKT will provide new insights and solutions for efficient quality assessment of AIGIs. REFERENCES [1] J. Ke, Q. Wang, Y. Wang, P. Milanfar, and F. Yang, “Musiq: Multi-scale image quality transformer,” in Proceedings of the IEEE/CVF international conference on computer vision, 2021, pp. 5148–5157. [2] S. Yang, T. Wu, S. Shi, S. Gong, M. Cao, J. Wang, and Y. Yang, “Maniqa: Multi-dimension attention network for no-reference image quality assessment,” 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW), pp. 1190–1199, 2022. [Online]. Available: https://api.semanticscholar.org/CorpusID: 248240148 [3] B. Qu, H. Li, and W. Gao, “Bringing textual prompt to ai-generated image quality assessment,” in 2024 IEEE International Conference on Multimedia and Expo (ICME). IEEE, 2024, pp. 1–6. [4] J. Yuan, X. Cao, C. Li, F. Yang, J. Lin, and X. Cao, “Pku-i2iqa: An image-to-image quality assessment database for ai generated images,” arXiv preprint arXiv:2311.15556, 2023. [5] J. Yuan, X. Cao, L. Cao, J. Lin, and X. Cao, “Pscr: Patches sampling-based contrastive regression for aigc image quality assessment,” arXiv preprint arXiv:2312.05897, 2023. [6] F. Peng, H. Fu, A. Ming, C. Wang, H. Ma, S. He, Z. Dou, and S. Chen, “Aigc image quality assessment via image-prompt correspondence,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, June 2024, pp. 6432–6441. [7] Z. Yu, F. Guan, Y. Lu, X. Li, and Z. Chen, “Sf-iqa: Quality and similarity integration for ai generated image quality assessment,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, June 2024, pp. 6692–6701. [8] J. Yang, J. Fu, W. Zhang, W. Cao, L. Liu, and H. Peng, “Moe-agiqa: Mixture-of-experts boosted visual perception-driven and semantic-aware quality assessment for ai-generated images,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, June 2024, pp. 6395–6404. [9] T. Zhou, S. Tan, W. Zhou, Y. Luo, Y.-G. Wang, and G. Yue, “Adaptive mixed-scale feature fusion network for blind ai-generated image quality assessment,” IEEE Transactions on Broadcasting, 2024. [10] J. Yang, J. Fu, Z. Zhang, L. Liu, Q. Li, W. Zhang, and W. Cao, “Align-iqa: Aligning image quality assessment models with diverse human preferences via customizable guidance,” in ACM Multimedia, 2024. [Online]. Available: https://api.semanticscholar.org/CorpusID: 273646294 [11] J. Xia, L. He, F. Gao, K. Zhang, L. Li, and X. Gao, “Ai-generated image quality assessment based on task-specific prompt and multi-granularity similarity,” ArXiv, vol. abs/2411.16087, 2024. [Online]. Available: https://api.semanticscholar.org/CorpusID:274234606 [12] Z. Zhang, C. Li, W. Sun, X. Liu, X. Min, and G. Zhai, “A percep-tual quality assessment exploration for aigc images,” arXiv preprint arXiv:2303.12618, 2023. [13] C. Li, Z. Zhang, H. Wu, W. Sun, X. Min, X. Liu, G. Zhai, and W. Lin, “Agiqa-3k: An open database for ai-generated image quality assessment,” IEEE Transactions on Circuits and Systems for Video Technology, pp. 1–1, 2023. [14] J. Wang, H. Duan, J. Liu, S. Chen, X. Min, and G. Zhai, “Aigciqa2023: A large-scale image quality assessment database for ai generated images: from the perspectives of quality, authenticity and correspondence,” arXiv preprint arXiv:2307.00211, 2023. [15] J. Yuan, F. Yang, J. Li, X. Cao, J. Che, J. Lin, and X. Cao, “Pku-aigiqa-4k: A perceptual quality assessment database for both text-to-image and image-to-image ai-generated images,” ArXiv, vol. abs/2404.18409, 2024. [Online]. Available: https://api.semanticscholar.org/CorpusID: 269449873 [16] Z. Tang, Z. Wang, B. Peng, and J. Dong, “Clip-agiqa: Boosting the performance of ai-generated image quality assessment with clip,” in International Conference on Pattern Recognition. Springer, 2025, pp. 48–61. [17] J. Wang, K. C. Chan, and C. C. Loy, “Exploring clip for assessing the look and feel of images,” in Proceedings of the AAAI Conference on Artificial Intelligence, vol. 37, no. 2, 2023, pp. 2555–2563. [18] W. Zhang, G. Zhai, Y. Wei, X. Yang, and K. Ma, “Blind image quality assessment via vision-language correspondence: A multitask learning perspective,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 2023, pp. 14 071–14 081. [19] D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,” arXiv preprint arXiv:1412.6980, 2014. [20] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai, T. Unterthiner, M. Dehghani, M. Minderer, G. Heigold, S. Gelly et al., “An image is worth 16x16 words: Transformers for image recognition at scale,” arXiv preprint arXiv:2010.11929, 2020. [21] S. Su, Q. Yan, Y. Zhu, C. Zhang, X. Ge, J. Sun, and Y. Zhang, “Blindly assess image quality in the wild guided by a self-adaptive hyper network,” in 2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2020, pp. 3664–3673. [22] W. Sun, H. Duan, X. Min, L. Chen, and G. Zhai, “Blind quality assess-ment for in-the-wild images via hierarchical feature fusion strategy,” in 2022 IEEE International Symposium on Broadband Multimedia Systems and Broadcasting (BMSB), 2022, pp. 01–06. [23] A. Saha, S. Mishra, and A. C. Bovik, “Re-iqa: Unsupervised learning for image quality assessment in the wild,” 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 5846–5855, 2023. [Online]. Available: https://api.semanticscholar.org/CorpusID: 257913460 [24] C. Li, T. Kou, Y. Gao, Y. S. Cao, W. Sun, Z. Zhang, Y. Zhou, Z. Zhang, W. Zhang, H. Wu, X. Liu, X. Min, and G. Zhai, “Aigiqa-20k: A large database for ai-generated image quality assessment,” 2024. [Online]. Available: https://api.semanticscholar.org/CorpusID:268889245 [25] D. Li, T. Jiang, and M. Jiang, “Norm-in-norm loss with faster con-vergence and better performance for image quality assessment,” in Proceedings of the 28th ACM International conference on multimedia, 2020, pp. 789–797. 
+
+APPENDIX 
+
+A. Similarity-based Region-Weighted Adaptive Feature Distil-lation 
+
+The loss function used for feature-level knowledge transfer mentioned above merely guides the feature learning of the student model by simply averaging multiple regional features of the teacher model, which may exhibit certain limitations. We argue that during feature transfer, different regional fea-tures should contribute differentially. To achieve more re-fined feature-level distillation, we propose Similarity-based Region-Weighted Adaptive Feature Distillation (SRWAFD). It introduces no additional learnable parameters. Instead, it directly utilizes the similarity between patch-wise features from the teacher model and the student features as weighting coefficients to differentiate the importance of distinct regional features, which dynamically evaluates the importance of each region in the teacher’s features for the student’s feature learning, thereby enabling more efficient feature knowledge distillation. The implementation involves two key steps: first, computing the cosine similarity C = {ci}N +1  
+
+> i=1
+
+between each regional feature of the teacher and the student’s features as follws: 
+
+ci = Fs · F it
+
+∥Fs∥∥ F it ∥ , i = 1 , · · · , N + 1; (11) second, converting the cosine similarity into normalized atten-tion weights W = {wi}N +1  
+
+> i=1
+
+via the Softmax function: 
+
+wi = eci
+
+PN +1  
+
+> j=1
+
+ecj
+
+, i = 1 , · · · , N + 1 (12) Ultimately, the loss function can be expressed as: 
+
+Ldist (Fs, F t) = 1 − Fs · PN +1  
+
+> i=1
+
+wiF it
+
+∥Fs∥∥ PN +1  
+
+> i=1
+
+wiF it ∥ (13) 
+
+B. Additional Experimental Results 
+
+In this section, we present additional experimental results that were not included in the main text. 
+
+Results on AIGIQA-20K. TABLE VI compares the perfor-mance of multiple patch-based teacher models against baseline methods on the AIGIQA20K [24] dataset. 
+
+Study on Different Patches Sampling method. In this work, the teacher model adopts a local-global hybrid input approach that combines image patches with a downscaled full image for feature extraction. To thoroughly investigate the impact of different image patches sampling strategies in the teacher model on the performance of the student model, we systemati-cally compare three typical sampling methods: random patches sampling (RPS), non-overlapping patches sampling (NOPS), and overlapping patches sampling (OPS). Experimental results presented in TABLE VII demonstrate that the OPS strategy exhibits the best performance stability, delivering significant and consistent improvements across all tested datasets. In contrast, while RPS may achieve optimal results on certain datasets, it suffers from high performance variability and lacks stability. NOPS performs slightly worse than OPS across all three tested databases. Based on this analysis, we ultimately select OPS as the default patches sampling strategy, ensuring robustness and providing more reliable supervision signals for knowledge transfer to the student model. 
+
+Study on different number of sampled patches. To further optimize guidance effectiveness of the teacher model, we con-duct an in-depth study on how the number of sampled image patches affects the performance of the student model. Based on the OPS strategy, we design comparative experiments to evaluate model performance with 9, 16, and 25 sampled patches. As shown in TABLE VIII, the results indicate that the relationship between patch count and model performance is not strictly positive. When sampling 9 patches, the student model achieves the best average performance across all evalu-ation metrics. This finding suggests that a moderate amount of local information provides the most discriminative supervision signals for knowledge transfer, whereas excessive patches may introduce feature redundancy, ultimately impairing generaliza-tion. Additionally, computational cost increases linearly with patch count, yet performance gains remain marginal. Based on this analysis, we set the default number of sampled patches to 9 when employing the OPS strategy. Additionally, TABLE IX analyzes how the teacher model’s performance varies with an increasing number of sampled patches. 
+
+Comparison of homogeneous self-distillation and hetero-geneous distillation. To further investigate the impact of model architecture in knowledge distillation, we systematically compared two paradigms: homogeneous self-distillation (ViT-B/32 → ViT-B/32) and heterogeneous distillation (ViT-B/16 →
+
+ViT-B/32, ViT-L/14 → ViT-B/32). When performing hetero-geneous distillation where the student and teacher dimensions do not match—for instance, when distilling from ViT-L/14 to ViT-B/32, with student features of shape (B, 512) and teacher features of (B, N, 768) —we directly apply linear interpolation to the student’s features to adjust them to (B, 768) for dimen-sion alignment. Notably, this process does not introduce any additional parameters or mapping heads. As shown in TABLE X, the experimental results reveal that although ViT-B/16 and ViT-L/14 teacher models outperform ViT-B/32 individually (shown in Table 2 of the mian text), their knowledge transfer efficacy is inferior to homogeneous self-distillation—achieving lower scores on most evaluation metrics. Notably, these larger teacher models also incur substantially higher training costs. Based on this empirical analysis, we ultimately select the ho-mogeneous self-distillation scheme as our knowledge transfer mechanism, due to its more balanced computational efficiency TABLE VI: Comparisons with multiple patch-based teacher and baseline on AIGIQA20K. ‘Baseline’ denotes the global-processing-only student model without PKT. Best results for each backbone are highlighted in bold.              
+
+> Backbone Method FLOPs AIGIQA20K SRCC PLCC ViT-B/32 Baseline 12.64G 0.8474 0.8899 Teacher 39.16G 0.8732 0.9005
+> Student 12.64G 0.8575 0.8956
+
+TABLE VII: Study on different patches sampling method. Best results are highlighted in bold.                                    
+
+> Method AGIQA-1K AGIQA-3K PKU-AIGIQA-4K AIGIQA-20K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC RPS 0.8924 0.9078 0.9056 0.9243 0.8026 0.7988 0.8521 0.8913 NOPS 0.9000 0.9135 0.9088 0.9264 0.7966 0.7912 0.8554 0.8948 OPS 0.9007 0.9187 0.9077 0.9269 0.8005 0.7978 0.8575 0.8956
+
+and performance. 
+
+Additional experimental results about study on feature aggregation strategies. We conduct experiments to compare the effects of different feature aggregation strategies on student model performance, including: (1) simple average; (2) learned weights, which assigns weights to different regions via a fully connected layer and a sigmoid activation function; and (3) the proposed Similarity-based Region-Weighted Adaptive Feature Distillation (SRWAFD). As shown in TABLE XII, the results indicate that learned weights underperforms even simple average, whereas the proposed SRWAFD method fur-ther improves model performance without introducing any additional parameters, demonstrating its superiority. 
+
+Additional experimental results about comparisons under different temperature settings. Temperature T is a key parameter in knowledge distillation, designed to soften prob-ability distributions during training. We further investigated the impact of different temperature coefficients on student model performance. Experimental results in TABLE XIII indicate that distillation achieves the best performance when no temperature scaling is applied (i.e., T =1) on the AGIQA-1K and AGIQA-3K dataset. Nevertheless, tuning T may yield benefits, as shown in the supplementary appendix. In this work, we set T =1 by default without employing temperature scaling to soften the outputs of the student and teacher models. This is because temperature softening does not always lead to a performance gain. 
+
+Impact of different loss weights. In the main text, the loss function for the students of PKT-2 is as follows: 
+
+Lstudent = Ldist (Fs, F t) + Lkl (Ps, P t) + Lmse ( ˆ ys, y ), (14) In the above formulation, the coefficients for different weights are set to 1. Here, we investigate the impact of assigning different weights to distinct loss functions. The new loss function is defined as follows: 
+
+Lstudent = α · L dist (Fs, F t) + β · L kl (Ps, P t) + γ · L mse ( ˆ ys, y ),
+
+(15) TABLE VIII: Study on different number of sampled patches. Best results are highlighted in bold.                           
+
+> Number AGIQA-1K AGIQA-3K PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC 90.9007 0.9187 0.9077 0.9269 0.8005 0.7978 16 0.8936 0.9098 0.9066 0.9268 0.8054 0.7989 25 0.8993 0.9114 0.9063 0.9253 0.8145 0.8070
+
+TABLE IX: Study on different number of sampled patches.                                                 
+
+> Number Model AGIQA-1K AGIQA-3K PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC 9teacher 0.9017 0.9137 0.9103 0.9292 0.8069 0.8057 student 0.9007 0.9187 0.9077 0.9269 0.8005 0.7978 16 teacher 0.8931 0.9086 0.9029 0.9246 0.8132 0.8106 student 0.8936 0.9098 0.9066 0.9268 0.8054 0.7989 25 teacher 0.8967 0.9090 0.9062 0.9253 0.8098 0.8062 student 0.8993 0.9114 0.9063 0.9253 0.8145 0.8070
+
+Experimental results in Table XIV show that different loss weights have minimal impact on model performance. 
+
+Additional experimental results about robustness exper-iments. To validate the robustness of the proposed method, we conducted experiments under four different dataset splits using random seeds 0, 1, 2, and 42. The complete experimental results are presented in TABLE XV, TABLE XVI, TABLE XVII, TABLE XVIII, TABLE XIX, TABLE XX, and TABLE XXI. Additionally, we conduct cross-dataset evaluations as shown in TABLE XI. These results further demonstrate the robustness of the proposed method 
+
+C. Visualization and Analysis 
+
+This section presents additional visualization results to further demonstrate our method’s effectiveness. Fig. 4 visualizes the score prediction scatter plots comparing the Baseline and PKT methods on the AGIQA-3K database. The denser distribution of data points along the diagonal in our PKT method demonstrates its enhanced prediction accuracy compared to the baseline approach. This visual evidence confirms that our knowledge transfer framework effectively improves score prediction reliability. 
+
+D. Discussion 
+
+A short discussion about situations where the student model occasionally outperforms the teacher model. We believe this is because the student model does not merely fit the labels of the dataset but learns from the richer signals of the teacher model, which encourages the formation of smoother and more generalized feature representations. It helps avoid overfitting to the details that the teacher model might have already overfitted. (a) Baseline (b) PKT 
+
+Fig. 4: Visualization of score prediction scatter plots for Baseline and PKT methods on the AGIQA-3K database. ‘Baseline’ denotes the student model without PKT, while ‘PKT’ denotes the student model with PKT. TABLE X: Comparison of homogeneous self-distillation and heterogeneous distillation. Best results are highlighted in bold.                            
+
+> Student Teacher AGIQA-1K AGIQA-3K PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC ViT-B/32 ViT-L/14 0.9045 0.9139 0.9079 0.9258 0.7989 0.7949 ViT-B/16 0.9066 0.9162 0.9043 0.9233 0.7964 0.7925 ViT-B/32 0.9007 0.9187 0.9077 0.9269 0.8005 0.7978
+
+TABLE XI: Cross-Dataset Evaluation. The notation “3K →
+
+1K” indicates training on the AGIQA-3K dataset and testing on the AGIQA-1K dataset; “1K → 3K” indicates training on the AGIQA-1K dataset and testing on the AGIQA-3K dataset. 
+
+method 3K → 1K 1K → 3K SRCC PLCC SRCC PLCC LinearityIQA [25] 0.6368 0.6828 0.5742 0.6023 MUSIQ [1] 0.7000 0.7720 0.5548 0.5591 HyperIQA [21] 0.7047 0.7742 0.5725 0.6159 StairIQA [22] 0.6911 0.7814 0.5706 0.5898 MANIQA [2] 0.6666 0.7577 0.5669 0.5625 LIQE [18] 0.7202 0.7995 0.7485 0.7605 MoE-AGIQA-v2 [8] 0.7101 0.8008 0.7483 0.7506 CLIP-AGIQA [16] 0.7238 0.7964 0.5457 0.5612 PKT-1 0.7409 0.8202 0.7547 0.7655 PKT-2 0.7619 0.8276 0.7640 0.7794 TABLE XII: Comparison of different feature aggregation strategy. The best performances are bolded.                                                         
+
+> Method AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K Average SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC PKT-1 Average 0.8935 0.9066 0.9071 0.9242 0.8560 0.8723 0.7900 0.7851 0.8617 0.8721 SRWAKD 0.8925 0.9088 0.9065 0.9241 0.8552 0.8723 0.7939 0.7931 0.8620 0.8746
+> PKT-2 Average 0.9007 0.9187 0.9077 0.9269 0.8554 0.8695 0.8005 0.7978 0.8661 0.8782 SRWAKD 0.9023 0.9156 0.9080 0.9266 0.8559 0.8704 0.8040 0.8013 0.8676 0.8785
+
+TABLE XIII: Performance comparison of student models under different temperature settings. Best results are highlighted in bold. 
+
+Method temp AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC PKT-1 1 0.8935 0.9066 0.9071 0.9242 0.8560 0.8723 0.7900 0.7851 2 0.8947 0.9117 0.9079 0.9250 0.8527 0.8671 0.7982 0.7971 
+
+3 0.8938 0.9094 0.9075 0.9242 0.8577 0.8727 0.7954 0.7923 4 0.8963 0.9119 0.9085 0.9249 0.8541 0.8687 0.7980 0.7941 5 0.8944 0.9086 0.9104 0.9264 0.8551 0.8698 0.7958 0.7942 PKT-2 1 0.9007 0.9187 0.9077 0.9269 0.8554 0.8695 0.8005 0.7978 2 0.9011 0.9152 0.9078 0.9256 0.8544 0.8706 0.8049 0.8001 
+
+3 0.9003 0.9146 0.9067 0.9253 0.8553 0.8704 0.8031 0.7981 4 0.9005 0.9164 0.9069 0.9238 0.8578 0.8707 0.8037 0.7995 5 0.9012 0.9123 0.9072 0.9254 0.8542 0.8703 0.8047 0.7988 
+
+TABLE XIV: Impact of different loss weights. Best results are highlighted in bold. 
+
+Method α β γ AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC PKT-2 1 1 1 0.9007 0.9187 0.9077 0.9269 0.8554 0.8695 0.8005 0.7978 0.6 0.2 0.2 0.9027 0.9147 0.9057 0.9253 0.8559 0.8704 0.8011 0.7972 0.5 0.25 0.25 0.9030 0.9142 0.9062 0.9250 0.8552 0.8699 0.8039 0.7996 
+
+0.4 0.3 0.3 0.9005 0.9146 0.9070 0.9257 0.8546 0.8670 0.8047 0.7986 0.2 0.4 0.4 0.9007 0.9164 0.9101 0.9257 0.8558 0.8705 0.8002 0.7968 TABLE XV: Comparisons with multiple patch-based teacher and baseline under 4 random dataset splits on 4 AIGIQA databases . ‘Baseline’ denotes the global-processing-only student model without PKT. Best results are highlighted in bold. 
+
+Seed Method FLOPs AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC 0Baseline 12.64G 0.8659 0.8940 0.8916 0.9190 0.8620 0.8811 0.8080 0.8146 Teacher 39.16G 0.8662 0.8886 0.8921 0.9195 0.8726 0.8887 0.8334 0.8328 
+
+Student 12.64G 0.8689 0.8904 0.8919 0.9198 0.8643 0.8848 0.8200 0.8211 1Baseline 12.64G 0.8884 0.9029 0.9044 0.9236 0.8495 0.8671 0.7827 0.7831 Teacher 39.16G 0.9017 0.9137 0.9103 0.9292 0.8612 0.8795 0.8069 0.8057 
+
+Student 12.64G 0.9007 0.9187 0.9077 0.9269 0.8554 0.8695 0.8005 0.7978 2Baseline 12.64G 0.8853 0.8965 0.8705 0.9128 0.8648 0.8763 0.8055 0.8066 Teacher 39.16G 0.8858 0.8943 0.8684 0.9110 0.8771 0.8901 0.8248 0.8216 
+
+Student 12.64G 0.8890 0.9054 0.8746 0.9142 0.8660 0.8817 0.8186 0.8154 42 Baseline 12.64G 0.8740 0.9125 0.8787 0.9162 0.8501 0.8726 0.7917 0.8025 Teacher 39.16G 0.8749 0.9011 0.8879 0.9171 0.8696 0.8859 0.8159 0.8192 
+
+Student 12.64G 0.8762 0.9171 0.8805 0.9169 0.8633 0.8803 0.8060 0.8124 
+
+TABLE XVI: Comparisons with SOTA IQA methods on 4 AIGIQA databases, with a random seed of 0 used for dataset splitting. The best performances are bolded. 
+
+Method FLOPs #Params AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC LinearityIQA [25] 1.82G 12.53M 0.8201 0.8443 0.7963 0.8167 0.8223 0.8284 0.6948 0.6492 MUSIQ [1] 126.52G 78.55M 0.8367 0.8770 0.8168 0.8696 0.8474 0.8575 0.6830 0.6868 HyperIQA [21] 8.67G 27.38M 0.8325 0.8780 0.8451 0.8947 0.8327 0.8440 0.7539 0.7609 StairIQA [22] 5.11G 30.49M 0.8410 0.8768 0.8494 0.9014 0.8446 0.8525 0.7505 0.7581 MANIQA [2] 108.62G 128.51M 0.8414 0.8750 0.8882 0.9222 0.5398 0.5287 0.8112 0.8096 LIQE [18] 53.89G 84.23M 0.8579 0.8840 0.8964 0.9202 0.8708 0.8925 0.8280 0.8288 
+
+CLIP-AGIQA [16] 22.90G 84.29M 0.8462 0.8579 0.8830 0.9164 0.8642 0.8731 0.7988 0.8047 PKT-1 12.64G 84.23M 0.8744 0.9015 0.8990 0.9241 0.8688 0.8862 0.8151 0.8209 PKT-2 12.64G 84.23M 0.8689 0.8904 0.8919 0.9198 0.8643 0.8848 0.8200 0.8211 
+
+TABLE XVII: Comparisons with SOTA IQA methods on 4 AIGIQA databases with a random seed of 1 used for dataset splitting. The best performances are bolded. 
+
+Method FLOPs #Params AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC LinearityIQA [25] 1.82G 12.53M 0.8200 0.8578 0.8189 0.8309 0.7947 0.8057 0.6493 0.6056 MUSIQ [1] 126.52G 78.55M 0.8506 0.8850 0.8338 0.8698 0.8261 0.8382 0.6801 0.6697 HyperIQA [21] 8.67G 27.38M 0.8534 0.8912 0.8495 0.8923 0.8159 0.8212 0.7144 0.7180 StairIQA [22] 5.11G 30.49M 0.8640 0.8899 0.8543 0.8943 0.8313 0.8376 0.7247 0.7145 MANIQA [2] 108.62G 128.51M 0.8804 0.9084 0.8916 0.9194 0.8412 0.8540 0.7800 0.7800 LIQE [18] 53.89G 84.23M 0.8927 0.9117 0.9009 0.9220 0.8608 0.8774 0.8030 0.8001 
+
+CLIP-AGIQA [16] 22.90G 84.29M 0.8645 0.8823 0.8939 0.9165 0.8422 0.8501 0.7735 0.7719 PKT-1 12.64G 84.23M 0.8935 0.9066 0.9071 0.9242 0.8560 0.8723 0.7900 0.7851 PKT-2 12.64G 84.23M 0.9007 0.9187 0.9077 0.9269 0.8554 0.8695 0.8005 0.7978 TABLE XVIII: Comparisons with SOTA IQA methods on 4 AIGIQA databases, with a random seed of 2 used for dataset splitting. The best and second best performances are bolded and underlined, respectively. 
+
+Method FLOPs #Params AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC LinearityIQA [25] 1.82G 12.53M 0.8220 0.8352 0.7865 0.8085 0.7927 0.8026 0.6633 0.6307 MUSIQ [1] 126.52G 78.55M 0.8383 0.8706 0.7954 0.8558 0.8466 0.8515 0.6376 0.6362 HyperIQA [21] 8.67G 27.38M 0.8486 0.8726 0.8273 0.8841 0.8299 0.8350 0.7396 0.7361 StairIQA [22] 5.11G 30.49M 0.8532 0.8784 0.8337 0.8891 0.8473 0.8555 0.7314 0.7389 MANIQA [2] 108.62G 128.51M 0.8613 0.8842 0.8645 0.9131 0.7174 0.7125 0.7456 0.7564 LIQE [18] 53.89G 84.23M 0.8702 0.8937 0.8684 0.9109 0.8644 0.8816 0.8211 0.8162 
+
+CLIP-AGIQA [16] 22.90G 84.29M 0.8518 0.8565 0.8595 0.9069 0.8574 0.8662 0.8070 0.8036 PKT-1 12.64G 84.23M 0.8849 0.8993 0.8765 0.9163 0.8656 0.8825 0.8110 0.8125 PKT-2 12.64G 84.23M 0.8890 0.9054 0.8746 0.9142 0.8660 0.8817 0.8186 0.8154 
+
+TABLE XIX: Comparisons with SOTA IQA methods on 4 AIGIQA databases, with a random seed of 42 used for dataset splitting. The best and second best performances are bolded and underlined, respectively. 
+
+Method FLOPs #Params AGIQA-1K AGIQA-3K AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC SRCC PLCC SRCC PLCC LinearityIQA [25] 1.82G 12.53M 0.8124 0.8543 0.8155 0.8204 0.7801 0.7865 0.6742 0.6557 MUSIQ [1] 126.52G 78.55M 0.7975 0.8617 0.8294 0.8817 0.8161 0.8314 0.6980 0.6937 HyperIQA [21] 8.67G 27.38M 0.8313 0.8786 0.8507 0.8987 0.8215 0.8267 0.7290 0.7325 StairIQA [22] 5.11G 30.49M 0.8493 0.8952 0.8510 0.8968 0.8269 0.8396 0.7357 0.7498 MANIQA [2] 108.62G 128.51M 0.8509 0.9008 0.7821 0.8491 0.8459 0.8625 0.7952 0.8049 LIQE [18] 53.89G 84.23M 0.8572 0.8948 0.8859 0.9167 0.8631 0.8834 0.8091 0.8112 CLIP-AGIQA [16] 22.90G 84.29M 0.8303 0.8596 0.8807 0.9112 0.8520 0.8658 0.7820 0.7944 PKT-1 12.64G 84.23M 0.8742 0.9113 0.8805 0.9174 0.8607 0.8779 0.8003 0.8093 PKT-2 12.64G 84.23M 0.8762 0.9171 0.8805 0.9169 0.8633 0.8803 0.8060 0.8124 
+
+TABLE XX: Comparisons with SOTA IQA methods under 4 random dataset splits on AGIQA-1K and AGIQA-3K database. The best performances are bolded. 
+
+Method AGIQA-1K AGIQA-3K SRCC PLCC SRCC PLCC LinearityIQA [25] 0.8186 ± 0.0037 0.8479 ± 0.0088 0.8043 ± 0.0134 0.8191 ± 0.0080 MUSIQ [1] 0.8308 ± 0.0200 0.8736 ± 0.0085 0.8188 ± 0.0149 0.8692 ± 0.0092 HyperIQA [21] 0.8415 ± 0.0097 0.8801 ± 0.0068 0.8432 ± 0.0094 0.8924 ± 0.0053 StairIQA [22] 0.8519 ± 0.0083 0.8851 ± 0.0077 0.8471 ± 0.0079 0.8954 ± 0.0044 MANIQA [2] 0.8585 ± 0.0145 0.8921 ± 0.0132 0.8566 ± 0.0443 0.9010 ± 0.0301 LIQE [18] 0.8695 ± 0.0144 0.8961 ± 0.0100 0.8879 ± 0.0125 0.9174 ± 0.0042 CLIP-AGIQA [16] 0.8482 ± 0.0123 0.8641 ± 0.0106 0.8793 ± 0.0125 0.9127 ± 0.0040 PKT-1 0.8818 ± 0.0080 0.9047 ± 0.0047 0.8908 ± 0.0127 0.9205 ± 0.0037 
+
+PKT-2 0.8837 ± 0.0122 0.9079 ± 0.0113 0.8887 ± 0.0126 0.9194 ± 0.0047 TABLE XXI: Comparisons with SOTA IQA methods under 4 random dataset splits on AIGCIQA2023 and PKU-AIGIQA-4K database. The best performances are bolded . 
+
+Method AIGCIQA2023 PKU-AIGIQA-4K SRCC PLCC SRCC PLCC LinearityIQA [25] 0.7974 ± 0.0154 0.8058 ± 0.0149 0.6704 ± 0.0166 0.6353 ± 0.0194 MUSIQ [1] 0.8341 ± 0.0134 0.8447 ± 0.0104 0.6747 ± 0.0225 0.6716 ± 0.0222 HyperIQA [21] 0.8250 ± 0.0067 0.8317 ± 0.0086 0.7342 ± 0.0145 0.7369 ± 0.0154 StairIQA [22] 0.8375 ± 0.0086 0.8463 ± 0.0078 0.7356 ± 0.0095 0.7403 ± 0.0164 MANIQA [2] 0.7361 ± 0.1245 0.7394 ± 0.1355 0.7830 ± 0.0242 0.7877 ± 0.0213 LIQE [18] 0.8648 ± 0.0037 0.8837 ± 0.0055 0.8153 ± 0.0098 0.8141 ± 0.0103 
+
+CLIP-AGIQA [16] 0.8539 ± 0.0080 0.8638 ± 0.0084 0.7903 ± 0.0133 0.7936 ± 0.0132 PKT-1 0.8628 ± 0.0049 0.8797 ± 0.0052 0.8041 ± 0.0098 0.8069 ± 0.0133 PKT-2 0.8622 ± 0.0041 0.8791 ± 0.0058 0.8113 ± 0.0083 0.8117 ± 0.0086

@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-12T21:09:07.216546+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.05605v1",
+      "source": "arxiv",
+      "title": "Patch Knowledge Transfer for Efficient AI-Generated Image Quality Assessment",
+      "abstract": "With the rapid advancement of image generation technologies, perceptual quality assessment of AI-generated images has emerged as a crucial research direction in computer vision. The core challenge of this task lies in achieving efficient quality assessment for massive generated images. Current mainstream approaches exhibit two key limitations: 1) Methods employing complex feature extraction strategies, while improving performance, incur prohibitive computational costs that hinder real-time inference; 2) Simple image scaling-based solutions, despite their computational efficiency, demonstrate significantly inferior assessment accuracy. To address this critical issue, we propose Patch Knowledge Transfer (PKT), a knowledge distillation-based optimization framework that achieves synergistic optimization of visual representation capability and inference efficiency through an innovative multi-level knowledge transfer mechanism. Specifically, we design a dual-model architecture: a teacher model with local-global hybrid processing provides high-quality supervision signals, while a student model relying solely on global processing efficiently inherits the teacher's representation capacity through multi-level supervision. Extensive experiments conducted on 4 AIGIQA databases demonstrate that the PKT framework enables the student model to maintain performance comparable to the teacher while reducing computational costs by 67.7\\%. Furthermore, compared to existing methods, our approach achieves a superior balance between model efficiency and assessment accuracy.",
+      "authors": [
+        "Jiquan Yuan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-06T20:02:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.05605v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "proposes efficient quality assessment for AI-generated images, transferable to video",
+      "llm_evidence_cn": "提出面向AI生成图像的高效质量评估方法，可迁移至视频",
+      "llm_evidence": "提出面向AI生成图像的高效质量评估方法，可迁移至视频",
+      "canonical_evidence": "提出面向AI生成图像的高效质量评估方法，可迁移至视频",
+      "llm_tldr_en": "Patch Knowledge Transfer (PKT) efficiently assesses AI-generated image quality via knowledge distillation, balancing speed and accuracy.",
+      "llm_tldr_cn": "AI生成图像质量评估面临效率与精度的权衡。本文提出补丁知识迁移（PKT）方法，通过知识蒸馏从复杂教师模型向轻量学生模型迁移补丁级知识，在保持评估准确性的同时大幅降低计算成本。在多个生成图像数据集上，PKT以实时速度达到接近教师模型的性能，为大规模生成内容的质量监控提供了实用方案。",
+      "llm_tldr": "AI生成图像质量评估面临效率与精度的权衡。本文提出补丁知识迁移（PKT）方法，通过知识蒸馏从复杂教师模型向轻量学生模型迁移补丁级知识，在保持评估准确性的同时大幅降低计算成本。在多个生成图像数据集上，PKT以实时速度达到接近教师模型的性能，为大规模生成内容的质量监控提供了实用方案。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
