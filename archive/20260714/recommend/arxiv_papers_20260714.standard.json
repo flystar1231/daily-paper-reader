@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-14T21:25:23.342288+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2607.08020v1",
+      "source": "arxiv",
+      "title": "SAGA: Stable Acceleration Guidance for Autoregressive Video Generation",
+      "abstract": "Autoregressive video diffusion enables efficient streaming and long-horizon video generation, but repeatedly reusing generated latents as causal context can amplify temporal errors, resulting in flickering, motion jitter, and structural drift. In this paper, we investigate this failure mode from a spectral kinematic perspective and identify discrete latent acceleration as an effective signal for revealing unstable high-frequency temporal perturbations. To this end, we propose SAGA, a training-free \\textbf{\\textit{s}}table \\textbf{\\textit{a}}cceleration \\textbf{\\textit{g}}uidance approach for \\textbf{\\textit{a}}utoregressive video generation. SAGA integrates an acceleration domain spectral guidance objective based on finite-window Slepian projections with a structured autoregressive noise initialization strategy that suppresses short-range temporal correlations while preserving long-range motion structure. Without retraining or modifying the backbone, SAGA can be directly applied to existing chunk-wise autoregressive diffusion models, which is the prevalent setting for high-quality generation. Extensive experiments show that SAGA consistently improves temporal quality across multiple autoregressive diffusion models. On Self-Forcing, SAGA improves Temporal Quality from 97.30 to 97.91 and Image Quality from 69.60 to 70.51. Moreover, spectral analysis and human preference studies demonstrate that SAGA reduces temporal instability while maintaining visual fidelity.",
+      "authors": [
+        "Thanh-Nhan Vo",
+        "Trong-Thuan Nguyen",
+        "Trung-Hoang Le",
+        "Tam V. Nguyen",
+        "Minh-Triet Tran"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-09T00:55:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.08020v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes SAGA to stabilize autoregressive video generation by addressing temporal errors, relevant to video quality evaluation",
+      "llm_evidence_cn": "提出SAGA稳定自回归视频生成，解决时序错误，与生成视频质量评估相关",
+      "llm_evidence": "提出SAGA稳定自回归视频生成，解决时序错误，与生成视频质量评估相关",
+      "canonical_evidence": "提出SAGA稳定自回归视频生成，解决时序错误，与生成视频质量评估相关",
+      "llm_tldr_en": "SAGA introduces acceleration domain spectral guidance to reduce flickering and motion jitter in autoregressive video generation, improving temporal stability and overall quality.",
+      "llm_tldr_cn": "自回归视频扩散模型因反复利用生成潜变量会导致时序误差积累，产生闪烁和运动抖动。本文从谱分析角度提出SAGA，利用加速度域谱引导目标实现对高频扰动抑制，无需额外训练即可显著提升生成视频的时间稳定性，为视频生成质量评价提供参考。",
+      "llm_tldr": "自回归视频扩散模型因反复利用生成潜变量会导致时序误差积累，产生闪烁和运动抖动。本文从谱分析角度提出SAGA，利用加速度域谱引导目标实现对高频扰动抑制，无需额外训练即可显著提升生成视频的时间稳定性，为视频生成质量评价提供参考。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.10860v1",
+      "source": "arxiv",
+      "title": "AU-Guided Synthetic Video Generation for Micro-Expression Recognition",
+      "abstract": "Micro-expression recognition is limited by the small scale, narrow demographic coverage, and restricted emotion labels of existing datasets. We introduce EquiME, a synthetic micro-expression dataset built from AU-guided image-to-video generation. EquiME contains 75K videos generated from 15K source face images across five target emotions, together with automatically inferred demographic metadata and video-quality measurements. We evaluate EquiME using frame-pair similarity, spatial variation, and no-reference perceptual-quality metrics, together with cross-dataset MER experiments on SAMM and CASME II. Models trained on EquiME achieve competitive cross-dataset performance on SAMM and CASME II and show comparatively low variation across the four evaluated architectures. This paper focuses on the dataset design, the structured AU-conditioning pipeline used for video generation, and the empirical evidence needed to assess EquiME as a synthetic MER resource. Project page: https://kirito-blade.github.io/me-vlm/",
+      "authors": [
+        "Pei-Sze Tan",
+        "Sailaja Rajanala",
+        "Yee-Fan Tan",
+        "Raphael C. -W. Phan",
+        "Huey-Fang Ong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-12T17:50:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.10860v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "evaluates generated videos with quality metrics",
+      "llm_evidence_cn": "使用质量指标评估生成视频",
+      "llm_evidence": "使用质量指标评估生成视频",
+      "canonical_evidence": "使用质量指标评估生成视频",
+      "llm_tldr_en": "Presents EquiME synthetic micro-expression dataset with AU-guided video generation and evaluates it using frame-pair similarity, spatial variation, and no-reference perceptual-quality metrics, applicable to generated video quality assessment.",
+      "llm_tldr_cn": "该工作针对微表情识别数据集规模小、人口覆盖窄的问题，提出基于AU引导的图像到视频生成方法构建合成数据集EquiME。通过帧对相似度、空间变化和无参考感知质量指标评估生成视频质量，并在跨数据集实验中验证其有效性。结果表明，使用该数据集训练的模型在识别性能上具有竞争力，且生成视频的质量评估方法可推广至一般视频生成评价。",
+      "llm_tldr": "该工作针对微表情识别数据集规模小、人口覆盖窄的问题，提出基于AU引导的图像到视频生成方法构建合成数据集EquiME。通过帧对相似度、空间变化和无参考感知质量指标评估生成视频质量，并在跨数据集实验中验证其有效性。结果表明，使用该数据集训练的模型在识别性能上具有竞争力，且生成视频的质量评估方法可推广至一般视频生成评价。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}

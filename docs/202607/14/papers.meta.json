@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-14",
+  "date": "2026-07-14",
+  "generated_at": "2026-07-14T21:26:52",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/14/2607.08020v1-saga-stable-acceleration-guidance-for-autoregressive-video-generation",
+      "section": "deep",
+      "title_en": "SAGA: Stable Acceleration Guidance for Autoregressive Video Generation",
+      "authors": "Thanh-Nhan Vo, Trong-Thuan Nguyen, Trung-Hoang Le, Tam V. Nguyen, Minh-Triet Tran",
+      "date": "2026-07-09",
+      "pdf": "https://arxiv.org/pdf/2607.08020v1",
+      "score": "8.0",
+      "evidence": "提出SAGA稳定自回归视频生成，解决时序错误，与生成视频质量评估相关",
+      "tldr": "自回归视频生成中重复使用潜在特征作为上下文会放大时间误差，导致闪烁和抖动。本文从谱运动学视角分析，提出SAGA方法，利用加速度域谱引导和结构化噪声初始化抑制高频扰动。无需重新训练，在Self-Forcing等模型上时间质量提升至97.91，图像质量提升至70.51。该方法有效减少时间不稳定性并保持视觉保真度。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Autoregressive video diffusion enables efficient streaming and long-horizon video generation, but repeatedly reusing generated latents as causal context can amplify temporal errors, resulting in flickering, motion jitter, and structural drift. In this paper, we investigate this failure mode from a spectral kinematic perspective and identify discrete latent acceleration as an effective signal for revealing unstable high-frequency temporal perturbations. To this end, we propose SAGA, a training-free \\textbf{\\textit{s}}table \\textbf{\\textit{a}}cceleration \\textbf{\\textit{g}}uidance approach for \\textbf{\\textit{a}}utoregressive video generation. SAGA integrates an acceleration domain spectral guidance objective based on finite-window Slepian projections with a structured autoregressive noise initialization strategy that suppresses short-range temporal correlations while preserving long-range motion structure. Without retraining or modifying the backbone, SAGA can be directly applied to existing chunk-wise autoregressive diffusion models, which is the prevalent setting for high-quality generation. Extensive experiments show that SAGA consistently improves temporal quality across multiple autoregressive diffusion models. On Self-Forcing, SAGA improves Temporal Quality from 97.30 to 97.91 and Image Quality from 69.60 to 70.51. Moreover, spectral analysis and human preference studies demonstrate that SAGA reduces temporal instability while maintaining visual fidelity.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/14/2607.10860v1-au-guided-synthetic-video-generation-for-micro-expression-recognition",
+      "section": "deep",
+      "title_en": "AU-Guided Synthetic Video Generation for Micro-Expression Recognition",
+      "authors": "Pei-Sze Tan, Sailaja Rajanala, Yee-Fan Tan, Raphael C. -W. Phan, Huey-Fang Ong",
+      "date": "2026-07-12",
+      "pdf": "https://arxiv.org/pdf/2607.10860v1",
+      "score": "8.0",
+      "evidence": "使用质量指标评估生成视频",
+      "tldr": "微表情识别受限于现有数据集规模小、人口覆盖窄和情感标签有限。本文提出EquiME合成数据集，基于AU引导的图像到视频生成，从15K源人脸图像生成75K视频，涵盖五种目标情绪，并附带人口统计元数据和质量度量。跨数据集实验表明，在SAMM和CASME II上训练于EquiME的模型取得了有竞争力的性能且架构间差异小。该工作为微表情识别提供了可扩展的合成数据资源和结构化AU条件生成管道。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Micro-expression recognition is limited by the small scale, narrow demographic coverage, and restricted emotion labels of existing datasets. We introduce EquiME, a synthetic micro-expression dataset built from AU-guided image-to-video generation. EquiME contains 75K videos generated from 15K source face images across five target emotions, together with automatically inferred demographic metadata and video-quality measurements. We evaluate EquiME using frame-pair similarity, spatial variation, and no-reference perceptual-quality metrics, together with cross-dataset MER experiments on SAMM and CASME II. Models trained on EquiME achieve competitive cross-dataset performance on SAMM and CASME II and show comparatively low variation across the four evaluated architectures. This paper focuses on the dataset design, the structured AU-conditioning pipeline used for video generation, and the empirical evidence needed to assess EquiME as a synthetic MER resource. Project page: https://kirito-blade.github.io/me-vlm/",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
