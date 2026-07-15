@@ -1,0 +1,58 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-15T21:31:34.331053+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.08770v1",
+      "source": "arxiv",
+      "title": "LongE2V: Long-Horizon Event-based Video Reconstruction, Prediction, and Frame Interpolation with Video Diffusion Models",
+      "abstract": "Recovering high-quality video from sparse event streams is a challenging task. Regression methods often blur textures, while existing generative models struggle with long-term stability. We propose LongE2V, a novel approach that leverages pre-trained video diffusion priors to jointly handle event-based video reconstruction, prediction, and frame interpolation. By fine-tuning a foundational video model, our approach achieves high data efficiency and superior perceptual quality. We introduce Autoregressive Unrolling and Adaptive Context Switching to mitigate temporal drift in extremely long sequences. We also propose Reencoding Alignment with Cross Residual Correction to ensure precise bidirectional consistency during frame interpolation. Furthermore, Event Voxel Density Augmentation ensures robustness across varying sensor resolutions. Extensive experiments on real-world benchmarks demonstrate that LongE2V outperforms state-of-the-art methods across all three tasks, exhibiting exceptional temporal coherence and zero-shot generalization. Project page: https://cdfan0627.github.io/LongE2V-page/",
+      "authors": [
+        "Cheng-De Fan",
+        "Chun-Wei Tuan Mu",
+        "Chen-Wei Chang",
+        "Chin-Yang Lin",
+        "Kun-Ru Wu",
+        "Yu-Chee Tseng",
+        "Yu-Lun Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-09T17:59:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.08770v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Video diffusion model for reconstruction and prediction; evaluates perceptual quality",
+      "llm_evidence_cn": "视频扩散模型用于重建和预测，评估感知质量",
+      "llm_evidence": "视频扩散模型用于重建和预测，评估感知质量",
+      "canonical_evidence": "视频扩散模型用于重建和预测，评估感知质量",
+      "llm_tldr_en": "Proposes LongE2V for event-based video reconstruction and prediction using pretrained video diffusion priors, achieving superior perceptual quality.",
+      "llm_tldr_cn": "事件相机重建视频存在纹理模糊和时序漂移问题。本文提出LongE2V，利用预训练视频扩散模型，通过自回归展开与自适应上下文切换缓解长时漂移，并结合重编码对齐与跨残差校正保证双向一致性。实验表明该方法在视频重建和预测上达到领先的感知质量。该工作直接生成视频，其质量评估方法可被视频生成评价指标借鉴。",
+      "llm_tldr": "事件相机重建视频存在纹理模糊和时序漂移问题。本文提出LongE2V，利用预训练视频扩散模型，通过自回归展开与自适应上下文切换缓解长时漂移，并结合重编码对齐与跨残差校正保证双向一致性。实验表明该方法在视频重建和预测上达到领先的感知质量。该工作直接生成视频，其质量评估方法可被视频生成评价指标借鉴。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

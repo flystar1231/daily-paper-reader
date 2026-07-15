@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-15",
+  "date": "2026-07-15",
+  "generated_at": "2026-07-15T21:32:33",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/15/2607.08770v1-longe2v-long-horizon-event-based-video-reconstruction-prediction-and-frame-interpolation-with-video-diffusion-models",
+      "section": "quick",
+      "title_en": "LongE2V: Long-Horizon Event-based Video Reconstruction, Prediction, and Frame Interpolation with Video Diffusion Models",
+      "authors": "Cheng-De Fan, Chun-Wei Tuan Mu, Chen-Wei Chang, Chin-Yang Lin, Kun-Ru Wu, Yu-Chee Tseng, Yu-Lun Liu",
+      "date": "2026-07-09",
+      "pdf": "https://arxiv.org/pdf/2607.08770v1",
+      "score": "6.0",
+      "evidence": "视频扩散模型用于重建和预测，评估感知质量",
+      "tldr": "从稀疏事件流恢复高质量视频面临纹理模糊和长序列不稳定等挑战。LongE2V通过微调预训练视频扩散模型，联合处理事件视频重建、预测和帧插值，并引入自回归展开、自适应上下文切换、重新编码对齐与交叉残差校正等技术，有效缓解时序漂移并保证双向一致性。实验表明，该方法在真实基准的三个任务上均超越现有最优方法，展现出优秀的时间连贯性和零样本泛化能力，为事件相机应用提供了高效方案。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Recovering high-quality video from sparse event streams is a challenging task. Regression methods often blur textures, while existing generative models struggle with long-term stability. We propose LongE2V, a novel approach that leverages pre-trained video diffusion priors to jointly handle event-based video reconstruction, prediction, and frame interpolation. By fine-tuning a foundational video model, our approach achieves high data efficiency and superior perceptual quality. We introduce Autoregressive Unrolling and Adaptive Context Switching to mitigate temporal drift in extremely long sequences. We also propose Reencoding Alignment with Cross Residual Correction to ensure precise bidirectional consistency during frame interpolation. Furthermore, Event Voxel Density Augmentation ensures robustness across varying sensor resolutions. Extensive experiments on real-world benchmarks demonstrate that LongE2V outperforms state-of-the-art methods across all three tasks, exhibiting exceptional temporal coherence and zero-shot generalization. Project page: https://cdfan0627.github.io/LongE2V-page/",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

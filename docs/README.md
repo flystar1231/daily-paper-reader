@@ -6,27 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-14
-- 运行时间：2026-07-14 21:26:46 UTC
+- 最新运行日期：2026-07-15
+- 运行时间：2026-07-15 21:32:26 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：2
-- 速读区：0
+- 本次总论文数：1
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-今日精读2篇视频生成论文：SAGA稳定加速引导自回归视频生成，以及AU引导合成视频提升微表情识别。最值得关注的是自回归视频生成中融合稳定加速引导的方法，以及利用动作单元合成数据增强微表情模型。建议普通读者优先了解SAGA如何解决自回归生成中的抖帧问题，再尝试用AU合成视频来训练或测试自己的微表情识别系统。
-- 详情：[/202607/14/README](/202607/14/README)
+今天速读了一篇关于事件相机长期视频处理的研究论文。最值得关注的是利用视频扩散模型实现事件视频的重建、预测和帧插值这一方向。对事件相机或视频生成感兴趣的读者，可以进一步了解该模型在处理长时序列中的效果。
+- 详情：[/202607/15/README](/202607/15/README)
 
 ### 精读区论文标签
-1. [SAGA: Stable Acceleration Guidance for Autoregressive Video Generation](/202607/14/2607.08020v1-saga-stable-acceleration-guidance-for-autoregressive-video-generation)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：提出SAGA稳定自回归视频生成，解决时序错误，与生成视频质量评估相关
-2. [AU-Guided Synthetic Video Generation for Micro-Expression Recognition](/202607/14/2607.10860v1-au-guided-synthetic-video-generation-for-micro-expression-recognition)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：使用质量指标评估生成视频
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [LongE2V: Long-Horizon Event-based Video Reconstruction, Prediction, and Frame Interpolation with Video Diffusion Models](/202607/15/2607.08770v1-longe2v-long-horizon-event-based-video-reconstruction-prediction-and-frame-interpolation-with-video-diffusion-models)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：视频扩散模型用于重建和预测，评估感知质量
 
 
 <div class="dpr-home-promo-card">
