@@ -1,0 +1,141 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-16T21:27:57.347064+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.13527v1",
+      "source": "arxiv",
+      "title": "VGIF-Score: Interpretable and Diagnostic Evaluation of Spatio-Temporal Instruction Following in Video Generation",
+      "abstract": "Recent video generation models (VGMs) have made substantial progress in visual fidelity, yet their ability to follow long, compositional instructions remains insufficiently evaluated. Existing evaluation protocols often rely on prompts that are short and semantically shallow, with limited atomic constraints and weak spatio-temporal dependencies. They also frequently depend on costly human evaluation or handcrafted vision pipelines, while providing little diagnostic insight into which instruction constraints succeed or fail. To address this gap, we propose VGIF-Score, a highly automated and interpretable framework for evaluating instruction following in video generation. VGIF-Score consists of two complementary components: an objective completion branch that parses prompts into a Spatio-Temporal Directed Acyclic Graph (ST-DAG) and performs dependency-aware QA with short-circuit diagnostics, and a subjective satisfaction branch that uses instruction-conditioned AutoRubric to assess cinematography, visual purity, motion smoothness, and physics adherence. Together, these components produce a unified score that captures both objective completion and perceptual satisfaction. We instantiate this framework on VGIF-Bench, a benchmark of 223 long, structurally entangled prompts paired with approximately 4.3K fine-grained evaluation items. Experiments on 14 proprietary and open-source VGMs across more than 3K generated videos show that VGIF-Score provides reliable, interpretable, and diagnostically useful evaluation of video generation instruction following. The code will be available at https://github.com/PRIS-CV/VGIF-SCORE.",
+      "authors": [
+        "Songyu Xu",
+        "Xin Wang",
+        "Qiang Chen",
+        "Xinran Wang",
+        "Muxi Diao",
+        "Yuxuan Zhang",
+        "Kongming Liang",
+        "Rui Lin",
+        "Zhanyu Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-15T07:26:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.13527v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Interpretable evaluation framework for video generation models",
+      "llm_evidence_cn": "视频生成模型的可解释评估框架",
+      "llm_evidence": "视频生成模型的可解释评估框架",
+      "canonical_evidence": "视频生成模型的可解释评估框架",
+      "llm_tldr_en": "Proposes VGIF-Score, an automated framework for evaluating instruction following in video generation, providing diagnostic insights into spatio-temporal constraints.",
+      "llm_tldr_cn": "当前视频生成模型在跟随长时、组合指令方面的能力缺乏有效评估，现有方法多依赖短提示和人工评估，缺乏诊断性。本文提出VGIF-Score，一个高度自动化且可解释的评估框架，用于检测时空约束跟随的成败。该框架通过两个互补模块实现细粒度分析，实验表明其能揭示模型在指令跟随上的具体弱点，为视频生成模型评估提供新工具。",
+      "llm_tldr": "当前视频生成模型在跟随长时、组合指令方面的能力缺乏有效评估，现有方法多依赖短提示和人工评估，缺乏诊断性。本文提出VGIF-Score，一个高度自动化且可解释的评估框架，用于检测时空约束跟随的成败。该框架通过两个互补模块实现细粒度分析，实验表明其能揭示模型在指令跟随上的具体弱点，为视频生成模型评估提供新工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.13941v1",
+      "source": "arxiv",
+      "title": "Peak-End-Net: A Peak-End Rule Inspired Framework for Generalizable Video Aesthetic Assessment",
+      "abstract": "Video aesthetic assessment (VAA) aims to predict how aesthetically pleasing a video is, yet remains far less explored than other visual assessment tasks. Its progress is hindered not only by the scarcity of large-scale benchmarks, but also by the intrinsic subjectivity of aesthetic judgment, which is shaped by human perception. In this paper, we revisit VAA from a psychological perspective and propose \\textit{Peak-End-Net}, a lightweight and interpretable framework inspired by the \\textit{peak-end rule}, which suggests that people tend to judge a temporal experience mainly according to its salient moments and the ending. Building on this intuition, we first transfer knowledge from image aesthetic assessment (IAA) to VAA by introducing a pretrained IAA head to produce frame-wise aesthetic priors, which serve as surrogate signals for identifying aesthetically salient moments and guiding \\textit{peak-end rule}-based temporal aggregation. To further capture how a video evolves aesthetically over time, we design an aesthetic rhythm encoder that models temporal progression beyond isolated moments. Additionally, we refine the overall assessment through a dynamic gated fusion mechanism to improve robustness under distribution shift. Our method is built on a frozen vision transformer (ViT) and requires only a small number of trainable parameters, making it scalable and parameter-efficient. Extensive experiments on two existing VAA benchmarks, including in-domain evaluation on VADB and cross-domain testing on DIVIDE-3K, demonstrate that our approach achieves state-of-the-art performance, affirming the value of psychologically grounded modeling for VAA. Our code and models are available at https://github.com/AMAP-ML/Peak-End-Net.",
+      "authors": [
+        "Geng Li",
+        "Haiwen Li",
+        "Rui Chen",
+        "Jing Tang",
+        "Lei Sun",
+        "Xiangxiang Chu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-15T15:24:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.13941v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "proposes video aesthetic assessment framework for quality evaluation of videos",
+      "llm_evidence_cn": "提出视频美学评估框架，直接用于视频质量评估",
+      "llm_evidence": "提出视频美学评估框架，直接用于视频质量评估",
+      "canonical_evidence": "提出视频美学评估框架，直接用于视频质量评估",
+      "llm_tldr_en": "Proposes Peak-End-Net, a lightweight video aesthetic assessment framework inspired by the peak-end rule, enabling generalizable quality evaluation of videos.",
+      "llm_tldr_cn": "视频美学评估（VAA）因数据稀缺和主观性强而进展缓慢。本文受心理学峰终定律启发，提出Peak-End-Net，通过将图像美学知识迁移到视频并关注关键帧与结尾帧，实现了轻量且可解释的视频美学评估。实验表明，该方法在多个基准上具有良好的泛化性能，为生成视频的美学质量提供了一种有效的评估工具。",
+      "llm_tldr": "视频美学评估（VAA）因数据稀缺和主观性强而进展缓慢。本文受心理学峰终定律启发，提出Peak-End-Net，通过将图像美学知识迁移到视频并关注关键帧与结尾帧，实现了轻量且可解释的视频美学评估。实验表明，该方法在多个基准上具有良好的泛化性能，为生成视频的美学质量提供了一种有效的评估工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.11836v1",
+      "source": "arxiv",
+      "title": "Cycle-World: Mitigating Error Accumulation in Long-term Video World Models via Reverse-Prediction Cycle Consistency",
+      "abstract": "Autoregressive diffusion models have enabled high-quality video generation, yet their sequential nature inherently suffers from error accumulation. In long-horizon video synthesis, minor prediction deviations compound over time, inevitably leading to unconstrained generative drift, structural collapse, and severe visual degradation. To address this, we propose Cycle-World, a novel framework designed for stable and temporally consistent long-video generation. Our approach tackles error drift by enforcing strict temporal reversibility across both the training and inference phases. Theoretically, we demonstrate that forward generative drift can be strictly bottlenecked by a cycle-consistency objective. During training, we integrate an efficient reverse-prediction model to implicitly embed causal constraints into the forward generator, compelling it to produce reversible sequences that tightly adhere to the natural video manifold. At inference time, we repurpose this frozen reverse model as a runtime corrector. Through gradient-based cycle guidance, it iteratively refines the generated latent representations, actively suppressing accumulated errors before they are committed to the historical context. Extensive experiments on the VBench benchmark demonstrate that Cycle-World's dual-phase synergy significantly mitigates error drift, achieving state-of-the-art overall generation quality and long-horizon temporal consistency in 60-second synthesis.",
+      "authors": [
+        "Zihan Su",
+        "Teng Hu",
+        "Jiangning Zhang",
+        "Ruiyan Wang",
+        "Ran Yi",
+        "Lizhuang Ma",
+        "Dacheng Tao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T17:27:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.11836v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes cycle-consistency framework for stable long-video generation, addressing error accumulation which is key to evaluating generated video quality",
+      "llm_evidence_cn": "提出循环一致性框架实现稳定长视频生成，解决误差累积问题，这是生成视频质量评估的关键方面",
+      "llm_evidence": "提出循环一致性框架实现稳定长视频生成，解决误差累积问题，这是生成视频质量评估的关键方面",
+      "canonical_evidence": "提出循环一致性框架实现稳定长视频生成，解决误差累积问题，这是生成视频质量评估的关键方面",
+      "llm_tldr_en": "Cycle-World mitigates error accumulation in autoregressive video generation by enforcing temporal reversibility during both training and inference, ensuring long-term consistency and visual quality, which directly relates to evaluating generated video quality.",
+      "llm_tldr_cn": "该论文针对自回归扩散模型在长视频生成中因误差累积导致视觉退化的问题，提出Cycle-World框架，通过在训练和推理阶段强制时间可逆性来约束前向生成漂移。理论证明循环一致性目标可严格限制误差累积，实验表明该方法能生成更稳定和时序一致的长视频。该工作为评估生成视频的时序质量提供了启发性思路。",
+      "llm_tldr": "该论文针对自回归扩散模型在长视频生成中因误差累积导致视觉退化的问题，提出Cycle-World框架，通过在训练和推理阶段强制时间可逆性来约束前向生成漂移。理论证明循环一致性目标可严格限制误差累积，实验表明该方法能生成更稳定和时序一致的长视频。该工作为评估生成视频的时序质量提供了启发性思路。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
