@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-17",
+  "date": "2026-07-17",
+  "generated_at": "2026-07-17T20:26:50",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/17/2607.14194v1-inference-time-concept-suppression-and-video-centric-evaluation-for-text-to-video-models",
+      "section": "deep",
+      "title_en": "Inference-Time Concept Suppression and Video-Centric Evaluation for Text-to-Video Models",
+      "authors": "Wenxuan Chen, Wenjie Feng",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.14194v1",
+      "score": "9.0",
+      "evidence": "提出面向视频的评估框架直接相关于生成视频质量评估",
+      "tldr": "文本到视频生成器可控移除目标概念面临挑战，因为概念可能跨帧持续且需保留非目标内容。本文提出训练无关的推理时框架 SIRUS，通过目标概念的文本别名定位相关证据，在采样过程中抑制其表达，无需更新模型参数。在 CogVideoX 上，SIRUS 遗忘成功率达 70.4%，帧命中率 25.7%，优于 VideoEraser 的 44.4%/47.2%，同时 VBench 质量下降仅 -0.016，达到最佳遗忘-质量权衡。引入视频导向评估框架，实验表明 SIRUS 可泛化到 Wan2.2 等现代 T2V 骨干网络。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Text-to-video (T2V) generators can synthesize realistic and temporally coherent videos, but controllably removing a target concept from a generator remains difficult.   Unlike text-to-image concept erasure, T2V unlearning must suppress a target concept that may persist across frames while preserving non-target subjects, actions, scenes, and temporal structure.   We propose \\textbf{SIRUS}, a training-free inference-time framework for concept-level T2V unlearning.   Given textual aliases of a target concept, SIRUS localizes target-related prompt evidence and suppresses target expression during sampling, without updating the text encoder or denoising network.   We further introduce a video-oriented evaluation framework for T2V unlearning that separately measures target forgetting, non-target preservation, video quality, jailbreak robustness, and efficiency, using video-level failure criteria, frame-level residue statistics, paired preservation analysis, VBench-based quality diagnostics, and deployment overhead measurement.   Across five safety, object, and style concepts on CogVideoX, SIRUS reaches 70.4\\% average forgetting success and 25.7\\% average frame hit, compared with 44.4\\% / 47.2\\% for VideoEraser, while reducing the average VBench quality drop from -0.043 to -0.016, yielding the strongest forgetting-quality trade-off among fully evaluated baselines.   Transfer experiments on Wan2.2 further suggest that SIRUS generalizes across modern T2V backbones.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/17/2607.14202v1-keyframe-compass-towards-comprehensive-evaluation-of-keyframe-conditioned-video-generation",
+      "section": "deep",
+      "title_en": "KeyFrame-Compass: Towards Comprehensive Evaluation of Keyframe-Conditioned Video Generation",
+      "authors": "Yuqi Tang, Tengfei Liu, Yizheng Lai, Yuran Wang, Yang Shi, Wanshun Su, Zhuoran Zhang, Qixun Wang, Xiaohan Zhang, Xinlei Yu, Xuehai Bai, Xuanyu Zhu, Bohan Zeng, Bozhou Li, Shujie Li, Yifan Dai, Yujie Wei, Shixuan Liu, Haotian Wang, Jialu Chen, Yuanxing Zhang",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.14202v1",
+      "score": "9.0",
+      "evidence": "针对关键帧条件视频生成的全面评估基准直接相关于视频生成评估",
+      "tldr": "视频生成常依赖关键帧引导，但现有模型对多关键帧条件的执行能力尚未明确。本文提出KeyFrame-Compass，首个全面评估基准，包含386个样本，覆盖领域、结构、粒度、格式和密度等多维度。同时设计自动评估框架，从关键帧执行（六项指标）和视频质量（MLLM判断）两方面评测。实验表明，当前模型在忠实执行与自然合成间存在权衡，约束密度增大时性能下降，且多数开源模型无法正确解读故事板输入。该基准揭示了关键帧条件视频生成的根本局限，为后续研究提供了系统评估工具。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video generation increasingly relies on keyframe-based workflows, where creators specify a sequence of reference images to guide generation. Although recent models support multi-keyframe conditioning, it remains unclear whether they can faithfully reproduce the prescribed keyframes while maintaining overall video quality. We present KeyFrame-Compass, the first comprehensive benchmark for evaluating keyframe-conditioned video generation. The benchmark contains 386 carefully curated samples spanning three application domains, two video structures, two prompt granularities, two conditioning formats, and four keyframe densities, enabling controlled analysis under diverse generation settings. We further introduce an automated evaluation framework that jointly measures keyframe execution and overall video quality. Specifically, we decompose keyframe execution into six complementary metrics covering presence, fidelity, temporal ordering, localization, persistence, and uniqueness, while assessing overall video quality through evidence-grounded MLLM judgments augmented with specialized perception models. Experiments on nine representative video generation systems reveal several fundamental limitations. Current models exhibit a clear trade-off between faithful keyframe execution and natural video synthesis. Their performance further degrades as keyframe constraints become denser and most open-source models also fail to interpret storyboard-grid inputs as temporally ordered keyframe sequences.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

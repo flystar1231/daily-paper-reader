@@ -1,0 +1,107 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-17T20:24:10.383556+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2607.14194v1",
+      "source": "arxiv",
+      "title": "Inference-Time Concept Suppression and Video-Centric Evaluation for Text-to-Video Models",
+      "abstract": "Text-to-video (T2V) generators can synthesize realistic and temporally coherent videos, but controllably removing a target concept from a generator remains difficult.   Unlike text-to-image concept erasure, T2V unlearning must suppress a target concept that may persist across frames while preserving non-target subjects, actions, scenes, and temporal structure.   We propose \\textbf{SIRUS}, a training-free inference-time framework for concept-level T2V unlearning.   Given textual aliases of a target concept, SIRUS localizes target-related prompt evidence and suppresses target expression during sampling, without updating the text encoder or denoising network.   We further introduce a video-oriented evaluation framework for T2V unlearning that separately measures target forgetting, non-target preservation, video quality, jailbreak robustness, and efficiency, using video-level failure criteria, frame-level residue statistics, paired preservation analysis, VBench-based quality diagnostics, and deployment overhead measurement.   Across five safety, object, and style concepts on CogVideoX, SIRUS reaches 70.4\\% average forgetting success and 25.7\\% average frame hit, compared with 44.4\\% / 47.2\\% for VideoEraser, while reducing the average VBench quality drop from -0.043 to -0.016, yielding the strongest forgetting-quality trade-off among fully evaluated baselines.   Transfer experiments on Wan2.2 further suggest that SIRUS generalizes across modern T2V backbones.",
+      "authors": [
+        "Wenxuan Chen",
+        "Wenjie Feng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-15T16:26:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.14194v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes video-centric evaluation framework for T2V models directly relevant to evaluating generated video quality",
+      "llm_evidence_cn": "提出面向视频的评估框架直接相关于生成视频质量评估",
+      "llm_evidence": "提出面向视频的评估框架直接相关于生成视频质量评估",
+      "canonical_evidence": "提出面向视频的评估框架直接相关于生成视频质量评估",
+      "llm_tldr_en": "Introduces SIRUS for inference-time T2V concept suppression and a video-oriented evaluation framework for measuring suppression quality.",
+      "llm_tldr_cn": "文本到视频生成模型中可控移除目标概念仍困难。本文提出SIRUS框架在推理时通过定位提示证据并抑制目标表达实现概念擦除无需训练。同时引入面向视频的T2V概念抑制评估框架量化视频质量。该工作直接服务于生成视频的评估。",
+      "llm_tldr": "文本到视频生成模型中可控移除目标概念仍困难。本文提出SIRUS框架在推理时通过定位提示证据并抑制目标表达实现概念擦除无需训练。同时引入面向视频的T2V概念抑制评估框架量化视频质量。该工作直接服务于生成视频的评估。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.14202v1",
+      "source": "arxiv",
+      "title": "KeyFrame-Compass: Towards Comprehensive Evaluation of Keyframe-Conditioned Video Generation",
+      "abstract": "Video generation increasingly relies on keyframe-based workflows, where creators specify a sequence of reference images to guide generation. Although recent models support multi-keyframe conditioning, it remains unclear whether they can faithfully reproduce the prescribed keyframes while maintaining overall video quality. We present KeyFrame-Compass, the first comprehensive benchmark for evaluating keyframe-conditioned video generation. The benchmark contains 386 carefully curated samples spanning three application domains, two video structures, two prompt granularities, two conditioning formats, and four keyframe densities, enabling controlled analysis under diverse generation settings. We further introduce an automated evaluation framework that jointly measures keyframe execution and overall video quality. Specifically, we decompose keyframe execution into six complementary metrics covering presence, fidelity, temporal ordering, localization, persistence, and uniqueness, while assessing overall video quality through evidence-grounded MLLM judgments augmented with specialized perception models. Experiments on nine representative video generation systems reveal several fundamental limitations. Current models exhibit a clear trade-off between faithful keyframe execution and natural video synthesis. Their performance further degrades as keyframe constraints become denser and most open-source models also fail to interpret storyboard-grid inputs as temporally ordered keyframe sequences.",
+      "authors": [
+        "Yuqi Tang",
+        "Tengfei Liu",
+        "Yizheng Lai",
+        "Yuran Wang",
+        "Yang Shi",
+        "Wanshun Su",
+        "Zhuoran Zhang",
+        "Qixun Wang",
+        "Xiaohan Zhang",
+        "Xinlei Yu",
+        "Xuehai Bai",
+        "Xuanyu Zhu",
+        "Bohan Zeng",
+        "Bozhou Li",
+        "Shujie Li",
+        "Yifan Dai",
+        "Yujie Wei",
+        "Shixuan Liu",
+        "Haotian Wang",
+        "Jialu Chen",
+        "Yuanxing Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-15T17:46:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.14202v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "comprehensive benchmark for evaluating keyframe-conditioned video generation directly relevant to video generation evaluation",
+      "llm_evidence_cn": "针对关键帧条件视频生成的全面评估基准直接相关于视频生成评估",
+      "llm_evidence": "针对关键帧条件视频生成的全面评估基准直接相关于视频生成评估",
+      "canonical_evidence": "针对关键帧条件视频生成的全面评估基准直接相关于视频生成评估",
+      "llm_tldr_en": "Presents KeyFrame-Compass the first benchmark for keyframe-conditioned video generation with 386 samples and automated evaluation metrics.",
+      "llm_tldr_cn": "关键帧条件视频生成缺乏标准化评估。本文提出KeyFrame-Compass基准包含386个精心设计的样本覆盖多种设置并引入自动化评价指标用于评估模型是否忠实再现关键帧并保持整体视频质量。该基准直接服务于生成视频的质量评估。",
+      "llm_tldr": "关键帧条件视频生成缺乏标准化评估。本文提出KeyFrame-Compass基准包含386个精心设计的样本覆盖多种设置并引入自动化评价指标用于评估模型是否忠实再现关键帧并保持整体视频质量。该基准直接服务于生成视频的质量评估。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
