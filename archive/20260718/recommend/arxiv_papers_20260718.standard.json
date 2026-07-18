@@ -1,0 +1,183 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-18T20:55:26.993451+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.14189v1",
+      "source": "arxiv",
+      "title": "MultiRef-Compass: Towards Comprehensive Evaluation of Multi-Reference-to-Audio-Video Generation",
+      "abstract": "Multi-reference-to-audio-video (MR2AV) generation aims to generate coherent audio-video content conditioned on multiple references and textual instructions. Existing benchmarks mainly focus on text-driven generation, single-reference subject preservation, or isolated audio-video alignment, leaving the emerging MR2AV setting largely unexplored. Compared with these settings, MR2AV requires models to jointly reason over multiple references while generating synchronized visual and audio content. Models must not only preserve each reference faithfully but also correctly bind and compose multiple referenced entities into coherent audio-visual events. To address this gap, we introduce MultiRef-Compass, a unified benchmark for MR2AV generation. It comprises $350$ carefully curated samples constructed through a scalable and controllable asset-composition pipeline, covering multi-view subject preservation, multi-entity binding, and human-object-scene composition. To provide interpretable assessment, MultiRef-Compass defines an evaluation protocol with four dimensions: Basic Quality, Reference Consistency, Audio-Visual Consistency, and Instruction Following, using 14 sub-metrics. MultiRef-Compass integrates automatic metrics with a rejudging-enhanced MLLM-as-a-Judge framework, enabling scalable and auditable evaluation of both perceptual fidelity and reference-conditioned composition. Extensive experiments on eight representative MR2AV systems reveal substantial room for improvement across multiple evaluation dimensions, underscoring the need for a comprehensive benchmark and positioning MultiRef-Compass as a foundation for future MR2AV research.",
+      "authors": [
+        "Xiaohan Zhang",
+        "Yuqing Wen",
+        "Junlin Chen",
+        "Yuqi Tang",
+        "Yiting He",
+        "Lizhuo Shao",
+        "Weiming Zhu",
+        "Tengfei Liu",
+        "Yang Shi",
+        "Jialu Chen",
+        "Yuanxing Zhang",
+        "Huaxiong Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.SD"
+      ],
+      "published": "2026-07-15T16:02:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.14189v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "introduces benchmark for evaluating multi-reference audio-video generation",
+      "llm_evidence_cn": "提出评估多参考音频视频生成的基准",
+      "llm_evidence": "提出评估多参考音频视频生成的基准",
+      "canonical_evidence": "提出评估多参考音频视频生成的基准",
+      "llm_tldr_en": "Introduces MultiRef-Compass, a unified benchmark for evaluating multi-reference-to-audio-video generation, addressing the need for comprehensive evaluation of joint audio-video generation.",
+      "llm_tldr_cn": "多参考到音频视频生成（MR2AV）缺乏系统评估基准。本文提出MultiRef-Compass，一个统一的基准，涵盖多种评估维度，包括参考保真度、音频视频对齐等。通过广泛实验验证了现有模型的不足，为MR2AV评估提供了标准化工具。",
+      "llm_tldr": "多参考到音频视频生成（MR2AV）缺乏系统评估基准。本文提出MultiRef-Compass，一个统一的基准，涵盖多种评估维度，包括参考保真度、音频视频对齐等。通过广泛实验验证了现有模型的不足，为MR2AV评估提供了标准化工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.10787v1",
+      "source": "arxiv",
+      "title": "Detecting AI-Generated Video: A Vision-Language Dual-View Survey",
+      "abstract": "The evolving realism of AI-generated Videos (AIGC-V) is rapidly rendering traditional artifact-centric detection insufficient, necessitating a paradigm shift from low-level inspection to high-level semantic verification. This paper presents a comprehensive survey of AIGC-V detection, reframing the task as Factual Fidelity Verification, which asks whether the events, entities, and physical processes depicted in a video are consistent with real-world facts. To systematize this rapidly evolving field, we propose a Vision-Language Dual-View taxonomy that organizes existing methods into a hierarchical, four-layer landscape, spanning intrinsic cue analysis, spatiotemporal consistency modeling, cross-modal consistency reasoning, and language-guided world-level reasoning. This dual-view framing highlights a fundamental transition from artifact matching in traditional deepfake detection to evidence-based semantic verification enabled by vision-language models and agentic reasoning pipelines. Based on a systematic review of 221 works, we synthesize AIGC-V generation paradigms, survey the landscape of detection methods, and review evaluation metrics and benchmarks in line with proposed views. Finally, we discuss current challenges and identify promising directions toward robust, explainable, and trustworthy detection.",
+      "authors": [
+        "Dylan Xinming Hou",
+        "Juntian Zhang",
+        "Xu Gu",
+        "Yichen Wu",
+        "Nils Lukas",
+        "Gus Xia",
+        "Xiuying Chen",
+        "Yuhan Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.CL"
+      ],
+      "published": "2026-07-12T14:25:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.10787v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "survey of methods for detecting AI-generated videos, relevant to evaluating quality of generated videos",
+      "llm_evidence_cn": "AI生成视频检测综述，与评估生成视频质量相关",
+      "llm_evidence": "AI生成视频检测综述，与评估生成视频质量相关",
+      "canonical_evidence": "AI生成视频检测综述，与评估生成视频质量相关",
+      "llm_tldr_en": "This survey reframes detection of AI-generated videos as factual fidelity verification and proposes a vision-language dual-view taxonomy spanning intrinsic cues to world-level reasoning, covering methods relevant to video generation quality assessment.",
+      "llm_tldr_cn": "本文综述了AI生成视频检测方法，将检测任务重新定义为事实保真度验证，并提出视觉-语言双视角分类法，涵盖从内在线索分析到语言引导的世界级推理。该工作为评估生成视频的真实性和质量提供了系统性视角，与视频生成质量评估需求高度相关。",
+      "llm_tldr": "本文综述了AI生成视频检测方法，将检测任务重新定义为事实保真度验证，并提出视觉-语言双视角分类法，涵盖从内在线索分析到语言引导的世界级推理。该工作为评估生成视频的真实性和质量提供了系统性视角，与视频生成质量评估需求高度相关。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.12358v2",
+      "source": "arxiv",
+      "title": "ACID: Adaptive Caching for vIDeo generation",
+      "abstract": "Video diffusion models produce high-quality generations but remain slow at inference due to their sequential denoising procedure. Caching-based acceleration methods address this by reusing intermediate model outputs: leading dynamic approaches such as TeaCache, EasyCache, and DiCache accumulate a drift signal and skip expensive model evaluations when accumulated drift stays below a fixed threshold $τ$. This threshold controls an apparent tradeoff - raising it yields faster generation at the cost of visual quality, while lowering it preserves quality but sacrifices speed. We show this tradeoff is not fundamental; it is an artifact of holding $τ$ constant throughout denoising. We identify the existence of critical steps - timesteps where the drift signal changes rapidly - and show that applying a low threshold selectively at these steps while caching aggressively elsewhere recovers most of the quality of conservative caching at substantially higher inference speeds. Building on this insight, we propose ACID, a lightweight, training-free wrapper that monitors the rate of change of each method's existing drift signal to dynamically switch between a low and a high threshold. ACID is signal-agnostic and modular: it requires no retraining and plugs directly into existing dynamic caching methods without modifying their core mechanisms. Evaluated across three caching methods (TeaCache, EasyCache, DiCache) and three open-source video diffusion models (HunyuanVideo, Wan 2.1, CogVideoX), ACID consistently expands the Pareto frontier of visual quality versus inference speed beyond what any fixed threshold achieves. In particular, on TeaCache and HunyuanVideo, ACID achieves up to 2.16x speedup over the no-caching baseline, and up to 38% additional speedup over the conservative fixed-threshold baseline with negligible (<0.3 dB PSNR, <0.01 SSIM, <0.01 LPIPS) quality degradation.",
+      "authors": [
+        "Om Agrawal",
+        "Saurabh Agarwal",
+        "Aditya Akella"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-14T05:17:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.12358v2",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses drift signal as quality proxy to skip steps in video generation, enabling adaptive caching",
+      "llm_evidence_cn": "使用漂移信号作为质量代理来跳过视频生成的步骤，实现自适应缓存",
+      "llm_evidence": "使用漂移信号作为质量代理来跳过视频生成的步骤，实现自适应缓存",
+      "canonical_evidence": "使用漂移信号作为质量代理来跳过视频生成的步骤，实现自适应缓存",
+      "llm_tldr_en": "ACID identifies critical steps in video diffusion denoising and adaptively caches to accelerate generation while preserving visual quality, using drift signal as quality proxy.",
+      "llm_tldr_cn": "该论文针对视频扩散模型推理速度慢的问题，提出自适应缓存方法ACID。通过分析去噪过程中的漂移信号，识别关键步骤并在非关键步骤重用中间表示，从而在加速生成的同时保持视觉质量。实验表明该方法在速度和质量的平衡上优于固定阈值方法，为视频生成加速提供了新思路。",
+      "llm_tldr": "该论文针对视频扩散模型推理速度慢的问题，提出自适应缓存方法ACID。通过分析去噪过程中的漂移信号，识别关键步骤并在非关键步骤重用中间表示，从而在加速生成的同时保持视觉质量。实验表明该方法在速度和质量的平衡上优于固定阈值方法，为视频生成加速提供了新思路。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.14088v1",
+      "source": "arxiv",
+      "title": "VideoRAE: Taming Video Foundation Models for Generative Modeling via Representation Autoencoders",
+      "abstract": "Video generative models commonly rely on latent spaces learned by 3D Variational Autoencoders (3D-VAEs). However, conventional 3D-VAEs are mainly optimized for pixel-level reconstruction, which can limit the semantic and spatio-temporal structure captured by their latents. Meanwhile, Video Foundation Models (VFMs) such as V-JEPA 2 and VideoMAEv2 show strong video understanding capabilities, yet whether their frozen representations can be transformed into compact, reconstruction-capable, and generation-friendly video latents remains largely unexplored. We answer this question with VideoRAE, a representation autoencoder that leverages multi-scale hierarchical features from a frozen video foundation encoder and compresses them with a lightweight 1D self-attention projector. VideoRAE supports both continuous latents for Diffusion Transformers and discrete tokens for autoregressive models via multi-codebook high-dimensional quantization. During decoding, a local-and-global representation alignment objective with the frozen VFM teacher improves semantic preservation and enables training without KL regularization. Experiments show that VideoRAE achieves strong reconstruction in both continuous and discrete regimes. On UCF-101, it obtains state-of-the-art class-to-video gFVDs of 40 and 93 with AR and DiT generators, respectively, while converging approximately 5x faster than competing autoencoder baselines. In a controlled 2B-scale text-to-video study, replacing LTX-VAE with VideoRAE leads to faster convergence under comparable settings. These results validate frozen VFM representations as versatile and generation-friendly video latents. The model and code will be released on https://zhxie0117.github.io/VideoRAE.",
+      "authors": [
+        "Zhihao Xie",
+        "Junfeng Wu",
+        "Xinting Hu",
+        "Junchao Huang",
+        "Li Jiang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-15T17:59:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.14088v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes representation autoencoder for video generation, relevant to video generation model evaluation",
+      "llm_evidence_cn": "提出用于视频生成的表示自编码器，与视频生成模型评价相关",
+      "llm_evidence": "提出用于视频生成的表示自编码器，与视频生成模型评价相关",
+      "canonical_evidence": "提出用于视频生成的表示自编码器，与视频生成模型评价相关",
+      "llm_tldr_en": "VideoRAE uses frozen video foundation model features to learn compact video latents for generation, improving spatio-temporal structure over standard 3D-VAEs.",
+      "llm_tldr_cn": "视频生成模型通常依赖3D变分自编码器（3D-VAE）的潜在空间，但3D-VAE优化像素重建限制了语义和时空结构。VideoRAE提出利用冻结的视频基础模型（如V-JEPA）的多尺度层次特征，通过表示自编码器将其压缩为紧凑、可重构且利于生成的视频潜在表示。实验表明，该方法在视频生成质量上优于传统3D-VAE，为高质量视频生成提供了新途径。",
+      "llm_tldr": "视频生成模型通常依赖3D变分自编码器（3D-VAE）的潜在空间，但3D-VAE优化像素重建限制了语义和时空结构。VideoRAE提出利用冻结的视频基础模型（如V-JEPA）的多尺度层次特征，通过表示自编码器将其压缩为紧凑、可重构且利于生成的视频潜在表示。实验表明，该方法在视频生成质量上优于传统3D-VAE，为高质量视频生成提供了新途径。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
