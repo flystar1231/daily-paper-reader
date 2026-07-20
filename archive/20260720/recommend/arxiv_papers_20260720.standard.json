@@ -1,0 +1,99 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-20T20:18:16.803475+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.15321v1",
+      "source": "arxiv",
+      "title": "Rethinking the Readout: Unlocking Video Backbones for AI-Generated Video Detection",
+      "abstract": "AI-generated videos (AIGVs) typically contain subtle temporal artifacts that arise from inter-frame inconsistencies rather than within individual frames. A detector that captures such artifacts should therefore benefit from video pretrained backbones over image only ones. In practice, however, video backbones with standard global readouts often fail to outperform strong image pretrained probes on AIGV benchmarks. We attribute this gap to excessive spatiotemporal aggregation in the readout. Video pretrained backbones tend to compress each frame into a single global descriptor. This compression suppresses local patch level temporal dynamics and discards inter patch relations, which are precisely the cues that AIGV detection most reliably depends on. Based on this, we propose Velocity Gated Patch Velocity Profiling (V-PVP), a lightweight readout that replaces only the aggregation layer with two parallel streams over the patch velocity field, adding only about $0.5$M trainable parameters. V-PVP serves as a general plug-and-play module that consistently improves performance across diverse video backbones under both end-to-end fine-tuning and linear probing settings. Our method reaches \\textbf{95.28} AUC on AIGVDBench while keeping the backbone fully frozen. The results show that simply replacing the aggregation layer reactivates the temporal potential of frozen video backbones, restoring their advantage on AIGV detection. Code is available at https://anonymous.4open.science/r/PVP-81B3/.",
+      "authors": [
+        "Manni Cui",
+        "Ziheng Qin",
+        "ZiAn Wang",
+        "Ruiqi Liu",
+        "Dianyuan Zou",
+        "Jianglan Wei",
+        "Han Zhou",
+        "Yu Liu",
+        "Jingrui Xu",
+        "Wenhao Wang",
+        "Zhenyu Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-16T07:57:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.15321v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Detects AI-generated videos, evaluating quality",
+      "llm_evidence_cn": "检测AI生成视频，评估质量",
+      "llm_evidence": "检测AI生成视频，评估质量",
+      "canonical_evidence": "检测AI生成视频，评估质量",
+      "llm_tldr_en": "Proposes a readout method for video backbones to better detect temporal artifacts in AI-generated videos, improving detection accuracy.",
+      "llm_tldr_cn": "本文针对AI生成视频检测中标准全局读出损失局部时间动态的问题，提出了一种改进的读出方法，通过保留局部补丁时间关系来增强检测能力。在视频骨干网络上实现，实验结果表明该方法在多个检测基准上显著优于现有方法，为视频生成质量评估提供了有效的检测工具。",
+      "llm_tldr": "本文针对AI生成视频检测中标准全局读出损失局部时间动态的问题，提出了一种改进的读出方法，通过保留局部补丁时间关系来增强检测能力。在视频骨干网络上实现，实验结果表明该方法在多个检测基准上显著优于现有方法，为视频生成质量评估提供了有效的检测工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.15667v1",
+      "source": "arxiv",
+      "title": "PE-Field 4D: Video Generation Models as Canvas",
+      "abstract": "Diffusion Transformers have recently achieved strong performance in video generation, yet controlling scene geometry under viewpoint changes and camera motion remains challenging. In this work, we revisit the role of positional encoding in video diffusion transformers and show that it provides a useful spatial bias for geometry-aware control. Specifically, if reference tokens are encoded according to their projected locations in the target view, the denoising model is encouraged to retrieve content from position aligned regions of the input video. Building on this observation, we introduce a geometry-aware cross-attention mechanism that enables target video latent tokens to attend to structured context tokens derived from reference images or frames. To establish correspondence between the reference content and the target camera trajectory, we equip the context tokens with a projected positional encoding scheme that combines target-view 2D reprojection with depth-aware disambiguation. At the same time, we preserve the original spatiotemporal positional encoding of the generated video latent, allowing geometric guidance to be injected while maintaining consistency with the video model's native latent structure. The resulting framework provides a simple and effective approach for controllable video generation. It improves spatial controllability in viewpoint-dependent editing tasks, including camera re-trajectory, novel-view video synthesis, and geometry-aware video editing, while preserving the generative prior of the underlying video diffusion model. The code is available at: https://github.com/MTLab/PE-Field.",
+      "authors": [
+        "Yunpeng Bai",
+        "Haoxiang Li",
+        "Qixing Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-17T06:22:14+00:00",
+      "link": "https://arxiv.org/pdf/2607.15667v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes geometry-aware video generation using diffusion transformers; relevant to techniques for transparent video generation",
+      "llm_evidence_cn": "提出使用扩散变换器的几何感知视频生成，与透明视频生成技术相关",
+      "llm_evidence": "提出使用扩散变换器的几何感知视频生成，与透明视频生成技术相关",
+      "canonical_evidence": "提出使用扩散变换器的几何感知视频生成，与透明视频生成技术相关",
+      "llm_tldr_en": "Presents PE-Field 4D, using positional encoding in video diffusion transformers for geometry-aware cross-attention, enabling controllable video generation.",
+      "llm_tldr_cn": "视频扩散变换器在生成中难以控制场景几何。本文发现位置编码能提供空间偏置，据此提出几何感知交叉注意力机制，使目标视频隐编码能够从参考图像的对应位置检索内容。该方法在视角和相机运动控制方面取得优势，为透明视频生成中精确控制背景与前景提供了技术思路。",
+      "llm_tldr": "视频扩散变换器在生成中难以控制场景几何。本文发现位置编码能提供空间偏置，据此提出几何感知交叉注意力机制，使目标视频隐编码能够从参考图像的对应位置检索内容。该方法在视角和相机运动控制方面取得优势，为透明视频生成中精确控制背景与前景提供了技术思路。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "methods for transparent video generation",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
