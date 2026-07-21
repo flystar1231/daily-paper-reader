@@ -6,28 +6,31 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-20
-- 运行时间：2026-07-20 20:20:20 UTC
+- 最新运行日期：2026-07-21
+- 运行时间：2026-07-21 21:01:57 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：3
 - 精读区：1
-- 速读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-今日精读8分论文，聚焦视频骨干网络革新以提升AI生成视频检测能力，速读6分论文探索视频生成模型作为4D画布的新范式。  
-最值得关注的方向：AI生成视频的检测技术突破，以及基于生成模型的视频内容表示方法。  
-下一步建议：若关注反深度伪造或视频内容真实性，可深入研究精读论文的读出版本设计。
-- 详情：[/202607/20/README](/202607/20/README)
+1) 今日深入精读AI生成人像视频的多维质量评估模型与数据集，并速读两项视频生成技术研究。  
+2) 最值得关注精读文章提出的高质量人像视频评估方法，其分数高达9.0，对AI视频实用性检验至关重要。  
+3) 建议优先阅读精读论文，掌握判别AI视频质量的核心维度和数据资源，再视兴趣拓展至视频真实推理与教学应用生成。
+- 详情：[/202607/21/README](/202607/21/README)
 
 ### 精读区论文标签
-1. [Rethinking the Readout: Unlocking Video Backbones for AI-Generated Video Detection](/202607/20/2607.15321v1-rethinking-the-readout-unlocking-video-backbones-for-ai-generated-video-detection)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：检测AI生成视频，评估质量
+1. [Multi-Dimensional Quality Assessment for AI-Generated Human-Centric Videos: Dataset and Model](/202607/21/2607.16742v1-multi-dimensional-quality-assessment-for-ai-generated-human-centric-videos-dataset-and-model)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：面向AI生成视频的多维度质量评估数据集与模型
 
 ### 速读区论文标签
-1. [PE-Field 4D: Video Generation Models as Canvas](/202607/20/2607.15667v1-pe-field-4d-video-generation-models-as-canvas)  
+1. [Thinking in Video: Can Video Generators Really Reason About the Real World?](/202607/21/2607.17523v1-thinking-in-video-can-video-generators-really-reason-about-the-real-world)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出使用扩散变换器的几何感知视频生成，与透明视频生成技术相关
+   evidence：用于评估视频生成模型世界模型推理能力的评价指标（CGDJ）
+2. [SGA: Plug&Play Geometric Verification for Educational Video Synthesis](/202607/21/2607.18116v1-sga-plugplay-geometric-verification-for-educational-video-synthesis)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：提出Manim视觉质量分数用于评估生成视频的空间完整性
 
 
 <div class="dpr-home-promo-card">
