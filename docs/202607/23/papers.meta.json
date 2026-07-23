@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-23",
+  "date": "2026-07-23",
+  "generated_at": "2026-07-23T21:27:08",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/23/2607.16947v1-when-physical-preferences-meet-semantic-constraints-physical-and-semantic-direct-preference-optimization-for-text-to-video-generation",
+      "section": "quick",
+      "title_en": "When Physical Preferences Meet Semantic Constraints: Physical and Semantic Direct Preference Optimization for Text-to-Video Generation",
+      "authors": "Siwei Meng, Yawei Luo, Shu Zhang, Ping Liu",
+      "date": "2026-07-18",
+      "pdf": "https://arxiv.org/pdf/2607.16947v1",
+      "score": "7.0",
+      "evidence": "提出基于偏好的优化方法，内在地需要评估视频质量",
+      "tldr": "文本到视频生成模型视觉真实感强，但追求物理合理性时易偏离文本语义，两者存在系统性矛盾。现有偏好优化方法未考虑此冲突，为此提出物理与语义直接偏好优化（PSDPO），根据物理和语义信号的一致性调节偏好对贡献，并通过梯度分析设计分阶段优化协议，理论上限制语义漂移累积。实验在VideoPhy-2上物理合理性提升2倍，VBench语义一致性保持良好，实现了比现有方法更可靠的平衡。所有操作在标准DPO框架内完成，无需辅助模型或额外损失项。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Text-to-video (T2V) generation models have achieved strong visual realism, but improving physical plausibility can come at the cost of semantic consistency with the input text. This tension arises because physical preference is typically determined by comparing dynamics between two videos, without accounting for whether either video faithfully depicts the scene specified by the prompt, making physical-semantic conflict a systematic tendency under this supervision paradigm. We formulate this challenge as a constrained preference optimization problem and propose Physical and Semantic Direct Preference Optimization (PSDPO), which modulates each preference pair's contribution based on the agreement between its physical and semantic signals. A gradient-level analysis shows that PSDPO bounds the semantic drift from conflicting pairs to a controllable residual, and further motivates a staged optimization protocol that provably reduces cumulative drift. The resulting method operates entirely within the standard DPO framework, requiring no auxiliary models or additional loss terms. Experiments show that PSDPO improves physical plausibility by up to $2\\times$ over the baseline on VideoPhy-2, while maintaining strong semantic consistency on VBench, achieving a more reliable balance than existing preference-based methods.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
