@@ -1,0 +1,89 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-25T21:10:20.166030+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2607.16484v1",
+      "source": "arxiv",
+      "title": "On the Performance and Implementation of Parallax free Video See-Through Displays",
+      "abstract": "In see-through systems an observer watches a (background) scene partially occluded by a display. In this display, usually positioned close to the observer, a region of the background scene is shown, yielding the sensation that the display is transparent. To achieve the transparency effect, it is very important to compensate the parallax error and other distortions caused by the image acquisition system. In this paper a detailed study of a video see-through methodology with parallax correction is performed. In a system composed by two cameras -- one directed to the user and another to the background scene -- and a display, the relative position between the user, the display and the scene is estimated using a feature detection algorithm and the parallax error is compensated assuming a planar scene model. The application of the proposed methodology on Driver Assistance Systems (DAS) is proposed. A theoretical assessment of the algorithm shows that although approximations are proposed to simplify the methodology and reduce the computational cost, such as the planar scene model and fixed working distance, on some practical situations their effects can be neglected without noticeable impact on the perceptual quality of the solution.",
+      "authors": [
+        "Ricardo Augusto Borsoi",
+        "Guilherme Holsbach Costa"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-07-17T20:14:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.16484v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Techniques for parallax-free video see-through displays achieving transparency effect",
+      "llm_evidence_cn": "实现透明效果的无视差视频透视显示技术",
+      "llm_evidence": "实现透明效果的无视差视频透视显示技术",
+      "canonical_evidence": "实现透明效果的无视差视频透视显示技术",
+      "llm_tldr_en": "This paper studies video see-through displays that create transparency by showing background on a display near the observer, including parallax correction and performance evaluation.",
+      "llm_tldr_cn": "本文针对视频透视显示中的透明效果实现问题，提出了一种基于双摄像头的视差校正方法，通过特征检测估计用户、显示器和场景的相对位置，实现无失真透明显示。性能评估表明该方法能有效补偿视差误差，达到逼真的透明感。该工作为透明视频生成技术提供了重要参考，可直接用于生成具有透明效果的视频内容。",
+      "llm_tldr": "本文针对视频透视显示中的透明效果实现问题，提出了一种基于双摄像头的视差校正方法，通过特征检测估计用户、显示器和场景的相对位置，实现无失真透明显示。性能评估表明该方法能有效补偿视差误差，达到逼真的透明感。该工作为透明视频生成技术提供了重要参考，可直接用于生成具有透明效果的视频内容。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.18789v1",
+      "source": "arxiv",
+      "title": "Moving Alphabet: A Controlled Study of Training Data for Text-to-Video Generation",
+      "abstract": "Text-to-video generation has advanced significantly over the past five years through scaling of model size, data, and compute. Unlike model architecture, training data is often underexplored. Real-world data curation is complex and non-trivial, involving clip selection from raw videos and captioning to create video-text pairs for learning text-to-video mappings. We study how data distribution and caption quality impact text-to-video models. To enable controlled experiments, we introduce Moving Alphabet, a procedural testbed that renders letters with varying fonts, colors, sizes, and positions, moving in different directions and speeds against a black background. This design allows precise control over data distribution and caption quality by corrupting ground-truth metadata. Our experiments yield three findings: a) a diverse and balanced distribution of video content and duration is critical for generalization; b) caption quality significantly affects both model performance and training efficiency, suggesting that text-to-video models are bounded by video understanding capabilities; and c) classifier-free guidance and fine-tuning on high-quality data provide partial recovery from models trained on corrupted captions, but cannot fully compensate for poor pre-training data. We believe these insights can inform the development of large-scale text-to-video models, and we advocate for greater attention to the science of pre-training data.",
+      "authors": [
+        "Amber Yijia Zheng",
+        "Lu Liu",
+        "Raymond A. Yeh",
+        "Xi Yin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T07:07:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.18789v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "studies impact of data distribution and caption quality on text-to-video generation models, providing a controlled testbed for evaluating generation quality",
+      "llm_evidence_cn": "研究数据分布和描述质量对文本到视频生成模型的影响，提供可控测试平台评估生成质量",
+      "llm_evidence": "研究数据分布和描述质量对文本到视频生成模型的影响，提供可控测试平台评估生成质量",
+      "canonical_evidence": "研究数据分布和描述质量对文本到视频生成模型的影响，提供可控测试平台评估生成质量",
+      "llm_tldr_en": "Moving Alphabet introduces a procedural testbed to study how data distribution and caption quality affect text-to-video generation models, enabling controlled evaluation of video generation quality.",
+      "llm_tldr_cn": "该论文针对文本到视频生成中训练数据影响不明确的问题，提出Moving Alphabet程序化测试平台。通过渲染带不同字体、颜色和运动轨迹的字母视频，精确控制数据分布和描述质量，系统评估其对生成模型的影响。该工作为视频生成模型的评估提供了可控实验框架，可直接用于评价指标研究。",
+      "llm_tldr": "该论文针对文本到视频生成中训练数据影响不明确的问题，提出Moving Alphabet程序化测试平台。通过渲染带不同字体、颜色和运动轨迹的字母视频，精确控制数据分布和描述质量，系统评估其对生成模型的影响。该工作为视频生成模型的评估提供了可控实验框架，可直接用于评价指标研究。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}

@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-25",
+  "date": "2026-07-25",
+  "generated_at": "2026-07-25T21:12:15",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/25/2607.16484v1-on-the-performance-and-implementation-of-parallax-free-video-see-through-displays",
+      "section": "deep",
+      "title_en": "On the Performance and Implementation of Parallax free Video See-Through Displays",
+      "authors": "Ricardo Augusto Borsoi, Guilherme Holsbach Costa",
+      "date": "2026-07-17",
+      "pdf": "https://arxiv.org/pdf/2607.16484v1",
+      "score": "8.0",
+      "evidence": "实现透明效果的无视差视频透视显示技术",
+      "tldr": "透视显示中，显示器靠近观察者并显示背景区域以产生透明感，但需补偿视差误差。本文提出一种视频透视方法，采用双摄像头（分别对准用户和场景）和特征检测算法估计相对位置，基于平面场景模型修正视差。理论评估表明，尽管采用平面模型和固定工作距离等近似简化，在多数实际场景中其影响可忽略，不影响感知质量。该方法为驾驶员辅助系统提供了低计算成本的透明显示方案，具有实用价值。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "In see-through systems an observer watches a (background) scene partially occluded by a display. In this display, usually positioned close to the observer, a region of the background scene is shown, yielding the sensation that the display is transparent. To achieve the transparency effect, it is very important to compensate the parallax error and other distortions caused by the image acquisition system. In this paper a detailed study of a video see-through methodology with parallax correction is performed. In a system composed by two cameras -- one directed to the user and another to the background scene -- and a display, the relative position between the user, the display and the scene is estimated using a feature detection algorithm and the parallax error is compensated assuming a planar scene model. The application of the proposed methodology on Driver Assistance Systems (DAS) is proposed. A theoretical assessment of the algorithm shows that although approximations are proposed to simplify the methodology and reduce the computational cost, such as the planar scene model and fixed working distance, on some practical situations their effects can be neglected without noticeable impact on the perceptual quality of the solution.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/25/2607.18789v1-moving-alphabet-a-controlled-study-of-training-data-for-text-to-video-generation",
+      "section": "deep",
+      "title_en": "Moving Alphabet: A Controlled Study of Training Data for Text-to-Video Generation",
+      "authors": "Amber Yijia Zheng, Lu Liu, Raymond A. Yeh, Xi Yin",
+      "date": "2026-07-21",
+      "pdf": "https://arxiv.org/pdf/2607.18789v1",
+      "score": "8.0",
+      "evidence": "研究数据分布和描述质量对文本到视频生成模型的影响，提供可控测试平台评估生成质量",
+      "tldr": "文本到视频生成中，训练数据质量和分布对模型性能影响显著，但常被忽视。本文提出Moving Alphabet测试平台，通过控制视频内容和字幕质量进行可控实验，发现数据多样平衡性及高质字幕对泛化和训练效率至关重要。即使采用CFG和微调，也无法完全弥补预训练数据缺陷。研究强调应更多关注预训练数据科学性。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Text-to-video generation has advanced significantly over the past five years through scaling of model size, data, and compute. Unlike model architecture, training data is often underexplored. Real-world data curation is complex and non-trivial, involving clip selection from raw videos and captioning to create video-text pairs for learning text-to-video mappings. We study how data distribution and caption quality impact text-to-video models. To enable controlled experiments, we introduce Moving Alphabet, a procedural testbed that renders letters with varying fonts, colors, sizes, and positions, moving in different directions and speeds against a black background. This design allows precise control over data distribution and caption quality by corrupting ground-truth metadata. Our experiments yield three findings: a) a diverse and balanced distribution of video content and duration is critical for generalization; b) caption quality significantly affects both model performance and training efficiency, suggesting that text-to-video models are bounded by video understanding capabilities; and c) classifier-free guidance and fine-tuning on high-quality data provide partial recovery from models trained on corrupted captions, but cannot fully compensate for poor pre-training data. We believe these insights can inform the development of large-scale text-to-video models, and we advocate for greater attention to the science of pre-training data.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
