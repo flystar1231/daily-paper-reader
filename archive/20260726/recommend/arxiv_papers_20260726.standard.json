@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-26T21:13:45.579443+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.19315v1",
+      "source": "arxiv",
+      "title": "ERank in Latent Space as an Image-Complexity and Richness Measure",
+      "abstract": "We propose the effective rank (ERank) of the channel covariance of an image's deep feature map as a per-sample, label-free measure of visual richness, computed from a single forward pass through a frozen pretrained encoder. ERank counts how many decorrelated channel directions an image activates, and we characterize its properties, including its behavior under noise. Empirically, ERank orders images from plain to visually rich, correlates with codec bitrate, sharpness, and edge density, and correlates with human complexity annotations on IC9600 with $r = 0.72$. As a data-selection criterion, removing low-ERank samples improves super-resolution and removing high-ERank samples improves OCR, in both pretraining and finetuning, while selection does not help classification, segmentation, or denoising. ERank is thus a cheap richness signal, useful exactly when task difficulty is governed by input richness.",
+      "authors": [
+        "Maksim Smirnov",
+        "Grigory Kononov",
+        "Anastasiia Linich",
+        "Egor Surkov",
+        "Egor Shvetsov"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T17:32:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.19315v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "image quality measure transferable to video evaluation",
+      "llm_evidence_cn": "图像质量度量可迁移至视频评估",
+      "llm_evidence": "图像质量度量可迁移至视频评估",
+      "canonical_evidence": "图像质量度量可迁移至视频评估",
+      "llm_tldr_en": "ERank is a label-free measure of image visual richness computed from feature channel covariance. It correlates with human complexity annotations and can select data for improving super-resolution and OCR. While designed for images, its principle could extend to video quality assessment.",
+      "llm_tldr_cn": "ERank是一种无标签的图像视觉丰富度量，基于特征通道协方差计算。与人类复杂度注释相关，可用于数据选择以提升超分辨率和OCR。虽然面向图像，但其原理可推广至视频质量评估。",
+      "llm_tldr": "ERank是一种无标签的图像视觉丰富度量，基于特征通道协方差计算。与人类复杂度注释相关，可用于数据选择以提升超分辨率和OCR。虽然面向图像，但其原理可推广至视频质量评估。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
