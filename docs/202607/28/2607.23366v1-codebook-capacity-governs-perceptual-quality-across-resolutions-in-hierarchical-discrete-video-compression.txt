@@ -1,0 +1,495 @@
+Title: Codebook Capacity Governs Perceptual Quality Across Resolutions in Hierarchical Discrete Video Compression
+
+URL Source: https://arxiv.org/pdf/2607.23366v1
+
+Published Time: Tue, 28 Jul 2026 00:46:37 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# Codebook Capacity Governs Perceptual Quality Across Resolutions in Hierarchical Discrete Video Compression 
+
+Manikanta Kotthapalli 
+
+Department of Computer Science Portland State University Portland, OR 97201 
+
+Banafsheh Rekabdar 
+
+Department of Computer Science Portland State University Portland, OR 97201 
+
+## Abstract 
+
+Learned video codecs based on continuous latent representations typically require resolution-specific retraining or rate–distortion (RD) recalibration when scaling to new spatial resolutions, because entropy models and Lagrangian weights are tightly coupled to the operating point. We investigate whether hierarchical discrete latent codecs exhibit the same sensitivity. Using a controlled empirical study of MS-VQ-VAE video compression across codebook sizes K ∈ { 128 , 256 , 512 , 1024 } and resolutions 64 ×64 , 128 ×128 , and 256 ×256 on UCF101, we show that perceptual quality (LPIPS) depends strongly on codebook capacity but only negligibly on spatial resolution. Fitting a log-linear model Q(K, r ) = α log 2K + β log 2r + γ
+
+to all 12 operating points yields α=−0.0094 (t=−6.6, p< 0.001 ) and β=−0.0009 
+
+(t=−0.43 , p=0 .68 , not significant), with R2=0 .82 . Codebook capacity is there-fore roughly 10 × more influential than spatial resolution per log-unit increase. In parallel, bottom-level entropy efficiency η=H(z)/ log 2K remains stable or improves with resolution (84–87% at 64 ×64 ; 92–94% at 256 ×256 ), confirming that larger spatial grids are utilized more efficiently rather than less. Across all resolutions and codebook sizes, our models outperform H.264 on LPIPS at matched or lower bitrate, with gains of 25–52% at 128 ×128 and 21–37% over H.265 at 256 ×256 . These findings suggest that codebook size K, not spatial resolution, is the dominant design variable governing perceptual compression quality in hi-erarchical discrete video codecs—a property that may simplify multi-resolution deployment and inform the design of scalable discrete tokenizers for generative video models. 
+
+## 1 Introduction 
+
+Neural video compression has advanced rapidly, with learned codecs increasingly matching or surpassing traditional block-based standards such as H.264 and H.265 on perceptual quality at low bitrates Lu et al. [2019], Li et al. [2021, 2023], Mentzer et al. [2020]. Most of this progress is built on continuous latent representations regularised by entropy models trained under a Lagrangian rate-distortion objective L = D + λR Ballé et al. [2018], Minnen et al. [2018]. While effective, these systems are strongly coupled to resolution: the entropy model, rate-distortion trade-off weight λ, and operating point must typically be re-optimised for each target resolution and bitrate regime. This coupling complicates deployment in multi-resolution settings such as adaptive streaming, mobile inference, and scalable video generation. Discrete latent models based on vector quantisation van den Oord et al. [2017], Razavi et al. [2019] offer a fundamentally different compression mechanism. Rather than learning continuous latent distributions regularised through entropy penalties, VQ-based codecs compress video into sequences 
+
+> 40th Conference on Neural Information Processing Systems (NeurIPS 2026). Track on Evaluations and Datasets. arXiv:2607.23366v1 [eess.IV] 25 Jul 2026
+
+of discrete symbols drawn from a finite codebook of size K. The information ceiling per symbol is therefore exactly log 2 K bits—a hard capacity limit imposed by architecture rather than by loss weighting. Hierarchical VQ architectures further decompose information across multiple spatiotem-poral scales, separating global structure from local texture through progressively finer latent grids. Despite the growing importance of discrete latent representations in both neural compression Kottha-palli and Rekabdar [2026b,a] and generative video modelling Yu et al. [2023, 2024], Kondratyuk et al. [2023], relatively little is understood about how their rate–distortion behaviour scales with spatial resolution. 
+
+This work. We conduct a controlled empirical study of hierarchical MS-VQ-VAE video compres-sion across three spatial resolutions and four codebook sizes. Our central finding is that perceptual quality as measured by LPIPS Zhang et al. [2018] depends substantially more on codebook capacity 
+
+K than on spatial resolution within the evaluated regime. This differs from the resolution-dependent optimisation behaviour commonly reported for continuous-latent codecs Ballé et al. [2018], Minnen et al. [2018], Li et al. [2021]. 
+
+Contributions. 
+
+1. Empirical scaling law. We fit a log-linear model Q(K, r )= α log 2K+β log 2r+γ to LPIPS across 12 operating points spanning three resolutions and four codebook sizes, finding that α
+
+is statistically significant ( t=−6.6, p< 0.001 ) while β is not ( t=−0.43 , p=0 .68 ). Codebook capacity is approximately 10 × more influential than resolution per log-unit. 2. Entropy efficiency improves with resolution. Bottom-level entropy efficiency rises from 84–87% at 64 ×64 to 92–94% at 256 ×256 , indicating that larger spatial grids are exploited more efficiently by the autoregressive prior. 3. Strong perceptual gains over traditional codecs at all resolutions. Our models achieve 25–52% lower LPIPS than H.264 at matched bitrate at 128 ×128, and 21–37% lower LPIPS than H.265 at 256 ×256 .4. Hierarchical depth scaling rule. We introduce a practical depth-scaling strategy: two latent levels at 64 ×64 ; three levels at 128 ×128 and 256 ×256 . This maintains similar per-level compression ratios and enables stable cross-resolution operation under a fixed training protocol. 
+
+## 2 Related Work 
+
+Continuous-latent video compression. The dominant paradigm for learned video compression uses continuous latent representations trained end-to-end via a Lagrangian rate–distortion objective Ballé et al. [2018, 2021]. DVC Lu et al. [2019] established the template of optical-flow-based motion compensation with learned residual coding; DCVC Li et al. [2021] and DCVC-DC Li et al. [2023] extended this with conditional coding in the feature domain. These methods achieve strong rate– distortion performance at moderate bitrates ( >0.1 bpp) but require resolution-specific recalibration because the Lagrangian weight λ and entropy model must be tuned per resolution and operating point. 
+
+Discrete latent representations for compression and generation. VQ-VAE van den Oord et al. [2017] introduced discrete codebook representations trained via straight-through gradient estimation; VQ-VAE-2 Razavi et al. [2019] extended this to a hierarchical multi-scale structure. Finite Scalar Quantisation (FSQ) Mentzer et al. [2024] simplifies VQ while retaining its benefits. On the generation side, MAGVIT Yu et al. [2023] and MAGVIT-v2 Yu et al. [2024] demonstrated that hierarchical discrete tokenisers are effective substrates for masked video generation. Prior work Kotthapalli and Rekabdar [2026b,a] established MS-VQ-VAE as a competitive discrete video codec at 64 ×64 resolu-tion with ultra-low bitrates (0.04–0.064 bpp); the present work characterises how this architecture scales across resolutions. 
+
+VQ training stability. Codebook collapse is a well-known failure mode in VQ models: encoder outputs concentrate on a subset of entries, leaving the remainder permanently inactive Razavi et al. [2019], Huh et al. [2023]. Exponential Moving Average (EMA) codebook updates decouple codebook 2Table 1: Latent grid configurations across resolutions ( T =32 frames). Parentheses: symbols per clip.                   
+
+> Resolution Levels Top grid Bottom grid
+> 64 ×64 24×8×8(256) 16 ×16 ×16 (4,096)
+> 128 ×128 34×8×8(256) 16 ×32 ×32 (16,384)
+> 256 ×256 32×16 ×16 (512) 8×64 ×64 (32,768)
+
+learning from noisy encoder gradients and are the most robust published stabilisation technique. We show that EMA with dead-code restart is not merely helpful but essential for stable training at 
+
+K ≤ 512 .
+
+Scaling behaviour in neural systems. Scaling laws for language model performance as a function of parameter count and compute are well-established Kaplan et al. [2020]. In neural compression, however, comparatively little work characterises how RD behaviour scales with spatial resolution under a fixed architecture family. Our study fills this gap for discrete latent video codecs. 
+
+## 3 Method 
+
+3.1 Hierarchical MS-VQ-VAE Architecture 
+
+Given a video clip x ∈ [0 , 1] T ×H×W ×3, the encoder transforms it into a hierarchy of spatiotem-poral feature volumes using stacked 3D residual convolutional blocks He et al. [2016] with Group Normalisation Wu and He [2018] and progressive downsampling. 
+
+Two-level hierarchy ( 64 ×64 ). The bottom encoder ( Eb) compresses with stride 2×4×4 (temporal 
+
+× spatial), producing a latent grid of shape (T / 2, H/ 4, W/ 4) with 4,096 symbols per clip at 64 ×64 ,
+
+T =32 . The top encoder ( Et) further compresses by 4×2×2 (temporal × spatial), yielding a coarse grid of 4×8×8 = 256 symbols per clip. 
+
+Three-level hierarchy ( 128 ×128 and 256 ×256 ). To approximately preserve per-level compression ratios as resolution scales, we introduce an intermediate level. Table 1 summarises the latent grid configurations. At each level, quantisation maps encoder output h(ℓ) 
+
+> i
+
+∈ Rd to the nearest codebook entry: 
+
+z(ℓ) 
+
+> i
+
+= arg min  
+
+> k∈[K]
+
+h(ℓ) 
+
+> i
+
+− e(ℓ)
+
+> k
+> 22
+
+, ℓ ∈ { top , mid , bot }. (1) The decoder reconstructs ˆx from the dequantised embeddings using transposed 3D convolutions with top-down skip connections. 
+
+3.2 EMA Codebook Updates and Dead-Code Restart 
+
+Gradient-based VQ commitment losses cause catastrophic codebook collapse at K ≤ 512 , mani-festing as exponentially growing VQ loss within the first epoch. We stabilise training with EMA tracking of encoder statistics: each codebook entry k maintains a cluster count Nk and embedding accumulator mk, updated with decay γ=0 .99 . Any entry with Nk < 1.0 is reinitialised by sampling a random encoder output from the current batch ( dead-code restart ), ensuring full codebook utilisation throughout training. 
+
+3.3 Training Objective 
+
+The autoencoder is optimised with: 
+
+LAE = ∥x − ˆx∥1
+
+| {z }
+
+> pixel fidelity
+
++λVGG LVGG + β X
+
+> ℓ
+
+sg[ h(ℓ)] − e(ℓ) 2, (2) where sg[ ·] is the stop-gradient operator, λVGG =0 .1, and β=0 .25 . The VGG perceptual term Johnson et al. [2016], Simonyan and Zisserman [2014] prevents over-smoothing at the coarse quantisation granularity of small K.33.4 Autoregressive Entropy Priors (Stage B) 
+
+With the autoencoder frozen, we train one autoregressive prior per latent level using masked 3D convolutions, conditioned bottom-up on upsampled higher-level indices. The expected bitrate in bits-per-pixel is: BPP = 1
+
+THW 
+
+X
+
+> ℓ
+
+X
+
+> i
+
+− log 2 p
+
+
+
+z(ℓ) 
+
+> i
+
+| z(ℓ) 
+
+> <i
+
+, up( z(ℓ+1) )
+
+
+
+. (3) This BPP estimate equals the cross-entropy of the prior on test index sequences and corresponds directly to the bitstream size achievable by arithmetic coding. 
+
+3.5 Codebook Size as the Rate-Control Parameter 
+
+Standard learned codecs control their operating point by varying λ in L=D+λR , which requires a differentiable rate signal. For VQ-VAE the arg-min quantisation in Eq. (1) is non-differentiable, making Lagrangian rate control infeasible. We instead use K as a structural rate-control parameter: the maximum information content per symbol is exactly log 2 K bits, giving a hard capacity ceiling of BPP max = Ntot  
+
+> THW
+
+log 2 K, where Ntot is the total number of latent symbols across all levels. Sweeping K ∈ { 128 , 256 , 512 , 1024 } traces four distinct operating points on the RD curve, each fully specialised to its vocabulary. 
+
+## 4 Experimental Setup 
+
+Dataset and preprocessing. We evaluate on UCF101 Soomro et al. [2012], a diverse action recognition dataset. Videos are resized to three spatial resolutions ( 64 ×64 , 128 ×128 , 256 ×256 ) and segmented into non-overlapping 32-frame clips at 16 FPS, stored as pre-decoded float32 tensors. All 12 model variants and all baselines are evaluated on the same 500 held-out test clips, ensuring a controlled cross-resolution comparison. 
+
+Training protocol. Each model is trained from scratch under a uniform two-stage protocol. Stage A (autoencoder): 20 epochs, Adam Kingma and Ba [2015] with lr =2 ×10 −4, effective batch size 8 via gradient accumulation; 50% of training clips per epoch. Stage B (priors): 15 epochs with the autoencoder frozen. Both stages use AMP mixed-precision training. Hyperparameters ( λVGG , β,EMA decay γ) are fixed across all resolutions and K values. 
+
+Metrics. We report BPP (Eq. 3), PSNR, SSIM Wang et al. [2004], and LPIPS Zhang et al. [2018] (VGG backbone; lower is better). At ultra-low bitrates, PSNR correlates poorly with perceived quality; we treat LPIPS as the primary metric .
+
+Traditional codec baselines. H.264 Wiegand et al. [2003] is encoded with libx264 at CRF 
+
+∈ { 28 , 32 , 36 , 40 , 44 , 48 } (-preset medium ). H.265 Sullivan et al. [2012] is encoded with libx265 
+
+at CRF ∈ { 28 , 32 , 36 , 40 , 44 , 48 }. Baseline BPP is computed from actual compressed file size. The same 500 test clips, identical metric implementations, and identical evaluation code are used for all methods. 
+
+Hardware. Experiments at 64 ×64 and 128 ×128 use an NVIDIA RTX 4060 (8 GB). 256 ×256 
+
+experiments use an NVIDIA RTX 5080 (16 GB); identical optimisation schedules and batch normali-sation are maintained across GPUs. 
+
+## 5 Results 
+
+5.1 Rate–Distortion Performance 
+
+Table 2 presents the complete rate–distortion evaluation across all 12 model operating points and traditional codec baselines. Figure 1 shows the corresponding RD curves. 4Table 2: Rate–distortion results on 500 UCF101 test clips per resolution. BPP is the expected bitrate under the learned prior (Eq. 3). ↑ higher is better; LPIPS ↓ lower is better. Bold : best LPIPS per resolution among MS-VQ-VAE variants. 
+
+Method Config BPP PSNR ↑ SSIM ↑ LPIPS ↓
+
+Resolution: 64 × 64 
+
+MS-VQ-VAE K=128 0.0427 25.88 0.8780 0.1546 MS-VQ-VAE K=256 0.0487 26.28 0.8855 0.1386 MS-VQ-VAE K=512 0.0550 26.27 0.8966 0.1287 MS-VQ-VAE K=1024 0.0635 27.14 0.9043 0.1140 
+
+H.264 CRF 36 0.2105 29.52 0.9051 0.1275 H.264 CRF 32 0.2622 31.87 0.9391 0.0830 
+
+Resolution: 128 × 128 
+
+MS-VQ-VAE K=128 0.0507 25.50 0.8302 0.1399 MS-VQ-VAE K=256 0.0614 25.85 0.8431 0.1251 MS-VQ-VAE K=512 0.0710 25.72 0.8393 0.1245 MS-VQ-VAE K=1024 0.0799 25.99 0.8492 0.1154 
+
+H.264 CRF 40 0.0792 26.93 0.8225 0.2388 H.264 CRF 44 0.0607 25.06 0.7525 0.3079 H.264 CRF 48 0.0497 23.14 0.6571 0.3857 
+
+Resolution: 256 × 256 
+
+MS-VQ-VAE K=128 0.0542 26.32 0.8507 0.1436 MS-VQ-VAE K=256 0.0591 26.60 0.8567 0.1352 MS-VQ-VAE K=512 0.0701 26.61 0.8640 0.1309 MS-VQ-VAE K=1024 0.0771 26.65 0.8682 0.1194 
+
+H.264 CRF 36 0.0702 31.46 0.9000 0.1660 H.264 CRF 32 0.1114 33.36 0.9317 0.1254 H.265 CRF 36 0.0580 29.80 0.8870 0.1905 H.265 CRF 40 0.0404 27.83 0.8413 0.2458 0.0 0.1 0.2 0.3      
+
+> Bits per pixel (BPP)
+> 0.06
+> 0.08
+> 0.10
+> 0.12
+> 0.14
+> LPIPS
+> K=128
+> K=256
+> K=512
+> K=1024
+> ultra-low
+> bitrate
+> (a) 64×64
+> MS-VQ-VAE (ours)
+> H.264
+> 0.0 0.1 0.2
+> Bits per pixel (BPP)
+> 0.10
+> 0.15
+> 0.20
+> 0.25
+> 0.30
+> 0.35
+> 0.40
+> K=128
+> K=256 K=512
+> K=1024
+> ultra-low
+> bitrate
+> (b) 128×128
+> MS-VQ-VAE (ours)
+> H.264
+> 0.00 0.05 0.10 0.15
+> Bits per pixel (BPP)
+> 0.10
+> 0.15
+> 0.20
+> 0.25
+> 0.30
+> 0.35
+> K=128
+> K=256 K=512
+> K=1024
+> ultra-low
+> bitrate
+> (c) 256×256
+> MS-VQ-VAE (ours)
+> H.264
+> H.265
+
+Figure 1: Rate–distortion curves (BPP vs. LPIPS, lower is better) at each resolution. Shaded region: ultra-low bitrate regime ( <0.085 bpp). Our models (filled markers, solid lines) operate 3–7 × below the practical floor of H.264 at 64 ×64 and 128 ×128 , and match or slightly exceed H.265’s floor at 
+
+256 ×256 while achieving substantially better perceptual quality. 
+
+At 64 ×64 : K=1024 achieves LPIPS = 0 .114 at 0.064 bpp, outperforming H.264 CRF 36 (LPIPS 
+
+= 0 .128 ) at 3.3× lower bitrate. Every MS-VQ-VAE configuration outperforms H.265 CRF 36 on LPIPS at 5–7.6× lower bitrate (results from prior work Kotthapalli and Rekabdar [2026a]). 
+
+At 128 ×128 : Our model at K=1024 (BPP =0 .080 , LPIPS =0 .115 ) outperforms H.264 CRF 40 ( BPP =0 .079 , LPIPS =0 .239 ) by 52% on LPIPS at matched bitrate. At K=512 (BPP =0 .071 ), the model still beats H.264 CRF 44 (BPP =0 .061 ) by 40% on LPIPS at only 16% more bits. 
+
+At 256 ×256 : Our K=512 ( BPP =0 .070 , LPIPS =0 .131 ) outperforms H.264 CRF 36 ( BPP =0 .070 ,LPIPS =0 .166 ) by 21% at identical bitrate. Against H.265, our K=128 (BPP =0 .054 , LPIPS =0 .144 )5log 128                 
+
+> (K=128)
+> log 256
+> (K=256)
+> log 512
+> (K=512)
+> log 1024
+> (K=1024)
+> log K (codebook bits)
+> 0.115
+> 0.120
+> 0.125
+> 0.130
+> 0.135
+> 0.140
+> 0.145
+> 0.150
+> 0.155
+> LPIPS  (lower = better)
+> Q(K,r) = log 2K+log 2r+
+> =0.0094 (p< 0.001 )
+> =0.0009 (p= 0.68 , n.s.)
+> R2= 0.82
+> (a) Perceptual quality vs codebook capacity
+> Resolution
+> 64×64
+> 128×128
+> 256×256
+> 0.05 0.06 0.07 0.08
+> Bits per pixel (BPP)
+> 0.115
+> 0.120
+> 0.125
+> 0.130
+> 0.135
+> 0.140
+> 0.145
+> 0.150
+> 0.155
+> LPIPS
+> K=128
+> K=256
+> K=512
+> K=1024
+> (b) Cross-resolution operating points
+> Resolution
+> 64×64
+> 128×128
+> 256×256
+
+Figure 2: Left: LPIPS vs. log 2K per resolution. Dashed lines show the log-linear fit 
+
+Q(K, r )= α log 2K+β log 2r+γ. Near-parallel slopes confirm that the K-dependent coefficient α is consistent across resolutions while the resolution offset β is near zero. Right: All 12 operating points in BPP–LPIPS space; grey dotted lines connect same-K points across resolutions, showing small vertical spread. beats H.265 CRF 36 ( BPP =0 .058 , LPIPS =0 .191 ) by 25% at slightly lower bitrate. K=256 matches H.265 CRF 36’s bitrate (0.059 vs. 0.058) while delivering LPIPS =0 .135 —29% better .
+
+PSNR gap is expected. H.264 and H.265 are MSE-optimised; our model is trained with VGG perceptual loss Johnson et al. [2016]. The resulting PSNR deficit (4–8 dB relative to H.264 at matched BPP) reflects perceptual-codec behaviour: the decoder synthesises semantically coherent, visually sharp reconstructions rather than pixel-accurate ones. The LPIPS crossover confirms that this trade-off is perceptually favourable Mentzer et al. [2020]. 
+
+5.2 Empirical Scaling Law: Codebook Capacity Dominates over Resolution 
+
+We fit a log-linear model to the 12 observed LPIPS values: 
+
+Q(K, r ) = α log 2K + β log 2r + γ, (4) where r ∈ { 64 , 128 , 256 } is the spatial side length. Ordinary least squares with n=12 , p=3 yields: Coefficient Estimate Std. error t-stat p-value 
+
+α (log 2K) −0.0094 0.0014 −6.55 < 0.001 *** 
+
+β (log 2r) −0.0009 0.0020 −0.43 0.68 
+
+γ (intercept) +0 .2168 — — —
+
+R2=0 .82 . The coefficient α is highly significant; β is indistinguishable from zero at any conventional significance level. Halving K (one bit less capacity) worsens LPIPS by 0.0094 , whereas doubling resolution (one bit more) improves LPIPS by only 0.0009 —a 10.4 × difference in per-unit influence. Figure 2 (left) shows the near-parallel LPIPS-vs-log 2K curves across resolutions: the slope is consistent but the intercepts differ by the small β log 2r term. Figure 2 (right) confirms that operating points at the same K cluster closely in LPIPS regardless of resolution. 
+
+5.3 Entropy Efficiency Improves with Resolution 
+
+We define entropy efficiency as η = H(z)/ log 2 K, where H(z) is the empirical Shannon entropy of the index distribution over the test set. η = 1 implies perfectly uniform code usage (no room for prior compression); η → 0 implies collapse. Table 3 and Figure 3 show that bottom-level entropy efficiency is stable or improves with resolution. At 64 ×64 the bottom codebook achieves η ≈ 84 –87%. At 256 ×256 it reaches 92–94%, with mid-level efficiency similarly high (94–97%). This indicates that larger spatial grids provide richer 6128 256 512 1024      
+
+> log K (codebook bits)
+> 60
+> 65
+> 70
+> 75
+> 80
+> 85
+> 90
+> 95
+> 100
+> Entropy efficiency  (%)
+> (a) Bottom-level entropy efficiency vs K
+> Resolution
+> 64×64
+> 128×128
+> 256×256
+> Top Mid Bottom
+> Hierarchy level
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> Entropy efficiency  (%)
+> 69
+> 86
+> 80
+> 85 86
+> 69
+> 95 93
+> Top collapse
+> at K=256
+> (b) Entropy efficiency by level (K=512)
+> Resolution
+> 64×64
+> 128×128
+> 256×256
+
+Figure 3: Left: Bottom-level entropy efficiency η=H(z)/ log 2K across codebook sizes, grouped by resolution. Right: Per-level entropy efficiency at K=512 for all three resolutions. The anomalous bar for the top level at 256 ×256 reflects the K=256 top-codebook collapse discussed in Section 5.4. Table 3: Entropy efficiency η (%) by hierarchy level, resolution, and K. Mid level is absent at 64 ×64 
+
+(two-level architecture). †: top-level collapse at 256 ×256 , K=256 (see Section 5.4). 
+
+Resolution Level K=128 K=256 K=512 K=1024 64 ×64 Top 75.9 72.7 69.0 66.0 Bottom 87.2 86.7 85.7 84.2 
+
+128 ×128 
+
+Top 84.6 76.5 79.7 71.0 Mid 85.2 86.5 85.4 85.6 Bottom 87.2 86.7 85.7 84.2 
+
+256 ×256 
+
+Top 95.9 29.2 † 69.4 81.5 Mid 94.5 96.5 95.1 95.0 Bottom 94.0 92.0 93.2 93.8 
+
+statistical context that the autoregressive prior exploits more effectively, consistent with the notion that natural video exhibits multi-scale spatial redundancy that scales with grid size. 
+
+5.4 Codebook Utilisation and the K=256 Top-Level Anomaly 
+
+Figure 4 shows codebook utilisation at 128 ×128 and 256 ×256 . Mid and bottom levels achieve near-complete utilisation across all K at both resolutions, confirming that EMA with dead-code restart effectively prevents collapse. At 128 ×128 , the top level is fully saturated for K ≤ 256 (only 256 symbols per clip) and reaches 47.9% at K=1024 , which is structurally expected: with 256 symbols per clip a 1,024-entry vocabulary is over-specified. 
+
+The K=256 top-level collapse at 256 ×256 is notable: only 18 of 256 entries are active (7.0% utilisation), yielding entropy efficiency of 29.2%. At this resolution the top grid has 512 symbols per clip, so in principle all 256 entries could be saturated. The collapse indicates that the K=256 top codebook cannot represent the semantic diversity of 256 ×256 content; the encoder concentrates on a small subset of global patterns. Importantly, overall perceptual quality at K=256 (LPIPS = 0.135) remains coherent and follows the log-linear scaling trend —mid and bottom levels compensate for the top-level degradation. This suggests that the bottom and mid levels carry the perceptual load while the top level provides coarse structural priming. Future work should explore K-per-level tuning ( e.g. ,
+
+Ktop =64 , Kmid/bot =1024 ) at 256 ×256 to address this. 
+
+## 6 Discussion 
+
+Why does K dominate over resolution? The discrete codebook acts as a fixed information bottleneck: regardless of spatial resolution, the encoder must represent video content using at most 7128 256 512 1024                    
+
+> Codebook size K
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> Active entries (% of K)
+> 100% 100% 97%
+> 48%
+> 100% 100% 98% 99% 100% 100% 100% 100%
+> (a) 128×128 3-level
+> Level
+> Top
+> Mid
+> Bottom
+> 128 256 512 1024
+> Codebook size K
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> Active entries (% of K)
+> 100%
+> 7%
+> 61%
+> 68%
+> 100% 100% 100% 100% 100% 100% 100% 100%
+> (b) 256×256 3-level
+> Level
+> Top
+> Mid
+> Bottom
+
+Figure 4: Codebook utilisation (fraction of K entries active per clip) at 128 ×128 (left) and 256 ×256 
+
+(right). Bottom and mid levels maintain 100% utilisation across all K. The top level at 256 ×256 ,
+
+K=256 collapses to 7% utilisation, indicating that the top-level vocabulary of 256 is insufficient to cover the semantic diversity of 256 ×256 content. 
+
+log 2 K bits per symbol. This hard architectural constraint dominates the achievable perceptual quality. In contrast, changing spatial resolution primarily alters the number of symbols in the latent grid rather than the capacity per symbol . As entropy efficiency remains stable or improves with resolution, the additional symbols at higher resolution are used efficiently—they do not dilute the per-symbol informativeness. 
+
+Implications for multi-resolution codec deployment. In continuous-latent codecs, changing resolution requires re-optimising λ, the entropy model, and sometimes the architecture Ballé et al. [2018], Li et al. [2021]. Our results suggest that a hierarchical discrete codec trained at one resolution can be redeployed at another with predictable perceptual behaviour, requiring only K to be adjusted to hit a target quality operating point. This property is potentially valuable for adaptive video streaming, where content is delivered at multiple spatial resolutions depending on network conditions. 
+
+Implications for scalable video tokenisation. Modern video generation systems ( e.g. , MAGVIT Yu et al. [2023], VideoPoet Kondratyuk et al. [2023]) rely on discrete tokenisers to convert video into compact symbol sequences for downstream autoregressive or diffusion-based models. Our finding that entropy efficiency improves with resolution suggests that discrete tokenisers trained at lower resolutions may generalise more effectively to higher-resolution content than previously assumed, since the statistical structure captured by the codebook appears resolution-stable. 
+
+Limitations. 
+
+1. Single dataset. All experiments use UCF101 (action recognition). It remains open whether the scaling behaviour holds for scene-level or synthetic video content. 2. Limited resolution range. The study covers 64 ×64 to 256 ×256 . Higher resolutions (720p, 1080p) may alter the scaling coefficients. 3. No comparison with learned codecs. We compare against H.264 and H.265. A rigorous evaluation against DCVC-DC Li et al. [2023] or VVC at matched resolution and bitrate remains future work. 4. Autoregressive prior decoding latency. Sequential prior sampling requires O(Ntot ) forward passes per clip. At 256 ×256 , Ntot ≈ 37 ,000 , making real-time decoding infeasible on current hardware. Masked parallel decoding Yu et al. [2023] is a promising mitigation. 
+
+## 7 Conclusion 
+
+We presented a controlled empirical scaling study of hierarchical MS-VQ-VAE video compression across 12 operating points spanning three spatial resolutions ( 64 ×64 , 128 ×128 , 256 ×256 ) and 8four codebook sizes ( K ∈ { 128 , 256 , 512 , 1024 }). Our central finding is that perceptual quality (LPIPS) depends strongly and significantly on codebook capacity K (α=−0.0094 , p< 0.001 ) while exhibiting negligible and statistically insignificant dependence on spatial resolution ( β=−0.0009 ,
+
+p=0 .68 ). Codebook capacity is approximately 10 × more influential than spatial resolution per log-unit increase. Entropy efficiency remains stable or improves with resolution (reaching 92–94% at 256 ×256 ), and our models outperform H.264 by 25–52% on LPIPS at 128 ×128 and H.265 by 21–37% at 256 ×256 .These results suggest that hierarchical discrete latent representations provide a more resolution-stable 
+
+compression framework than continuous-latent alternatives, and that the same architecture can be deployed across resolutions with predictable perceptual behaviour by selecting K as the primary quality control variable. We hope this characterisation guides both the design of scalable neural video codecs and the development of resolution-transferable discrete tokenisers for generative video models. 
+
+## Acknowledgments and Disclosure of Funding 
+
+Omitted for double-blind review. 
+
+## References 
+
+J. Ballé, D. Minnen, S. Singh, S. J. Hwang, and N. Johnston. Variational image compression with a scale hyperprior. In International Conference on Learning Representations , 2018. J. Ballé, P. A. Chou, D. Minnen, S. Singh, N. Johnston, E. Agustsson, S. J. Hwang, and G. Toderici. Nonlinear transform coding. IEEE Journal on Selected Topics in Signal Processing , 15(2):339–353, 2021. K. He, X. Zhang, S. Ren, and J. Sun. Deep residual learning for image recognition. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2016. M. Huh, B. Cheung, P. Agrawal, and P. Isola. Commitment issues: Robust training of neural discrete representations. arXiv preprint arXiv:2308.04746 , 2023. J. Johnson, A. Alahi, and L. Fei-Fei. Perceptual losses for real-time style transfer and super-resolution. In Proceedings of the European Conference on Computer Vision , 2016. J. Kaplan, S. McCandlish, T. Henighan, et al. Scaling laws for neural language models. arXiv preprint arXiv:2001.08361 , 2020. D. P. Kingma and J. Ba. Adam: A method for stochastic optimization. In International Conference on Learning Representations , 2015. D. Kondratyuk et al. VideoPoet: A large language model for zero-shot video generation. arXiv preprint arXiv:2312.14125 , 2023. M. Kotthapalli and B. Rekabdar. Entropy-coded MS-VQ-VAE with learned priors for ultra-low bitrate video compression. arXiv preprint arXiv:2607.02562 , 2026a. M. Kotthapalli and B. Rekabdar. Hierarchical vector-quantized latents for perceptual low-resolution video compression. In Advances in Visual Computing (ISVC 2025) , volume 16397 of Lecture Notes in Computer Science . Springer, 2026b. doi: 10.1007/978-3-032-14495-9_25. Also available as https://arxiv.org/abs/2512.24547 .J. Li, B. Li, and Y. Lu. Deep contextual video compression. In Advances in Neural Information Processing Systems , volume 34, 2021. J. Li, B. Li, and Y. Lu. Neural video compression with diverse contexts. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023. G. Lu, W. Zhang, W. Ouyang, L. Chen, Z. Gao, and D. Xu. DVC: An end-to-end deep video compression framework. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2019. 9F. Mentzer, G. D. Toderici, M. Tschannen, and E. Agustsson. High-fidelity generative image compression. In Advances in Neural Information Processing Systems , volume 33, 2020. F. Mentzer, D. Minnen, E. Agustsson, and M. Tschannen. Finite scalar quantization: VQ-VAE made simple. In International Conference on Learning Representations , 2024. D. Minnen, J. Ballé, and G. D. Toderici. Joint autoregressive and hierarchical priors for learned image compression. In Advances in Neural Information Processing Systems , volume 31, 2018. A. Razavi, A. van den Oord, and O. Vinyals. Generating diverse high-fidelity images with VQ-VAE-2. In Advances in Neural Information Processing Systems , volume 32, 2019. K. Simonyan and A. Zisserman. Very deep convolutional networks for large-scale image recognition. 
+
+arXiv preprint arXiv:1409.1556 , 2014. K. Soomro, A. R. Zamir, and M. Shah. UCF101: A dataset of 101 human actions classes from videos in the wild. Technical Report CRCV-TR-12-01, University of Central Florida, 2012. G. J. Sullivan, J.-R. Ohm, W.-J. Han, and T. Wiegand. Overview of the high efficiency video coding (HEVC) standard. IEEE Transactions on Circuits and Systems for Video Technology , 22(12): 1649–1668, 2012. A. van den Oord, O. Vinyals, and K. Kavukcuoglu. Neural discrete representation learning. In 
+
+Advances in Neural Information Processing Systems , volume 30, 2017. Z. Wang, A. C. Bovik, H. R. Sheikh, and E. P. Simoncelli. Image quality assessment: From error visibility to structural similarity. IEEE Transactions on Image Processing , 13(4):600–612, 2004. T. Wiegand, G. J. Sullivan, G. Bjontegaard, and A. Luthra. Overview of the H.264/AVC video coding standard. IEEE Transactions on Circuits and Systems for Video Technology , 13(7):560–576, 2003. Y. Wu and K. He. Group normalization. In Proceedings of the European Conference on Computer Vision , 2018. L. Yu, Y. Cheng, K. Sohn, J. Lezama, H. Zhang, H. Chang, A. G. Hauptmann, M.-H. Yang, Y. Hao, I. Essa, and L. Jiang. MAGVIT: Masked generative video transformer. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023. L. Yu, J. Lezama, N. B. Gundavarapu, L. Versari, K. Sohn, D. Minnen, Y. Cheng, A. Gupta, X. Gu, A. G. Hauptmann, B. Gong, M.-H. Yang, I. Essa, D. Ross, and L. Jiang. Language model beats diffusion—tokenizer is key to visual generation. In International Conference on Learning Representations , 2024. R. Zhang, P. Isola, A. A. Efros, E. Shechtman, and O. Wang. The unreasonable effectiveness of deep features as a perceptual metric. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2018. 
+
+## A Architecture Hyperparameters B Bitrate Decomposition by Level 
+
+The bottom latent level dominates total bitrate at all resolutions, as expected from the much larger symbol grid size. At 256 ×256 with K=1024 : bottom contributes ≈87% of total bits, mid ≈12%, and top <2%. This distribution is consistent across K values and suggests that future work on accelerating the autoregressive prior should prioritise the bottom level. 
+
+## C Qualitative Examples 
+
+Qualitative frame comparisons at 128 ×128 and 256 ×256 for K ∈ { 128 , 1024 } alongside H.264 CRF 40 and H.264 CRF 36 respectively are provided in the supplementary material. Reconstructions at K=128 show texture variation consistent with perceptual-codec hallucination (not blur), while 
+
+K=1024 recovers fine spatial detail with sharper edges and more faithful motion boundaries. 10 Table 4: Model hyperparameters shared across all resolutions and K values. 
+
+Parameter Value Note Top embedding dim 256 Mid embedding dim 192 3-level only Bottom embedding dim 128 EMA decay γ 0.99 Dead-code threshold Nk < 1.0 Per batch 
+
+λVGG 0.10 VGG perceptual weight 
+
+β 0.25 VQ commitment weight Stage A lr 2 × 10 −4 Cosine annealing Stage B lr 2 × 10 −4 Cosine annealing Stage A epochs 20 Stage B epochs 15 Effective batch size 8 Via gradient accumulation 
+
+11

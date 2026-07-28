@@ -1,0 +1,69 @@
+{
+  "label": "2026-07-28",
+  "date": "2026-07-28",
+  "generated_at": "2026-07-28T21:35:05",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/28/2607.24241v1-filmbench-a-film-grade-benchmark-for-cinematic-video-generation",
+      "section": "deep",
+      "title_en": "FilmBench: A Film-Grade Benchmark for Cinematic Video Generation",
+      "authors": "Shengyi Wang, Niantong Li, Guangzheng Hu, Hong Qi, Fei Ding, Weixu Qiao, Jinlin Wang, Xiaotong Lv, Peng Han, Zimeng Li, Fanshu Ding, Yushu Wang, Han Wu, Jingjing Chen, Chongxiao Wang, Yanhao Wu, Chenglong Huang, Xiaoqian Zhu, Jie Tian, Hua Li, Jingjing Fan, Mingshuang Tang, Zhong Li, Hengxia Qiang, Weibin Chen, Jinyang Zhen, Bing Zhao, Lin Qu, Jing Li, Hu Wei",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24241v1",
+      "score": "8.0",
+      "evidence": "提出FilmBench基准用于电影级视频生成评估",
+      "tldr": "现有视频生成基准多使用网络来源提示词和简单评估指标，无法衡量电影级生成质量。FilmBench与北京电影学院及影视工作室合作，从获奖影片反推多镜头提示词（90%以上为多镜头），构建基于电影语言的三层评估体系（3轴12组件35+指标），并开发自动评估代理FilmOps。在9个T2V和7个R2V模型上的测试表明，该评估器与人类排序的Spearman相关系数达0.95以上，但模型得分远低于以往基准，尤其在动态美学和多镜头场景中性能明显下降。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Progress in video generation keeps narrowing the visual gap between AI-generated and professionally produced footage, yet most benchmarks still draw prompts from web sources or LLM templates and score them with untrained, generic multimodal models. More fundamentally, their evaluation taxonomies remain rudimentary (overall visual quality, coarse text alignment and temporal smoothness) rather than the professional Cinematic Language criteria by which films are actually made and judged, so they assess basic video plausibility rather than film-grade craft. We introduce FilmBench, a text-to-video (T2V) and reference-to-video (R2V) benchmark grounded in the professional Cinematic Language of the film- academy tradition and co-developed with directors and faculty from the Beijing Film Academy and the Hujing Digital Media & Entertainment Group film studio. It rests on three choices. First, prompts are reverse-engineered from clips of award-winning films spanning 20 cinematic genres and chosen by professional directors, so every prompt is anchored to a verified live-action reference; the prompts follow real shot lists, and most script multiple shots (1,056 of the 1,169 prompts are multi-shot), unlike prior single-clip benchmarks. Second, evaluation follows a three-level Cinematic taxonomy of 3 axes, 12 components and 35 (T2V) +3 (R2V-only) sub-metrics. Third, we develop an in-house expert-grade automatic evaluation agent and open-source its core suite of Cinematic Language operators (FilmOps). Benchmarking leading video generation models (9 for T2V, 7 for R2V), the evaluator reproduces the human model ranking at model-level Spearman \\r{ho} = 0.95 (T2V) and 0.96 (R2V). Scores fall well below prior web-style benchmarks, with two consistent gaps in dynamic aesthetics and a marked single- to multi-shot performance drop that widens for weaker models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/28/2607.22959v1-halleluai-a-hallucination-aware-ai-system-for-ultra-realistic-image-to-video-generation-at-scale",
+      "section": "quick",
+      "title_en": "HALLELUAI: A Hallucination-Aware AI System for Ultra-Realistic Image-to-Video Generation at Scale",
+      "authors": "Aniket Sakpal, Yang Jiang, Rouzbeh Davoudi, Shayan Hassantabar, Mani Najmabadi",
+      "date": "2026-07-25",
+      "pdf": "https://arxiv.org/pdf/2607.22959v1",
+      "score": "7.0",
+      "evidence": "视频审核模块用于质量评估",
+      "tldr": "图像到视频生成面临幻觉和质量控制瓶颈。HALLELUAI系统集成视频审核与智能体再生模块，评估美学、运动保真度和幻觉风险，通过提示优化等策略迭代修复。专家评估验证其生成超真实、生产级视频的能力，实现规模化应用。该系统推动可信AI视频生成，保障视觉真实性和品牌安全。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "AI-generated video is increasingly used across marketing, product storytelling, and creative workflows, yet automated; high-precision quality control remains a major constraint to scaling production. We present HALLELUAI, an end-to-end system that moderates and regenerates image-to-video outputs to meet expert-level creative standards and deliver ultra-realistic videos with consistent end-user quality of experience (QoE) at scale. The system integrates a video moderation module that evaluates frame-level aesthetics, temporal motion fidelity, and fine-grained hallucination risks relative to the source image, with an agentic regeneration module that iteratively fixes failures through prompt refinement, controlled camera adjustments, targeted model or image switching, and structured retry strategies. The moderation logic is aligned with domain-specific creative guidelines and produces granular, machine-actionable feedback that directly drives regeneration. In human-in-the-loop evaluations with creative experts, HALLELUAI shows strong alignment and reliably outputs ultra-realistic, production-grade videos suitable for product and marketing placements at scale. This framework advances trustworthy AI generated video content by enforcing visual realism, brand safety, and strict input-image fidelity while enabling image-to-video generation at scale.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/28/2607.23366v1-codebook-capacity-governs-perceptual-quality-across-resolutions-in-hierarchical-discrete-video-compression",
+      "section": "quick",
+      "title_en": "Codebook Capacity Governs Perceptual Quality Across Resolutions in Hierarchical Discrete Video Compression",
+      "authors": "Manikanta Kotthapalli, Banafsheh Rekabdar",
+      "date": "2026-07-25",
+      "pdf": "https://arxiv.org/pdf/2607.23366v1",
+      "score": "7.0",
+      "evidence": "使用LPIPS感知质量指标评估视频压缩质量，可迁移至生成视频质量评估",
+      "tldr": "针对分层离散视频压缩，通过控制实验研究码本容量与空间分辨率对感知质量的相对重要性。发现感知质量LPIPS主要取决于码本容量，其影响约为分辨率的10倍，而分辨率影响不显著。熵效率随分辨率提高而提升。该发现表明码本大小是设计离散视频编码器的关键变量，有助于简化多分辨率部署和可扩展离散令牌生成器设计。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Learned video codecs based on continuous latent representations typically require resolution-specific retraining or rate-distortion (RD) recalibration when scaling to new spatial resolutions, because entropy models and Lagrangian weights are tightly coupled to the operating point. We investigate whether hierarchical discrete latent codecs exhibit the same sensitivity. Using a controlled empirical study of MS-VQ-VAE video compression across codebook sizes $K \\in \\{128,256,512,1024\\}$ and resolutions $64\\times64$, $128\\times128$, and $256\\times256$ on UCF101, we show that perceptual quality (LPIPS) depends strongly on codebook capacity but only negligibly on spatial resolution. Fitting a log-linear model $Q(K,r) = α\\log_2 K + β\\log_2 r + γ$ to all 12 operating points yields $α=-0.0094$ ($t=-6.6$, $p<0.001$) and $β=-0.0009$ ($t=-0.43$, $p=0.68$, not significant), with $R^2=0.82$. Codebook capacity is therefore roughly $10\\times$ more influential than spatial resolution per log-unit increase. In parallel, bottom-level entropy efficiency $η=H(z)/\\log_2 K$ remains stable or improves with resolution (84-87% at $64\\times64$; 92-94% at $256\\times256$), confirming that larger spatial grids are utilized more efficiently rather than less. Across all resolutions and codebook sizes, our models outperform H.264 on LPIPS at matched or lower bitrate, with gains of 25-52% at $128\\times128$ and 21-37% over H.265 at $256\\times256$. These findings suggest that codebook size $K$, not spatial resolution, is the dominant design variable governing perceptual compression quality in hierarchical discrete video codecs -- a property that may simplify multi-resolution deployment and inform the design of scalable discrete tokenizers for generative video models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/28/2607.23159v1-cachedsearch-training-free-cached-exploration-for-test-time-search-in-video-diffusion",
+      "section": "quick",
+      "title_en": "CachedSearch: Training-Free Cached Exploration for Test-Time Search in Video Diffusion",
+      "authors": "Shreshth Saini, Neil Birkbeck, Yilin Wang, Balu Adsumilli, Alan C. Bovik",
+      "date": "2026-07-25",
+      "pdf": "https://arxiv.org/pdf/2607.23159v1",
+      "score": "6.0",
+      "evidence": "使用ImageReward和VBench评估生成视频质量，与评价需求相关",
+      "tldr": "视频扩散模型的测试时搜索通过多候选择优提升性能，但每个候选需要完整去噪，导致成本高昂。本文提出CachedSearch，采用训练无关的缓存加速每个候选生成，仅对最终获胜候选重新完整计算以恢复精度。在Wan、LTX等多个模型系列上，缓存带来约2倍加速，而搜索增益保留94.7%，成本降低至63%。该方法与验证器、搜索算法正交，是即插即用的测试时缩放倍增器。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Test-time search lets small video diffusion models rival larger ones, but costs 2-10x more. All candidates are fully denoised, although most are discarded. Training-free caching makes each rollout 2-3x faster at near-lossless quality. Composition is safe only if lossy caching preserves verifier rankings. We present the first study of whether caching corrupts candidate ranking in video test-time search. On Wan2.1-T2V-1.3B with an adaptive caching wrapper (~2x per-candidate speedup), ImageReward scores seed-matched cached and full rollouts. Median per-prompt Spearman rank correlation is 0.905, with 72% top-1 agreement on the VBench suite. VBench-2.0 replicates this result on a harder suite. Recomputing the cached winner at full compute retains 90-94% of the full-search gain. Errors cluster among near-tied candidates, making corruption self-limiting. This finding leads to CachedSearch. It explores every candidate with aggressive caching, then re-generates only the winner at full compute. At N=8, it captures 94.7% of best-of-N's gain at 63% of the cost. Capture rises with width. At matched budget, it searches twice as wide for 38% more gain. The result holds from 1.3B-14B across six models and four families: Wan, LTX, CogVideoX, and Hunyuan. Wan2.1-14B matches the 1.3B model's fidelity. Mid-trajectory pruning multiplies the exploration saving to 3.11x at 88.6% capture. Ports to other model families require recalibrating a single parameter, showing that fidelity tracks architecture rather than parameter count. CachedSearch is training-free, verifier-agnostic, and orthogonal to the search algorithm, making it a plug-in multiplier for test-time scaling.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

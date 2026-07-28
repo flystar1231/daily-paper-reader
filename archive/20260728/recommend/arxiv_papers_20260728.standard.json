@@ -1,0 +1,201 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-28T21:32:22.708230+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.24241v1",
+      "source": "arxiv",
+      "title": "FilmBench: A Film-Grade Benchmark for Cinematic Video Generation",
+      "abstract": "Progress in video generation keeps narrowing the visual gap between AI-generated and professionally produced footage, yet most benchmarks still draw prompts from web sources or LLM templates and score them with untrained, generic multimodal models. More fundamentally, their evaluation taxonomies remain rudimentary (overall visual quality, coarse text alignment and temporal smoothness) rather than the professional Cinematic Language criteria by which films are actually made and judged, so they assess basic video plausibility rather than film-grade craft. We introduce FilmBench, a text-to-video (T2V) and reference-to-video (R2V) benchmark grounded in the professional Cinematic Language of the film- academy tradition and co-developed with directors and faculty from the Beijing Film Academy and the Hujing Digital Media & Entertainment Group film studio. It rests on three choices. First, prompts are reverse-engineered from clips of award-winning films spanning 20 cinematic genres and chosen by professional directors, so every prompt is anchored to a verified live-action reference; the prompts follow real shot lists, and most script multiple shots (1,056 of the 1,169 prompts are multi-shot), unlike prior single-clip benchmarks. Second, evaluation follows a three-level Cinematic taxonomy of 3 axes, 12 components and 35 (T2V) +3 (R2V-only) sub-metrics. Third, we develop an in-house expert-grade automatic evaluation agent and open-source its core suite of Cinematic Language operators (FilmOps). Benchmarking leading video generation models (9 for T2V, 7 for R2V), the evaluator reproduces the human model ranking at model-level Spearman \\r{ho} = 0.95 (T2V) and 0.96 (R2V). Scores fall well below prior web-style benchmarks, with two consistent gaps in dynamic aesthetics and a marked single- to multi-shot performance drop that widens for weaker models.",
+      "authors": [
+        "Shengyi Wang",
+        "Niantong Li",
+        "Guangzheng Hu",
+        "Hong Qi",
+        "Fei Ding",
+        "Weixu Qiao",
+        "Jinlin Wang",
+        "Xiaotong Lv",
+        "Peng Han",
+        "Zimeng Li",
+        "Fanshu Ding",
+        "Yushu Wang",
+        "Han Wu",
+        "Jingjing Chen",
+        "Chongxiao Wang",
+        "Yanhao Wu",
+        "Chenglong Huang",
+        "Xiaoqian Zhu",
+        "Jie Tian",
+        "Hua Li",
+        "Jingjing Fan",
+        "Mingshuang Tang",
+        "Zhong Li",
+        "Hengxia Qiang",
+        "Weibin Chen",
+        "Jinyang Zhen",
+        "Bing Zhao",
+        "Lin Qu",
+        "Jing Li",
+        "Hu Wei"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-27T10:20:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.24241v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "introduces FilmBench benchmark for cinematic video generation evaluation",
+      "llm_evidence_cn": "提出FilmBench基准用于电影级视频生成评估",
+      "llm_evidence": "提出FilmBench基准用于电影级视频生成评估",
+      "canonical_evidence": "提出FilmBench基准用于电影级视频生成评估",
+      "llm_tldr_en": "FilmBench is a film-grade benchmark for text-to-video and reference-to-video generation, using professional Cinematic Language criteria co-developed with directors and faculty, addressing limitations of current rudimentary evaluation taxonomies.",
+      "llm_tldr_cn": "当前视频生成基准多采用粗略的评估分类，缺乏专业电影语言标准。本文提出FilmBench基准，基于电影学院传统的电影语言标准，与导演和教师共同开发，用于文本到视频和参考到视频任务。该基准涵盖专业视觉质量、时序连贯性和电影编排等维度，推动生成视频评估向专业级发展，填补了现有评价指标的空白。",
+      "llm_tldr": "当前视频生成基准多采用粗略的评估分类，缺乏专业电影语言标准。本文提出FilmBench基准，基于电影学院传统的电影语言标准，与导演和教师共同开发，用于文本到视频和参考到视频任务。该基准涵盖专业视觉质量、时序连贯性和电影编排等维度，推动生成视频评估向专业级发展，填补了现有评价指标的空白。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.22959v1",
+      "source": "arxiv",
+      "title": "HALLELUAI: A Hallucination-Aware AI System for Ultra-Realistic Image-to-Video Generation at Scale",
+      "abstract": "AI-generated video is increasingly used across marketing, product storytelling, and creative workflows, yet automated; high-precision quality control remains a major constraint to scaling production. We present HALLELUAI, an end-to-end system that moderates and regenerates image-to-video outputs to meet expert-level creative standards and deliver ultra-realistic videos with consistent end-user quality of experience (QoE) at scale. The system integrates a video moderation module that evaluates frame-level aesthetics, temporal motion fidelity, and fine-grained hallucination risks relative to the source image, with an agentic regeneration module that iteratively fixes failures through prompt refinement, controlled camera adjustments, targeted model or image switching, and structured retry strategies. The moderation logic is aligned with domain-specific creative guidelines and produces granular, machine-actionable feedback that directly drives regeneration. In human-in-the-loop evaluations with creative experts, HALLELUAI shows strong alignment and reliably outputs ultra-realistic, production-grade videos suitable for product and marketing placements at scale. This framework advances trustworthy AI generated video content by enforcing visual realism, brand safety, and strict input-image fidelity while enabling image-to-video generation at scale.",
+      "authors": [
+        "Aniket Sakpal",
+        "Yang Jiang",
+        "Rouzbeh Davoudi",
+        "Shayan Hassantabar",
+        "Mani Najmabadi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-25T00:02:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.22959v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "video moderation module for quality evaluation",
+      "llm_evidence_cn": "视频审核模块用于质量评估",
+      "llm_evidence": "视频审核模块用于质量评估",
+      "canonical_evidence": "视频审核模块用于质量评估",
+      "llm_tldr_en": "HALLELUAI presents a hallucination-aware AI system for image-to-video generation, integrating a video moderation module that evaluates frame-level aesthetics, temporal motion fidelity, and hallucination risks for quality control at scale.",
+      "llm_tldr_cn": "HALLELUAI 提出了一种面向超逼真图像到视频大规模生成的幻觉感知AI系统。该系统包含一个视频审核模块，能够评估帧级美学、时间运动保真度和幻觉风险，从而实现可扩展的质量控制。实验表明，该系统能够自动检测并修复生成视频中的缺陷，提升用户体验。该工作为生成视频的质量评估提供了实用框架。",
+      "llm_tldr": "HALLELUAI 提出了一种面向超逼真图像到视频大规模生成的幻觉感知AI系统。该系统包含一个视频审核模块，能够评估帧级美学、时间运动保真度和幻觉风险，从而实现可扩展的质量控制。实验表明，该系统能够自动检测并修复生成视频中的缺陷，提升用户体验。该工作为生成视频的质量评估提供了实用框架。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.23159v1",
+      "source": "arxiv",
+      "title": "CachedSearch: Training-Free Cached Exploration for Test-Time Search in Video Diffusion",
+      "abstract": "Test-time search lets small video diffusion models rival larger ones, but costs 2-10x more. All candidates are fully denoised, although most are discarded. Training-free caching makes each rollout 2-3x faster at near-lossless quality. Composition is safe only if lossy caching preserves verifier rankings. We present the first study of whether caching corrupts candidate ranking in video test-time search. On Wan2.1-T2V-1.3B with an adaptive caching wrapper (~2x per-candidate speedup), ImageReward scores seed-matched cached and full rollouts. Median per-prompt Spearman rank correlation is 0.905, with 72% top-1 agreement on the VBench suite. VBench-2.0 replicates this result on a harder suite. Recomputing the cached winner at full compute retains 90-94% of the full-search gain. Errors cluster among near-tied candidates, making corruption self-limiting. This finding leads to CachedSearch. It explores every candidate with aggressive caching, then re-generates only the winner at full compute. At N=8, it captures 94.7% of best-of-N's gain at 63% of the cost. Capture rises with width. At matched budget, it searches twice as wide for 38% more gain. The result holds from 1.3B-14B across six models and four families: Wan, LTX, CogVideoX, and Hunyuan. Wan2.1-14B matches the 1.3B model's fidelity. Mid-trajectory pruning multiplies the exploration saving to 3.11x at 88.6% capture. Ports to other model families require recalibrating a single parameter, showing that fidelity tracks architecture rather than parameter count. CachedSearch is training-free, verifier-agnostic, and orthogonal to the search algorithm, making it a plug-in multiplier for test-time scaling.",
+      "authors": [
+        "Shreshth Saini",
+        "Neil Birkbeck",
+        "Yilin Wang",
+        "Balu Adsumilli",
+        "Alan C. Bovik"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV",
+        "cs.MM"
+      ],
+      "published": "2026-07-25T11:30:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.23159v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "studies candidate ranking using ImageReward and VBench, relevant to evaluating generated video quality",
+      "llm_evidence_cn": "使用ImageReward和VBench评估生成视频质量，与评价需求相关",
+      "llm_evidence": "使用ImageReward和VBench评估生成视频质量，与评价需求相关",
+      "canonical_evidence": "使用ImageReward和VBench评估生成视频质量，与评价需求相关",
+      "llm_tldr_en": "CachedSearch investigates whether caching corrupts candidate ranking in video test-time search, validating that adaptive caching preserves verifier rankings with high Spearman correlation using ImageReward and VBench, offering efficient evaluation insights.",
+      "llm_tldr_cn": "本论文研究视频扩散模型测试时搜索中缓存是否破坏候选排序问题。提出训练无关缓存机制，在Wan2.1-T2V-1.3B上实现约2倍加速且质量几乎无损。通过ImageReward和VBench套件验证，缓存与完整生成排名的斯皮尔曼相关系数中位数达0.905，top-1一致率72%。该工作为高效生成视频质量评估提供了方法支持，有助于降低评估成本。",
+      "llm_tldr": "本论文研究视频扩散模型测试时搜索中缓存是否破坏候选排序问题。提出训练无关缓存机制，在Wan2.1-T2V-1.3B上实现约2倍加速且质量几乎无损。通过ImageReward和VBench套件验证，缓存与完整生成排名的斯皮尔曼相关系数中位数达0.905，top-1一致率72%。该工作为高效生成视频质量评估提供了方法支持，有助于降低评估成本。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23366v1",
+      "source": "arxiv",
+      "title": "Codebook Capacity Governs Perceptual Quality Across Resolutions in Hierarchical Discrete Video Compression",
+      "abstract": "Learned video codecs based on continuous latent representations typically require resolution-specific retraining or rate-distortion (RD) recalibration when scaling to new spatial resolutions, because entropy models and Lagrangian weights are tightly coupled to the operating point. We investigate whether hierarchical discrete latent codecs exhibit the same sensitivity. Using a controlled empirical study of MS-VQ-VAE video compression across codebook sizes $K \\in \\{128,256,512,1024\\}$ and resolutions $64\\times64$, $128\\times128$, and $256\\times256$ on UCF101, we show that perceptual quality (LPIPS) depends strongly on codebook capacity but only negligibly on spatial resolution. Fitting a log-linear model $Q(K,r) = α\\log_2 K + β\\log_2 r + γ$ to all 12 operating points yields $α=-0.0094$ ($t=-6.6$, $p<0.001$) and $β=-0.0009$ ($t=-0.43$, $p=0.68$, not significant), with $R^2=0.82$. Codebook capacity is therefore roughly $10\\times$ more influential than spatial resolution per log-unit increase. In parallel, bottom-level entropy efficiency $η=H(z)/\\log_2 K$ remains stable or improves with resolution (84-87% at $64\\times64$; 92-94% at $256\\times256$), confirming that larger spatial grids are utilized more efficiently rather than less. Across all resolutions and codebook sizes, our models outperform H.264 on LPIPS at matched or lower bitrate, with gains of 25-52% at $128\\times128$ and 21-37% over H.265 at $256\\times256$. These findings suggest that codebook size $K$, not spatial resolution, is the dominant design variable governing perceptual compression quality in hierarchical discrete video codecs -- a property that may simplify multi-resolution deployment and inform the design of scalable discrete tokenizers for generative video models.",
+      "authors": [
+        "Manikanta Kotthapalli",
+        "Banafsheh Rekabdar"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV",
+        "cs.MM"
+      ],
+      "published": "2026-07-25T21:16:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.23366v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses LPIPS perceptual quality metric for video, applicable to generated video evaluation",
+      "llm_evidence_cn": "使用LPIPS感知质量指标评估视频压缩质量，可迁移至生成视频质量评估",
+      "llm_evidence": "使用LPIPS感知质量指标评估视频压缩质量，可迁移至生成视频质量评估",
+      "canonical_evidence": "使用LPIPS感知质量指标评估视频压缩质量，可迁移至生成视频质量评估",
+      "llm_tldr_en": "Investigates how codebook capacity affects perceptual quality (LPIPS) in hierarchical discrete video compression, finding capacity dominates over resolution; provides insight for video quality assessment.",
+      "llm_tldr_cn": "本文研究分层离散视频压缩中码本容量对感知质量（LPIPS）的影响。通过控制实验发现，码本容量是决定感知质量的关键因素，而空间分辨率影响可忽略。这一发现为视频质量评估提供了重要参考，其使用的LPIPS指标可直接用于生成视频的感知质量评价。",
+      "llm_tldr": "本文研究分层离散视频压缩中码本容量对感知质量（LPIPS）的影响。通过控制实验发现，码本容量是决定感知质量的关键因素，而空间分辨率影响可忽略。这一发现为视频质量评估提供了重要参考，其使用的LPIPS指标可直接用于生成视频的感知质量评价。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
