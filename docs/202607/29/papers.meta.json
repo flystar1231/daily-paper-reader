@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-29",
+  "date": "2026-07-29",
+  "generated_at": "2026-07-29T21:35:54",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/29/2607.25802v1-explicit-layer-modeling-for-video-object-insertion-and-layer-decomposition",
+      "section": "quick",
+      "title_en": "Explicit Layer Modeling for Video Object Insertion and Layer Decomposition",
+      "authors": "Kyujin Han, Seungjoo Shin, Sunghyun Cho",
+      "date": "2026-07-28",
+      "pdf": "https://arxiv.org/pdf/2607.25802v1",
+      "score": "6.0",
+      "evidence": "视频层分解和前景层监督为透明视频生成提供基础",
+      "tldr": "现有视频编辑系统因缺乏显式分层表示而难以实现真实合成与一致操作。作者引入大规模三元组视频数据集TriLayer，提供对齐的复合、背景和前景视频，实现显式前景层监督。提出双分支扩散框架DBL-Diffusion，通过共享去噪与跨分支交互联合建模RGB复合帧和RGBA前景层。实验表明，显式层建模显著提升视频对象插入的保真度和层分解的质量，为视频编辑提供可复用的分层表示。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Most video editing systems still lack explicit layered video representations, limiting their ability to perform realistic compositing, object reuse, and consistent manipulation. This limitation is especially pronounced in video object insertion and video layer decomposition, where existing methods rely on implicit inference or per-scene optimization due to the absence of explicit foreground-layer supervision. We introduce TriLayer, a large-scale triplet video dataset containing aligned composite, background, and foreground videos, where the foreground layers include both object appearance and associated visual effects. This explicit supervision enables models to learn layered video representations directly rather than inferring them implicitly. Building on this dataset, we propose DBL-Diffusion, a dual-branch diffusion framework that jointly models RGB composites and RGBA foreground layers through shared denoising and cross-branch interaction. We instantiate the framework in two tasks: DBL-Insert for layered object insertion, which generates explicit RGBA layers for realistic compositing and flexible post-editing, and DBL-Decompose for video layer decomposition, which recovers foreground and background layers using triplet supervision. Experiments demonstrate that explicit layer modeling substantially improves both insertion fidelity and decomposition quality.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
