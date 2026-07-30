@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-30",
+  "date": "2026-07-30",
+  "generated_at": "2026-07-30T21:34:37",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/30/2607.26860v1-amortized-moment-matching-for-visual-generation",
+      "section": "deep",
+      "title_en": "Amortized Moment Matching for Visual Generation",
+      "authors": "Wenze Liu, Xintao Wang, Pengfei Wan, Xiangyu Yue",
+      "date": "2026-07-29",
+      "pdf": "https://arxiv.org/pdf/2607.26860v1",
+      "score": "8.0",
+      "evidence": "提出摊销弗雷歇距离作为视觉生成质量的评价指标",
+      "tldr": "现有生成模型依赖显式统计矩计算，难以扩展至高维数据。本文提出摊销矩匹配，利用神经网络通过多项式投影学习数据矩，从仿射情况推导出摊销Fréchet距离（AMFD）损失，实现无矩阵交替优化。在ImageNet上，AMFD后训练大幅提升FDr^6指标并实现一步生成；在文本到图像生成中，一步模型在GenEval上超越多步FLUX.2教师，同时性能持平。该框架为高效分布匹配提供了可扩展的新范式。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We propose amortized moment matching, utilizing neural networks to learn data moments as distributional training signals. By casting diffusion denoisers through polynomial projections, we establish a general framework for moment amortization, revealing that an $n$-th degree projection explicitly identifies data moments up to order $n+1$. Derived from the tractable affine case, we instantiate the Amortized Fréchet Distance (AMFD) loss. Unlike FD-loss which relies on explicit marginal moment calculations, AMFD is able to dynamically learn conditional moments via an alternating, matrix-free optimization pipeline that effortlessly scales to high-dimensional data. When operating on global representation features, AMFD serves as a powerful post-training objective; empirically, its neural formulation yields more robust training dynamics than exact statistical matching, substantially surpassing the FD baseline on the FDr$^6$ metric and achieving superior one-step generation on ImageNet. Furthermore, it unlocks direct exploration within native generative spaces, suggesting that the first two moments can identify target distributions only in spaces with strong semantics. Finally, when scaled to text-to-image generation, the condition-aware nature of AMFD unlocks massive gains in instruction-following capabilities, enabling our one-step models to outperform their multi-step FLUX.2 [klein] 4B teachers on the GenEval benchmark while achieving on-par performance on PickScore. Code and checkpoints are available at https://github.com/poppuppy/amfd.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/30/2607.27110v1-freqforcing-autoregressive-long-video-generation-via-spectral-self-anchoring",
+      "section": "deep",
+      "title_en": "FreqForcing: Autoregressive Long Video Generation via Spectral Self-Anchoring",
+      "authors": "Jiatong Li, Leo Liang, Linghe Kong, Yulun Zhang",
+      "date": "2026-07-29",
+      "pdf": "https://arxiv.org/pdf/2607.27110v1",
+      "score": "8.0",
+      "evidence": "分析长视频生成中的质量退化问题",
+      "tldr": "自回归视频扩散模型在长期生成中因误差累积导致颜色漂移、运动停滞。本文从频域揭示该现象为低频能量漂移，并发现attention sink虽部分缓解但不足。为此提出无需训练的FreqForcing框架，核心是谱自锚定（SSA）：利用锚注意力低频分量维持长期视觉稳定性，结合局部注意力高频分量保留动态运动。该方法将预训练于5秒片段的模型扩展至2分钟生成，实现24倍外推。实验表明，FreqForcing在定量和定性指标上超越现有无需训练方法，且与代表性训练方法表现相当。贡献在于揭示频域误差积累机制并给出有效解决方案。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Autoregressive video diffusion models enable real-time streaming video generation. However, errors introduced during self-rollout accumulate over long horizons, manifesting as color drift, motion stagnation, and eventual visual collapse. In this paper, we characterize this phenomenon from a frequency-domain perspective: error accumulation appears as a pronounced energy drift in the low-frequency bands. We further investigate the effectiveness of attention sink in the frequency domain, and find that it improves the video quality by alleviating the spectral energy drift to some extent, but cannot fully resolve it. Motivated by the above analysis, we propose FreqForcing, a training-free framework that addresses error accumulation in long-video generation via Spectral Self-Anchoring (SSA). The proposed SSA leverages the low-frequency components of anchor attention to maintain long-horizon visual stability, while preserving dynamic motion through the high-frequency components of local attention. Our FreqForcing extends Self-Forcing pretrained on 5s clips to two-minute generation, achieving 24x extrapolation. Extensive experiments show that FreqForcing outperforms existing training-free methods quantitatively and qualitatively while remaining competitive with representative training-based approaches.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/30/2607.26529v1-cineweaver-training-free-reference-controllable-multi-shot-long-video-generation-for-cinematic-storytelling",
+      "section": "quick",
+      "title_en": "CineWeaver: Training-Free Reference-Controllable Multi-Shot Long Video Generation for Cinematic Storytelling",
+      "authors": "Yuyang Huang, Yabo Chen, Wenrui Dai, Ziyang Zheng, Haibin Huang, Chi Zhang, Junni Zou, Hongkai Xiong, Xuelong Li",
+      "date": "2026-07-29",
+      "pdf": "https://arxiv.org/pdf/2607.26529v1",
+      "score": "6.0",
+      "evidence": "提出多镜头长视频生成方法",
+      "tldr": "电影级视频生成需要多镜头、细粒度控制与长时长，现有方法依赖重训练且无法统一。本文提出CineWeaver，通过操纵位置编码和注意力模式在推理时打破时间连续性实现清晰镜头切换，并引入镜头路由参考条件机制与锚点记忆机制实现每镜头可控与全局一致性。无需训练即可生成高质量长视频，保持身份和外观稳定。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Cinematic video generation is challenging for text-to-video diffusion models due to concurrent requirements on multi-shot generation, fine-grained controllability over characters and scenes, and long-form generation across extended temporal horizons. Existing methods rely on customization and retraining to separately address specific requirements, and cannot simultaneously fulfill all the requirements with a unified framework. In this paper, we shed light on the training-free paradigm with the key insight that the difficulty of multi-shot generation arises from a structural bias toward temporal continuity in pretrained video diffusion models, and consequently, propose a unified framework named CineWeaver to achieve reference-controllable multi-shot long-video generation without retraining. We manipulate positional encoding and attention patterns to break temporal continuity during inference to enable clear shot transitions using pretrained video diffusion models. Furthermore, we extend the proposed framework with a shot-routed reference conditioning mechanism for per-shot fine-grained controllability, and develop an anchor memory mechanism to allow long-form generation with consistent global appearance cues. To our best knowledge, CineWeaver is the first unified framework to simultaneously enable \\textbf{long-form}, \\textbf{reference-controllable}, and \\textbf{multi-shot} video generation in a training-free fashion. Experimental results demonstrate that CineWeaver produces high-quality cinematic videos of long durations with consistent identities, stable global appearance, and clear shot transitions. The project page is available at: https://cineweaver.github.io.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
