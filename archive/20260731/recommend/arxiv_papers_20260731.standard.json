@@ -1,0 +1,139 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-31T21:54:24.842326+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.26811v1",
+      "source": "arxiv",
+      "title": "DistillAlign: Coordinating Mode Covering and Mode Seeking in Autoregressive Video Distillation",
+      "abstract": "Existing autoregressive video distillation methods commonly adopt a Distribution Matching Distillation (DMD)-based multi-stage pipeline. However, they typically decouple the initialization and DMD stages -- which then pursue different target distributions -- and judge the intermediate student mainly by visual scores such as VBench. In this paper, we revisit this design from a distributional perspective. Given the mode-seeking nature of the distribution matching loss, a good initialization should match the mode coverage of the target DMD teacher, rather than merely pursuing high quality. To analyze this, we introduce a distributional evaluation protocol that measures precision and coverage between student and teacher distributions in a shared latent space. It exposes differences hidden by visual scores: some initializations reach high precision but low coverage, leading to suboptimal refinement, while mode-covering ones preserve broader support. Furthermore, even when the target distributions are aligned, DMD's reverse-KL objective can still drive the student toward high-probability teacher regions in late training, reducing coverage and diversity. To address this, we propose joint distillation, which combines DMD's mode-seeking objective with a Consistency Distillation-based mode-covering constraint. Experiments show that our method improves generation quality, coverage, and diversity; notably, even with a Wan-1.3B DMD teacher, it outperforms baselines refined with Wan-14B, underscoring the importance of distributional alignment in autoregressive video distillation.",
+      "authors": [
+        "Jiaxing Li",
+        "Kai Zou",
+        "Cindy Zhou",
+        "Kaichen Huang",
+        "Junyao Gao",
+        "Zile Wang",
+        "Yang Liu",
+        "Bin Liu",
+        "Bo An",
+        "Yangguang Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T11:58:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.26811v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Proposes distributional evaluation protocol with precision and coverage for autoregressive video distillation, complementing VBench visual scores",
+      "llm_evidence_cn": "为自回归视频蒸馏提出含精度与覆盖率的分布性评估协议，补充VBench视觉评分",
+      "llm_evidence": "为自回归视频蒸馏提出含精度与覆盖率的分布性评估协议，补充VBench视觉评分",
+      "canonical_evidence": "为自回归视频蒸馏提出含精度与覆盖率的分布性评估协议，补充VBench视觉评分",
+      "llm_tldr_en": "DistillAlign introduces a distributional evaluation protocol measuring precision and coverage between student and teacher video distributions, better guiding autoregressive video distillation than visual scores alone.",
+      "llm_tldr_cn": "现有自回归视频蒸馏常把初始化和DMD阶段割裂，仅用VBench等视觉分数评判中间学生，忽略了分布匹配的属性。本文从分布视角出发，指出好的初始化应匹配教师模型的模式覆盖而非仅追求高质量，并提出衡量学生与教师分布之间精度与覆盖率的分布性评估协议。基于该协议的设计显著改进了蒸馏效果，为视频生成模型提供了更有效的分布级评价方式。",
+      "llm_tldr": "现有自回归视频蒸馏常把初始化和DMD阶段割裂，仅用VBench等视觉分数评判中间学生，忽略了分布匹配的属性。本文从分布视角出发，指出好的初始化应匹配教师模型的模式覆盖而非仅追求高质量，并提出衡量学生与教师分布之间精度与覆盖率的分布性评估协议。基于该协议的设计显著改进了蒸馏效果，为视频生成模型提供了更有效的分布级评价方式。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.23321v1",
+      "source": "arxiv",
+      "title": "A Reference-Free Framework for Evaluating Single-Frame ISP Pipelines",
+      "abstract": "Evaluating camera image signal processing (ISP) pipelines requires measuring low-level artifacts introduced by operations such as denoising, demosaicing, tone mapping, and compression. Blind image quality assessment (IQA) techniques can grade visual quality without a reference, but they typically focus on semantic and high-level visual cues or human perceptual scores rather than the low-level image-processing artifacts introduced by camera pipelines. In contrast, full-reference metrics such as PSNR and SSIM measure pixel-level differences and structural similarity, while LPIPS measures perceptual similarity in deep feature space. However, these metrics require perfectly aligned image pairs, which are difficult to collect in practical settings. We propose a reference-free learning framework that estimates full-reference image quality metrics from a processed sRGB image and its ISO metadata. Our method predicts a proxy sRGB reference, which is then compared with the processed image to compute PSNR, SSIM, and LPIPS in their standard full-reference form. Our experiments show that the proxy-reference model can be learned from synthetic data and applied to real camera data. We further show that lightweight LoRA fine-tuning enables efficient adaptation when ISP components or pipeline configurations are changed. The proposed method outperforms direct metric regression in estimating metric values and achieves higher agreement with full-reference rankings than conventional blind IQA methods. These results demonstrate the feasibility of reference-free estimation of full-reference metrics for practical camera-pipeline evaluation.",
+      "authors": [
+        "Yujin Cho",
+        "Sira Ferradans",
+        "Jean-Michel Morel",
+        "Gabriele Facciolo",
+        "Thomas Eboli"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-07-25T18:28:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.23321v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes a reference-free framework for image quality assessment; method transferable to video quality assessment",
+      "llm_evidence_cn": "提出无参考图像质量评估框架；方法可迁移到视频质量评估",
+      "llm_evidence": "提出无参考图像质量评估框架；方法可迁移到视频质量评估",
+      "canonical_evidence": "提出无参考图像质量评估框架；方法可迁移到视频质量评估",
+      "llm_tldr_en": "A reference-free quality evaluation framework for ISP pipelines measures low-level artifacts without aligned references, overcoming full-reference metric limitations and offering transferable methods for video quality assessment.",
+      "llm_tldr_cn": "无参考图像质量评估往往偏向语义或高分，而全参考指标需要严格对齐的图像对。该文针对相机ISP管线提出参考自由评估框架，专门量化去噪、去马赛克、色调映射和压缩带来的低层伪影。实验表明这一框架能在无需参考的条件下有效评估图像处理质量，弥补了现有指标的不足，对视频质量评估具有方法论上的借鉴意义。",
+      "llm_tldr": "无参考图像质量评估往往偏向语义或高分，而全参考指标需要严格对齐的图像对。该文针对相机ISP管线提出参考自由评估框架，专门量化去噪、去马赛克、色调映射和压缩带来的低层伪影。实验表明这一框架能在无需参考的条件下有效评估图像处理质量，弥补了现有指标的不足，对视频质量评估具有方法论上的借鉴意义。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.25300v1",
+      "source": "arxiv",
+      "title": "MEDit-Bench: A Dataset for Evaluating Message-Driven Narrative Video Editing",
+      "abstract": "Video editing is fundamentally message-driven: even from the same source footage, the selected shots change depending on the narrative the editor wishes to convey. Benchmarks for a closely related task, video summarization, reduce editorial intent to a single, message-agnostic notion of saliency and thus do not account for this diversity. For evaluating message-driven video editing, we present \\textbf{MEDit-Bench}, a dataset and benchmark, which pairs long-form videos with multiple editing messages and multiple professionally produced edits per message, demonstrating that different messages yield substantially different edits from the same source. We define an automatic evaluation protocol based on temporal alignment metrics, and find that an LLM-as-a-judge preference, a natural proxy for narrative quality, is unreliable for this task due to severe position bias. We additionally annotate each message with ambiguity and contextfulness scores, and show that both dimensions negatively correlate with model performance, establishing message difficulty as a meaningful stratification factor. Experiments with state-of-the-art MLLMs and reinforcement fine-tuned baselines show that while strong models approach human temporal alignment at lenient thresholds, all models fall behind humans at stricter criteria. A human perceptual study further confirms a large quality gap, with professional human edits remaining consistently preferred over model outputs.",
+      "authors": [
+        "Katsuya Ogata",
+        "Zongshang Pang",
+        "Mayu Otani",
+        "Yuta Nakashima"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-28T05:24:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.25300v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "provides an automatic evaluation protocol based on temporal alignment metrics for video editing quality, transferable to generated video quality assessment",
+      "llm_evidence_cn": "为视频剪辑质量提供了基于时间对齐指标的自动评估协议，可迁移至生成视频质量评估",
+      "llm_evidence": "为视频剪辑质量提供了基于时间对齐指标的自动评估协议，可迁移至生成视频质量评估",
+      "canonical_evidence": "为视频剪辑质量提供了基于时间对齐指标的自动评估协议，可迁移至生成视频质量评估",
+      "llm_tldr_en": "MEDit-Bench pairs long-form videos with multiple editing messages and professional edits, defining an automatic evaluation protocol based on temporal alignment metrics to assess message-driven video editing quality.",
+      "llm_tldr_cn": "视频编辑是信息驱动的，同一源素材因叙事消息不同会产生不同剪辑。现有视频摘要基准仅关注单一显著性，无法刻画这种多样性。MEDit-Bench构建了带有多条编辑消息及对应专业剪辑的数据集，并基于时间对齐指标提出自动评估协议，用于衡量消息驱动视频剪辑的质量。该基准为生成视频的质量评估提供了可借鉴的方法。",
+      "llm_tldr": "视频编辑是信息驱动的，同一源素材因叙事消息不同会产生不同剪辑。现有视频摘要基准仅关注单一显著性，无法刻画这种多样性。MEDit-Bench构建了带有多条编辑消息及对应专业剪辑的数据集，并基于时间对齐指标提出自动评估协议，用于衡量消息驱动视频剪辑的质量。该基准为生成视频的质量评估提供了可借鉴的方法。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

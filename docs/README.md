@@ -6,31 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-30
-- 运行时间：2026-07-30 21:34:33 UTC
+- 最新运行日期：2026-07-31
+- 运行时间：2026-07-31 21:57:34 UTC
 - 运行状态：成功
 - 本次总论文数：3
-- 精读区：2
-- 速读区：1
+- 精读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-今日推荐3篇论文，聚焦视觉生成与长视频技术，其中两篇精读分别获得8.0高分。  
-最值得关注的是基于摊销矩匹配的视觉生成方法，以及通过频谱自锚定实现自回归长视频生成的FreqForcing技术。  
-建议普通读者优先阅读这两篇高质量精读论文，以理解当前生成模型在质量和时长上的关键突破。
-- 详情：[/202607/30/README](/202607/30/README)
+今日聚焦3篇论文：1篇精读视频蒸馏、2篇速读图像处理与视频编辑；最值得关注的是精读的DistillAlign，它协调了自回归视频蒸馏中的模式覆盖与模式追求，得分8.0；建议普通读者优先了解视频生成模型的高效蒸馏技术，这对提升生成速度与质量很关键。
+- 详情：[/202607/31/README](/202607/31/README)
 
 ### 精读区论文标签
-1. [Amortized Moment Matching for Visual Generation](/202607/30/2607.26860v1-amortized-moment-matching-for-visual-generation)  
+1. [DistillAlign: Coordinating Mode Covering and Mode Seeking in Autoregressive Video Distillation](/202607/31/2607.26811v1-distillalign-coordinating-mode-covering-and-mode-seeking-in-autoregressive-video-distillation)  
    标签：评分：8.0/10、query:vgen-metrics
-   evidence：提出摊销弗雷歇距离作为视觉生成质量的评价指标
-2. [FreqForcing: Autoregressive Long Video Generation via Spectral Self-Anchoring](/202607/30/2607.27110v1-freqforcing-autoregressive-long-video-generation-via-spectral-self-anchoring)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：分析长视频生成中的质量退化问题
+   evidence：为自回归视频蒸馏提出含精度与覆盖率的分布性评估协议，补充VBench视觉评分
 
 ### 速读区论文标签
-1. [CineWeaver: Training-Free Reference-Controllable Multi-Shot Long Video Generation for Cinematic Storytelling](/202607/30/2607.26529v1-cineweaver-training-free-reference-controllable-multi-shot-long-video-generation-for-cinematic-storytelling)  
+1. [A Reference-Free Framework for Evaluating Single-Frame ISP Pipelines](/202607/31/2607.23321v1-a-reference-free-framework-for-evaluating-single-frame-isp-pipelines)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出多镜头长视频生成方法
+   evidence：提出无参考图像质量评估框架；方法可迁移到视频质量评估
+2. [MEDit-Bench: A Dataset for Evaluating Message-Driven Narrative Video Editing](/202607/31/2607.25300v1-medit-bench-a-dataset-for-evaluating-message-driven-narrative-video-editing)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：为视频剪辑质量提供了基于时间对齐指标的自动评估协议，可迁移至生成视频质量评估
 
 
 <div class="dpr-home-promo-card">
