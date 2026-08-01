@@ -6,29 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-31
-- 运行时间：2026-07-31 21:57:34 UTC
+- 最新运行日期：2026-08-01
+- 运行时间：2026-08-01 21:05:52 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：1
-- 速读区：2
+- 本次总论文数：1
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦3篇论文：1篇精读视频蒸馏、2篇速读图像处理与视频编辑；最值得关注的是精读的DistillAlign，它协调了自回归视频蒸馏中的模式覆盖与模式追求，得分8.0；建议普通读者优先了解视频生成模型的高效蒸馏技术，这对提升生成速度与质量很关键。
-- 详情：[/202607/31/README](/202607/31/README)
+今日仅完成1篇速读，聚焦3D高斯泼溅场景质量评估方法。
+
+值得关注论文《SpatialQ》获6.0/10分，尝试用视觉多模态大模型理解场景质量。
+
+建议普通读者先了解该文提出的评估思路，后续留意更深入的精读分析。
+- 详情：[/202608/01/README](/202608/01/README)
 
 ### 精读区论文标签
-1. [DistillAlign: Coordinating Mode Covering and Mode Seeking in Autoregressive Video Distillation](/202607/31/2607.26811v1-distillalign-coordinating-mode-covering-and-mode-seeking-in-autoregressive-video-distillation)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：为自回归视频蒸馏提出含精度与覆盖率的分布性评估协议，补充VBench视觉评分
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [A Reference-Free Framework for Evaluating Single-Frame ISP Pipelines](/202607/31/2607.23321v1-a-reference-free-framework-for-evaluating-single-frame-isp-pipelines)  
+1. [SpatialQ: Understanding 3D Gaussian Splatting Scene Quality via Visual-based MLLM](/202608/01/2607.26595v1-spatialq-understanding-3d-gaussian-splatting-scene-quality-via-visual-based-mllm)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出无参考图像质量评估框架；方法可迁移到视频质量评估
-2. [MEDit-Bench: A Dataset for Evaluating Message-Driven Narrative Video Editing](/202607/31/2607.25300v1-medit-bench-a-dataset-for-evaluating-message-driven-narrative-video-editing)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：为视频剪辑质量提供了基于时间对齐指标的自动评估协议，可迁移至生成视频质量评估
+   evidence：提出面向3DGS场景的多模态质量评估框架，可迁移到生成视频内容的质量评估
 
 
 <div class="dpr-home-promo-card">

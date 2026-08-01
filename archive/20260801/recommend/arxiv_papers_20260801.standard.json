@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-01T21:05:01.522390+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.26595v1",
+      "source": "arxiv",
+      "title": "SpatialQ: Understanding 3D Gaussian Splatting Scene Quality via Visual-based MLLM",
+      "abstract": "3D Gaussian Splatting (3DGS) has emerged as an effective representation for novel view synthesis and 3D scene reconstruction, creating an increasing demand for reliable quality assessment. Unlike conventional image quality assessment (IQA), the quality of a 3DGS scene depends not only on the perceptual fidelity of rendered views, but also on scene-level factors such as spatial structure and cross-view consistency. Existing IQA methods are limited by their reliance on 2D perceptual cues, whereas general multimodal large language models (MLLMs) are not designed for stable quality regression and may produce unreliable judgments. To address these limitations, a multimodal quality assessment framework is developed for 3DGS scene understanding. First, a 3D-aware quality representation learning framework is introduced by augmenting a VGGT-based encoder with a dedicated quality head. Multi-view images are encoded into view-specific features and aggregated to capture cross-view consistency, while geometric cues are incorporated through joint modeling of depth and point-cloud-related structural information, enabling the learning of structure-aware quality representations beyond appearance-driven features. Second, a grounded multimodal reasoning mechanism is constructed by jointly feeding original images, depth maps, point cloud renderings, and camera parameters into a Qwen-based MLLM.",
+      "authors": [
+        "Jingxuan Su",
+        "Shenglin Wang",
+        "Tiesong Zhao",
+        "Ge Li",
+        "Wei Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T08:14:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.26595v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "proposes a multimodal quality assessment framework for 3DGS scenes, applicable to generated visual content quality",
+      "llm_evidence_cn": "提出面向3DGS场景的多模态质量评估框架，可迁移到生成视频内容的质量评估",
+      "llm_evidence": "提出面向3DGS场景的多模态质量评估框架，可迁移到生成视频内容的质量评估",
+      "canonical_evidence": "提出面向3DGS场景的多模态质量评估框架，可迁移到生成视频内容的质量评估",
+      "llm_tldr_en": "Introduces a visual-based MLLM quality assessment framework for 3D Gaussian Splatting scenes, predicting quality beyond 2D cues by considering spatial structure and cross-view consistency.",
+      "llm_tldr_cn": "面向3D高斯泼溅场景质量评估需求，指出传统IQA只依赖2D感知线索，而通用MLLM难以稳定回归质量，提出基于视觉MLLM的多模态质量评估框架，综合空间结构与跨视图一致性。实验表明该方法能准确评估3DGS场景质量，并可为生成式视觉内容的质量度量提供借鉴。",
+      "llm_tldr": "面向3D高斯泼溅场景质量评估需求，指出传统IQA只依赖2D感知线索，而通用MLLM难以稳定回归质量，提出基于视觉MLLM的多模态质量评估框架，综合空间结构与跨视图一致性。实验表明该方法能准确评估3DGS场景质量，并可为生成式视觉内容的质量度量提供借鉴。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
