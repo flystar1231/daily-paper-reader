@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-03T21:41:40.305971+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.27628v1",
+      "source": "arxiv",
+      "title": "BlindPSNR: A No-Reference Fidelity Predictor for Low-Light Image Enhancement",
+      "abstract": "Low-light image enhancement (LLIE) methods involve tunable parameters that are typically fixed, often leading to performance degradation when applied across scenes. Manually selecting the best configuration, however, can be time-consuming and not always practical. Peak signal-to-noise ratio (PSNR) is the natural fidelity criterion for automating parameter selection, yet it requires a ground-truth reference that is typically unavailable. To our knowledge, no learning-based method addresses no-reference PSNR prediction for low-light image enhancement; the natural surrogate, no-reference image quality assessment (NR-IQA), targets perceptual quality rather than signal fidelity, and all seven baselines we test achieve 0% top-1 selection accuracy on our benchmark. With paired training data, the ground-truth PSNR is analytically computable, providing exact supervision without a separate teacher network. Building on this, we propose BlindPSNR, a lightweight no-reference network that fuses the enhanced image with the degraded low-light input via windowed cross-attention and estimates PSNR through heteroscedastic regression. While a scalar-regression baseline achieves top-1 accuracy of 54.4%, BlindPSNR raises this to 89.5% with regret dropping from 1.62 dB to 0.026 dB, and generalizes to unseen datasets (SRCC = 0.61-0.67).",
+      "authors": [
+        "Mingzhe Lyu",
+        "Jinqiang Cui",
+        "Hong Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T03:33:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.27628v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "A no-reference quality prediction method transferable to video quality assessment",
+      "llm_evidence_cn": "无参考质量预测方法，可迁移至视频质量评估",
+      "llm_evidence": "无参考质量预测方法，可迁移至视频质量评估",
+      "canonical_evidence": "无参考质量预测方法，可迁移至视频质量评估",
+      "llm_tldr_en": "Introduces a learned no-reference PSNR predictor for low-light image enhancement parameter selection, as a proxy for fidelity when ground truth is unavailable.",
+      "llm_tldr_cn": "低光图像增强方法往往需要按场景调整参数，而PSNR作为自然的保真度准则却依赖真值。为此提出BlindPSNR，一个学习式无参考PSNR预测器，在无真值情况下自动选择最优参数。实验表明它能有效替代真值PSNR用于参数选择。该思路可迁移到其他需要无参考质量评估的生成任务中。",
+      "llm_tldr": "低光图像增强方法往往需要按场景调整参数，而PSNR作为自然的保真度准则却依赖真值。为此提出BlindPSNR，一个学习式无参考PSNR预测器，在无真值情况下自动选择最优参数。实验表明它能有效替代真值PSNR用于参数选择。该思路可迁移到其他需要无参考质量评估的生成任务中。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.29679v1",
+      "source": "arxiv",
+      "title": "Scaling Properties of Text Conditioning in Visual Generation",
+      "abstract": "We study empirical scaling properties for text conditioning in visual generation. Such properties have rarely been measured because diffusion loss does not scale with the number of tokens in natural-language prompts. Surprisingly, we find that the converged diffusion loss scales with the amount of structured language in the prompt. To quantify structured language, we adapt two complementary measures: a white-box likelihood metric (GPG) and a black-box attribute metric (ED). Across controlled training runs, the converged diffusion loss decreases approximately linearly with GPG and follows a power law with ED. Guided by these scaling properties, we improve \\emph{diffusability} by constructing structured prompts with semantic and geometric annotations derived from images, and improve \\emph{promptability} by training a prompter through supervised fine-tuning, cold-start, and verifier-gated on-policy distillation. The resulting system outperforms all evaluated open-weight models on nearly every compositional, reasoning, and world-knowledge benchmark, while matching or surpassing the strongest closed-weight models on most evaluations.",
+      "authors": [
+        "Zilong Chen",
+        "Chaorui Deng",
+        "Kunchang Li",
+        "Hongyi Yuan",
+        "Haoqi Fan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T17:56:52+00:00",
+      "link": "https://arxiv.org/pdf/2607.29679v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adapts GPG and ED metrics to quantify structured language, linking prompt metrics to diffusion loss",
+      "llm_evidence_cn": "采用GPG与ED指标量化提示中的结构化语言，并将其与扩散损失关联",
+      "llm_evidence": "采用GPG与ED指标量化提示中的结构化语言，并将其与扩散损失关联",
+      "canonical_evidence": "采用GPG与ED指标量化提示中的结构化语言，并将其与扩散损失关联",
+      "llm_tldr_en": "This paper studies how diffusion loss scales with structured language in prompts, introducing white-box (GPG) and black-box (ED) metrics that predict generation quality and enable structured-prompt construction.",
+      "llm_tldr_cn": "针对扩散生成中自然语言提示难以量化的问题，论文发现收敛的扩散损失会随提示中结构化语言的数量呈规律性变化。作者引入了白盒似然指标GPG和黑盒属性指标ED来度量结构化语言，并发现损失随GPG近似线性下降、随ED呈幂律关系。基于这些缩放属性，他们通过构造带语义与几何标注的结构化提示提升了可扩散性。该工作为生成模型的提示质量评估提供了可计算的度量工具。",
+      "llm_tldr": "针对扩散生成中自然语言提示难以量化的问题，论文发现收敛的扩散损失会随提示中结构化语言的数量呈规律性变化。作者引入了白盒似然指标GPG和黑盒属性指标ED来度量结构化语言，并发现损失随GPG近似线性下降、随ED呈幂律关系。基于这些缩放属性，他们通过构造带语义与几何标注的结构化提示提升了可扩散性。该工作为生成模型的提示质量评估提供了可计算的度量工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

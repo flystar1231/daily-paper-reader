@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-03",
+  "date": "2026-08-03",
+  "generated_at": "2026-08-03T21:44:21",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/03/2607.27628v1-blindpsnr-a-no-reference-fidelity-predictor-for-low-light-image-enhancement",
+      "section": "quick",
+      "title_en": "BlindPSNR: A No-Reference Fidelity Predictor for Low-Light Image Enhancement",
+      "authors": "Mingzhe Lyu, Jinqiang Cui, Hong Zhang",
+      "date": "2026-07-30",
+      "pdf": "https://arxiv.org/pdf/2607.27628v1",
+      "score": "6.0",
+      "evidence": "无参考质量预测方法，可迁移至视频质量评估",
+      "tldr": "低光图像增强方法参数固定，手动调参耗时，PSNR需参考图而已有NR-IQA针对感知质量，七个基线选择准确率为0%。BlindPSNR轻量网络，用窗口交叉注意力融合增强图与低光输入，异方差回归预测PSNR。top-1准确率由54.4%提升至89.5%，遗憾从1.62dB降至0.026dB，并泛化到未知数据集，为LLIE自动参数选择提供有效方案。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Low-light image enhancement (LLIE) methods involve tunable parameters that are typically fixed, often leading to performance degradation when applied across scenes. Manually selecting the best configuration, however, can be time-consuming and not always practical. Peak signal-to-noise ratio (PSNR) is the natural fidelity criterion for automating parameter selection, yet it requires a ground-truth reference that is typically unavailable. To our knowledge, no learning-based method addresses no-reference PSNR prediction for low-light image enhancement; the natural surrogate, no-reference image quality assessment (NR-IQA), targets perceptual quality rather than signal fidelity, and all seven baselines we test achieve 0% top-1 selection accuracy on our benchmark. With paired training data, the ground-truth PSNR is analytically computable, providing exact supervision without a separate teacher network. Building on this, we propose BlindPSNR, a lightweight no-reference network that fuses the enhanced image with the degraded low-light input via windowed cross-attention and estimates PSNR through heteroscedastic regression. While a scalar-regression baseline achieves top-1 accuracy of 54.4%, BlindPSNR raises this to 89.5% with regret dropping from 1.62 dB to 0.026 dB, and generalizes to unseen datasets (SRCC = 0.61-0.67).",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/03/2607.29679v1-scaling-properties-of-text-conditioning-in-visual-generation",
+      "section": "quick",
+      "title_en": "Scaling Properties of Text Conditioning in Visual Generation",
+      "authors": "Zilong Chen, Chaorui Deng, Kunchang Li, Hongyi Yuan, Haoqi Fan",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.29679v1",
+      "score": "6.0",
+      "evidence": "采用GPG与ED指标量化提示中的结构化语言，并将其与扩散损失关联",
+      "tldr": "文本条件视觉生成中，扩散损失并不随提示词数量自然缩放，其与提示中结构化语言的量密切相关。本文采用白盒似然度GPG与黑盒属性度量ED两种互补指标，发现收敛扩散损失随GPG近似线性下降、随ED呈幂律关系。据此通过构造含语义与几何注释的结构化提示提升可扩散性，并训练prompter提升可提示性。系统在多数组合、推理与世界知识基准上超越开源模型，追平或超过最强闭源模型。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We study empirical scaling properties for text conditioning in visual generation. Such properties have rarely been measured because diffusion loss does not scale with the number of tokens in natural-language prompts. Surprisingly, we find that the converged diffusion loss scales with the amount of structured language in the prompt. To quantify structured language, we adapt two complementary measures: a white-box likelihood metric (GPG) and a black-box attribute metric (ED). Across controlled training runs, the converged diffusion loss decreases approximately linearly with GPG and follows a power law with ED. Guided by these scaling properties, we improve \\emph{diffusability} by constructing structured prompts with semantic and geometric annotations derived from images, and improve \\emph{promptability} by training a prompter through supervised fine-tuning, cold-start, and verifier-gated on-policy distillation. The resulting system outperforms all evaluated open-weight models on nearly every compositional, reasoning, and world-knowledge benchmark, while matching or surpassing the strongest closed-weight models on most evaluations.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
