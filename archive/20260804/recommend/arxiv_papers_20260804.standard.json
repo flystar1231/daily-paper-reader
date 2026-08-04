@@ -1,0 +1,307 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-04T20:35:40.507311+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.00617v1",
+      "source": "arxiv",
+      "title": "Diagnosing Under-Development of Irreversible Processes in Video Generation",
+      "abstract": "Many physical attributes are \\emph{irreversible}: ice melts but does not re-freeze, paper chars but does not un-burn. Do video generators respect this? We show the question is hard to measure, and that what can be measured reliably is \\emph{development} rather than reversal. Metrics of local reversal are null-degenerate: a per-clip violation rate scores $0.50$ on pure noise, and a variance-normalized reversal residual sits at its noise ceiling. What survives null-testing is a two-part protocol: progress (a directional attribute correlation) and a stasis rate. Under this protocol, generated video separates cleanly from real footage, and the gap is human-validated. Across seven text-to-video models, real reference footage advances ($ρ{=}{+}0.40$, $35\\%$ static) while every generator shows near-zero progress and $92$--$100\\%$ stasis; nine annotators rate real footage far above generated ($2.75$ vs.\\ $0.99$ on a $0$--$4$ scale). The reliable finding is \\emph{under-development}: generators barely advance irreversible attributes rather than reversing them. As a complementary mechanism, we show that post-hoc readout guidance is gameable, whereas enforcing monotonicity by construction in a disentangled attribute latent removes the gameable readout, validated in controlled and semi-synthetic settings.",
+      "authors": [
+        "Jian Xu",
+        "Yanning Wu",
+        "Delu Zeng",
+        "John Paisley",
+        "Qibin Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-01T12:16:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.00617v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes a null-tested two-part protocol (progress and stasis rate) to evaluate video generation quality",
+      "llm_evidence_cn": "提出经零假设检验的两部分协议（进度和停滞率）评估生成视频质量",
+      "llm_evidence": "提出经零假设检验的两部分协议（进度和停滞率）评估生成视频质量",
+      "canonical_evidence": "提出经零假设检验的两部分协议（进度和停滞率）评估生成视频质量",
+      "llm_tldr_en": "Existing metrics fail to measure irreversible physical processes in video generation; the paper proposes a null-tested two-part protocol (progress and stasis rate) that cleanly separates generated from real video across seven text-to-video models.",
+      "llm_tldr_cn": "现有的视频生成评估指标难以衡量不可逆物理过程（如冰融化、纸燃烧）是否被正确生成，因为局部可逆性指标在纯噪声上会退化为无效。本文提出一种经过零假设检验的协议，包括“进度”和“停滞率”两个指标，在七个文本生成视频模型上能清晰区分生成视频与真实视频，并通过人工验证，为视频生成模型的物理合理性评估提供了可靠工具。",
+      "llm_tldr": "现有的视频生成评估指标难以衡量不可逆物理过程（如冰融化、纸燃烧）是否被正确生成，因为局部可逆性指标在纯噪声上会退化为无效。本文提出一种经过零假设检验的协议，包括“进度”和“停滞率”两个指标，在七个文本生成视频模型上能清晰区分生成视频与真实视频，并通过人工验证，为视频生成模型的物理合理性评估提供了可靠工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.02603v1",
+      "source": "arxiv",
+      "title": "WorldExam: Benchmarking World Models from Apparent Appearance to Inherent Reactivity",
+      "abstract": "Controllable video generation models are increasingly being developed as world models. Accordingly, evaluating them in this role extends beyond the apparent appearance of generated videos to the inherent reactivity of the worlds they depict: the ability to infer from the scene state how the world should react and to generate plausible consequences not explicitly described in the input. Yet existing benchmarks mainly assess visual quality or explicit instruction fulfillment by checking whether requested actions and interaction outcomes are realized, leaving inherent reactivity underexamined. We introduce WorldExam, a hierarchical diagnostic benchmark spanning four levels: Visual Quality, Control Adherence, Spatial Consistency, and World Reactivity. It comprises 1,474 cases across eight dedicated tasks and supports unified evaluation of camera-, action-, and language-driven model paradigms. The World Reactivity level evaluates scene-conditioned reactions and goal-directed behaviors beyond what is explicitly specified in the input. Evaluation of 20 representative models reveals a clear capability split. Camera-driven models excel at camera control, but their interfaces do not support dynamic interaction; action-driven models control subjects more precisely but often leave the world unresponsive; and language-driven models perform better on interaction but follow complex controls less faithfully. No model combines broad task coverage with consistently strong performance, showing that high visual quality and explicit instruction fulfillment do not guarantee inherent reactivity.",
+      "authors": [
+        "Yuxue Yang",
+        "Shuyao Shang",
+        "Jiahe Wang",
+        "Zitong Zhou",
+        "Liang Tan",
+        "Junhan Zeng",
+        "Ruizhi Li",
+        "Junyan Li",
+        "Yu Liu",
+        "Xiao Yang",
+        "Yong Li",
+        "Jun Zhu",
+        "Hongsheng Li",
+        "Tieniu Tan",
+        "Lue Fan",
+        "Zhaoxiang Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T17:59:54+00:00",
+      "link": "https://arxiv.org/pdf/2608.02603v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Hierarchical benchmark evaluating controllable video generation models, including visual quality, matches video generation evaluation metrics.",
+      "llm_evidence_cn": "分层基准评测视频生成模型的视觉质量等维度，契合视频生成评估需求。",
+      "llm_evidence": "分层基准评测视频生成模型的视觉质量等维度，契合视频生成评估需求。",
+      "canonical_evidence": "分层基准评测视频生成模型的视觉质量等维度，契合视频生成评估需求。",
+      "llm_tldr_en": "WorldExam presents a hierarchical diagnostic benchmark for evaluating controllable video generation models as world models, covering visual quality, control adherence, spatial consistency, and inherent reactivity.",
+      "llm_tldr_cn": "针对可控视频生成模型日益被用作世界模型、但现有评测多关注视觉质量与显式指令的问题，本文提出WorldExam分层诊断基准，从视觉质量、控制遵循、空间一致性和世界反应性四个层面评测模型。它特别强调模型能否根据场景状态推断未明确指定的后果。实验显示该基准能更全面地反映视频生成模型的世界建模能力，为生成式世界模型评估提供新标准。",
+      "llm_tldr": "针对可控视频生成模型日益被用作世界模型、但现有评测多关注视觉质量与显式指令的问题，本文提出WorldExam分层诊断基准，从视觉质量、控制遵循、空间一致性和世界反应性四个层面评测模型。它特别强调模型能否根据场景状态推断未明确指定的后果。实验显示该基准能更全面地反映视频生成模型的世界建模能力，为生成式世界模型评估提供新标准。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.29627v1",
+      "source": "arxiv",
+      "title": "FlexComposer: Unified Video Compositing from Images to Dynamic Footage with Flexible Trajectory Control",
+      "abstract": "Generative video compositing, which involves inserting external assets seamlessly into existing video sequences, is essential for content creation and visual effects. However, existing approaches suffer from a control-fidelity trade-off: they either hallucinate motion from static images, failing to preserve the dynamics of pre-animated assets, or lack fine-grained spatial control for precise asset placement along user-defined trajectories. We propose FlexComposer, a unified framework that standardizes video compositing as a trajectory-guided conditional generation task, enabling the seamless integration of both static images and dynamic footage. Our approach introduces three key designs: (1) a Unified Canonical Foreground Representation that decouples an object's intrinsic motion from its global displacement, standardizing heterogeneous inputs into a stabilized, centered latent space; (2) a Spatial-Aware Latent Injection strategy that exploits the translation equivariance of VAE latent spaces to transport canonical features onto target trajectories via a parameter-free mechanism; and (3) a Hybrid Dataset and Synthetic-to-Real Curriculum that synergizes procedural simulation, real-world cinematic footage, and generative data to implicitly learn physically plausible illumination and shadow harmonization. This unified design handles diverse inputs from product photos to dynamic subjects achieving high-fidelity motion control and environmental integration without the need for explicit 3D reconstruction or auxiliary learnable adapters. Extensive experiments demonstrate that FlexComposer outperforms state-of-the-art methods in visual quality, temporal consistency, and trajectory adherence.",
+      "authors": [
+        "Songchun Zhang",
+        "Sitong Guo",
+        "Xianghao Kong",
+        "Pengwei Liu",
+        "Yuwei Guo",
+        "Lvmin Zhang",
+        "Anyi Rao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T16:59:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.29627v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Video compositing with foreground embedding, directly relevant to generating transparent composited videos.",
+      "llm_evidence_cn": "视频合成涉及前景透明嵌入，与生成含alpha通道的合成视频相关。",
+      "llm_evidence": "视频合成涉及前景透明嵌入，与生成含alpha通道的合成视频相关。",
+      "canonical_evidence": "视频合成涉及前景透明嵌入，与生成含alpha通道的合成视频相关。",
+      "llm_tldr_en": "FlexComposer frames generative video compositing as a trajectory-guided conditional generation task, enabling seamless integration of static images and dynamic footage with fine-grained spatial control.",
+      "llm_tldr_cn": "针对视频合成中控制与保真度的权衡问题，FlexComposer将标准视频合成建模为轨迹引导的条件生成任务，提出统一前景表征和灵活轨迹控制。它支持静态图像和动态素材的无缝合成，并能在用户指定路径上精确保留素材动态。该方法提升了合成视频的真实感与可控性，为视频合成提供统一框架，尤其适用于前景嵌入与透明合成场景。",
+      "llm_tldr": "针对视频合成中控制与保真度的权衡问题，FlexComposer将标准视频合成建模为轨迹引导的条件生成任务，提出统一前景表征和灵活轨迹控制。它支持静态图像和动态素材的无缝合成，并能在用户指定路径上精确保留素材动态。该方法提升了合成视频的真实感与可控性，为视频合成提供统一框架，尤其适用于前景嵌入与透明合成场景。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.28760v1",
+      "source": "arxiv",
+      "title": "WaiT for the Signal: Simple Frequency-Aware Flow-Matching",
+      "abstract": "As image generation models scale to ever higher resolutions, global coherence, local detail, and texture fidelity become critical axes for generation quality. However, standard flow matching treats all spatial frequencies uniformly, ignoring the natural frequency hierarchy where high-frequency bands become indistinguishable from pure noise far earlier than coarse structures. We introduce WaiT, a Wavelet-aware image Transformer that decomposes generation into coarse and fine bands via lossless wavelets. True to its name, the high-frequency bands wait for the signal: staying pure noise until coarse structure has emerged, then joining the flow for joint refinement. Since standard FID discards fine-grained detail through aggressive downsampling, we introduce a more stringent three-axis evaluation protocol to assess quality at native resolution. On ImageNet 512x512, WaiT achieves a pixel-space FID of 1.43 and is Pareto-optimal across all three axes, reducing sampling compute by up to 50%. With our largest 2B model, we set a new state-of-the-art FID of 1.3 for pixel-space models on ImageNet 512 resolution. Our formulation outperforms even the strongest latent-space models on texture fidelity, and scales seamlessly to high-resolution OpenImages and to video generation, achieving a state-of-the-art FVD of 0.84 on Kinetics-600 with no algorithmic modifications.",
+      "authors": [
+        "Krunoslav Lehman Pavasovic",
+        "Théophane Vallaeys",
+        "Stéphane Mallat",
+        "Giulio Biroli",
+        "Luke Zettlemoyer",
+        "Brian Karrer",
+        "Jakob Verbeek"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-07-30T18:26:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.28760v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Proposes frequency-aware image generation and a stricter FID-style metric; transferable to video generation quality assessment.",
+      "llm_evidence_cn": "提出频率感知的图像生成与更严格的FID式指标；可迁移至生成视频质量评估。",
+      "llm_evidence": "提出频率感知的图像生成与更严格的FID式指标；可迁移至生成视频质量评估。",
+      "canonical_evidence": "提出频率感知的图像生成与更严格的FID式指标；可迁移至生成视频质量评估。",
+      "llm_tldr_en": "WaiT uses wavelet decomposition to separate coarse and fine image bands, letting high-frequency details wait until coarse structure is formed; it also introduces a stricter metric because standard FID discards fine detail via downsampling.",
+      "llm_tldr_cn": "针对标准流匹配对空间频率均匀处理而忽略自然频率层级的问题，本文提出Wavelet感知的图像Transformer（WaiT），用无损小波将生成分解为粗、细频带，高频带等待粗结构出现后再参与联合精修。针对FID因激进降采样丢失细节的缺陷，作者引入更严格的评估指标。在图像生成上验证了该方法能提升细节保真度，其频率分解思路与指标设计可为生成视频的质量评估提供借鉴。",
+      "llm_tldr": "针对标准流匹配对空间频率均匀处理而忽略自然频率层级的问题，本文提出Wavelet感知的图像Transformer（WaiT），用无损小波将生成分解为粗、细频带，高频带等待粗结构出现后再参与联合精修。针对FID因激进降采样丢失细节的缺陷，作者引入更严格的评估指标。在图像生成上验证了该方法能提升细节保真度，其频率分解思路与指标设计可为生成视频的质量评估提供借鉴。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.00562v1",
+      "source": "arxiv",
+      "title": "Beyond Token-Level Cross-Entropy: Fréchet Distributional Post-Training for Autoregressive Image Generation",
+      "abstract": "Autoregressive image generators are commonly pretrained with token-level cross-entropy under teacher forcing, yet evaluated by the distributional quality of decoded images. This creates an objective mismatch, because categorical errors have unequal image-level consequences, and a context mismatch, because inference conditions on model-generated histories. We introduce FD-loss post-training, which adapts a pretrained discrete generator using representation-space Fréchet distance as the sole objective. A dual-pass scheme first constructs detached rollout contexts through gradient-free generation under the model's native inference configuration, then performs differentiable replay with a probability-level straight-through estimator (STE) that preserves hard argmax decoding in the forward pass while propagating image-level gradients through temperature-scaled probabilities. Only the generator is updated, while the tokenizer and feature extractors remain frozen. Across eight completed configurations from four generator families on class-conditional ImageNet at $256\\times256$, FD-loss post-training reduces FID and $\\mathrm{FD}_{r6}$ by 41.4% and 52.0% on average. The strongest FID result improves from 2.42 to 1.43 without adding parameters or inference steps.",
+      "authors": [
+        "Jinhua Zhang",
+        "Yisong Lin",
+        "Wei Long",
+        "Shuhang Gu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-01T10:00:42+00:00",
+      "link": "https://arxiv.org/pdf/2608.00562v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Fréchet distance based post-training; closely aligned with FID/FVD distributional metrics",
+      "llm_evidence_cn": "提出基于Fréchet距离的分布后训练，与FID/FVD等视频生成指标紧密相关",
+      "llm_evidence": "提出基于Fréchet距离的分布后训练，与FID/FVD等视频生成指标紧密相关",
+      "canonical_evidence": "提出基于Fréchet距离的分布后训练，与FID/FVD等视频生成指标紧密相关",
+      "llm_tldr_en": "Proposes FD-loss post-training using representation-space Fréchet distance as the sole objective for autoregressive image generation, directly addressing distributional quality; method is technically related to FID/FVD evaluation metrics, offering a bridge to video generation evaluation.",
+      "llm_tldr_cn": "自回归图像生成器常用词元级交叉熵预训练，但评价标准是解码图像的分布质量，导致目标与评价不匹配。该文提出FD-loss后训练，仅以表示空间Fréchet距离作为目标，采用双通道方案：先用无梯度生成构建推理上下文，再通过可微重放更新模型。该方法直接优化分布质量，与FID/FVD等视频生成评价指标在技术上高度相关，可作为视频生成评估方法的参考。",
+      "llm_tldr": "自回归图像生成器常用词元级交叉熵预训练，但评价标准是解码图像的分布质量，导致目标与评价不匹配。该文提出FD-loss后训练，仅以表示空间Fréchet距离作为目标，采用双通道方案：先用无梯度生成构建推理上下文，再通过可微重放更新模型。该方法直接优化分布质量，与FID/FVD等视频生成评价指标在技术上高度相关，可作为视频生成评估方法的参考。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.01730v1",
+      "source": "arxiv",
+      "title": "Learning Where to Look and How to Judge: Resolution-agnostic Image Quality Assessment with Quality-aware Saliency",
+      "abstract": "No-reference image quality assessment (NR IQA) has recently benefited from deep and multimodal models, yet many SOTA systems still violate at least one basic requirement: they either discard critical quality cues via aggressive resizing, fail to generalize across resolutions, cannot be jointly trained on heterogeneous IQA datasets with mismatched MOS scales, or require prohibitive computation. We present \\textbf{ReLIQS}, a model for \\textbf{Re}solution-agnostic \\textbf{L}earning for \\textbf{I}mage \\textbf{Q}uality with \\textbf{S}aliency, which is resolution-agnostic, preserves original-resolution quality cues, learns from multiple subjective studies, and remains computationally efficient and budget-adaptive. ReLIQS is a CLIP-based multiscale patch-driven architecture that learns both \\emph{where to look} and \\emph{how to judge} quality. Fixed-size patches are sampled across multiple resolutions, including the original resolution, and encoded with a CLIP vision backbone. A lightweight Perceptual Importance Estimator then predicts IQA-specific importance maps to select a small set of informative patches, and a Latent Quality Axis Module aggregates their embeddings into a single image-level score. Across authentic, synthetic, and AIGC benchmarks spanning diverse resolutions and distortions, ReLIQS generalizes better than strong CNN-, CLIP-, and MLLM-based baselines with matching or reduced computational cost.",
+      "authors": [
+        "Hakan Emre Gedik",
+        "Shashank Gupta",
+        "Alan Bovik"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T05:54:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.01730v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "No-reference image quality assessment method, transferable to video quality assessment for generated videos.",
+      "llm_evidence_cn": "无参考图像质量评估方法，可迁移到生成视频的质量评估。",
+      "llm_evidence": "无参考图像质量评估方法，可迁移到生成视频的质量评估。",
+      "canonical_evidence": "无参考图像质量评估方法，可迁移到生成视频的质量评估。",
+      "llm_tldr_en": "ReLIQS is a resolution-agnostic no-reference image quality assessment model that preserves original-resolution cues and can learn from multiple heterogeneous IQA datasets efficiently.",
+      "llm_tldr_cn": "针对现有无参考图像质量评估在分辨率泛化、多数据集联合训练和计算开销方面的缺陷，本文提出ReLIQS。该模型利用质量感知显著性保持原始分辨率质量线索，并支持在多个尺度不一致的主观数据集上联合训练，同时保持计算高效与预算自适应。实验表明其在多种分辨率上均有良好表现，为图像乃至视频帧的质量评估提供了通用且可扩展的基线。",
+      "llm_tldr": "针对现有无参考图像质量评估在分辨率泛化、多数据集联合训练和计算开销方面的缺陷，本文提出ReLIQS。该模型利用质量感知显著性保持原始分辨率质量线索，并支持在多个尺度不一致的主观数据集上联合训练，同时保持计算高效与预算自适应。实验表明其在多种分辨率上均有良好表现，为图像乃至视频帧的质量评估提供了通用且可扩展的基线。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.01942v1",
+      "source": "arxiv",
+      "title": "CultureVidBench: Benchmarking Cultural Understanding in Text-to-Video Generation",
+      "abstract": "Text-to-video (T2V) generation models have advanced rapidly, yet their ability to represent diverse cultural contexts remains underexplored. Existing benchmarks mainly focus on perceptual quality, physical plausibility, and text-video alignment, but do not directly assess whether generated videos capture culturally specific objects, actions, rituals, visible text, or audio cues. We introduce CultureVidBench, a comprehensive benchmark for evaluating cultural understanding in T2V generation. CultureVidBench contains 1,000 curated prompts covering 12 countries, 6 continents, 8 cultural regions, and 14 cultural aspects organized into three categories: material culture, social practice & performance, and ritual & ceremony. Designed specifically for video generation, CultureVidBench emphasizes dynamic and multimodal cultural representation, including social interactions, ritual procedure, and culturally appropriate visible text and audio. We evaluate seven representative T2V models through human user studies and MLLM-based automatic assessment across cultural faithfulness, multimodal cultural rendering, semantic adherence, and perceptual quality. Results show that although current models achieve strong semantic adherence and visual quality, they often fail to faithfully capture fine-grained cultural details, particularly for underrepresented regions, rituals, and multimodal cultural cues.",
+      "authors": [
+        "Xianjing Han",
+        "Yuhan Su",
+        "Yang Deng",
+        "Dong Ma",
+        "Wee Peng Tay",
+        "Bin Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.CL",
+        "cs.MM"
+      ],
+      "published": "2026-08-03T09:16:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.01942v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "benchmark for evaluating cultural understanding in text-to-video generation",
+      "llm_evidence_cn": "面向文本到视频生成的文化理解评估基准",
+      "llm_evidence": "面向文本到视频生成的文化理解评估基准",
+      "canonical_evidence": "面向文本到视频生成的文化理解评估基准",
+      "llm_tldr_en": "CultureVidBench evaluates whether generated videos capture culturally specific objects, actions, and rituals, adding a new dimension to video generation quality assessment.",
+      "llm_tldr_cn": "文本到视频生成发展迅速，但现有基准集中于感知质量、物理合理性与文本视频对齐，未评估生成视频是否准确反映文化特定对象、动作、仪式、可见文字或音频线索。作者提出CultureVidBench，包含1000条精选提示，覆盖12个国家、6大洲、8个文化区域和14个文化方面，分为物质文化、社会实践与表演、仪式与庆典三大类。该基准为评估生成视频的文化理解能力提供了系统化工具，补充了视频生成质量评估的文化维度。",
+      "llm_tldr": "文本到视频生成发展迅速，但现有基准集中于感知质量、物理合理性与文本视频对齐，未评估生成视频是否准确反映文化特定对象、动作、仪式、可见文字或音频线索。作者提出CultureVidBench，包含1000条精选提示，覆盖12个国家、6大洲、8个文化区域和14个文化方面，分为物质文化、社会实践与表演、仪式与庆典三大类。该基准为评估生成视频的文化理解能力提供了系统化工具，补充了视频生成质量评估的文化维度。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
