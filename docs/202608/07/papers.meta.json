@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-07",
+  "date": "2026-08-07",
+  "generated_at": "2026-08-07T02:03:59",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/07/2607.27036v1-mitigating-compounding-error-via-video-representation-regularization",
+      "section": "quick",
+      "title_en": "Mitigating Compounding Error via Video Representation Regularization",
+      "authors": "Taiye Chen, Qi Zhang, Yisen Wang",
+      "date": "2026-07-29",
+      "pdf": "https://arxiv.org/pdf/2607.27036v1",
+      "score": "6.0",
+      "evidence": "分析长时视频生成中帧质量随时间的退化机制，并通过表示维数坍缩诊断生成质量，与生成视频质量评估直接相关",
+      "tldr": "视频扩散世界模型在自回归推理中因误差累积导致生成质量下降，本质是隐藏表征出现维度坍缩，有效秩骤降与漂移强相关。数据规模扩展无法抵抗漂移，而所提视频表征正则化通过稳定潜表征抑制误差累积，在VBench上显著提升Aesthetic Quality与Imaging Quality，建立漂移与内部表征的首个关联。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video diffusion-based world models enable long autoregressive video generation for robotics, autonomous driving and simulation tasks, yet sliding-window autoregressive inference suffers from severe error accumulation that degrades frame quality over time. Although this phenomenon has been widely observed, the underlying mechanism of compounding error and how to achieve stable long-horizon generation remain largely unresolved. In this paper, we investigate the internal representation dynamics of video world models and discover that compounding error is tightly coupled with dimensional collapse of hidden representations. Specifically, the effective rank of model representations sharply decreases at the onset of generation drift, revealing a strong connection between representational degradation and long-term rollout instability. Furthermore, we find that pure training data scaling fails to boost model resistance to error drift, contradicting mainstream scaling paradigms. To address this problem, we propose video representation regularization, a lightweight training constraint that stabilizes latent representations and suppresses iterative error accumulation. Compared with Diffusion Forcing, our method achieves improvements from 38.65 to 55.56 and from 44.37 to 72.08 on the Aesthetic Quality and Imaging Quality metrics of VBench. Our work establishes the first connection between autoregressive video drifting and model internal representations, adopts erank as a quantitative metric for error accumulation, reveals counterintuitive scaling limitations for video world models, and presents a simple yet effective regularization strategy to improve long video generation robustness.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/07/2608.05049v1-omniedit-bench-a-comprehensive-benchmark-for-instruction-based-video-editing",
+      "section": "quick",
+      "title_en": "OmniEdit-Bench: A Comprehensive Benchmark for Instruction-based Video Editing",
+      "authors": "Chenxuan Miao, Yutong Feng, Yi Lu, Yunfeng Yan, Donglian Qi, Shiwei Zhang, Yu Liu, Xi Chen, Hengshuang Zhao",
+      "date": "2026-08-05",
+      "pdf": "https://arxiv.org/pdf/2608.05049v1",
+      "score": "6.0",
+      "evidence": "面向视频编辑的评估基准，提出视频特有维度与指令忠实度度量，可迁移至生成视频评价",
+      "tldr": "指令视频编辑评估面临任务覆盖不足和度量失真两大问题。对此，提出综合基准OmniEdit-Bench，将任务分解为空间、时间、音频和参考编辑等视频特有维度，区分显隐指令并加入推理场景。评估从准确度、保留度、真实度和一致性四方面进行，引入准确度感知惩罚机制防止错误编辑得高分。实验表明现有模型远未达到理想水平，该基准为领域研究提供了可靠测试平台。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Instruction-based video editing (IVE) is an emerging field with broad applications, yet evaluating editing models remains challenging. Existing benchmarks suffer from two major limitations: limited task coverage inherited from image editing, which overlooks video-specific dimensions, and inadequate metrics that fail to measure instruction fidelity, allowing incorrect edits to receive high scores due to strong visual priors from the original video. To address these issues, we introduce a comprehensive and structured benchmark for IVE. Our benchmark decomposes editing tasks into multiple video-specific dimensions, including spatial, temporal, audio, and reference-based editing, extending beyond conventional frame-level evaluation. It also distinguishes explicit and implicit instructions and incorporates reasoning-based scenarios to better reflect real-world requirements. Furthermore, we propose an evaluation framework that assesses editing quality from four complementary dimensions: accuracy, preservation, realism, and consistency, using both human judgments and state-of-the-art vision-language models. To emphasize instruction fidelity, we introduce an accuracy-aware penalty mechanism that conditions other scores on accuracy, preventing visually plausible but incorrect edits from receiving inflated evaluations. Extensive experiments on representative open-source and commercial models show that current IVE models remain far from satisfactory. OmniEdit-Bench provides a comprehensive and reliable testbed for evaluating instruction-based video editing and offers insights into future research directions.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

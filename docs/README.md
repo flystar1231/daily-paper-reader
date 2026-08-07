@@ -6,41 +6,31 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-04
-- 运行时间：2026-08-04 20:41:41 UTC
+- 最新运行日期：2026-08-07
+- 运行时间：2026-08-07 02:03:53 UTC
 - 运行状态：成功
-- 本次总论文数：7
-- 精读区：2
-- 速读区：5
+- 本次总论文数：2
+- 精读区：0
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦视频生成与世界模型，共精选7篇论文，其中2篇获9分高评。最值得关注：视频生成中不可逆过程的发展不足诊断，以及世界模型从外观到内在反应性的基准测试。建议优先精读这两篇高分工作，可快速把握当前视频生成与评估的前沿瓶颈。
-- 详情：[/202608/04/README](/202608/04/README)
+今日速读2篇论文，聚焦视频生成与编辑技术。
+
+最值得关注方向：视频表示正则化可缓解自回归生成的复合误差，OmniEdit-Bench提供指令式视频编辑评测基准。
+
+普通读者可优先浏览这两篇，了解视频模型稳定训练与编辑评估的最新进展。
+- 详情：[/202608/07/README](/202608/07/README)
 
 ### 精读区论文标签
-1. [Diagnosing Under-Development of Irreversible Processes in Video Generation](/202608/04/2608.00617v1-diagnosing-under-development-of-irreversible-processes-in-video-generation)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：提出经零假设检验的两部分协议（进度和停滞率）评估生成视频质量
-2. [WorldExam: Benchmarking World Models from Apparent Appearance to Inherent Reactivity](/202608/04/2608.02603v1-worldexam-benchmarking-world-models-from-apparent-appearance-to-inherent-reactivity)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：分层基准评测视频生成模型的视觉质量等维度，契合视频生成评估需求。
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [FlexComposer: Unified Video Compositing from Images to Dynamic Footage with Flexible Trajectory Control](/202608/04/2607.29627v1-flexcomposer-unified-video-compositing-from-images-to-dynamic-footage-with-flexible-trajectory-control)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：视频合成涉及前景透明嵌入，与生成含alpha通道的合成视频相关。
-2. [Beyond Token-Level Cross-Entropy: Fréchet Distributional Post-Training for Autoregressive Image Generation](/202608/04/2608.00562v1-beyond-token-level-cross-entropy-frchet-distributional-post-training-for-autoregressive-image-generation)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：提出基于Fréchet距离的分布后训练，与FID/FVD等视频生成指标紧密相关
-3. [CultureVidBench: Benchmarking Cultural Understanding in Text-to-Video Generation](/202608/04/2608.01942v1-culturevidbench-benchmarking-cultural-understanding-in-text-to-video-generation)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：面向文本到视频生成的文化理解评估基准
-4. [WaiT for the Signal: Simple Frequency-Aware Flow-Matching](/202608/04/2607.28760v1-wait-for-the-signal-simple-frequency-aware-flow-matching)  
+1. [Mitigating Compounding Error via Video Representation Regularization](/202608/07/2607.27036v1-mitigating-compounding-error-via-video-representation-regularization)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出频率感知的图像生成与更严格的FID式指标；可迁移至生成视频质量评估。
-5. [Learning Where to Look and How to Judge: Resolution-agnostic Image Quality Assessment with Quality-aware Saliency](/202608/04/2608.01730v1-learning-where-to-look-and-how-to-judge-resolution-agnostic-image-quality-assessment-with-quality-aware-saliency)  
+   evidence：分析长时视频生成中帧质量随时间的退化机制，并通过表示维数坍缩诊断生成质量，与生成视频质量评估直接相关
+2. [OmniEdit-Bench: A Comprehensive Benchmark for Instruction-based Video Editing](/202608/07/2608.05049v1-omniedit-bench-a-comprehensive-benchmark-for-instruction-based-video-editing)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：无参考图像质量评估方法，可迁移到生成视频的质量评估。
+   evidence：面向视频编辑的评估基准，提出视频特有维度与指令忠实度度量，可迁移至生成视频评价
 
 
 <div class="dpr-home-promo-card">

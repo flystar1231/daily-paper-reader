@@ -1,0 +1,98 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-07T02:02:33.967649+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.27036v1",
+      "source": "arxiv",
+      "title": "Mitigating Compounding Error via Video Representation Regularization",
+      "abstract": "Video diffusion-based world models enable long autoregressive video generation for robotics, autonomous driving and simulation tasks, yet sliding-window autoregressive inference suffers from severe error accumulation that degrades frame quality over time. Although this phenomenon has been widely observed, the underlying mechanism of compounding error and how to achieve stable long-horizon generation remain largely unresolved. In this paper, we investigate the internal representation dynamics of video world models and discover that compounding error is tightly coupled with dimensional collapse of hidden representations. Specifically, the effective rank of model representations sharply decreases at the onset of generation drift, revealing a strong connection between representational degradation and long-term rollout instability. Furthermore, we find that pure training data scaling fails to boost model resistance to error drift, contradicting mainstream scaling paradigms. To address this problem, we propose video representation regularization, a lightweight training constraint that stabilizes latent representations and suppresses iterative error accumulation. Compared with Diffusion Forcing, our method achieves improvements from 38.65 to 55.56 and from 44.37 to 72.08 on the Aesthetic Quality and Imaging Quality metrics of VBench. Our work establishes the first connection between autoregressive video drifting and model internal representations, adopts erank as a quantitative metric for error accumulation, reveals counterintuitive scaling limitations for video world models, and presents a simple yet effective regularization strategy to improve long video generation robustness.",
+      "authors": [
+        "Taiye Chen",
+        "Qi Zhang",
+        "Yisen Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-29T15:29:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.27036v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Studies frame quality degradation over time in autoregressive video world models and introduces representation collapse diagnosis, relevant to evaluating quality of generated videos",
+      "llm_evidence_cn": "分析长时视频生成中帧质量随时间的退化机制，并通过表示维数坍缩诊断生成质量，与生成视频质量评估直接相关",
+      "llm_evidence": "分析长时视频生成中帧质量随时间的退化机制，并通过表示维数坍缩诊断生成质量，与生成视频质量评估直接相关",
+      "canonical_evidence": "分析长时视频生成中帧质量随时间的退化机制，并通过表示维数坍缩诊断生成质量，与生成视频质量评估直接相关",
+      "llm_tldr_en": "This paper identifies dimensional collapse of hidden representations as the mechanism behind compounding error in autoregressive video world models, proposes representation regularization to stabilize long-horizon generation, and connects representation diagnostics to generated frame quality.",
+      "llm_tldr_cn": "基于扩散的视频世界模型在滑动窗口自回归推理中会出现严重误差积累，导致长期生成帧质量下降。论文通过检查内部表示动力学，发现复合误差与隐藏表示的维数坍缩密切相关，有效秩在生成漂移开始时急剧下降。据此提出视频表示正则化方法以缓解坍缩，提升长时程生成的稳定性与质量。该工作为视频生成质量退化的评估与诊断提供可操作的表示层面指标，对生成视频质量评价具有方法借鉴意义。",
+      "llm_tldr": "基于扩散的视频世界模型在滑动窗口自回归推理中会出现严重误差积累，导致长期生成帧质量下降。论文通过检查内部表示动力学，发现复合误差与隐藏表示的维数坍缩密切相关，有效秩在生成漂移开始时急剧下降。据此提出视频表示正则化方法以缓解坍缩，提升长时程生成的稳定性与质量。该工作为视频生成质量退化的评估与诊断提供可操作的表示层面指标，对生成视频质量评价具有方法借鉴意义。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.05049v1",
+      "source": "arxiv",
+      "title": "OmniEdit-Bench: A Comprehensive Benchmark for Instruction-based Video Editing",
+      "abstract": "Instruction-based video editing (IVE) is an emerging field with broad applications, yet evaluating editing models remains challenging. Existing benchmarks suffer from two major limitations: limited task coverage inherited from image editing, which overlooks video-specific dimensions, and inadequate metrics that fail to measure instruction fidelity, allowing incorrect edits to receive high scores due to strong visual priors from the original video. To address these issues, we introduce a comprehensive and structured benchmark for IVE. Our benchmark decomposes editing tasks into multiple video-specific dimensions, including spatial, temporal, audio, and reference-based editing, extending beyond conventional frame-level evaluation. It also distinguishes explicit and implicit instructions and incorporates reasoning-based scenarios to better reflect real-world requirements. Furthermore, we propose an evaluation framework that assesses editing quality from four complementary dimensions: accuracy, preservation, realism, and consistency, using both human judgments and state-of-the-art vision-language models. To emphasize instruction fidelity, we introduce an accuracy-aware penalty mechanism that conditions other scores on accuracy, preventing visually plausible but incorrect edits from receiving inflated evaluations. Extensive experiments on representative open-source and commercial models show that current IVE models remain far from satisfactory. OmniEdit-Bench provides a comprehensive and reliable testbed for evaluating instruction-based video editing and offers insights into future research directions.",
+      "authors": [
+        "Chenxuan Miao",
+        "Yutong Feng",
+        "Yi Lu",
+        "Yunfeng Yan",
+        "Donglian Qi",
+        "Shiwei Zhang",
+        "Yu Liu",
+        "Xi Chen",
+        "Hengshuang Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T16:58:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.05049v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "video-specific benchmark and metrics for evaluating instruction-fidelity in video editing; transferable to generated video quality assessment",
+      "llm_evidence_cn": "面向视频编辑的评估基准，提出视频特有维度与指令忠实度度量，可迁移至生成视频评价",
+      "llm_evidence": "面向视频编辑的评估基准，提出视频特有维度与指令忠实度度量，可迁移至生成视频评价",
+      "canonical_evidence": "面向视频编辑的评估基准，提出视频特有维度与指令忠实度度量，可迁移至生成视频评价",
+      "llm_tldr_en": "Presents a comprehensive benchmark for instruction-based video editing that decomposes tasks into spatial, temporal, audio, and reference-based dimensions and improves metrics for instruction fidelity, going beyond frame-level evaluation.",
+      "llm_tldr_cn": "指令视频编辑模型的评估面临任务覆盖不足与指标无法衡量指令忠实度的问题，错误编辑可能因原视频的强视觉先验而得高分。该文提出OmniEdit-Bench，将编辑任务分解为空间、时间、音频和参考式编辑等多个视频特有维度，并区分帧级与视频级评估。基准弥补了现有评测在视频特有维度和指令忠实度上的缺失，可推广到更广泛的生成视频质量评估。",
+      "llm_tldr": "指令视频编辑模型的评估面临任务覆盖不足与指标无法衡量指令忠实度的问题，错误编辑可能因原视频的强视觉先验而得高分。该文提出OmniEdit-Bench，将编辑任务分解为空间、时间、音频和参考式编辑等多个视频特有维度，并区分帧级与视频级评估。基准弥补了现有评测在视频特有维度和指令忠实度上的缺失，可推广到更广泛的生成视频质量评估。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
