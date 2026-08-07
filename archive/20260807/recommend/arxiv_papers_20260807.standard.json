@@ -1,55 +1,54 @@
 {
   "mode": "standard",
-  "generated_at": "2026-08-07T02:02:33.967649+00:00",
+  "generated_at": "2026-08-07T21:02:56.627969+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
-    "deep_divecandidates": 0,
+    "deep_divecandidates": 2,
     "deep_cap": 6,
-    "deep_selected": 0,
+    "deep_selected": 2,
     "quick_candidates": 2,
     "quick_skim_target": 11,
     "quick_selected": 2
   },
-  "deep_dive": [],
-  "quick_skim": [
+  "deep_dive": [
     {
-      "id": "2607.27036v1",
+      "id": "2608.05485v1",
       "source": "arxiv",
-      "title": "Mitigating Compounding Error via Video Representation Regularization",
-      "abstract": "Video diffusion-based world models enable long autoregressive video generation for robotics, autonomous driving and simulation tasks, yet sliding-window autoregressive inference suffers from severe error accumulation that degrades frame quality over time. Although this phenomenon has been widely observed, the underlying mechanism of compounding error and how to achieve stable long-horizon generation remain largely unresolved. In this paper, we investigate the internal representation dynamics of video world models and discover that compounding error is tightly coupled with dimensional collapse of hidden representations. Specifically, the effective rank of model representations sharply decreases at the onset of generation drift, revealing a strong connection between representational degradation and long-term rollout instability. Furthermore, we find that pure training data scaling fails to boost model resistance to error drift, contradicting mainstream scaling paradigms. To address this problem, we propose video representation regularization, a lightweight training constraint that stabilizes latent representations and suppresses iterative error accumulation. Compared with Diffusion Forcing, our method achieves improvements from 38.65 to 55.56 and from 44.37 to 72.08 on the Aesthetic Quality and Imaging Quality metrics of VBench. Our work establishes the first connection between autoregressive video drifting and model internal representations, adopts erank as a quantitative metric for error accumulation, reveals counterintuitive scaling limitations for video world models, and presents a simple yet effective regularization strategy to improve long video generation robustness.",
+      "title": "VideoArgus: Agentic Rubric-Grounded Unified Evaluation for Video Generation and Editing",
+      "abstract": "Evaluating generated videos remains challenging because existing benchmarks rely on fixed evaluation content, cover only a subset of generation and editing settings, and provide limited evidence for their scores. We introduce VideoArgus, a unified rubric-grounded framework covering five video generation and editing settings. For each input instance, VideoArgus generates an output-blind, sample-specific rubric once and reuses it to evaluate all corresponding candidate videos. The rubric defines concrete criteria, scoring rules, failure modes, and evidence plans, which guide criterion-specific VLM QA and visual tools to produce evidence-grounded criterion scores, rationales, and a diagnostic report. We further construct VideoArgus-Bench, containing 1,026 curated input instances built from 653 high-quality images and 416 high-quality videos, with all benchmark rubrics pre-generated, frozen, and released. On a separate 1,260-video human-alignment set, VideoArgus achieves higher within-input Spearman and Kendall correlations with human judgments than the corresponding benchmark-specific evaluators across all five tasks. Model rankings also remain largely consistent across different rubric-generation and evaluation-VLM backbones. All code and data are released. Visit our project page: https://zzzmyyzeng.github.io/VideoArgus",
       "authors": [
-        "Taiye Chen",
-        "Qi Zhang",
-        "Yisen Wang"
+        "Ziyun Zeng",
+        "Zixuan Wang",
+        "Yongsheng Yu",
+        "Hang Hua",
+        "Jiebo Luo"
       ],
       "primary_category": "cs.CV",
       "categories": [
-        "cs.CV",
-        "cs.LG"
+        "cs.CV"
       ],
-      "published": "2026-07-29T15:29:39+00:00",
-      "link": "https://arxiv.org/pdf/2607.27036v1",
+      "published": "2026-08-06T00:28:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.05485v1",
       "tags": [
         "keyword:vgen-metrics",
         "query:vgen-metrics"
       ],
-      "llm_score": 6.0,
-      "llm_evidence_en": "Studies frame quality degradation over time in autoregressive video world models and introduces representation collapse diagnosis, relevant to evaluating quality of generated videos",
-      "llm_evidence_cn": "分析长时视频生成中帧质量随时间的退化机制，并通过表示维数坍缩诊断生成质量，与生成视频质量评估直接相关",
-      "llm_evidence": "分析长时视频生成中帧质量随时间的退化机制，并通过表示维数坍缩诊断生成质量，与生成视频质量评估直接相关",
-      "canonical_evidence": "分析长时视频生成中帧质量随时间的退化机制，并通过表示维数坍缩诊断生成质量，与生成视频质量评估直接相关",
-      "llm_tldr_en": "This paper identifies dimensional collapse of hidden representations as the mechanism behind compounding error in autoregressive video world models, proposes representation regularization to stabilize long-horizon generation, and connects representation diagnostics to generated frame quality.",
-      "llm_tldr_cn": "基于扩散的视频世界模型在滑动窗口自回归推理中会出现严重误差积累，导致长期生成帧质量下降。论文通过检查内部表示动力学，发现复合误差与隐藏表示的维数坍缩密切相关，有效秩在生成漂移开始时急剧下降。据此提出视频表示正则化方法以缓解坍缩，提升长时程生成的稳定性与质量。该工作为视频生成质量退化的评估与诊断提供可操作的表示层面指标，对生成视频质量评价具有方法借鉴意义。",
-      "llm_tldr": "基于扩散的视频世界模型在滑动窗口自回归推理中会出现严重误差积累，导致长期生成帧质量下降。论文通过检查内部表示动力学，发现复合误差与隐藏表示的维数坍缩密切相关，有效秩在生成漂移开始时急剧下降。据此提出视频表示正则化方法以缓解坍缩，提升长时程生成的稳定性与质量。该工作为视频生成质量退化的评估与诊断提供可操作的表示层面指标，对生成视频质量评价具有方法借鉴意义。",
+      "llm_score": 9.0,
+      "llm_evidence_en": "Unified rubric-grounded evaluation framework for video generation and editing",
+      "llm_evidence_cn": "面向视频生成与编辑的统一评分标准评估框架",
+      "llm_evidence": "面向视频生成与编辑的统一评分标准评估框架",
+      "canonical_evidence": "面向视频生成与编辑的统一评分标准评估框架",
+      "llm_tldr_en": "VideoArgus is a rubric-grounded unified evaluation framework covering five video generation and editing settings, generating sample-specific rubrics to produce evidence-grounded scores, rationales, and diagnostic reports.",
+      "llm_tldr_cn": "现有视频生成评估基准依赖固定内容，覆盖设置有限且分数缺乏证据支持。VideoArgus为每个输入样本生成输出无关的样本专属评分标准，并复用该标准评估所有候选视频。评分标准定义具体准则、打分规则、失效模式与证据计划，指导视觉语言模型问答和视觉工具产生证据化的分数与诊断报告。依托VideoArgus-Bench，该方法统一覆盖五种视频生成与编辑设置，提升评估的可解释性和可靠性。",
+      "llm_tldr": "现有视频生成评估基准依赖固定内容，覆盖设置有限且分数缺乏证据支持。VideoArgus为每个输入样本生成输出无关的样本专属评分标准，并复用该标准评估所有候选视频。评分标准定义具体准则、打分规则、失效模式与证据计划，指导视觉语言模型问答和视觉工具产生证据化的分数与诊断报告。依托VideoArgus-Bench，该方法统一覆盖五种视频生成与编辑设置，提升评估的可解释性和可靠性。",
       "llm_tags": [
         "query:vgen-metrics"
       ],
       "matched_query_tag": "query:vgen-metrics",
       "matched_query_text": "evaluating quality of generated videos",
       "matched_requirement_id": "req-2",
-      "selection_source": "fresh_fetch",
-      "quick_tier": "6"
+      "selection_source": "fresh_fetch"
     },
     {
       "id": "2608.05049v1",
@@ -77,14 +76,92 @@
         "keyword:vgen-metrics",
         "query:vgen-metrics"
       ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Comprehensive benchmark for instruction-based video editing, decomposing evaluation into video-specific dimensions and addressing inadequate metrics for instruction fidelity",
+      "llm_evidence_cn": "面向指令式视频编辑的综合评测基准，细分视频特有维度并改进指令遵循度度量",
+      "llm_evidence": "面向指令式视频编辑的综合评测基准，细分视频特有维度并改进指令遵循度度量",
+      "canonical_evidence": "面向指令式视频编辑的综合评测基准，细分视频特有维度并改进指令遵循度度量",
+      "llm_tldr_en": "OmniEdit-Bench evaluates instruction-based video editing across spatial, temporal, audio, and reference-based dimensions, with metrics that separate true instruction fidelity from strong visual priors, going beyond frame-level checks.",
+      "llm_tldr_cn": "指令式视频编辑评测面临任务覆盖窄和指标无法衡量指令忠实度的问题。OmniEdit-Bench将编辑任务分解为空间、时间、音频和参考式编辑等多个视频特有维度，扩展了传统逐帧评估。其指标设计避免模型因原始视频的强视觉先验而获得虚高分数。该基准为视频编辑乃至视频生成质量评测提供了更细致的评估框架。",
+      "llm_tldr": "指令式视频编辑评测面临任务覆盖窄和指标无法衡量指令忠实度的问题。OmniEdit-Bench将编辑任务分解为空间、时间、音频和参考式编辑等多个视频特有维度，扩展了传统逐帧评估。其指标设计避免模型因原始视频的强视觉先验而获得虚高分数。该基准为视频编辑乃至视频生成质量评测提供了更细致的评估框架。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.02549v1",
+      "source": "arxiv",
+      "title": "Estimating SSIM from MSE for DCT-Based Compressed Images",
+      "abstract": "Efficient and perceptually meaningful quality assessment is a fundamental requirement for image and video processing, compression, and streaming systems. This article shows that, in the context of Discrete Cosine Transform ( DCT)-based compressed images, Structural Similarity Index ( SSIM ) can be approximated from global Peak Signal to Noise Ratio (PSNR) or Mean Square Error ( MSE) using local statistics derived only from the reference image. While prior work assumes access to local MSE, we propose two approaches to approximate local MSE by redistributing the global MSE using variance or standard-deviation-based weighting. Experiments on the Kodak and Xiph Subset1 datasets across a range of JPEG quality levels demonstrate that both approaches provide accurate and robust SSIM approximations, substantially outperforming the global MSE baseline. The proposed framework is designed to extend naturally to video, where reference-derived statistics can be amortized across multiple encodes of the same content.",
+      "authors": [
+        "Luc Trudeau",
+        "Maria G. Martini"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM",
+        "cs.CV"
+      ],
+      "published": "2026-08-03T17:33:36+00:00",
+      "link": "https://arxiv.org/pdf/2608.02549v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Proposes estimating SSIM from MSE for image/video quality assessment, transferable to generated video quality evaluation.",
+      "llm_evidence_cn": "提出从MSE近似SSIM的图像/视频质量评估方法，可迁移用于生成视频质量评价。",
+      "llm_evidence": "提出从MSE近似SSIM的图像/视频质量评估方法，可迁移用于生成视频质量评价。",
+      "canonical_evidence": "提出从MSE近似SSIM的图像/视频质量评估方法，可迁移用于生成视频质量评价。",
+      "llm_tldr_en": "Aims for efficient perceptual quality assessment of compressed images/videos. Proposes approximating SSIM from global MSE/PSNR using variance- or stddev-weighted local statistics, validated on Kodak and Xiph Subset1 across JPEG levels.",
+      "llm_tldr_cn": "本文面向压缩图像/视频的感知质量评估，提出仅从全局PSNR/MSE估算SSIM的方法，利用参考图像方差或标准差加权重新分配全局MSE来近似局部MSE，避免了对逐块局部MSE的依赖。实验在Kodak与Xiph Subset1数据集上多个JPEG质量级别验证，两种方案都能较准确地逼近真实SSIM。该方法为高效、低成本的图像/视频质量监控提供了新的指标近似途径。",
+      "llm_tldr": "本文面向压缩图像/视频的感知质量评估，提出仅从全局PSNR/MSE估算SSIM的方法，利用参考图像方差或标准差加权重新分配全局MSE来近似局部MSE，避免了对逐块局部MSE的依赖。实验在Kodak与Xiph Subset1数据集上多个JPEG质量级别验证，两种方案都能较准确地逼近真实SSIM。该方法为高效、低成本的图像/视频质量监控提供了新的指标近似途径。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.00111v1",
+      "source": "arxiv",
+      "title": "FDIR: Harmonizing Fidelity and Human-Machine Preference in Lossy Compression Image Restoration",
+      "abstract": "Image restoration quality can be evaluated along three complementary facets: pixel-level fidelity, human perception, and downstream machine preference. However, existing lossy compression restoration methods optimize for at most one of these criteria: fidelity-oriented models often regress toward conditional means and produce over-smoothed outputs, while generative approaches hallucinate plausible but factually incorrect textures that degrade both ground-truth fidelity and downstream task accuracy. To navigate this three-way tradeoff, we propose FDIR, a two-stage architecture that decouples the conflicting demands through complementary inductive biases: Quality-Guided One-Step Flow Matching (QO-Flow) recovers global semantic structure in latent space via a single forward pass, while Flow-Conditioned Detail Refinement (FCDR) deterministically restores high-frequency textures and suppresses generative hallucinations in pixel space. Extensive experiments demonstrate that FDIR achieves superior fidelity, with a favorable perceptual-fidelity balance and competitive machine preference.",
+      "authors": [
+        "Kuan-Yen Chen",
+        "Fang-Yi Su",
+        "Philip Chikontwe",
+        "Jung-Hsien Chiang"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-31T08:33:40+00:00",
+      "link": "https://arxiv.org/pdf/2608.00111v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
       "llm_score": 6.0,
-      "llm_evidence_en": "video-specific benchmark and metrics for evaluating instruction-fidelity in video editing; transferable to generated video quality assessment",
-      "llm_evidence_cn": "面向视频编辑的评估基准，提出视频特有维度与指令忠实度度量，可迁移至生成视频评价",
-      "llm_evidence": "面向视频编辑的评估基准，提出视频特有维度与指令忠实度度量，可迁移至生成视频评价",
-      "canonical_evidence": "面向视频编辑的评估基准，提出视频特有维度与指令忠实度度量，可迁移至生成视频评价",
-      "llm_tldr_en": "Presents a comprehensive benchmark for instruction-based video editing that decomposes tasks into spatial, temporal, audio, and reference-based dimensions and improves metrics for instruction fidelity, going beyond frame-level evaluation.",
-      "llm_tldr_cn": "指令视频编辑模型的评估面临任务覆盖不足与指标无法衡量指令忠实度的问题，错误编辑可能因原视频的强视觉先验而得高分。该文提出OmniEdit-Bench，将编辑任务分解为空间、时间、音频和参考式编辑等多个视频特有维度，并区分帧级与视频级评估。基准弥补了现有评测在视频特有维度和指令忠实度上的缺失，可推广到更广泛的生成视频质量评估。",
-      "llm_tldr": "指令视频编辑模型的评估面临任务覆盖不足与指标无法衡量指令忠实度的问题，错误编辑可能因原视频的强视觉先验而得高分。该文提出OmniEdit-Bench，将编辑任务分解为空间、时间、音频和参考式编辑等多个视频特有维度，并区分帧级与视频级评估。基准弥补了现有评测在视频特有维度和指令忠实度上的缺失，可推广到更广泛的生成视频质量评估。",
+      "llm_evidence_en": "Evaluates restoration quality along pixel fidelity, human perception, and machine preference; offers a transferable multi-facet quality objective for generated video assessment.",
+      "llm_evidence_cn": "从像素保真度、人类感知和机器偏好三维度评估恢复质量，其多目标评价思路可迁移到生成视频质量评估。",
+      "llm_evidence": "从像素保真度、人类感知和机器偏好三维度评估恢复质量，其多目标评价思路可迁移到生成视频质量评估。",
+      "canonical_evidence": "从像素保真度、人类感知和机器偏好三维度评估恢复质量，其多目标评价思路可迁移到生成视频质量评估。",
+      "llm_tldr_en": "Addresses image restoration quality tradeoffs by jointly considering pixel fidelity, human perception, and machine preference. Proposes a two-stage FDIR architecture with quality-guided one-step flow matching and decoupled inductive biases, improving restoration on all three facets.",
+      "llm_tldr_cn": "针对有损压缩图像恢复中保真度、人类感知与机器偏好难以兼顾的问题，本文提出FDIR两阶段架构，通过质量引导的一步流匹配恢复全局语义结构，并配合互补归纳偏置解耦三类目标。实验表明该方法能同时改善像素级保真度、主观感知和下游任务精度。该工作为生成内容评价与优化提供了融合多维质量准则的可行范例。",
+      "llm_tldr": "针对有损压缩图像恢复中保真度、人类感知与机器偏好难以兼顾的问题，本文提出FDIR两阶段架构，通过质量引导的一步流匹配恢复全局语义结构，并配合互补归纳偏置解耦三类目标。实验表明该方法能同时改善像素级保真度、主观感知和下游任务精度。该工作为生成内容评价与优化提供了融合多维质量准则的可行范例。",
       "llm_tags": [
         "query:vgen-metrics"
       ],

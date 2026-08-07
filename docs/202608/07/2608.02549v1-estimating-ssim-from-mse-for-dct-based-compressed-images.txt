@@ -1,0 +1,213 @@
+Title: Estimating SSIM from MSE for DCT-Based Compressed Images
+
+URL Source: https://arxiv.org/pdf/2608.02549v1
+
+Published Time: Tue, 04 Aug 2026 02:46:07 GMT
+
+Number of Pages: 4
+
+Markdown Content:
+# Estimating SSIM from MSE for DCT-Based Compressed Images via Modeling Local Error Statistics 
+
+Luc Trudeau 1 Maria G. Martini 21 Universit´ e du Qu´ ebec ` a Rimouski, Rimouski, QC, Canada 
+
+2 Kingston University London, London, UK 
+
+Abstract —Efficient and perceptually meaningful quality assess-ment is a fundamental requirement for image and video processing, compression, and streaming systems. This article shows that, in the context of Discrete Cosine Transform ( DCT )-based compressed images, Structural Similarity Index ( SSIM ) can be approximated from global Peak Signal to Noise Ratio ( PSNR ) or Mean Square Error ( MSE ) using local statistics derived only from the reference image. While prior work assumes access to local MSE , we propose two approaches to approximate local MSE by redistributing the global MSE using variance or standard-deviation-based weighting. Experiments on the Kodak and Xiph Subset1 datasets across a range of JPEG quality levels demonstrate that both approaches provide accurate and robust SSIM approximations, substantially outperforming the global MSE baseline. The proposed framework is designed to extend naturally to video, where reference-derived statistics can be amortized across multiple encodes of the same content. 
+
+Index Terms —Quality assessment, objective quality metrics, PSNR, SSIM, image compression 
+
+I. I NTRODUCTION 
+
+Video and image compression requires objective quality metrics that are both efficient and perceptually meaningful. While subjective quality assessment remains the ground truth, it is often prohibitively expensive or impractical to use in many scenarios. Full reference objective quality metrics are mathematical models and algorithms designed to compare an image or block x and its distorted counterpart y.PSNR , derived directly from MSE , is the most widely used objective quality metric in codec development due to its simplicity and low computational cost. PSNR expresses reconstruction fidelity on a logarithmic decibel scale, empha-sizing relative error differences while remaining agnostic to image content and spatial structure. However, PSNR correlates poorly with perceived quality, motivating established and widely used alternatives such as SSIM [ 1], which remains simple and interpretable despite not representing the state of the art in image quality assessment: SSIM (x, y ) = (2 μxμy + C1)(2 σxy + C2)(μ2 
+
+> x
+
++ μ2 
+
+> y
+
++ C1)( σ2 
+
+> x
+
++ σ2 
+
+> y
+
++ C2) . (1) The global structural similarity index is typically calculated as the mean of the SSIM of sub-windows composing the image: MSSIM (X, Y ) = 1
+
+M
+
+X
+
+> j
+
+SSIM (xj , y j ) (2) where X and Y are the reference and the distorted images, respectively, xj and yj are the image contents at the j-th local window, and M is the number of local windows in the image [ 1 ]. While SSIM is more perceptually meaningful than PSNR , it also requires local-window statistics from both the reference and distorted signals and the calculation of the covariance based on pixel values of both original and distorted image. With the advent of Content Adaptive Encoding [ 2], per-ceptual quality metrics have evolved from simple monitoring tools to deciding factors in modern video encoding pipelines. Perceptual metric evaluation is now embedded in rate-distortion optimization, bitrate ladder construction, and convex hull selec-tion. In these contexts, the same content is encoded repeatedly across many bitrates, resolutions, codecs, and encoder configu-rations. Although standard SSIM is lightweight compared with modern encoding workloads, repeated full-reference evaluation still introduces compute and data-dependency costs at scale. Reducing these dependencies is therefore useful when source-derived statistics can be computed once, cached, and reused across multiple encodes of the same content. This paper establishes a still-image formulation for broader video-pipeline applications, using variance- and standard-deviation-based models to approximate SSIM from global MSE and reference-derived local statistics, without requiring local statistics from the distorted image. Both approaches are validated on the Kodak and Xiph Subset1 datasets across a range of JPEG quality levels, demonstrating substantial accuracy gains over the global MSE baseline and extending the framework of [ 3] to the more constrained single-image scenario. II. R ELATED WORK 
+
+Zinner et al. [ 4] were among the early contributors to inte-grate perceptual quality metrics into multimedia systems. They relied on empirical mappings from PSNR and SSIM values to subjective quality categories. No analytical relationship was derived. Focusing on quality reduction caused by packet losses, in [ 5 ] the authors used a quite simple relationship for block-based SSIM as a function of MSE, information on original and impaired image, and constant terms. The works in [ 6], [ 7] further analyzed the relationship and analytical arXiv:2608.02549v1 [cs.MM] 3 Aug 2026 expressions and approximations were provided for different use cases, requiring some joint processing of original and compressed image, beyond what required for PSNR. In [ 8]the authors, while discussing the validity of SSIM as quality metric, also showed that the index is directly related to the mean squared error, compared the two metrics statistically and derived a pair of functions that algebraically connect the two via means and mean square values of original and impaired images. Information on both original and impaired image is requested by their formulation in addition to MSE. In [ 9 ] the authors developed a perceptually relevant MSE-based image quality metric. In doing so, they assume an additive error model and independence between signal and error. This metric is also adopted in [ 10 ] and further tested in [ 3 ], where it was shown that this estimation is less accurate than the methods proposed for DCT -compressed images. Similar limitations were reported in [ 11 ]. We build here on top of the recent work [ 3], where a simple relationship is established between SSIM and local PSNR / MSE for DCT-based compressed images and videos. III. P ROPOSED APPROACH 
+
+The standard SSIM computation uses statistics computed over local overlapping windows of the original image ( X) and the impaired image ( Y ). We consider the case where Y is unavailable for local-window analysis: the only information about the distortion is the global frame-level MSE ( MSE G)between X and Y .Avoiding local-window analysis of Y has concrete advan-tages in modern video pipelines. Source-derived constants can be computed once and amortized across every encode of the same source. Because these constants are independent of the encode, they can also be computed ahead of time or in parallel with encoding. The proposed approximation therefore reduces repeated local full-reference analysis to the combination of a reusable source-derived scalar and a global distortion measure already available from the encode. Martini [ 12 ], [ 3] previously addressed a related problem, showing that local SSIM values can be approximated by the local MSE (MSE ℓ) and the local variance of the source ( σ2
+
+> x
+
+)SSIM (xj , y j ) ≈ 1 − MSE ℓ
+
+2σ2 
+
+> x
+
++ C2
+
+. (3) Here C2 is a standard SSIM stabilization constant. The approximation reduces per-window SSIM computation to a single ratio. In this work, we consider a more restrictive case, where the MSE ℓ is unavailable and only MSE G is known. Since SSIM operates on local windows, MSE G is insufficient to approximate MSE ℓ, due to the lack of spatial context. To resolve this, we model M SE ℓ from local source activity. In transform-based coding, quantization error is not spatially uniform after inverse transformation: smooth regions often retain lower absolute error, while textured or edge-rich regions can absorb larger errors. Local variance is therefore used as a first-order proxy for redistributing global distortion across SSIM windows. An approximation of MSE ℓ must satisfy MSE G = E[MSE ℓ]. (4) This leads to a variance-normalized model such that MSE ℓ ≈ MSE G · σ2
+
+> x
+
+E[σ2
+
+> x
+
+] . (5) This distributes global distortion according to local activity. Empirical analysis of the previous equation revealed over-allocation of error to high variance regions. We soften the assumption to a sublinear relationship and introduce a shaping exponent β ∈ [0 , 1] 
+
+MSE ℓ ≈ MSE G · (σ2 
+
+> x
+
++ ϵ)β
+
+E[( σ2 
+
+> x
+
++ ϵ)β ] . (6) In the previous equation, ϵ = 1 e−6.Optimizing β over the Kodak and Xiph Subset1 datasets resulted in values of 0.46 and 0.48, respectively. While broader validation would be needed to establish generality, this consistency suggests a sublinear relationship close to a square root, motivating a parameter-free model based on standard deviation (σx) rather than variance. This gives: MSE ℓ ≈ MSE G · σx + ϵ
+
+E[σx + ϵ] . (7) Compared with variance, standard deviation compresses the dynamic range of local activity and reduces the dominance of highly textured regions, leading to a more balanced first-order model of artifact distribution. The local SSIM is hence obtained based on global image MSE (or PSNR) and variance of one image (e.g., the original uncompressed one). SSIM (xj , y j ) ≈ 1 − MSE G · (σx + ϵ)
+
+E[σx + ϵ] (2 σ2 
+
+> x
+
++ C2) . (8) The global SSIM is computed by averaging over all the windows of the frame: MSSIM (X, Y ) ≈ 1
+
+M
+
+X
+
+> j
+
+
+
+1 − MSE G · (σx + ϵ)
+
+E[σx + ϵ] (2 σ2 
+
+> x
+
++ C2)
+
+
+
+.
+
+(9) Since MSE G is a constant with respect to j, it factors out MSSIM (X, Y ) ≈ 1−MSE G· 1
+
+M
+
+X
+
+> j
+
+ σx + ϵ
+
+E[σx + ϵ] (2 σ2 
+
+> x
+
++ C2)
+
+| {z }
+
+> k
+
+.
+
+(10) Here k is a source-only scalar. The mean SSIM of a frame reduces to a product of a source-dependent constant k and a distortion scalar MSE G. No per-window SSIM computation is required. 40 60 80 100 
+
+0.7
+
+0.8
+
+0.9
+
+1
+
+JPEG quality 
+
+> SSIM (Y)
+> (a) Kodak
+
+40 60 80 100 
+
+0.7
+
+0.8
+
+0.9
+
+1
+
+JPEG quality 
+
+> SSIM (Y)
+
+Local MSE 
+
+Global MSE 
+
+Sublinear variance 
+
+Std-based 
+
+SSIM 
+
+> (b) Subset1
+
+40 60 80 100 
+
+−2
+
+−1
+
+0
+
+1
+
+2
+
+JPEG quality 
+
+> SSIM (Y) Delta (%)
+
+Local MSE (bound) 
+
+Sublinear variance 
+
+Std-based 
+
+> (c) Approximation error (Subset1)
+
+Local MSE Global MSE Sublinear variance Std-based SSIM 
+
+> Fig. 1: Average SSIM versus JPEG quality averaged across images in the Kodak (a) and Subset1 (b) datasets, and difference between SSIM and SSIM approximations as a function of JPEG quality on Subset1 (c).
+
+IV. N UMERICAL RESULTS 
+
+Experiments use the Kodak Lossless True Color Image Suite [ 13 ] and the Xiph.org Foundation Subset1 still-image test set [ 14 ], comprising 24 and 50 high-quality uncompressed images, respectively. SSIM values were computed with scikit-image [ 15 ] using the default 7 × 7 windows, matching the standard formulation [ 1]; the proposed approximations are not implementation-specific. The code is available as open-source software [16]. JPEG is used as a representative example of DCT -based compression. Compression was performed with Pillow [ 17 ], using quality values from 35 to 95 in steps of 5 to cover practical lossy operating points while avoiding both near-lossless saturation and extremely low-quality regimes where artifacts become less representative of typical usage. We compare four approximations: Martini’s local-MSE method [ 3], a global- MSE baseline, and the proposed sublinear-variance and standard-deviation models. The proposed models use source variance over 7 × 7 windows to redistribute global MSE locally. Figures 1a and 1b illustrate the behavior of the proposed SSIM approximations as a function of JPEG quality, compared with the reference SSIM values (black curve). All SSIM values are averaged over the images of the corresponding dataset. Across the full range of evaluated qualities, the proposed approaches consistently provide more accurate SSIM estimates than the global MSE-based approximation. Notably, the ap-proximations preserve the relative ordering of quality levels, indicating that they remain suitable for comparative evaluation. These results demonstrate that weighting the global MSE using local signal statistics yields SSIM estimates close to those obtained using local MSE, while requiring local statistics only from the reference image, together with the global distortion measure already available from the encode. Moreover, Figure 1c complements figs. 1a and 1b by providing a closer view of the approximation error for the local MSE, sublinear variance, and the standard-deviation-based approach. The y-axis shows the difference between reference SSIM and the corresponding approximation, while the x-axis represents the JPEG quality level. All results are averaged over the images of Subset1. The curve corresponding to local MSE highlights the residual error introduced by the approximation proposed in [3]. At lower JPEG quality levels, the sublinear variance-based approximation shows larger deviations, consistent with an over-allocation of distortion to highly textured regions when artifacts are severe. The standard-deviation-based model reduces this effect by compressing the dynamic range of local activity, leading to a more balanced redistribution of global error. These results also indicate a limitation of the proposed model: at very low quality, distortion becomes increasingly artifact-dependent and less well described by source-only local statistics. Nevertheless, over the evaluated practical quality range, the approximation error remains small relative to the overall SSIM scale, and both proposed methods preserve the monotonic relationship between JPEG quality and SSIM. V. C ONCLUSION 
+
+This paper showed that, for DCT -based compressed images, SSIM can be approximated from global PSNR (or MSE )and reference-derived local statistics. On JPEG-compressed Kodak and Xiph Subset1 images, the approximation error remains below 1% across typical quality levels, and the optimized exponent β is consistently close to 0.5, motivating a parameter-free standard-deviation-based formulation. The present validation is limited to JPEG still images; future work should evaluate modern image and video codecs, compare runtime against local- MSE approximations, and quantify the benefit of amortizing source-derived statistics across repeated video encodes. REFERENCES [1] Zhou Wang, Alan C Bovik, Hamid R Sheikh, and Eero P Simoncelli, “Image quality assessment: from error visibility to structural similarity,” 
+
+> IEEE Transactions on Image Processing , vol. 13, no. 4, pp. 600–612, 2004.
+
+[2] Zhi Li, Anne Aaron, Ioannis Katsavounidis, Anush Moorthy, and Megha Manohara, “Toward a practical perceptual video quality metric,” in 
+
+Netflix Technology Blog , 2016. [3] Maria G. Martini, “Measuring objective image and video quality: On the relationship between SSIM and PSNR for DCT-based compressed images,” IEEE Transactions on Instrumentation and Measurement , vol. 74, pp. 1–13, 2025. [4] Thomas Zinner, Osama Abboud, Oliver Hohlfeld, Tobias Hossfeld, and Phuoc Tran-Gia, “Towards QoE management for scalable video streaming,” in 21th ITC specialist seminar on multimedia applications-traffic, performance and QoE . Citeseer, 2010, pp. 64–69. [5] Amy R Reibman and David Poole, “Characterizing packet-loss impair-ments in compressed video,” in 2007 IEEE International Conference on Image Processing . IEEE, 2007, vol. 5, pp. V–77. [6] Alain Hore and Djemel Ziou, “Image quality metrics: PSNR vs. SSIM,” in 2010 20th International Conference on Pattern Recognition . IEEE, 2010, pp. 2366–2369. [7] Alain Hor ´e and Djemel Ziou, “Is there a relationship between peak-signal-to-noise ratio and structural similarity index measure?,” IET Image Processing , vol. 7, no. 1, pp. 12–24, 2013. [8] Richard Dosselmann and Xue Dong Yang, “A comprehensive assessment of the structural similarity index,” Signal, Image and Video Processing ,vol. 5, pp. 81–91, 2011. [9] Hui Li Tan, Zhengguo Li, Yih Han Tan, Susanto Rahardja, and Chuohuo Yeo, “A perceptually relevant MSE-based image quality metric,” IEEE Transactions on Image Processing , vol. 22, no. 11, pp. 4447–4459, 2013. [10] Chuohao Yeo, Hui Li Tan, and Yih Han Tan, “On rate distortion optimization using SSIM,” IEEE Transactions on Circuits and Systems for Video Technology , vol. 23, no. 7, pp. 1170–1181, 2013. [11] Yang Li and Xuanqin Mou, “Joint optimization for SSIM-based CTU-level bit allocation and rate distortion optimization,” IEEE Transactions on Broadcasting , vol. 67, no. 2, pp. 500–511, 2021. [12] Maria Martini, “A Simple Relationship Between SSIM and PSNR for DCT-Based Compressed Images and Video: SSIM as Content-Aware PSNR,” in 2023 IEEE 25th International Workshop on Multimedia Signal Processing (MMSP) . IEEE, 2023, pp. 1–5. [13] Eastman Kodak Company, “Kodak lossless true color image suite,” https://r0k.us/graphics/kodak/, 1999, Accessed: 2026-01-. [14] Xiph.org Foundation, “Subset1 image dataset,” https://media.xiph.org/ video/derf/subset1-y4m.tar.gz, 2012, Accessed: 2026-01. [15] Stefan van der Walt, Johannes L. Sch ¨onberger, Juan Nunez-Iglesias, Fran c¸ ois Boulogne, Joshua D. Warner, Neil Yager, Emmanuelle Gouillart, Tony Yu, and the scikit-image contributors, “scikit-image: image processing in python,” PeerJ , vol. 2, pp. e453, 2014. [16] Luc Trudeau and Maria G. Martini, “ApproxSSIMate: Estimating SSIM from PSNR/MSE and reference-derived statistics,” https://github.com/ luctrudeau/approxssimate, 2026, Open-source software, version 0.1.0, BSD-2-Clause license. [17] Alex Clark and contributors, “Pillow: Python imaging library,” https: //python-pillow.org/, Accessed: 2026-01.

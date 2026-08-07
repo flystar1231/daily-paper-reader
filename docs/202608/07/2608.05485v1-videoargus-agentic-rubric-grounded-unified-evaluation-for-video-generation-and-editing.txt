@@ -1,0 +1,291 @@
+Title: VideoArgus: Agentic Rubric-Grounded Unified Evaluation for Video Generation and Editing
+
+URL Source: https://arxiv.org/pdf/2608.05485v1
+
+Published Time: Fri, 07 Aug 2026 00:24:35 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# VideoArgus: Agentic Rubric-Grounded Unified Evaluation for Video Generation and Editing 
+
+# Ziyun Zeng, Zixuan Wang, Yongsheng Yu, Hang Hua, Jiebo Luo University of Rochester 
+
+> {zzeng24,zwang234,yyu90 }@ur.rochester.edu, {hhua2,jluo }@cs.rochester.edu
+
+# Abstract 
+
+Evaluating generated videos remains challenging because existing benchmarks rely on fixed evaluation content, cover only a subset of generation and editing settings, and provide limited evidence for their scores. We introduce VideoAr-gus , a unified rubric-grounded framework covering five video generation and editing settings. For each input instance, VideoArgus generates an output-blind, sample-specific rubric once and reuses it to evaluate all corre-sponding candidate videos. The rubric defines concrete criteria, scoring rules, failure modes, and evidence plans, which guide criterion-specific VLM QA and visual tools to produce evidence-grounded criterion scores, rationales, and a diagnostic report. We further construct VideoArgus-Bench , containing 1,026 curated input instances built from 653 high-quality images and 416 high-quality videos, with all benchmark rubrics pre-generated, frozen, and released. On a separate 1,260-video human-alignment set, VideoAr-gus achieves higher within-input Spearman and Kendall correlations with human judgments than the correspond-ing benchmark-specific evaluators across all five tasks. Model rankings also remain largely consistent across differ-ent rubric-generation and evaluation-VLM backbones. All code and data are released. Visit our project page. 
+
+# 1. Introduction 
+
+Modern video models support text-to-video generation (T2V), text-and-image-driven video generation (TI2V), text-and-subject-driven video generation (TS2V), text-driven video editing (TV2V), and text-and-subject-driven video editing (TSV2V). Therefore, a unified protocol is needed to evaluate these heterogeneous generation and edit-ing settings consistently. Existing evaluators remain fragmented across tasks and often use predefined dimensions shared by all inputs. Yet requirements such as counting, visible text, temporal or-der, subject identity, and source preservation are instance-dependent. Specialized metrics measure narrow properties, while holistic VLM judges often combine multiple require-ments with limited supporting evidence, making failures difficult to localize. We introduce VideoArgus , a unified rubric-grounded framework for the five generation and editing settings above. For each input instance, VideoArgus generates an output-blind, sample-specific rubric once and reuses it to evaluate all corresponding candidate videos. The rubric de-composes the input requirements into independently scored criteria with explicit scoring rules and evidence plans. For each candidate video, VideoArgus executes the evidence plan associated with each criterion, selectively invoking criterion-specific VLM QA and visual tools. The resulting evidence is used to produce criterion-level scores and ratio-nales before aggregation into a final score and diagnostic report. We further instantiate this framework at scale through 
+
+VideoArgus-Bench , a unified benchmark covering all five tasks. The benchmark contains 1,026 input instances con-structed from 653 unique images and 416 unique videos, covering T2V, TI2V, TS2V, TV2V, and TSV2V. Input instances are automatically authored from task-specific blueprints and visual inputs, then verified and revised by human reviewers. All sample-specific rubrics are pre-generated and frozen for reproducible model compari-son. The rubric-generation procedure is not restricted to VideoArgus-Bench: users may apply it to new input in-stances and reuse the resulting rubric to evaluate any num-ber of candidate videos for the corresponding input. We evaluate 55 model–task pairs across the five gener-ation and editing settings on VideoArgus-Bench. We fur-ther evaluate VideoArgus on a separate human-alignment set of 1,260 videos scored by 15 annotators. Across all five tasks, VideoArgus achieves higher within-input Spearman and Kendall correlations with human judgments than the corresponding benchmark-specific evaluators. Tool abla-tions show that specialized visual tools provide complemen-tary evidence beyond criterion-specific VLM inspection. Moreover, model rankings remain largely consistent across 1arXiv:2608.05485v1 [cs.CV] 6 Aug 2026 Figure 1. Overview of VideoArgus-Bench. Left: representative input instances from the five supported tasks—T2V, TI2V, TS2V, TV2V, and TSV2V—with an abridged visualization of the sample-specific rubric generated for one input instance. The inset summarizes the composition of the 1,026 benchmark instances. Right: rubric statistics over all input instances in VideoArgus-Bench: (a) the total number of criteria invoking each evaluation tool, shown on a logarithmic scale; (b) the counts and proportions of hard and soft criteria; (c) the percentage of input instances whose rubrics include each semantic dimension; (d) the distribution of the number of criteria per instance, with a mean of 11.9; and (e) the counts and proportions of high-, medium-, and low-importance criteria. 
+
+different rubric-generation and evaluation-VLM backbones. Our contributions are summarized as follows: • We introduce an output-blind rubric-generation mecha-nism that constructs a reusable sample-specific evaluation specification once per input instance. Each rubric defines independently scored criteria with explicit scoring rules, failure modes, and evidence plans, and is reused across all candidate outputs for that input. The same generation procedure can be applied to new user-provided input in-stances beyond VideoArgus-Bench. • We propose a rubric-grounded video evaluation pro-cedure that selectively executes criterion-specific vi-sual tools and produces evidence-grounded scores, ra-tionales, and diagnostic reports. The rubric-generation and evaluation-VLM backbones can be replaced indepen-dently. • We construct VideoArgus-Bench, with 1,026 input in-stances across five generation and editing tasks, evalu-ate 55 model–task pairs, and demonstrate stronger human alignment and robustness to different rubric-generation and evaluation-VLM backbones. 
+
+# 2. Related Work 
+
+Video Generation and Editing. Recent video founda-tion models have substantially advanced text- and image-conditioned synthesis through large-scale diffusion trans-formers, improved training data, and model scaling [20, 27, 39, 46, 50]. Reference-conditioned methods further enable consistent generation from single or multiple sub-ject images [5, 22, 40, 53, 59]. In parallel, video editing has expanded from text-guided manipulation to reference-guided editing, while emerging unified architectures in-creasingly support both generation and editing within a sin-gle model [8, 30, 44, 47, 52]. As these capabilities converge, 2Benchmark Task #Items Eval. Content Scoring S-Spec. Adapt. VLM CV Interp. 
+
+VBench [15] T2V 1,746 Fixed (1 of 16) Dimension × × × ✓ ×
+
+VBench-2.0 [60] T2V 1,155 Fixed (1 of 18) Dimension ∼ × ✓ ✓ ×
+
+EvalCrafter [26] T2V 700 Fixed (all 17) Metric × × × ✓ ×
+
+T2V-CompBench [34] T2V 1,400 Fixed (1 of 7) Dimension × × ✓ ✓ ×
+
+PhyGenBench [28] T2V 160 Input-derived (var.) Question ✓ ∼ ✓ ✓ ∼
+
+VideoGen-Eval [49] T2V, I2V 700 Input-derived (var.) Dimension ✓ ∼ ✓ ✓ ✓
+
+VBench-I2V [15] TI2V 1,118 Fixed (all 9) Dimension × × × ✓ ×
+
+OpenS2V-Nexus [53] TS2V 180 Fixed (all 6) Dimension × × ✓ ✓ ×
+
+OpenVE-Bench [9] TV2V 431 Fixed (all 8) Dimension × × ✓ × ×
+
+FiVE-Bench [21] TV2V 420 Input-derived (1) Question ✓ × ✓ ✓ ∼
+
+IVEBench [4] TV2V 600 Fixed (var. of 12) Metric × ∼ ✓ ✓ ×
+
+EditVerseBench [17] TV2V, TSV2V 200 Fixed (all 4) Dimension × × ✓ ✓ ×
+
+VACE-Bench [16] TI2V, TS2V, TV2V, TSV2V 480 Fixed (all 8) Metric × × × ✓ ×
+
+UniVBench ⋆ [45] T2V, TS2V, TV2V, TSV2V 620 Fixed (all 21) Dimension ∼ ∼ ✓ ∼ ✓
+
+VideoArgus (ours) T2V, TI2V, TS2V, TV2V, TSV2V 1,026 Input-derived (var.) Criterion † ✓ ✓ ✓ ✓ ✓                    
+
+> Table 1. Comparison with representative video generation and editing benchmarks. Eval. Content indicates whether evaluated properties are predefined ( Fixed ) or instantiated from each input ( Input-derived ); parentheses summarize their per-item use. Scoring denotes the finest independently scored unit. S-Spec. denotes sample-specific evaluation content. Adapt. indicates whether evidence acquisition or tool execution is adapted to individual scoring units. VLM ,CV , and Interp. denote VLM judging, specialized visual tools, and diagnostic feedback. ✓= yes, ∼= partial, and ×= no. ⋆Only tasks relevant to our comparison are reported. †Criterion-level evaluation uses dimensions only as taxonomy labels and instantiates zero, one, or multiple independently scored criteria, each with its own requirement, scoring rule, and evidence plan. Dimension-level evaluation assigns a scoring slot to a semantic category.
+
+a unified protocol is needed to evaluate heterogeneous gen-eration and editing settings consistently. 
+
+Video Generation and Editing Benchmarks. Existing video benchmarks are largely organized around individual task families. Early T2V benchmarks such as VBench [15], EvalCrafter [26], and T2V-CompBench [34] assess seman-tic alignment, compositional correctness, motion, and per-ceptual quality, while PhyGenBench [28] and VBench-2.0 [60] emphasize physical plausibility and intrinsic faith-fulness. Task-specific extensions cover additional condi-tioning and editing scenarios: VBench-I2V [15] targets first-frame-conditioned generation, OpenS2V-Nexus [53] evaluates reference-subject consistency, and OpenVE-Bench [9] and EditVerseBench [17] focus on instruction following and source preservation. Several recent efforts evaluate multiple generation and editing settings within a shared framework [45, 49]. VideoArgus-Bench extends this direction by unifying five representative settings in a sin-gle curated benchmark and associating every instance with a pre-generated, frozen, sample-specific rubric. 
+
+VLM-based, Adaptive, and Interpretable Evaluation. 
+
+Automatic video evaluation broadly follows three lines of development. Specialized metrics provide reproducible but narrow measurements of properties such as text–video alignment, perceptual quality, motion, temporal consis-tency, tracking, and reference similarity [15, 17, 26, 54]. VLM-based evaluators instead reason jointly over instruc-tions, conditioning inputs, and sampled video frames, en-abling more holistic assessment of compositional correct-ness, physical plausibility, subject fidelity, and edit follow-ing [9, 28, 34, 53, 55]. More recently, multimodal ap-proaches have advanced generation and editing, and agen-tic reasoning, memory, and tool use [11–13, 23, 35, 41– 43, 51, 52, 56, 57], while recent evaluators adapt ques-tions, criteria, and evidence procedures to individual in-puts [45, 49, 60]. 
+
+# 3. VideoArgus 
+
+VideoArgus first generates an output-blind, sample-specific rubric once for each input instance and then reuses the frozen rubric to evaluate all candidate videos associated 3Figure 2. Overview of VideoArgus. An input instance consists of a text prompt and optional image, subject, or video conditions. The input-side rubric generator observes only this instance and constructs an output-blind, sample-specific rubric once, specifying concrete criteria, scoring rules, expected failure modes, and evidence plans. The resulting frozen rubric is reused to evaluate candidate videos generated or edited from the same input. For each criterion, VideoArgus executes its evidence plan using VLM QA and, when applicable, specialized tools such as tracking, visual similarity, OCR, depth analysis, and perceptual-quality assessment. The collected evidence supports a criterion-level score and rationale. Finally, criterion scores are importance-weighted and aggregated with hard-criterion caps to produce the overall score and diagnostic report. 
+
+with that input. As illustrated in Fig. 2, rubric generation depends only on the input instance, whereas video evalu-ation combines the fixed rubric with each candidate out-put. This design keeps the evaluation specification identi-cal across competing outputs, amortizes rubric generation as additional models are evaluated, and allows the rubric-generation and evaluation-VLM backbones to be replaced independently. 
+
+3.1. Reusable Sample-Specific Rubric Generation 
+
+The requirements of a generated video depend on its text prompt and visual conditioning inputs. Counting, visible text, subject identity, and source preservation may be criti-cal for one instance but irrelevant to another. We therefore represent each input instance as 
+
+xi =
+
+
+
+pi, I first  
+
+> i
+
+, Isubj  
+
+> i
+
+, V src 
+
+> i
+
+
+
+, (1) where pi is the textual instruction and the remaining en-tries denote an optional first-frame image, subject images, and source video. This representation supports T2V, TI2V, TS2V, TV2V, and TSV2V under a single interface. The textual instruction is passed without rewriting. Im-ages preserve their aspect ratio, with the longest side limited to 768 pixels. Source videos are sampled at 2 fps. A sin-gle rubric-generation prompt is used across all tasks, while applicable criteria are determined from the conditioning in-puts present in each instance. Crucially, rubric generation only observes the input in-stance: 
+
+Ri = Grubric (xi). (2) Each rubric Ri is generated once, indexed only by the input instance, and reused for every candidate output 
+
+{ ˆVi,m }Mm=1 . This output-blind design prevents the evalu-ation specification from adapting to the strengths or failures of a particular model and ensures that all outputs for the same input are judged against identical requirements. For VideoArgus-Bench, these rubrics are pre-generated, frozen, and released, so benchmark users execute only the video-evaluation stage. For a new user-provided input, the same procedure generates a new rubric once, which can then be reused across all candidate videos for that input. The rubric generator considers a unified pool of 22 gen-eral and input-conditional dimensions. These dimensions cover object and attribute correctness, counting, spatial and temporal relations, actions, motion, camera behavior, physi-cal plausibility, visual quality, style, first-frame fidelity, sub-ject identity, edit following, source preservation, and com-positing quality. The dimension pool serves as a seman-tic taxonomy rather than a one-slot-per-dimension template. For each input instance, a dimension may instantiate zero, one, or multiple independently scored criteria, depending on the distinct observable requirements expressed by the in-put. Each criterion specifies a semantic dimension, a con-crete requirement, a hard or soft constraint type, an impor-tance level, an integer 0–10 scoring rule, expected failure modes, an optional hard cap, and an evidence plan. The 4T2V TI2V TS2V TV2V TSV2V Model #P Score Model #P Score Model #P Score Model #P Score Model #P Score                                                                                                                                                      
+
+> Seedance 2.0 –9.34 Seedance 2.0 –8.97 Seedance 2.0 –9.16 Seedance 2.0 –7.54 Seedance 2.0 –8.10
+> Veo 3.1 –8.66 Kling v3 Omni –8.41 Kling v3 Omni –8.22 Kling v3 Omni – 6.79 Kling v3 Omni – 7.16 Kling v3 Omni –8.61 Veo 3.1 –8.36 OmniWeaving 8.3B 7.28 Kiwi-Edit 5B 6.18 Aurora 5B 5.03 HunyuanVideo-1.5 8.3B 8.54 HunyuanVideo-1.5 8.3B 8.11 SkyReels-V3-R2V 14B 7.25 Aurora 5B 6.02 OmniWeaving 8.3B 4.97 Wan2.2-T2V 14B 8.41 OmniWeaving 8.3B 7.99 Veo 3.1 –6.97 OmniWeaving 8.3B 5.87 Kiwi-Edit 5B 4.51 OmniWeaving 8.3B 8.40 Wan2.2-TI2V 5B 7.82 Phantom 14B 6.89 ReCo 1.3B 5.77 VACE-Fun 14B 4.20 LongCat-Video 13.6B 8.11 CogVideoX 5B 7.29 VACE 14B 6.82 VideoCoF 14B 5.53 UniVideo 13B 3.20 Step-Video 29B 7.77 CogVideoX1.5 5B 7.16 HunyuanCustom 13B 6.75 LucyEdit 5B 4.99 VACE 1.3B 2.81 SANA-Video 2B 7.54 Step-Video 29B 7.11 Wan2.2-TI2V 5B 5.67 VACE-Fun 14B 4.92 AnyV2V 1.4B 2.66 CogVideoX1.5 5B 7.52 LTX-Video 2B 6.25 UniVideo 13B 4.13 LTX-Video 2B 3.48 VACE 14B 2.62 CogVideoX 5B 7.39 SANA-Video 2B 5.89 LTX-Video 2B 3.89 UniVideo 13B 3.36 LTX-Video 2B 2.45
+
+Table 2. VideoArgus leaderboards for video generation and editing tasks. Each task ranks the evaluated generators by their VideoArgus score. The best result per task is shown in bold , and the second-best result is underlined. #P denotes model parameter size. 
+
+evidence plan identifies the target entity or event, the avail-able reference source, and an ordered sequence of tools for collecting relevant evidence. This structured representa-tion turns the rubric into an executable evaluation specifica-tion rather than a generic question list. Separately scoring distinct observable requirements prevents multiple require-ments from being coupled within a single judgment and pro-vides criterion-specific evidence and diagnostic feedback. 
+
+3.2. Rubric-Grounded Video Evaluation 
+
+Given a candidate video ˆV and the frozen sample-specific rubric R = {ri}Ki=1 for its input instance, VideoArgus eval-uates each criterion ri independently using its associated evidence plan πi. The plan identifies the relevant reference inputs, target entities or events, and the sequence of tools used to evaluate the criterion. Criterion-specific execution allows heterogeneous requirements to be assessed using dif-ferent forms of visual evidence within the same evaluation protocol. All evidence operations share a unified tool interface. 
+
+vlm qa serves as a general-purpose tool for semantic ques-tions rather than as a separate holistic evaluator. Specialized tools support object localization and tracking, reference-guided cropping, DINOv3-based visual similarity, OCR, depth and spatial-relation analysis, temporal flicker detec-tion, perceptual-quality assessment, and optional visual-reference retrieval. Each criterion invokes only the tools specified by its evidence plan. To support reliable execution across heterogeneous input instances, VideoArgus applies a plan-normalization layer before tool execution. It resolves visual conditions, checks tool arguments and inter-tool dependencies, and maps un-available operations to supported alternatives. When spe-cialized evidence cannot be obtained, the evaluator falls back to a criterion-specific vlm qa query. The executed tool sequence and any fallback decisions are retained in the evaluation report. After executing the evidence plan πi, VideoArgus ob-tains structured evidence ei. The criterion judge receives the criterion specification ri, the collected evidence ei, and representative frames from ˆV , and returns 
+
+J(ri, e i, ˆV ) = ( si, q i), (3) where si ∈ { 0, . . . , 10 } is the criterion score and qi is an evidence-grounded rationale. Criterion importance, failure thresholds, and hard caps are hidden from the judge and used only during aggregation. If no valid score can be parsed, the criterion is excluded from the aggregation. Let 
+
+I( ˆV ) denote the indices of criteria with valid scores, and let 
+
+wi ∈ { 1, 2, 3} correspond to low, medium, and high impor-tance, respectively. The importance-weighted base score is 
+
+B( ˆV ) = 
+
+P  
+
+> i∈I ( ˆV)
+
+wisi
+
+P  
+
+> i∈I ( ˆV)
+
+wi
+
+. (4) During rubric generation, each hard criterion is assigned an individual failure threshold ti and a criterion-specific score cap ci. Its cap is activated when the criterion score falls below its threshold. The set of activated hard criteria is 
+
+F( ˆV ) = 
+
+n
+
+i ∈ I ( ˆV ) ri is hard and si < t i
+
+o
+
+. (5) When multiple hard criteria are activated, the most restric-tive cap is used: 
+
+κ( ˆV ) = min 
+
+
+
+{ci | i ∈ F ( ˆV )} ∪ { 10 }
+
+
+
+. (6) The final score is 
+
+S( ˆV ) = (1 − α)B( ˆV ) + α min 
+
+
+
+B( ˆV ), κ ( ˆV )
+
+
+
+, (7) where α = 0 .5. This aggregation penalizes essential fail-ures while retaining information from all criterion scores. Rubric generation and rubric-grounded evaluation use separate model interfaces. The rubric generator observes only the input instance and is executed once per input. For each candidate video, the evaluation VLM performs 5Figure 3. Example VideoArgus report for a TSV2V output by Aurora [52], showing the input, generated frames, aggregate score, and five selected criterion results with tool traces, evidence-grounded rationales, and scores. The full report contains all four-teen criteria and aggregation metadata. 
+
+criterion-specific vlm qa and final criterion judgment us-ing the frozen rubric and collected tool evidence. The two model backbones can therefore be selected or replaced in-dependently. 
+
+# 4. VideoArgus-Bench 
+
+We construct VideoArgus-Bench, a unified benchmark spanning T2V, TI2V, TS2V, TV2V, and TSV2V, to instan-tiate VideoArgus at scale. Input instances are created from task-specific blueprints and, when required, quality-filtered visual assets collected from Pixabay [31]. Candidate in-structions are grounded in the actual conditioning inputs and automatically checked for feasibility, text–visual con-sistency, and duplication. Human reviewers then verify the resulting instances, revise unclear or impractical instruc-tions, and discard invalid cases. Sample-specific rubrics are generated once from the finalized input instances using the output-blind procedure described above. VideoArgus-Bench contains 1,026 input instances con-structed from 653 unique images and 416 unique videos. Instructions contain approximately 26 words on average. The released rubrics are pre-generated and frozen, ensuring that all candidate outputs for the same input are evaluated against an identical specification. They contain 11.9 crite-ria per instance on average, ranging from 6 to 17. Figure 1 summarizes the task composition and rubric statistics. 
+
+# 5. Experiments 
+
+We benchmark representative models on VideoArgus-Bench, evaluate agreement with human judgments, and an-alyze specialized-tool contributions and backbone consis-tency. 
+
+5.1. Experimental Setup 
+
+Evaluated Models. We evaluate the API-based mod-els, including Veo 3.1 [7], Seedance 2.0 [33], and Kling v3 Omni [19]. We also evaluate a broad set of open-source models, including Wan 2.2 [39], HunyuanVideo-1.5 [46], Step-Video [14, 27], LongCat-Video [38], SkyReels-V3 [20], OmniWeaving [30], SANA-Video [3], CogVideoX [50], CogVideoX1.5 [50], LTX-Video [8], Phantom [25], VACE [39], HunyuanCustom [10], Uni-Video [44], Aurora [52], Kiwi-Edit [24], ReCo [58], Video-CoF [48], LucyEdit [36], VACE-Fun [1], AnyV2V [18]. 
+
+Benchmark Evaluation. For each input instance, all candidate videos share the same frozen rubric generated with Claude Opus 4.8. During rubric-grounded evalua-tion, Qwen3.6-27B, served with vLLM, is used for both criterion-specific vlm qa evidence collection and final cri-terion judgment. Specialized visual tools provide additional evidence when invoked by the rubric. Candidate videos are sampled at 4 fps with at most 24 frames. Dense temporal probes use up to 48 frames at 8 fps, and up to 12 represen-tative frames are provided for final criterion judgment. 
+
+Human-alignment Set. We construct a separate set of 210 input instances: 48 T2V instances from VBench [15], 48 TI2V instances from VBench-I2V [15], 48 TS2V in-stances from OpenS2V-Nexus [53], 56 TV2V instances from OpenVE-Bench [9] and 10 TSV2V instances from Ed-itVerseBench [17]. Six model outputs per input yield 1,260 videos. Because the inputs come from external benchmarks, this set evaluates VideoArgus beyond VideoArgus-Bench. Fifteen trained annotators viewed the prompt and visual conditioning inputs, scored anonymized and randomized videos from 0 to 10, ranked ties, and their scores were aver-aged. For each task, we use the evaluator prescribed by the source benchmark with its released metrics, prompts, judge model, and aggregation. 
+
+Agreement metrics. Our primary metric is within-instance ranking Spearman correlation ( R-ρ). For each 6Task Method R-ρ R-τ P-ρ
+
+T2V Source Evaluation 0.162 0.104 0.073 VideoArgus-VLM 0.436 0.472 0.513 
+
+VideoArgus-Full 0.496 0.550 0.480 TI2V Source Evaluation -0.060 -0.059 -0.050 VideoArgus-VLM 0.590 0.673 0.606 VideoArgus-Full 0.605 0.690 0.663 
+
+TS2V Source Evaluation 0.524 0.426 0.471 VideoArgus-VLM 0.612 0.692 0.611 VideoArgus-Full 0.631 0.670 0.632 
+
+TV2V Source Evaluation 0.548 0.452 0.521 VideoArgus-VLM 0.593 0.601 0.636 
+
+VideoArgus-Full 0.608 0.625 0.618 TSV2V Source Evaluation 0.686 0.587 0.729 
+
+VideoArgus-VLM 0.715 0.751 0.703 VideoArgus-Full 0.749 0.829 0.708                      
+
+> Table 3. Correlation with human judgment on five video generation and editing tasks. For each task, the corre-sponding benchmark-specific evaluator, VideoArgus-VLM, and VideoArgus-Full are separately correlated with judgments from the same 15 annotators on an identical set of videos. We report ranking Spearman (R-ρ), Kendall τ(R-τ), and pooled Spearman (P-ρ). The best result per task is bold , and the second best is underlined.
+
+input instance, we compute the correlation between hu-man and automatic scores across the six candidate mod-els and then macro-average across instances R-ρ =
+
+> 1
+> N
+
+PNi=1 ρ  shuman  
+
+> i
+
+, seval 
+
+> i
+
+ . This protocol measures whether an evaluator recovers the ordering of candidate models for the same input, without conflating differences in difficulty or score scale across input instances. We also report within-instance Kendall correlation ( R-τ ) and pooled Spearman correlation ( P -ρ). Instances with undefined correlations due to constant scores are excluded. 
+
+5.2. Leaderboard on VideoArgus-Bench 
+
+Table 2 report the mean VideoArgus score for each evalu-ated model and task. Within each input instance, all can-didate outputs are evaluated using the same frozen rubric and evaluator configuration. Seedance 2.0 achieves the highest score across all five tasks. Veo 3.1 ranks sec-ond on T2V, while Kling v3 Omni ranks second on TI2V, TS2V, TV2V, and TSV2V. Among open-source models, HunyuanVideo-1.5 performs strongest on T2V and TI2V, OmniWeaving leads TS2V, Kiwi-Edit leads TV2V, and Au-rora leads TSV2V. The relative performance of open-source models varies across generation and editing settings, re-flecting differences in requirements such as first-frame fi-delity, subject preservation, edit following, and source con-                                              
+
+> Task #In. Criteria / input Ratio Hard / input Human Induced Human Induced
+> T2V 48 4.60 10.60 2.30 ×2.31 2.15 TI2V 48 5.06 11.02 2.18 ×2.40 1.67 TS2V 48 5.27 12.46 2.36 ×2.81 1.98 TV2V 56 4.96 11.52 2.32 ×1.91 2.18 TSV2V 10 5.00 12.80 2.56 ×1.90 2.50
+> All 210 4.98 11.68 2.33 ×2.27 2.09
+> Table 4. Human-written and our generated rubrics by task.
+> Mean numbers of criteria and hard criteria per input on the same 210 inputs. Ratio denotes the induced-to-human criterion count. Our generated rubrics contain 2.33 ×more criteria overall and at least as many criteria on every input, while using a comparable number of hard criteria.
+
+Evaluation VLM A ↔ B A ↔ C B ↔ C Average 
+
+Qwen3.6-27B [32] 0.966 0.931 0.897 0.931 Gemma4-31B [37] 0.966 0.840 0.851 0.886 
+
+Average 0.966 0.886 0.874 0.909  
+
+> Table 5. Consistency across rubric generators, measured by task-macro rank similarity. Each entry averages the within-task Spear-man correlations over five tasks, with six models ranked per task. The evaluation VLM is fixed while different rubric generators are compared. A, B, and C denote Claude Opus 4.8 [2], GPT 5.6 Sol [29], and Gemini 3.1 Pro [6], respectively.
+
+sistency. Hence, a unified benchmark enables comparison across tasks while retaining the input-specific requirements of each setting. 
+
+5.3. Agreement with Human Judgment 
+
+Table 3 shows that VideoArgus-Full achieves higher within-instance Spearman and Kendall ranking correlations than the corresponding benchmark-specific evaluator on all five tasks. The gains are largest on T2V and TI2V, where the corresponding benchmark-specific evaluators show weak agreement with human preferences. Overall, the results show that sample-specific, criterion-level evaluation more closely recovers human model rankings across all five tasks. We further assess statistical reliability with bootstrap confidence intervals and paired tests, reported in the ap-pendix. On the same 210 inputs, our generated rubrics con-tain 2.33 × more criteria than human-written rubrics (11.68 vs. 4.98), while using a comparable number of hard criteria (2.09 vs. 2.27; Table 4), indicating broader coverage with-out uniformly stricter requirements. 
+
+5.4. Tool Ablation 
+
+To isolate the contribution of specialized visual tools, we replace each specialized-tool invocation in VideoArgus-7Rubric Generator Qwen ↔ Gemma 
+
+Claude Opus 4.8 [2] 0.886 GPT 5.6 Sol [29] 0.954 Gemini 3.1 Pro [6] 0.954 
+
+Average 0.931 
+
+> Table 6. Consistency across evaluation VLMs, measured by task-macro rank similarity. Each entry averages the within-task Spear-man correlations over five tasks, with six models ranked per task. The generated rubrics are fixed while Qwen3.6-27B [32] and Gemma4-31B [37] are compared as evaluation VLMs.
+
+Full with criterion-specific vlm qa , while keeping the rubrics, sampled frames, evaluation-VLM backbone, final-judgment prompt, and aggregation procedure fixed. As shown in Table 3, VideoArgus-Full achieves higher within-instance Spearman correlation on all five tasks and higher Kendall correlation on four tasks, although the pooled results are mixed. These results show that specialized tools provide complementary criterion-specific evidence and generally improve agreement with human within-instance rankings. 
+
+5.5. Backbone Analysis 
+
+Table 5 and 6 examine whether the model rankings pro-duced by VideoArgus depend on the rubric-generation or evaluation-VLM backbone. For each pair of configurations, we compute the Spearman correlation between the rankings of six models within each task and then average equally across the five tasks. Each task is treated as an independent six-model ranking problem; raw scores and model identities are not pooled across tasks. When the evaluation VLM is fixed, changing the rubric generator yields an average rank similarity of 0.909. When the generated rubrics are fixed, replacing the evaluation VLM yields an average similarity of 0.931. In the latter comparison, each evaluation VLM is used for both criterion-specific vlm qa and final criterion judgment. The high correlations indicate that model rank-ings remain largely consistent across the tested backbone choices. 
+
+5.6. Cost Analysis 
+
+VideoArgus incurs a one-time rubric-generation cost and a recurring local evaluation cost. For each input, a rubric is generated once through an API and reused across all models and re-evaluations; subsequent scoring runs entirely on the local Qwen3.6-27B model and CV tools. 
+
+Rubric generation. As shown in Table 7, the deployed Claude Opus 4.8 generator uses an average of 11,223 input and 7,007 output tokens per case. At $5/$25 per million input/output tokens, this corresponds to 0.206–0.266 per                               
+
+> Task #Input Rubric-gen. tokens / input (mean) $ / case Input Output
+> T2V 202 9,397 6,365 0.206 TI2V 203 9,944 6,795 0.220 TS2V 205 10,052 6,710 0.218 TV2V 208 13,015 7,201 0.245 TSV2V 208 13,606 7,935 0.266
+> All 1,026 11,223 7,007 0.231
+> Table 7. Rubric-generation token cost, per task. Mean input and output tokens of the one-time our generated rubric-generation call, averaged over all inputs of each task (the deployed rubrics), and the resulting dollar cost per case at the Opus 4.8 list price ($5/$25 per million input/output tokens).
+
+case across tasks, with an overall average of $0.231 over 1,026 inputs. Since rubrics are generated only once, this cost is amortized over all subsequent evaluations. Using the same inputs, the average one-time cost is $0.323 for GPT 5.6 Sol and $0.125 for Gemini 3.1 Pro at their respective list prices. The difference mainly reflects output-token pric-ing, as rubric generation is output-dominated. VideoArgus is rubric-generator-agnostic, allowing lower-cost generators to be used with essentially no loss in alignment. 
+
+Evaluation. Scoring one generated video against its rubric requires on average 0.033 Nvidia H100 GPU hours, excluding model-loading time. This stage uses only local compute and incurs no per-result API charge, unlike several official metrics that invoke paid models such as GPT-4o or Gemini-2.5-Pro for every evaluated result. 
+
+# 6. Conclusion 
+
+We presented VideoArgus, a unified rubric-grounded framework for five video generation and editing settings. For each input instance, VideoArgus generates one output-blind, sample-specific rubric and reuses it across candi-date videos. Criterion-specific evidence plans combine VLM reasoning with specialized visual tools to produce fine-grained scores, rationales, and diagnostic reports. We further introduced VideoArgus-Bench, comprising 1,026 input instances with pre-generated rubrics, and evalu-ated 55 model–task pairs under a shared protocol. On a separate 1,260-video human-alignment set, VideoArgus achieves stronger within-input ranking agreement than the corresponding benchmark-specific evaluators across all five tasks. Tool and backbone analyses further show that spe-cialized visual tools provide complementary evidence and that model rankings remain largely consistent across differ-ent rubric-generation and evaluation-VLM backbones. Be-yond the released benchmark, the same rubric-generation procedure can support evaluation of new user-provided in-put instances. 8References 
+
+[1] Alibaba PAI. Wan2.2-VACE-Fun-A14B, 2025. 6 [2] Anthropic. Introducing Claude Opus 4.8, 2026. 7, 8 [3] Junsong Chen, Yuyang Zhao, Jincheng Yu, Ruihang Chu, Junyu Chen, Shuai Yang, Xianbang Wang, Yicheng Pan, Daquan Zhou, Huan Ling, et al. Sana-video: Efficient video generation with block linear diffusion transformer. arXiv preprint arXiv:2509.24695 , 2025. 6 [4] Yinan Chen, Jiangning Zhang, Teng Hu, Yuxiang Zeng, Zhu-cun Xue, Qingdong He, Chengjie Wang, Yong Liu, Xiaobin Hu, and Shuicheng Yan. Ivebench: Modern benchmark suite for instruction-guided video editing assessment. arXiv preprint arXiv:2510.11647 , 2025. 3 [5] Yufan Deng, Yuanyang Yin, Xun Guo, Yizhi Wang, Ja-cob Zhiyuan Fang, Shenghai Yuan, Yiding Yang, Angtian Wang, Bo Liu, Haibin Huang, et al. Magref: Masked guid-ance for any-reference video generation with subject disen-tanglement. arXiv preprint arXiv:2505.23742 , 2025. 2 [6] Google DeepMind. Gemini 3.1 Pro: Model card, 2026. 7, 8 [7] Google DeepMind. Veo 3 Model Card. Technical report, Google DeepMind, 2026. 6 [8] Yoav HaCohen, Nisan Chiprut, Benny Brazowski, Daniel Shalem, Dudu Moshe, Eitan Richardson, Eran Levin, Guy Shiran, Nir Zabari, Ori Gordon, et al. Ltx-video: Realtime video latent diffusion. arXiv preprint arXiv:2501.00103 ,2024. 2, 6 [9] Haoyang He, Jie Wang, Jiangning Zhang, Zhucun Xue, Xingyuan Bu, Qiangpeng Yang, Shilei Wen, and Lei Xie. Openve-3m: A large-scale high-quality dataset for instruction-guided video editing. arXiv preprint arXiv:2512.07826 , 2025. 3, 6 [10] Teng Hu, Zhentao Yu, Zhengguang Zhou, Sen Liang, Yuan Zhou, Qin Lin, and Qinglin Lu. Hunyuancustom: Amultimodal-driven architecture for customized video gener-ation. arXiv preprint arXiv:2505.04512 , 2025. 6 [11] Yushi Hu, Hang Hua, Zhengyuan Yang, Weijia Shi, Noah A Smith, and Jiebo Luo. Promptcap: Prompt-guided task-aware image captioning. arXiv preprint arXiv:2211.09699 ,2022. 3 [12] Hang Hua, Yunlong Tang, Ziyun Zeng, Liangliang Cao, Zhengyuan Yang, Hangfeng He, Chenliang Xu, and Jiebo Luo. Mmcomposition: Revisiting the compositionality of pre-trained vision-language models. arXiv preprint arXiv:2410.09733 , 2024. [13] Hang Hua, Ziyun Zeng, Yizhi Song, Yunlong Tang, Liu He, Daniel Aliaga, Wei Xiong, and Jiebo Luo. Mmigbench: Towards comprehensive and explainable evaluation of multi-modal image generation models. arXiv preprint arXiv:2505.19415 , 3, 2025. 3 [14] Haoyang Huang, Guoqing Ma, Nan Duan, Xing Chen, Changyi Wan, Ranchen Ming, Tianyu Wang, Bo Wang, Zhiying Lu, Aojie Li, et al. Step-video-ti2v technical re-port: A state-of-the-art text-driven image-to-video genera-tion model. arXiv preprint arXiv:2503.11251 , 2025. 6 [15] Ziqi Huang, Yinan He, Jiashuo Yu, Fan Zhang, Chenyang Si, Yuming Jiang, Yuanhan Zhang, Tianxing Wu, Qingyang Jin, Nattapol Chanpaisit, et al. Vbench: Comprehensive bench-mark suite for video generative models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 21807–21818, 2024. 3, 6 [16] Zeyinzi Jiang, Zhen Han, Chaojie Mao, Jingfeng Zhang, Yulin Pan, and Yu Liu. Vace: All-in-one video creation and editing. In Proceedings of the IEEE/CVF International Con-ference on Computer Vision , pages 17191–17202, 2025. 3 [17] Xuan Ju, Tianyu Wang, Yuqian Zhou, He Zhang, Qing Liu, Nanxuan Zhao, Zhifei Zhang, Yijun Li, Yuanhao Cai, Shaoteng Liu, et al. Editverse: Unifying image and video editing and generation with in-context learning. arXiv preprint arXiv:2509.20360 , 2025. 3, 6 [18] Max Ku, Cong Wei, Weiming Ren, Harry Yang, and Wenhu Chen. Anyv2v: A tuning-free framework for any video-to-video editing tasks. arXiv preprint arXiv:2403.14468 , 2024. 6[19] Kuaishou Technology. Kling AI Launches 3.0 Model, Ush-ering in an Era Where Everyone Can Be a Director, 2026. 6[20] Debang Li, Zhengcong Fei, Tuanhui Li, Yikun Dou, Zheng Chen, Jiangping Yang, Mingyuan Fan, Jingtao Xu, Jiahua Wang, Baoxuan Gu, et al. Skyreels-v3 technique report. 
+
+arXiv preprint arXiv:2601.17323 , 2026. 2, 6 [21] Minghan Li, Chenxi Xie, Yichen Wu, Lei Zhang, and Mengyu Wang. Five-bench: A fine-grained video editing benchmark for evaluating emerging diffusion and rectified flow models. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 16672–16681, 2025. 3[22] Zhaoyang Li, Dongjun Qian, Kai Su, Qishuai Diao, Xi-angyang Xia, Chang Liu, Wenfei Yang, Tianzhu Zhang, and Zehuan Yuan. Bindweave: Subject-consistent video generation via cross-modal integration. arXiv preprint arXiv:2510.00438 , 2025. 2 [23] Jingyang Lin, Hang Hua, Ming Chen, Yikang Li, Jenhao Hsiao, Chiuman Ho, and Jiebo Luo. Videoxum: Cross-modal visual and textural summarization of videos. IEEE Transactions on Multimedia , 26:5548–5560, 2023. 3 [24] Yiqi Lin, Guoqiang Liang, Ziyun Zeng, Zechen Bai, Yanzhe Chen, and Mike Zheng Shou. Kiwi-edit: Versatile video edit-ing via instruction and reference guidance. arXiv preprint arXiv:2603.02175 , 2026. 6 [25] Lijie Liu, Tianxiang Ma, Bingchuan Li, Zhuowei Chen, Ji-awei Liu, Gen Li, Siyu Zhou, Qian He, and Xinglong Wu. Phantom: Subject-consistent video generation via cross-modal alignment. In Proceedings of the IEEE/CVF Interna-tional Conference on Computer Vision , pages 14951–14961, 2025. 6 [26] Yaofang Liu, Xiaodong Cun, Xuebo Liu, Xintao Wang, Yong Zhang, Haoxin Chen, Yang Liu, Tieyong Zeng, Raymond Chan, and Ying Shan. Evalcrafter: Benchmarking and eval-uating large video generation models. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 22139–22149, 2024. 3 [27] Guoqing Ma, Haoyang Huang, Kun Yan, Liangyu Chen, Nan Duan, Shengming Yin, Changyi Wan, Ranchen Ming, Xi-
+
+9aoniu Song, Xing Chen, et al. Step-video-t2v technical re-port: The practice, challenges, and future of video founda-tion model. arXiv preprint arXiv:2502.10248 , 2025. 2, 6 [28] Fanqing Meng, Jiaqi Liao, Xinyu Tan, Wenqi Shao, Quan-feng Lu, Kaipeng Zhang, Yu Cheng, Dianqi Li, Yu Qiao, and Ping Luo. Towards world simulator: Crafting physical commonsense-based benchmark for video generation. arXiv preprint arXiv:2410.05363 , 2024. 3 [29] OpenAI. GPT-5.6 system card, 2026. 7, 8 [30] Kaihang Pan, Qi Tian, Jianwei Zhang, Weijie Kong, Jiangfeng Xiong, Yanxin Long, Shixue Zhang, Haiyi Qiu, Tan Wang, Zheqi Lv, et al. Omniweaving: Towards unified video generation with free-form composition and reasoning. 
+
+arXiv preprint arXiv:2603.24458 , 2026. 2, 6 [31] Pixabay. Pixabay: Royalty-free images and videos. https: //pixabay.com , 2026. 6 [32] Qwen Team. Qwen3.6-27B: Flagship-level coding in a 27B dense model, 2026. 7, 8 [33] Team Seedance, De Chen, Liyang Chen, Xin Chen, Ying Chen, Zhuo Chen, Zhuowei Chen, Feng Cheng, Tianheng Cheng, Yufeng Cheng, et al. Seedance 2.0: Advanc-ing video generation for world complexity. arXiv preprint arXiv:2604.14148 , 2026. 6 [34] Kaiyue Sun, Kaiyi Huang, Xian Liu, Yue Wu, Zihan Xu, Zhenguo Li, and Xihui Liu. T2v-compbench: A comprehen-sive benchmark for compositional text-to-video generation. In Proceedings of the Computer Vision and Pattern Recogni-tion Conference , pages 8406–8416, 2025. 3 [35] Yolo Y Tang, Jing Bi, Pinxin Liu, Zhenyu Pan, Zhangyun Tan, Qianxiang Shen, Jiani Liu, Hang Hua, Junjia Guo, Yun-zhong Xiao, et al. Video-lmm post-training: A deep dive into video reasoning with large multimodal models. arXiv preprint arXiv:2510.05034 , 2025. 3 [36] DecartAI Team. Lucy edit: Open-weight text-guided video editing, 2025. 6 [37] Gemma Team. Gemma 4 technical report, 2026. 7, 8 [38] Meituan LongCat Team, Xunliang Cai, Qilong Huang, Zhuoliang Kang, Hongyu Li, Shijun Liang, Liya Ma, Siyu Ren, Xiaoming Wei, Rixu Xie, et al. Longcat-video techni-cal report. arXiv preprint arXiv:2510.22200 , 2025. 6 [39] Team Wan, Ang Wang, Baole Ai, Bin Wen, Chaojie Mao, Chen-Wei Xie, Di Chen, Feiwu Yu, Haiming Zhao, Jianxiao Yang, et al. Wan: Open and advanced large-scale video gen-erative models. arXiv preprint arXiv:2503.20314 , 2025. 2, 6[40] Lei Wang, YuXin Song, Ge Wu, Haocheng Feng, Hang Zhou, Jingdong Wang, Yaxing Wang, et al. Refalign: Repre-sentation alignment for reference-to-video generation. arXiv preprint arXiv:2603.25743 , 2026. 2 [41] Zixuan Wang, Jia Jia, Haozhe Wu, Junliang Xing, Jinghe Cai, Fanbo Meng, Guowen Chen, and Yanfeng Wang. Groupdancer: Music to multi-people dance synthesis with style collaboration. In Proceedings of the 30th ACM Interna-tional Conference on Multimedia , pages 1138–1146, 2022. 3 [42] Zixuan Wang, Jia Jia, Shikun Sun, Haozhe Wu, Rong Han, Zhenyu Li, Di Tang, Jiaqing Zhou, and Jiebo Luo. Dance-camera3d: 3d camera movement synthesis with music and dance. In 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 7892–7901. IEEE, 2024. [43] Zixuan Wang, Jiayi Li, Xiaoyu Qin, Shikun Sun, Songtao Zhou, Jia Jia, and Jiebo Luo. Dancecamanimator: Keyframe-based controllable 3d dance camera synthesis. In Proceed-ings of the 32nd ACM international conference on multime-dia , pages 10200–10209, 2024. 3 [44] Cong Wei, Quande Liu, Zixuan Ye, Qiulin Wang, Xintao Wang, Pengfei Wan, Kun Gai, and Wenhu Chen. Univideo: Unified understanding, generation, and editing for videos. 
+
+arXiv preprint arXiv:2510.08377 , 2025. 2, 6 [45] Jianhui Wei, Xiaotian Zhang, Yichen Li, Yuan Wang, Yan Zhang, Ziyi Chen, Zhihang Tang, Wei Xu, and Zuozhu Liu. Univbench: Towards unified evaluation for video founda-tion models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 25654– 25666, 2026. 3 [46] Bing Wu, Chang Zou, Changlin Li, Duojun Huang, Fang Yang, Hao Tan, Jack Peng, Jianbing Wu, Jiangfeng Xiong, Jie Jiang, et al. Hunyuanvideo 1.5 technical report. arXiv preprint arXiv:2511.18870 , 2025. 2, 6 [47] Hao Yang, Zhiyu Tan, Jia Gong, Luozheng Qin, Hesen Chen, Xiaomeng Yang, Yuqing Sun, Yuetan Lin, Mengping Yang, and Hao Li. Omni-video 2: Scaling mllm-conditioned diffu-sion for unified video generation and editing. arXiv preprint arXiv:2602.08820 , 2026. 2 [48] Xiangpeng Yang, Ji Xie, Yiyuan Yang, Yue Ma, Yan Huang, Min Xu, and Qiang Wu. Videocof: Unified video editing with temporal reasoner. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,pages 37940–37949, 2026. 6 [49] Yuhang Yang, Ke Fan, Shangkun Sun, Hongxiang Li, Ailing Zeng, FeiLin Han, Wei Zhai, Wei Liu, Yang Cao, and Zheng-Jun Zha. Videogen-eval: Agent-based system for video gen-eration evaluation. arXiv preprint arXiv:2503.23452 , 2025. 3[50] Zhuoyi Yang, Jiayan Teng, Wendi Zheng, Ming Ding, Shiyu Huang, Jiazheng Xu, Yuanming Yang, Wenyi Hong, Xi-aohan Zhang, Guanyu Feng, et al. Cogvideox: Text-to-video diffusion models with an expert transformer. In In-ternational Conference on Learning Representations , pages 83048–83077, 2025. 2, 6 [51] Yongsheng Yu, Ziyun Zeng, Haitian Zheng, and Jiebo Luo. Omnipaint: Mastering object-oriented editing via disentan-gled insertion-removal inpainting. In 2025 IEEE/CVF In-ternational Conference on Computer Vision (ICCV) , pages 17324–17334. IEEE, 2025. 3 [52] Yongsheng Yu, Ziyun Zeng, Zhiyuan Xiao, Zhenghong Zhou, Hang Hua, Wei Xiong, and Jiebo Luo. Aurora: Uni-fied video editing with a tool-using agent. arXiv preprint arXiv:2605.18748 , 2026. 2, 3, 6 [53] Shenghai Yuan, Xianyi He, Yufan Deng, Yang Ye, Jinfa Huang, Chongyang Ma, Jiebo Luo, Li Yuan, et al. Opens2v-nexus: A detailed benchmark and million-scale dataset for subject-to-video generation. Advances in Neural Informa-tion Processing Systems , 38, 2026. 2, 3, 6 
+
+10 [54] Ziyun Zeng, Ashwin Ramesh, Jinglong Ruan, Peirong Hao, N Al Jallad, Hoonji Jang, Oriana Ly-Mapes, Kevin Fiscella, Jin Xiao, and Jiebo Luo. Use of artificial intelligence to de-tect dental caries on intraoral photos. Quintessence interna-tional , 2025. 3 [55] Ziyun Zeng, Junyu Chen, Noha Rashwan, Nisreen Al Jallad, Jin Xiao, and Jiebo Luo. Automated detection and quanti-tative assessment of dental plaque in intraoral images. ACM Transactions on Computing for Healthcare , 7(2):1–12, 2026. 3[56] Ziyun Zeng, Hang Hua, and Jiebo Luo. Mira: Multimodal iterative reasoning agent for image editing. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 9563–9573, 2026. 3 [57] Ziyun Zeng, Hang Hua, Bocheng Zou, Mu Cai, Rogerio Feris, and Jiebo Luo. Mementogui: Learning agentic mul-timodal memory control for long-horizon gui agents. arXiv preprint arXiv:2605.18652 , 2026. 3 [58] Zhongwei Zhang, Fuchen Long, Wei Li, Zhaofan Qiu, Wu Liu, Ting Yao, and Tao Mei. Region-constraint in-context generation for instructional video editing. arXiv preprint arXiv:2512.17650 , 2025. 6 [59] Zhenxing Zhang, Jiayan Teng, Zhuoyi Yang, Tiankun Cao, Cheng Wang, Xiaotao Gu, Jie Tang, Dan Guo, and Meng Wang. Kaleido: Open-sourced multi-subject reference video generation model. arXiv preprint arXiv:2510.18573 , 2025. 2[60] Dian Zheng, Ziqi Huang, Hongbo Liu, Kai Zou, Yinan He, Fan Zhang, Lulu Gu, Yuanhan Zhang, Jingwen He, Wei-Shi Zheng, et al. Vbench-2.0: Advancing video generation benchmark suite for intrinsic faithfulness. arXiv preprint arXiv:2503.21755 , 2025. 3 
+
+11
