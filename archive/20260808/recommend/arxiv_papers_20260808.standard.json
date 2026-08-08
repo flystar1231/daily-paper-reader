@@ -1,0 +1,102 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-08T20:17:31.444324+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.03971v1",
+      "source": "arxiv",
+      "title": "UniWorld-Design: From Pixel Generation to Layer-Native Design",
+      "abstract": "We introduce UniWorld-Design, a framework that redefines image generation from flat pixel synthesis to structured visual composition, with semantic RGBA layers as the atomic units of generation, understanding, and editing. Our key insight is that pixels define how an image is rendered, whereas layers define how an image is created, understood, and edited. Just as human designers create and manipulate visual content through layers rather than raw pixels, UniWorld-Design equips multimodal generative models with a layer-native design space. UniWorld-Design comprises two models. The Text-to-RGBA (T2RGBA) model generates standalone RGBA assets directly from text. The Image-to-Layer (I2L) model conditions on a finished image, a global instruction and per-layer prompts, and jointly produces ordered, complete semantic RGBA layers. Its instruction interface supports top-level decomposition, recursive decomposition and targeted extraction, making layering an instruction-addressable operation for agentic editing. Because I2L learns complete semantic objects rather than visible-pixel partitions, its layers stay usable when moved or removed. On the Crello benchmark, I2L reduces per-layer RGB L1 error by 37% and achieves a 34% relative improvement in Alpha Soft IoU over Qwen-Image-Layered. Separately, T2RGBA achieves the highest CLIP Score, outperforming LayerDiffuse and OmniAlpha.",
+      "authors": [
+        "Zongjian Li",
+        "Zhiyuan Yan",
+        "Chenxu Bai",
+        "Chen Chen",
+        "Haoxiang Sun",
+        "Shaodong Wang",
+        "Feize Wu",
+        "Shenghai Yuan",
+        "Bin Lin",
+        "Zheyuan Liu",
+        "Yuwei Niu",
+        "Li Yuan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T17:39:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.03971v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generates semantic RGBA layers with alpha channel directly from text, relevant to transparent/alpha channel generation",
+      "llm_evidence_cn": "直接从文本生成含Alpha通道的语义RGBA图层，与透明/Alpha通道生成直接相关",
+      "llm_evidence": "直接从文本生成含Alpha通道的语义RGBA图层，与透明/Alpha通道生成直接相关",
+      "canonical_evidence": "直接从文本生成含Alpha通道的语义RGBA图层，与透明/Alpha通道生成直接相关",
+      "llm_tldr_en": "UniWorld-Design redefines image generation as composition of semantic RGBA layers, with a Text-to-RGBA model generating standalone alpha-matte assets and an Image-to-Layer model decomposing images into editable layers. It moves beyond flat pixels to layer-native generation.",
+      "llm_tldr_cn": "传统图像生成把输出视为扁平像素，而人使用图层进行设计与编辑。本文提出UniWorld-Design，将语义化RGBA图层作为生成、理解与编辑的原子单位。其中Text-to-RGBA模型可直接从文本生成独立RGBA资产，Image-to-Layer模型将完整图像分解为可编辑图层。该框架为透明与Alpha通道内容生成提供了新范式，未来可扩展至视频图层生成。",
+      "llm_tldr": "传统图像生成把输出视为扁平像素，而人使用图层进行设计与编辑。本文提出UniWorld-Design，将语义化RGBA图层作为生成、理解与编辑的原子单位。其中Text-to-RGBA模型可直接从文本生成独立RGBA资产，Image-to-Layer模型将完整图像分解为可编辑图层。该框架为透明与Alpha通道内容生成提供了新范式，未来可扩展至视频图层生成。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.04142v1",
+      "source": "arxiv",
+      "title": "InvFlowFD: Reference-Free and Background-Set-Free Perceptual Music Quality Metric with Flow Matching Inversion",
+      "abstract": "Existing reference-free methods for evaluating music perceptual quality alleviate the need for paired noisy-clean data, but they still rely on a background set, which is used to compute aggregated statistics of clean audio samples. In this work, we propose a novel approach that eliminates this requirement, achieving background-set-free and reference-free quality estimation using only a pre-trained Flow Matching backbone. We demonstrate that unconditional Flow Matching inversion via simple Euler integration is sufficient to detect various artificial distortions and accurately rank music generation models against human perceptual judgments. We introduce InvFlowFD, which performs flow inversion and compares a group of inverted samples to the prior distribution. We evaluate our method against prior work, quantitatively and with a thorough human study. Results suggest that InvFlowFD is highly correlated with human perception of sound distortions, as well as generative models' quality, while being more flexible and less restrictive than existing metrics.",
+      "authors": [
+        "Alon Ziv",
+        "Harel Pogoda",
+        "Yossi Adi"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-08-04T18:50:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.04142v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Perceptual quality metric for generative models using flow matching inversion, transferable to video quality assessment",
+      "llm_evidence_cn": "利用流匹配反演评估生成模型感知质量的度量方法，可迁移至视频质量评估",
+      "llm_evidence": "利用流匹配反演评估生成模型感知质量的度量方法，可迁移至视频质量评估",
+      "canonical_evidence": "利用流匹配反演评估生成模型感知质量的度量方法，可迁移至视频质量评估",
+      "llm_tldr_en": "InvFlowFD introduces a reference-free and background-set-free perceptual quality metric using flow matching inversion, accurately ranking music generation models against human judgments; the approach is transferable to video generation evaluation.",
+      "llm_tldr_cn": "针对现有无参考感知质量评估方法仍需依赖背景集的问题，本文提出InvFlowFD，利用预训练流匹配模型的反演过程，在不使用参考样本和背景集的条件下检测人工失真，并准确对音乐生成模型进行与人类感知一致的排序。实验表明该度量能区分多种失真并高质量排名生成模型。其思路可推广到视频生成质量评估领域。",
+      "llm_tldr": "针对现有无参考感知质量评估方法仍需依赖背景集的问题，本文提出InvFlowFD，利用预训练流匹配模型的反演过程，在不使用参考样本和背景集的条件下检测人工失真，并准确对音乐生成模型进行与人类感知一致的排序。实验表明该度量能区分多种失真并高质量排名生成模型。其思路可推广到视频生成质量评估领域。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

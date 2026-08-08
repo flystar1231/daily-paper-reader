@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-08",
+  "date": "2026-08-08",
+  "generated_at": "2026-08-08T20:19:05",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/08/2608.03971v1-uniworld-design-from-pixel-generation-to-layer-native-design",
+      "section": "quick",
+      "title_en": "UniWorld-Design: From Pixel Generation to Layer-Native Design",
+      "authors": "Zongjian Li, Zhiyuan Yan, Chenxu Bai, Chen Chen, Haoxiang Sun, Shaodong Wang, Feize Wu, Shenghai Yuan, Bin Lin, Zheyuan Liu, Yuwei Niu, Li Yuan",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.03971v1",
+      "score": "6.0",
+      "evidence": "直接从文本生成含Alpha通道的语义RGBA图层，与透明/Alpha通道生成直接相关",
+      "tldr": "传统图像生成以像素为输出单位，难以支撑结构化的视觉编辑与理解；而设计师则以图层为创作核心。为此提出UniWorld-Design框架，以语义RGBA层作为生成、理解与编辑的原子单位，包含T2RGBA模型从文本生成独立层资产，以及I2L模型将图像分解为有序完整层。在Crello基准上，I2L逐层RGB误差降低37%，Alpha Soft IoU相对提升34%，T2RGBA取得最高CLIP Score。该框架使图层成为可指令寻址的操作对象，为代理式编辑提供了层原生设计空间。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We introduce UniWorld-Design, a framework that redefines image generation from flat pixel synthesis to structured visual composition, with semantic RGBA layers as the atomic units of generation, understanding, and editing. Our key insight is that pixels define how an image is rendered, whereas layers define how an image is created, understood, and edited. Just as human designers create and manipulate visual content through layers rather than raw pixels, UniWorld-Design equips multimodal generative models with a layer-native design space. UniWorld-Design comprises two models. The Text-to-RGBA (T2RGBA) model generates standalone RGBA assets directly from text. The Image-to-Layer (I2L) model conditions on a finished image, a global instruction and per-layer prompts, and jointly produces ordered, complete semantic RGBA layers. Its instruction interface supports top-level decomposition, recursive decomposition and targeted extraction, making layering an instruction-addressable operation for agentic editing. Because I2L learns complete semantic objects rather than visible-pixel partitions, its layers stay usable when moved or removed. On the Crello benchmark, I2L reduces per-layer RGB L1 error by 37% and achieves a 34% relative improvement in Alpha Soft IoU over Qwen-Image-Layered. Separately, T2RGBA achieves the highest CLIP Score, outperforming LayerDiffuse and OmniAlpha.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/08/2608.04142v1-invflowfd-reference-free-and-background-set-free-perceptual-music-quality-metric-with-flow-matching-inversion",
+      "section": "quick",
+      "title_en": "InvFlowFD: Reference-Free and Background-Set-Free Perceptual Music Quality Metric with Flow Matching Inversion",
+      "authors": "Alon Ziv, Harel Pogoda, Yossi Adi",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.04142v1",
+      "score": "6.0",
+      "evidence": "利用流匹配反演评估生成模型感知质量的度量方法，可迁移至视频质量评估",
+      "tldr": "现有无参考音乐质量评估虽免去了配对噪声-干净数据，但仍依赖背景集统计。本文提出InvFlowFD，仅用预训练Flow Matching模型，通过欧拉积分进行无条件流反转，将失真样本映射回先验分布进行比较。实验表明该方法能检测多种人工失真，并准确排序生成模型，与人类感知高度相关。相比现有指标更灵活、限制更少。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Existing reference-free methods for evaluating music perceptual quality alleviate the need for paired noisy-clean data, but they still rely on a background set, which is used to compute aggregated statistics of clean audio samples. In this work, we propose a novel approach that eliminates this requirement, achieving background-set-free and reference-free quality estimation using only a pre-trained Flow Matching backbone. We demonstrate that unconditional Flow Matching inversion via simple Euler integration is sufficient to detect various artificial distortions and accurately rank music generation models against human perceptual judgments. We introduce InvFlowFD, which performs flow inversion and compares a group of inverted samples to the prior distribution. We evaluate our method against prior work, quantitatively and with a thorough human study. Results suggest that InvFlowFD is highly correlated with human perception of sound distortions, as well as generative models' quality, while being more flexible and less restrictive than existing metrics.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

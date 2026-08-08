@@ -1,0 +1,318 @@
+Title: InvFlowFD: Reference-Free and Background-Set-Free Perceptual Music Quality Metric with Flow Matching Inversion
+
+URL Source: https://arxiv.org/pdf/2608.04142v1
+
+Published Time: Thu, 06 Aug 2026 00:06:18 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# INV FLOW FD: REFERENCE-FREE AND BACKGROUND-SET-FREE PERCEPTUAL MUSIC QUALITY METRIC WITH FLOW MATCHING INVERSION 
+
+Alon Ziv Harel Pogoda Yossi Adi 
+
+School of Computer Science and Engineering The Hebrew University of Jerusalem, Israel 
+
+alonzi@cs.huji.ac.il 
+
+ABSTRACT 
+
+Existing reference-free methods for evaluating music per-ceptual quality alleviate the need for paired noisy-clean data, but they still rely on a background set, which is used to compute aggregated statistics of clean audio samples. In this work, we propose a novel approach that eliminates this requirement, achieving background-set-free and reference-free quality estimation using only a pre-trained Flow Match-ing backbone. We demonstrate that unconditional Flow Matching inversion via simple Euler integration is suffi-cient to detect various artificial distortions and accurately rank music generation models against human perceptual judgments. We introduce I NV FLOW FD, which performs flow inversion and compares a group of inverted samples to the prior distribution. We evaluate our method against prior work, quantitatively and with a thorough human study. Results suggest that I NV FLOW FD is highly correlated with human perception of sound distortions, as well as gener-ative models’ quality, while being more flexible and less restrictive than existing metrics. 
+
+1 Introduction 
+
+Automatically measuring the perceptual quality of music is challenging, and could be done in several different ways. One approach would be to directly fit a predictor to human ratings of quality, as recently done in large scale for the Audiobox Aesthetic predictors [1]. A second approach, would include an aligned reference set , holding the exact corresponding clean signal for each evaluated sample. Collecting human ratings might be costly, and having an aligned reference set might be impractical in many real-world scenarios. As an alternative for both, prior work on automatic evaluation of the perceptual quality of mu-sic, such as FAD [2], introduced reference-free methods, alleviating the need for noisy-clean paired data. These methods leveraged a pre-trained neural network backbone     
+
+> © A. Ziv, H. Pogoda, and Y. Adi. Licensed under a Creative Commons Attribution 4.0 International License (CC BY 4.0). Attribu-tion: A. Ziv, H. Pogoda, and Y. Adi, “I NV FLOW FD: Reference-Free and Background-Set-Free Perceptual Music Quality Metric with Flow Match-ing Inversion”, in Proc. of the 27th Int. Society for Music Information Retrieval Conf., Abu Dhabi, UAE, 2026.
+
+such as VGGish [3] or CLAP [4] to obtain a reference-free evaluation, through aggregated statistics over clean data. However, these methods still rely on the existence of a large set of studio-recorded samples from which the background statistics are being exacted, namely the back-ground set . The need to provide a background set, in order to use FAD [2] and other comparison evaluation methods, injects a bias into the evaluation process, as different back-ground sets imply different results. Generally, we would like the evaluated music to be compared to the widest and most evenly distributed dataset could be found. Since it is costly and technically complicated to assemble and use such a ground-truth set, the evaluation process is affected by the chosen background samples. We find that background-set-dependent metrics such as FAD, are often ambiguous, reporting different trends for different background sets. We demonstrate this sensitivity both in terms of the reaction to synthetic distortions, and in terms of the correlation with human perception. Crucially, this paper demonstrates that music perceptual quality can be measured automatically without having a background set of clean samples at all. Relying only on a learned Flow Matching [5] backbone, we show how a simple unconditional inversion with Euler integration, is sufficient for detecting various types of artificial distortions, as well as for ranking the quality of generative models. Our methodology eliminates completely the dependency on a background set and its statistics. 
+
+We introduce I NV FLOW FD, a background-set-free mu-sic evaluation method built upon a Flow Matching back-bone. In a nutshell, I NV FLOW FD performs Flow Matching inversion on groups of latents and measures the divergence from the prior distribution. This design scheme allows divergence evaluation in a natively gaussian space, as op-posed to operating in the non-gaussian latent space, as done by prior work such as FAD. We perform an extensive em-pirical evaluation of our methodology, reported in Section 5, using objective metrics as well as through a dedicated human study. We show that I NV FLOW FD is able to de-tect synthetic distortions such as white noise or low-pass filtering with high sensitivity. Our human evaluation results show that I NV FLOW FD is highly correlated with human perception of local temporal flaws in the musical signal, arXiv:2608.04142v1 [cs.SD] 4 Aug 2026 Generated audios Background-set (clean samples pool)            
+
+> z∼Peval
+> z∼PBG
+> Empirical Gaussian fit
+> Fréchet distance between fitted Gaussians
+> Embedding backbone
+> N(μx,Σx)
+> N(μy,Σy)
+> Generated audios
+> z∼Peval
+> Prior N(0 , I )
+> (Gaussian by design)
+> Fréchet distance w.r.t. a fixed N(0 , I )prior
+> no background-set needed
+> Audio encoder (EnCodec) Flow matching backbone (map to flow prior)
+
+FAD InvFlowFD (ours) Figure 1 . Overview of our methodology. I NV FLOW FD eliminates the need for a background set compared to FAD. demonstrated with the proposed crop-and-paste distortion defined in section 5, for which I NV FLOW FD achieves a Pearson correlation r of 0.73 , as opposed to FAD, for which the same coefficients are −0.87 or 0.43 depending on the background set. Furthermore, we show that I NV FLOW FD is able to rank music generative models by their perceptual quality, with-out using any background set. We believe this setup is highly practical for obtaining robust automatic pipelines for assessing music generation quality. 
+
+2 Related Work 
+
+FAD [2] is a reference-free audio quality metric commonly used to evaluate the quality of music produced by generative models. It has been widely adopted in recent years by works such as MusicLM [6], MusicGen [7], and many others. Given a set of samples to evaluate, FAD uses a VGGish [3] backbone to extract an audio feature vector for each sample, fits an empirical multivariate Gaussian distribution to the resulting embeddings, and compares it to an empirical Gaussian fitted to a large collection of studio-quality recordings, referred to as the background set .Recent work has explored different backbone and back-ground set configurations for FAD [8, 9]. A key finding is that joint audio-text embedding models such as CLAP [4] outperform discriminative backbones such as VGGish. The authors of MAD [9] also proposed replacing the Fréchet Distance with MAUVE [10] as the divergence measure. Another recent work, KAD [11], identifies two limita-tions of FAD: (i) its slow convergence as a function of the evaluation set size, and (ii) the strong Gaussian assumption imposed on the embedding distribution. To address these issues, KAD replaces the Gaussian fitting step of FAD with a Maximum Mean Discrepancy (MMD) objective using RBF kernels. Our proposed methodology does not address the first limitation of FAD. However, it naturally addresses the sec-ond by measuring distances in the prior space of a Flow Matching model, whose distribution is Gaussian by con-struction. Finally, we note that all of the approaches dis-cussed above - FAD, MAD, and KAD - rely on the avail-ability of a large background reference set of clean audio, whereas our method completely eliminates the need for a background set. 
+
+3 Method 
+
+We propose I NV FLOW FD, a metric that leverages a pre-trained Flow Matching backbone to evaluate the perceptual quality of music. Given a set of encoded musical samples, INV FLOW FD asks the following question: How close is the inverted sample distribution to the prior? 
+
+Specifically, we first encode a set of musical samples into a latent space and perform unconditional Flow Match-ing inversion to map the latent representations back to the model’s prior space. We then compute the Fréchet Distance (FD) between the distribution of the transformed latents and the true prior distribution. Intuitively, if the input samples are well aligned with the data distribution on which the Flow Matching backbone was trained, the inverted latents should closely follow the prior distribution, resulting in a low FD. Conversely, as the input distribution deviates from the training distribution, the FD increases. We exploit this relationship to define our quality metric. Since the Flow Matching backbone is trained on a large corpus of high-quality, human-produced instrumental music [7, 12], we interpret I NV FLOW FD as a measure of music quality. Following prior work [2], we model the transformed la-tent distribution as an empirical Gaussian. For Flow Match-ing inversion, we perform 100 integration steps using Eu-ler’s method. The complete procedure for I NV FLOW FD is described in Algorithm 1. Algorithm 1 INV FLOW FD 
+
+Require: a set of audio samples A, a trained flow-matching music generation model M. 
+
+> 1:
+
+Z0 ← ∅  
+
+> 2:
+
+Step 1: Flow Matching inversion:  
+
+> 3:
+
+for a ∈ A do  
+
+> 4:
+
+z1 ← encode(a)  
+
+> 5:
+
+z ← z1 
+
+> 6:
+
+for t ∈ 1, 0.99 , 0.98 , ..., 0.01 do  
+
+> 7:
+
+Unconditional backward Euler step:  
+
+> 8:
+
+z ← z − 0.01 · M (z, t |∅ ) 
+
+> 9:
+
+end for  
+
+> 10:
+
+z0 ← z 
+
+> 11:
+
+Z0 ← Z 0 ∪ { z0} 
+
+> 12:
+
+end for  
+
+> 13: 14:
+
+Step 2: Empirical mean and covariance estimation:  
+
+> 15:
+
+[taken over both batch and temporal dims]  
+
+> 16:
+
+μ ← mean (Z0) ∈ R128  
+
+> 17:
+
+Σ ← empirical-cov (Z0) ∈ R128 ×128  
+
+> 18: 19:
+
+Step 3: Frechet Distance w.r.t. the N (0 , I ) prior:  
+
+> 20:
+
+FD (A|M ) ← ∥ μ∥2 + tr (I + Σ − 2√Σ)  
+
+> 21:
+
+return FD (A|M )
+
+4 Experimental Setup 
+
+Flow-Matching Backbone. We use JASCO-400M-chords-drums 1 [12] as our Flow Matching music generation back-bone, denoted by M. JASCO is a latent Flow Matching model that operates on the continuous latent representation produced by EnCodec 2 [13], whose latent representation has a frame rate of 50 Hz and 128 channels. JASCO-400M-chords-drums was originally trained to generate 10 -second music samples conditioned on text prompts, chord progres-sions, and drum stems. Since the model was trained with independent dropout for each conditioning modality, it can also be used as an unconditional Flow Matching model, mapping samples from the N (0 , I ) prior distribution to En-Codec latent matrices z1 ∈ R500 ×128 . In this work, we use JASCO solely as an unconditional Flow Matching model trained on ∼ 20 k hours of music, as described in [12]. 
+
+Evaluation Dataset. We use the MTG-Jamendo [14] and FMA-small [15] datasets for all empirical evaluations. 
+
+FAD Measurements. We use CLAP to extract audio embeddings for FAD computation, following prior work showing that CLAP-based FAD is highly correlated with human judgments of audio quality [4]. 
+
+5 Results 
+
+5.1 Synthetic Distortions 
+
+For all artificial distortion experiments, we use a set of 100 
+
+randomly sampled songs from the test set of the MTG Ja-mendo [14]. For each configuration, we randomly crop 10 
+
+seconds of each song, and use the set of 100 crops as A for   
+
+> 1https://huggingface.co/facebook/jasco-chords-drums-400M
+> 2https://huggingface.co/facebook/encodec_32khz
+
+INV FLOW FD evaluation. In the following section we de-scribe a set of experiments with artificial distortions, three common DSP filters, as well as a novel distortion proposed for reproducing local flaws commonly observed in genera-tive models outputs. We use the same synthetic distortions setup for both objective and subjective evaluation. 
+
+White Noise. We experiment with adding white noise 
+
+N (0 , σ 2I) to the 10 second crops, with standard deviations 
+
+5e − 5, 1e − 4, 5e − 4, 1e − 3, 2.5e − 3, 5e − 3, 7.5e −
+
+3, 1e − 2. Results, presented in Figure 2a, demonstrate that our proposed metric monotonically increases with σ,and can distinguish between levels of white noise with a sensitivity of 5e − 5 to changes in standard deviation . The trend is similar for FAD with the FMApop [15] background set, but on the other hand, FAD with the MusicCaps [6] background set is unable to correctly detect mild levels of white noise. 
+
+Low Pass Filter. We experiment with applying low pass filter to the samples, with critical frequencies [Hz] of 
+
+300 , 400 , 500 , 1k, 1.5k, 2k, 3k and 4k. We use the torchau-dio implementation from lowpass_biquad . Results, re-ported in Figure 2b, demonstrate a monotonical decrease of INV FLOW FD as function of the low pass critical frequency. FAD with both background sets behaves similarly. 
+
+High Pass Filter. Similarly, we apply high pass filter to the samples, with critical frequencies [Hz] of 
+
+400 , 750 , 1k, 1.5k, 2k, 3k, 4k, and 8k. We use the imple-mentation from torchaudio: highpass_biquad . Re-sults, reported in Figure 2c, demonstrate a monotonical increase of I NV FLOW FD as function of the high pass crit-ical frequency. FAD, with both background sets, reacts similarly. 
+
+Crop-and-paste. We simulate mispredictions of audio frames in the time domain by copying and overlaying fil-tered fractions of the original sample. The samples are either cut from 300 Hz to 4kHz, or from 4kHz to 10 kHz, with the same probability for every frequency to be chosen for every cut. A single “severity” argument dictates three parameters simultaneously: (i) The amplitude multiplier of the injected patch (scaled up to a factor of 1.6, which intentionally triggers a hard digital clipper); (ii) The den-sity of the artifacts (triggering glitch events on up to 4% 
+
+of the STFT time frames) and; (iii) The temporal duration of each copied patch (randomly sampled from boundaries linearly proportional to the severity). This operation targets mid or high-frequency bands, to try and mimic the miss-prediction of human-played instruments. By doing this, we try to break the coherent time-structure of music, and not just distort it locally. If a metric will manage to detect such time-related alterations of human played audio, we can say that it evaluates not only how music should sound, but also how elements playing should be structured. We apply the crop-and-paste distortion with severity levels in {0.0, 0.2, 0.4, 0.6, 0.8, 1.0}. Results, reported in Figure 2d, show an increase of I NV FLOW FD as function of the the crop-and-paste severity, suggesting I NV FLOW FD is able to successfully detect local flaws in music coherency. For FAD, on the other hand, the trend is non monotonic, 0.000 0.002 0.004 0.006 0.008 0.010 White noise                     
+
+> 0.44 0.46 0.48 0.50 0.52 0.54 InvFlowFD
+> InvFlowFD FAD (FMApop) FAD (MusicCaps)
+> (a)
+> 500 1000 1500 2000 2500 3000 3500 4000 Low-pass critical frequency (Hz) 0.46 0.48 0.50 0.52 0.54 InvFlowFD
+> InvFlowFD FAD (FMApop) FAD (MusicCaps)
+> (b)
+> 1000 2000 3000 4000 5000 6000 7000 8000 High-pass critical frequency (Hz) 0.6 0.8 1.0 1.2 InvFlowFD
+> InvFlowFD FAD (FMApop) FAD (MusicCaps) (c)
+> 0.0 0.2 0.4 0.6 0.8 1.0 Crop-and-paste Severity 0.440 0.445 0.450 0.455 0.460 0.465 InvFlowFD
+> InvFlowFD FAD (FMApop) FAD (MusicCaps)
+> (d)
+> 0.42 0.44 0.46 0.48 0.50 0.52 FAD
+> 0.45 0.50 0.55 0.60 0.65 0.70 0.75 FAD
+> 0.45 0.50 0.55 0.60 0.65 0.70 0.75 FAD
+> 0.41 0.42 0.43 0.44 0.45 0.46 0.47 FAD
+
+Figure 2 . I NV FLOW FD vs. FAD as a function of different distortion parameters. InvFlowFD FAD · FMA Pop FAD · Musicaps 
+
+> white noise low pass high pass crop_and_paste
+> 1.00
+> 0.75
+> 0.50
+> 0.25
+> 0.00 0.25 0.50 0.75 1.00 Pearson r
+
+Figure 3 . Pearson correlation between automatic metrics and human-based worth. specifically for the FMA-pop background set. 
+
+5.2 Human Study 
+
+We conduct a pairwise human preference evaluation us-ing a locally hosted Gradio [16] web interface. On each trial, the interface presents two 10 s MP3 excerpts (A/B) and ask the rater, similar to the human evaluation setup in [2], to select the sample that sounds cleaner and more professionally produced . Stimuli are drawn from an aug-mented version of 100 random samples from Jamendo [14] test set. The augmentations we use are the same as in previous section, namely white noise, low-pass filtering, high-pass filtering and our proposed ’crop-and-paste’ dis-tortion. We use the exact same critical parameter values described in the previous section. Additionally, we use the clean samples as pseudo-distortions. For each trial we sample an augmentation type uniformly at random from 
+
+{white noise , low-pass , high-pass , crop-and-paste }, then select two different distortion levels at random. We use aligned A/B samples that differ only in augmentation level; A/B placement is randomized to mitigate position bias. We collect a total of 400 pairwise responses, from 8 dif-ferent human raters, resulting in an average of 3-5 responses per pair of distortion levels. We then estimate worth values by applying the Plackett-Luce [18] algorithm per each type of distortion. We presented the worth values per distortion family in Figure 5. Finally, we measure the Pearson correla-tion between each automatic metric, including the baseline FAD, and report the results in Figure 3. For clarity, we flip the metrics sign to obtain positive correlations. Results demonstrate the ambiguity of FAD, for which correlation changes as function of the background set (here we experimented with FAD with two background sets -FMA-pop and MusicCaps), specifically for white noise. Results also show that I NV FLOW FD is on par with FAD in terms of correlation to human perception of low-pass, and white noise, but slightly worse than FAD in high-pass correlation. For local, subtle distortions such as the pro-posed crop-and-paste function, I NV FLOW FD is much more correlated with human perception, achieving a Pearson cor-relation coefficient r of 0.73 , while the same coefficients for FAD are −0.87 and 0.43 for the FMA-pop and MusicCaps background sets respectively. GT musicgen-small magnet-small-10secs 0.0 0.2 0.4 0.6 0.8 1.0 Normalized (0 1)      
+
+> 1/InvFlowFD (normalized) Human OVL* mean (normalized) 1/FAD (FMApop, normalized) 1/FAD (MusicCaps, normalized)
+> 0.4 0.5 0.6 0.7 0.8 0.9 InvFlowFD (lower is better) 80 82 84 86 88 90 92 94 Human OVL* (%)
+> GT musicgen-small magnet-small-10secs
+
+Figure 4 . Left: I NV FLOW FD and FAD evaluated on generative music models and compared to human evaluation results from [17] ∗. Right: Correlation plot of human evaluation overall quality measured from MAGNeT [17] ∗ and I NV FLOW FD, demonstrating strong correlation. 
+
+5.3 Comparing Music Generation Models with INV FLOW FD 
+
+We demonstrate how I NV FLOW FD could be used for auto-matic, reference-free and background-set-free evaluation of the quality of samples drawn from generative music mod-els. We evaluate each model by sampling 100 text-to-music samples with prompts defined by the tags of the test set of MTG Jamendo dataset. The tags are deterministically converted to textual descriptions such as "alternative track with electronic experimental vibes." or "indie track with newwave vibes with flute, with dream epic mood." . In Figure 4 we report I NV FLOW FD and FAD, for two text-to-music generation models taken from prior work [7, 17]. In addition, we plot the human evaluation results from MAGNeT [17] for overall quality, and we mark it as OVL ∗
+
+in both graphs of Figure 4, in order to demonstrate the correlation of our proposed method with human opinion. The reference human evaluation results suggest that the perceptual quality of musicgen-small [7] is better than the perceptual quality of magnet-small-10 secs [17], and that the perceptual quality of the ground truth MTG Jamendo songs is better than the quality of the samples generated by both generative models. Results for both FAD and I NV FLOW FD demonstrate a similar trend, reassuring the ability of FAD to rank gen-erative models, and more importantly, showing that the proposed I NV FLOW FD is capable of correctly ranking gen-erative models without requiring neither a reference set nor a background set. 
+
+6 Analysis 
+
+Another demonstration of the robustness of Flow Match-ing for music-quality evaluation concerns the following question: Given a single sample, can a pretrained flow-matching model determine how closely that sample resem-bles its training data? To address this question, we propose 
+
+Figure 5 . Human Evaluation Result: Worth curves for synthetic distortions. STABILITY FLOW .STABILITY FLOW is a way to use a Flow Matching generative model as an evaluator, by measuring the sta-bility of a local back-and-forth flow transformation. For in-distribution samples of audio, we expect the latents en-coded by EnCodec to remain stable under such a trans-formation. For out-of-distribution samples, we expect the reconstructed latents to be different from the original ones -as the model’s vector field will push the out-of-distribution latents to some other in-distribution point. Practically, we perform the following process: For a step size s and a flow-matching model M, we first invert an encoded latent sample z by taking a single large Euler step toward the prior, computing znoisy = z − s · M (z). Then, we perform k forward Euler steps to reconstruct ˆz. Finally, we compute the cosine similarity between each sample and its reconstructed version - which is another key factor of the method, as it is a per-sample metric. In our experiments, we set s = 0 .7, k = 10 and M is JASCO-400M-chords-drums .The full process is described in Algorithm 2. Although both S TABILITY FLOW and I NV FLOW FD eval-50 100 150 200 250 300 0.080 0.081 0.082 0.083 0.084 0.085 0.086       
+
+> 1-stabilityFlow
+> High Pass
+> 1-StabilityFlow InvFlowFD 8000 9000 10000 11000 12000 13000 14000 0.0782 0.0784 0.0786 0.0788 0.0790 0.0792 0.0794 0.0796
+> 1-stabilityFlow
+> Low Pass
+> 1-StabilityFlow InvFlowFD 0.4450 0.4475 0.4500 0.4525 0.4550 0.4575 0.4600
+> InvFlowFD
+> 0.462 0.464 0.466 0.468 0.470
+> InvFlowFD
+
+Figure 6 . Evaluation of S TABILITY FLOW and I NV FLOW FD on subtle synthetic distortions. Note that we report 1 −
+
+STABILITY FLOW for clarity, ensuring that both metrics go up as function of the distortion severeness. 
+
+Algorithm 2 STABILITY FLOW 
+
+Require: an ordered sequence of audio samples A =(a1, . . . , a N ), Trained flow-matching model M, step size s, number of steps to reconstruct n.
+
+1: Z ← () ▷ Sequence of original latents 
+
+2: ˆZ ← () ▷ Sequence of reconstructed latents 
+
+3: t ← 0.999 ▷ Initial time parameter for inversion 
+
+4: for i ← 1 to N do 
+
+5: zi ← encode (ai)
+
+6: Step 1: Single large inversion step 
+
+7: znoisy ← zi − s · M (zi, t |∅ )
+
+8: t ← t − s
+
+9: Step 2: n-step reconstruction 
+
+10: ˆzi ← znoisy 
+
+11: ∆t ← s/n 
+
+12: for j ← 1 to n do 
+
+13: Forward Euler step: 
+
+14: ˆzi ← ˆzi + ∆ t · M (ˆ zi, t |∅ )
+
+15: t ← t + ∆ t
+
+16: end for 
+
+17: Z[i] ← zi
+
+18: ˆZ[i] ← ˆzi
+
+19: end for 
+
+20: Step 3: Average Pairwise Cosine Similarity 
+
+21: CS (A|M , s ) ← 1
+
+> N
+
+PNi=1 
+
+> zi·ˆzi
+> ∥zi∥2∥ˆzi∥2
+
+22: return CS (A|M , s )
+
+uate music quality, they offer complementary advantages. INV FLOW FD directly compares the distribution of a set of inverted samples with the prior distribution, making it well suited for assessing distribution-level similarity to the back-bone model’s training data. In contrast, S TABILITY FLOW 
+
+performs multiple forward passes through the backbone and uses pairwise cosine similarity. Therefore, it supports sample-level quality assessment. We also found that S TABILITY FLOW was more sensi-tive to some subtle distortions that were not captured by INV FLOW FD. To examine this sensitivity, we applied a high-pass filter with cutoff frequencies ranging from 50 
+
+Hz to 300 Hz and a low-pass filter ranging from 8000 Hz to 14000 Hz. The results, presented in Figure 6, suggest that S TABILITY FLOW is more sensitive to subtle distor-tions. For example, low pass 10kHz was ranked as better than low pass 12kHz by I NV FLOW FD, while S TABILI -
+
+TY FLOW presents a monotonic reaction. Performance on these subtler distortions suggests that S TABILITY FLOW 
+
+may be particularly useful in settings that prioritize precise sample-level assessment over distribution-level evaluation. These measurements were obtained using the same sam-ples used to evaluate I NV FLOW FD in figure 2, but with the subtler cutoff frequencies described above. 
+
+7 Conclusion 
+
+We introduced I NV FLOW FD, a background-set-free metric for evaluating the perceptual quality of music using a pre-trained Flow Matching backbone. Unlike prior approaches such as FAD, I NV FLOW FD does not rely on curated refer-ence datasets, eliminating a major source of evaluation bias. Through synthetic distortions, human studies, and evalu-ation of generative music models, we demonstrated that INV FLOW FD is sensitive to perceptual degradations, cor-relates well with human judgments, and provides a robust alternative to background-dependent metrics. We further showed that Flow Matching models can serve as intrin-sic evaluators of music quality, and introduced S TABILI -
+
+TY FLOW as a complementary sample-level metric. Beyond evaluation, we believe this perspective opens new opportunities for using generative backbones as re-ward models for optimizing larger music generation sys-tems. More broadly, we hope this work encourages viewing generative models not only as synthesizers, but also as per-ceptual evaluators that can enable more practical and robust evaluation pipelines for music generation. 
+
+Acknowledgments. This research work was supported by Israel Science Foundation (ISF), grant number 2049 /22 .8 References 
+
+[1] A. Tjandra, Y.-C. Wu, B. Guo, J. Hoffman, B. Ellis, A. Vyas, B. Shi, S. Chen, M. Le, N. Zacharov, C. Wood, A. Lee, and W.-N. Hsu, “Meta audiobox aesthetics: Unified automatic quality assessment for speech, music, and sound,” 2025. [Online]. Available: https://arxiv.org/abs/2502.05139 [2] K. Kilgour, M. Zuluaga, D. Roblek, and M. Sharifi, “Fréchet audio distance: A metric for evaluating music enhancement algorithms,” 2019. [Online]. Available: https://arxiv.org/abs/1812.08466 [3] S. Hershey, S. Chaudhuri, D. P. W. Ellis, J. F. Gemmeke, A. Jansen, R. C. Moore, M. Plakal, D. Platt, R. A. Saurous, B. Seybold, M. Slaney, R. J. Weiss, and K. Wilson, “Cnn architectures for large-scale audio classification,” 2017. [Online]. Available: https://arxiv.org/abs/1609.09430 [4] Y. Wu, K. Chen, T. Zhang, Y. Hui, M. Nezhurina, T. Berg-Kirkpatrick, and S. Dubnov, “Large-scale contrastive language-audio pretraining with feature fusion and keyword-to-caption augmentation,” 2024. [Online]. Available: https://arxiv.org/abs/2211.06687 [5] Y. Lipman, R. T. Q. Chen, H. Ben-Hamu, M. Nickel, and M. Le, “Flow matching for generative modeling,” 2023. [Online]. Available: https://arxiv.org/abs/2210. 02747 [6] A. Agostinelli, T. I. Denk, Z. Borsos, J. Engel, M. Verzetti, A. Caillon, Q. Huang, A. Jansen, A. Roberts, M. Tagliasacchi, M. Sharifi, N. Zeghidour, and C. Frank, “Musiclm: Generating music from text,” 2023. [Online]. Available: https://arxiv.org/abs/2301. 11325 [7] J. Copet, F. Kreuk, I. Gat, T. Remez, D. Kant, G. Synnaeve, Y. Adi, and A. Défossez, “Simple and controllable music generation,” 2024. [Online]. Available: https://arxiv.org/abs/2306.05284 [8] A. Gui, H. Gamper, S. Braun, and D. Emmanouilidou, “Adapting frechet audio distance for generative music evaluation,” 2024. [Online]. Available: https: //arxiv.org/abs/2311.01616 [9] Y. Huang, Z. Novack, K. Saito, J. Shi, S. Watanabe, Y. Mitsufuji, J. Thickstun, and C. Donahue, “Aligning text-to-music evaluation with human preferences,” 2025. [Online]. Available: https://arxiv.org/abs/2503.16669 [10] K. Pillutla, S. Swayamdipta, R. Zellers, J. Thickstun, S. Welleck, Y. Choi, and Z. Harchaoui, “Mauve: Measuring the gap between neural text and human text using divergence frontiers,” 2021. [Online]. Available: https://arxiv.org/abs/2102.01454 [11] Y. Chung, P. Eu, J. Lee, K. Choi, J. Nam, and B. S. Chon, “Kad: No more fad! an effective and efficient evaluation metric for audio generation,” 2025. [Online]. Available: https://arxiv.org/abs/2502.15602 [12] O. Tal, A. Ziv, I. Gat, F. Kreuk, and Y. Adi, “Joint audio and symbolic conditioning for temporally controlled text-to-music generation,” 2024. [Online]. Available: https://arxiv.org/abs/2406.10970 [13] A. Défossez, J. Copet, G. Synnaeve, and Y. Adi, “High fidelity neural audio compression,” 2022. [Online]. Available: https://arxiv.org/abs/2210.13438 [14] D. Bogdanov, M. Won, P. Tovstogan, A. Porter, and X. Serra, “The mtg-jamendo dataset for automatic music tagging,” in Machine Learning for Music Discovery Workshop, International Conference on Machine Learning (ICML 2019) , Long Beach, CA, United States, 2019. [Online]. Available: http: //hdl.handle.net/10230/42015 [15] M. Defferrard, K. Benzi, P. Vandergheynst, and X. Bresson, in FMA: A Dataset For Music Analysis, International Society for Music Information Retrieval Conference (ISMIR) , 2017. [Online]. Available: https: //arxiv.org/abs/1612.01840 [16] A. Abid, A. Abdalla, A. Abid, D. Khan, A. Alfozan, and J. Zou, “Gradio: Hassle-free sharing and testing of ml models in the wild,” 2019. [Online]. Available: https://arxiv.org/abs/1906.02569 [17] A. Ziv, I. Gat, G. L. Lan, T. Remez, F. Kreuk, A. Défossez, J. Copet, G. Synnaeve, and Y. Adi, “Masked audio generation using a single non-autoregressive transformer,” 2024. [Online]. Available: https://arxiv.org/abs/2401.04577 [18] R. D. Luce, Individual Choice Behavior: A Theoretical Analysis . New York: John Wiley & Sons, 1959.
