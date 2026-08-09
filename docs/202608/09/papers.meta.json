@@ -1,0 +1,54 @@
+{
+  "label": "2026-08-09",
+  "date": "2026-08-09",
+  "generated_at": "2026-08-09T20:21:43",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/09/2608.01977v1-svgeval-a-vision-grounded-framework-for-perceptual-quality-benchmarking-and-evaluation-in-text-to-svg-generation",
+      "section": "quick",
+      "title_en": "SVGEval: A Vision-Grounded Framework for Perceptual-Quality Benchmarking and Evaluation in Text-to-SVG Generation",
+      "authors": "Yiming Wang, Ye Chen, Hanqi Chen, Bingbing Ni",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.01977v1",
+      "score": "7.0",
+      "evidence": "面向AI生成内容的视觉感知质量评估框架，其方法可应用于生成视频质量评估",
+      "tldr": "多模态大模型生成的SVG缺乏符合人类感知的评估协议，现有方法过于依赖代码或光栅图像指标。SVGEval以视觉渲染为核心，通过多轮人工标注构建基准，发现模型在语义和美学上尚可，但几何与布局判断薄弱。基于此训练的评分器证明显式视觉接地和推理监督对空间评估至关重要，为SVG生成提供了可靠测试平台。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Multimodal large models are increasingly used to generate scalable vector graphics (SVG), but reliable evaluation remains underexplored. Existing protocols are often code-centric or borrow raster-image metrics after rendering SVGs, which fail to reflect human perception and overlook SVG-specific qualities such as geometry and spatial composition. We introduce SVGEval, a vision-grounded multimodal benchmark for human-aligned SVG quality assessment. SVGEval explicitly incorporates visual renderings to evaluate whether models can judge the rendered outcome rather than only inspect SVG code, and provides high-quality annotations obtained via multi-round human labeling with expert refinement. Systematic evaluations across representative multimodal models reveal a clear gap: models perform relatively well on semantic alignment and aesthetics, yet struggle on geometry- and layout-related judgments. Building on SVGEval, we train an explainable SVG quality scorer that outputs multi-aspect scores with textual rationales. Ablations show that explicit visual grounding and reasoning supervision are crucial, especially for spatial and geometric assessment. SVGEval offers a reliable testbed and practical scorer for evaluating and improving SVG generation in the era of multimodal models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.03279v1-3dgsi-assessor-a-large-scale-dataset-and-an-lmm-based-method-for-3d-gaussian-splatting-image-quality-assessment",
+      "section": "quick",
+      "title_en": "3DGSI-Assessor: A Large-Scale Dataset and An LMM-based Method for 3D Gaussian Splatting Image Quality Assessment",
+      "authors": "Yuke Xing, Jiarui Wang, William Gordon, Zhu Li, Guangtao Zhai, Yiling Xu",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.03279v1",
+      "score": "7.0",
+      "evidence": "面向3DGS的感知质量评估数据集与LMM方法，可迁移至生成视频质量评估",
+      "tldr": "3D高斯泼溅在带来实时新视角合成的同时，其压缩产生了浮动伪影与表面散射等独特畸变，且几何与颜色属性独立压缩导致维度特定失真，单一总分难以诊断。为此构建3DGS-IEval-15K+数据集，含10场景、15200幅图像、20种策略视点，标注45600个整体/几何/颜色MOS。进而提出3DGSI-Assessor，基于大多模态模型融合全局语义与维度特定局部特征，单次前向同时预测三维质量，在数据集上达到SOTA并展现良好跨基准泛化能力。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "3D Gaussian Splatting (3DGS) has become a dominant representation for real-time novel view synthesis (NVS), yet its storage footprint makes compression indispensable for practical deployment. 3DGS training and compression introduce representation-specific distortions such as floating artifacts and surface scattering, which conventional image quality assessment (IQA) metrics fail to capture. Moreover, the independent compression of geometric and color attributes may lead to decoupled dimension-specific distortions that must be diagnosed separately, yet existing metrics report only a single overall score. To address these gaps, we present 3DGS-IEval-15K+, a large-scale, multi-dimensional IQA dataset for compressed 3DGS, comprising 15,200 images from 10 diverse scenes, produced by 6 representative 3DGS algorithms at systematically designed compression levels and rendered from 20 strategically selected viewpoints spanning both training views and challenging novel views, annotated with 45,600 mean opinion scores (MOSs) across overall, geometry, and color quality. Based on 3DGS-IEval-15K+, we propose 3DGSI-Assessor, an all-in-one 3DGS IQA framework that integrates global semantic and dimension-specific local features within a large multimodal model (LMM), predicting all three dimensions in a single forward pass. 3DGSI-Assessor achieves state-of-the-art performance on 3DGS-IEval-15K+, and exhibits competitive generalization on other NVS benchmarks. Dataset and code will be released at https://github.com/YukeXing/3DGSI-Assessor.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.04038v1-toward-uncertainty-quantification-in-modern-art",
+      "section": "quick",
+      "title_en": "Toward Uncertainty Quantification in Modern Art",
+      "authors": "Tirtho Roy, Ushashi Bhattacharjee, Showrav Kumar Saha, Sayantan Chakraborty, Koushik Howlader, Tanusree Bhattacharjee",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.04038v1",
+      "score": "6.0",
+      "evidence": "提出可复用的多随机种子不确定性协议，用于评估文生视频动画的生成质量。",
+      "tldr": "现代艺术动画中，不同随机种子产生不同解读，该艺术歧义带来的分歧是信号而非噪声，但现有不确定性量化仅输出分散度标量，无法区分紧凑解释、异常点或多模态等结构。本文提出结构化不确定性量化协议，含七种源盲与六种参考感知估计器、分布剖面及八个识别问题，并构建250件作品的四种子语料库（1000视频）。协议分类拓扑平衡准确率0.98，异常识别AUROC 1.00，并可靠区分参考覆盖与缺失。这是首次对现代艺术生成不确定性的结构化研究，为歧义性内容评估提供可复用工具。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Asked to animate the same modern artwork under different random seeds, a text to video model returns visibly different films, one reading per seed. Because modern art is ambiguous by intent, this disagreement is signal, not noise. Yet prevailing uncertainty quantification (UQ) collapses a set of generations to a dispersion scalar that says how much the seeds differ but not how: it cannot tell a compact interpretation from a dominant reading plus an outlier, two competing modes, or diffuse instability, nor whether the set still contains a rendering faithful to the original. We present the first study of the structure of generative uncertainty for modern art animation, and a reusable protocol for identifying source blind multiseed uncertainty: a suite of seven source blind and six reference aware estimators; a distributional profile (robust spread, outlier influence, explicit topology, multimodality, anisotropy, leave one seed influence, reference coverage); a distribution model ablation (vMF, Kent, ACG, Student t, kernel, mixture); eight identification questions; and an artwork level statistical protocol. We build the first corpus: 250 modern artwork captions rendered by Wan2.1 14B under four seeds (1000 videos) across 4 encoders, artworks withheld from generation. As a diagnostic the protocol succeeds: it classifies seed set topology at balanced accuracy 0.98 (chance 0.25), isolates the outlier configuration at AUROC 1.00 where a scalar reaches only 0.35, and splits high uncertainty artworks into reference covering (n=97) and reference missing (n=56) diversity, reliably from three seeds and across encoders.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

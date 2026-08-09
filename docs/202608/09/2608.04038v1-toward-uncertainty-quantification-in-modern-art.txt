@@ -1,0 +1,193 @@
+Title: Toward Uncertainty Quantification in Modern Art
+
+URL Source: https://arxiv.org/pdf/2608.04038v1
+
+Published Time: Thu, 06 Aug 2026 00:03:19 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# Toward Uncertainty Quantification in Modern Art 
+
+Tirtho Roy *,†,1 Ushashi Bhattacharjee *,1 Showrav Kumar Saha 2 Sayantan Chakraborty 3
+
+Koushik Howlader 1 Tanusree Bhattacharjee 11Iowa State University 2Independent Researcher 3University of Dhaka 
+
+## Abstract 
+
+Asked to animate the same modern artwork under different random seeds, a text to video model returns visibly different films, one reading per seed. Because modern art is ambiguous by intent, this disagreement is signal, not noise. Yet prevailing uncertainty quantification (UQ) collapses a set of generations to a dispersion scalar that says how much the seeds differ but not how: it cannot tell a compact interpretation from a dominant reading plus an outlier, two competing modes, or diffuse instability, nor whether the set still contains a rendering faithful to the original. We present the first study of the structure of generative uncertainty for modern art animation , and a reusable 
+
+protocol for identifying source blind multiseed uncertainty : a suite of seven source blind and six reference aware estimators; a distributional profile (robust spread, outlier influence, explicit topology, multimodality, anisotropy, leave one seed influence, reference coverage); a distribution model ablation (vMF, Kent, ACG, Student t, kernel, mixture); eight identification questions; and an artwork level statistical protocol. We build the first corpus: 250 modern artwork captions rendered by Wan2.1 14B under four seeds (1000 videos) across 4 encoders, artworks withheld from generation. As a diagnostic the protocol succeeds: it classifies seed set topology at balanced accuracy 0.98 (chance 0.25), isolates the outlier configuration at AUROC 1.00 where a scalar reaches only 0.35, and splits high uncertainty artworks into reference covering ( n=97 ) and reference missing (n=56 ) diversity, reliably from three seeds and across encoders. Two negative results mark its limits: added structure does not beat pairwise dispersion at predicting semantic disagreement (cross validated R2 0.240 vs 0.243), and source blind uncertainty tracks interpretation, not reference fidelity. We release the protocol, corpus, and harness. 
+
+## 1 Introduction 
+
+Text to video models can now set a still artwork in motion from a short description, and modern art makes an unusually exacting subject: ambiguous by intent, a single piece licenses many defensible readings. Render the same modern artwork under several seeds and the outputs diverge in earnest, each seed committing to a distinct interpretation, and that divergence is precisely what a creative system should measure rather than suppress. How a generator is uncertain when it renders art has nonetheless gone unexamined. The uncertainty estimators in common use (directional concentration, pairwise dispersion, embedding variance, and semantic entropy [Kuhn et al., 2023, Farquhar et al., 2024, Chattopadhyay et al., 2026]) each return a single number. A scalar can state 
+
+how much the seeds disagree; it cannot state how they disagree. Four seeds that share an average pairwise distance may nonetheless form one compact cluster, three concordant renderings beside a lone outlier, two coherent interpretations, or four mutually distinct readings (Figure 3a). For a system curating art these demand different responses (accept, discard a seed, present alternatives, or abstain), yet a dispersion score assigns them one value. This paper is, to our knowledge, the first systematic study of the structure of generative uncertainty for modern art animation . The operative question is not “how uncertain is the generator” but “ what is the structure of that uncertainty, and can we recover it reliably from a handful of seeds .” We answer it with a protocol for the source blind setting, in which the human artwork behind a caption is withheld from generation and consulted only for evaluation, so that no deployable score ever inspects the original. The protocol is deliberately self contained and reusable: a baseline suite, a distributional profile that names five kinds of structure, a distribution model ablation that gauges how much parametric machinery four seeds can support, eight identification questions (RQ1 to RQ8), and an artwork level statistical protocol with strict calibration hygiene.   
+
+> *Equal contribution. †Corresponding author: tirtho@iastate.edu .
+
+1arXiv:2608.04038v1 [cs.GR] 3 Aug 2026 To render the question answerable we construct the first corpus designed for it: 250 modern artwork captions rendered by Wan2.1 14B [Team Wan et al., 2025] under four seeds and embedded by 4 encoders, each paired with a source artwork held out of generation. Running the protocol end to end on this corpus, we establish that: • the source blind scalar estimators are strongly redundant (10 of 21 pairs redundant, maximum 
+
+|r| = 1 .00 ), so a single dispersion axis accounts for most of them (RQ1); • the distributional profile recovers structure a scalar cannot, classifying controlled topology at balanced accuracy 0.98 and flagging the outlier configuration at AUROC 1.00 against 0.35 for DCU (RQ2); • uncertainty resolves cleanly into reference covering and reference missing diversity (RQ4, RQ5), while the simple components remain reliable at four seeds (RQ7) and stable across encoders (RQ8); • two negative results add precision: the profile does not outperform pairwise dispersion on semantic disagreement (RQ6), and source blind uncertainty does not gauge reference fidelity. The lesson for modern art generation is that structure identification, not scalar magnitude, is where source blind uncertainty carries information, and that this first protocol makes both findings measurable and portable to other generators and collections. 
+
+## 2 Related Work 
+
+Uncertainty in generative models. Semantic entropy groups multiple generations into meaning equivalence classes and takes the entropy of the resulting partition [Kuhn et al., 2023, Farquhar et al., 2024], while directional concentration uncertainty (DCU) fits a von Mises Fisher distribution to normalized output embeddings and reports the inverse concentration [Chattopadhyay et al., 2026]. Both compress the sample to a single scalar. We retain them as baselines and ask, through objective tests, precisely what that scalar does and does not capture. 
+
+Text to video and its evaluation. Wan2.1 [Team Wan et al., 2025] is a strong open text to video model; corpus scale understanding [Wang et al., 2023] and benchmark suites [Huang et al., 2024] appraise fidelity and text alignment, and world model research examines single trajectories [Mei et al., 2025]. None characterizes the structure of seed level disagreement, which is our object of study. 
+
+Creative agency and art. Work on human and AI cocreation and creative agency [Doshi and Li, 2025, Rafner et al., 2025, Zhang et al., 2025, Issak et al., 2025, Xie et al., 2024] argues for treating multiple generations as interpretations rather than errors, and painting and animation systems [Liu et al., 2025, Hu et al., 2025, Mahapatra et al., 2023] translate art into motion. None, however, asks how a generator is uncertain when it renders a modern artwork, that is, what the structure of its seed level interpretation is. That measurement question, posed for modern art in particular, is the one we take up first. 
+
+## 3 The Protocol 
+
+Setup and notation. For artwork i we observe Di = ( Ii, c i, V i1, . . . , V iK ): a hidden reference image Ii, a caption ci derived from it, and K videos Vik generated from ci under distinct seeds. The artwork never enters generation. Each video is encoded frame by frame and mean pooled to a unit clip vector xik , and the reference and caption are encoded by the same tower to ˜ri, ˜qi. The K clips constitute an empirical interpretation distribution bP gen  
+
+> i
+
+, which the protocol sets out to characterize (Figure 1). 
+
+Baseline suite (source blind and reference aware). Seven source blind estimators read the videos alone: DCU (inverse vMF concentration), pairwise dispersion, embedding variance, centroid concentration, meaning equivalence semantic entropy, caption alignment instability, and within video temporal instability. Six reference aware measures consult the hidden artwork and are labeled 
+
+evaluation only : the mean, best of K, worst of K, and variance of reference similarity, kernel reference inclusion, and nearest seed distance. The boundary between the two families is never crossed by a deployable score: only the reference aware measures ever read the withheld artwork, and they serve evaluation exclusively. 
+
+Distributional profile. The core of the protocol decomposes bP gen  
+
+> i
+
+into named components: 2Figure 1: The source blind protocol. The caption is derived from the artwork; the generator sees only the caption and produces K seeded videos whose embeddings form the interpretation distribution. The artwork bypasses generation and enters only the evaluation branch. seed 1 seed 2 seed 3 seed 4  
+
+> Figure 2: One caption rendered under four seeds (one representative frame per seed). Each seed advances a distinct reading of the same modern artwork, so the four clips constitute four samples of the interpretation distribution the protocol characterizes.
+
+global spread (pairwise dispersion); robust spread (the median pairwise distance and a tail gap 
+
+= mean − median); outlier influence (each seed’s mean distance to the rest, its maximum, and the gap between the two largest); an explicit topology obtained by selecting the seed partition ˆCi =arg min C Swithin  
+
+> i
+
+(C)+ λ|C| over the candidate shapes {(4) , (3+1) , (2+2) , (2+1+1) , (1+1+1+1) };
+
+multimodality (the between over within scatter ratio of the selected partition); anisotropy (the leading eigenvalue share and effective dimensionality in a shared PCA space); leave one seed influence ; and 
+
+reference coverage (best of K and a kernel inclusion score). The penalty λ, the kernel bandwidth h,and the PCA basis are fit on the calibration split alone. 
+
+Distribution model ablation. To gauge how much parametric structure four seeds can support, the protocol fits six models to each seed set, namely a single vMF, a Kent distribution with shrinkage, an angular central Gaussian, a Student t in PCA space, an empirical spherical kernel, and a vMF mixture (used only when K ≥ 8), and scores each by held out (leave one seed) log likelihood, reference inclusion likelihood, and stability under subsampling. 
+
+Statistical protocol. Every estimate resamples at the artwork level, moving all seeds together, across 10 4 bootstrap replicates; correlations carry permutation p values; method comparisons use a paired artwork level bootstrap; and a Benjamini Hochberg correction is applied within each experiment family. The data are split by artwork into 50 calibration, 50 validation, and 150 test, stratified by style. Calibration yields τ =0 .76 (the semantic threshold), λ=0 .50 (the topology penalty), h=1 .07 (the kernel bandwidth), and a 50 dimensional PCA space. 
+
+## 4 A Modern Art Rendering Corpus 
+
+We build the first corpus for structural uncertainty in modern art animation: 250 modern artwork captions spanning four style strata (postimpressionism, pop art, surrealism, and a modern generic set), each rendered by Wan2.1 14B [Team Wan et al., 2025] at 832 × 480 , 24 frames, under K=4 
+
+seeds, for a frozen corpus of 1000 videos (Figure 2). No new generation is performed; the protocol runs entirely off cached embeddings. Videos, references, and captions are embedded by 4 encoders, OpenCLIP ViT B/32 (primary) together with ViT L/14, SigLIP, and DINOv2 (vision only), so that 3compact outlier 3+1 
+
+bimodal 2+2 diffuse (a) Four configurations with similar mean spread but different structure (compact, 3+1 , 2+2 ,diffuse); a scalar maps them to one value. 43+1 2+2 1+1+1+1   
+
+> predicted
+> 43+1 2+2 1+1+1+1
+> true Topology recovery
+> 0.0 0.5
+> perturbation
+> 0.0 0.5 1.0
+> anisotropy  Perturbation response
+> directional isotropic
+> 0.0 0.5 1.0
+> (b) Controlled recovery (Exp. 2): topology confusion matrix (left) and anisotropy response to directional vs. isotropic perturbations (right).
+
+Figure 3: The profile separates seed set structures that a scalar cannot (a) and recovers them under control (b). 
+
+Table 1: Controlled structural recovery (Exp. 2): the profile classifies topology and detects the outlier configuration far above chance; a dispersion scalar (DCU) cannot. Metric Value Chance Topology balanced accuracy 0.98 0.25 Topology macro F1 0.98 0.25 Outlier AUROC (outlier gap) 1.00 0.50 Outlier AUROC (DCU) 0.35 0.50 Multimodality AUROC (mode ratio) 0.49 0.50 Multimodality AUROC (DCU) 0.64 0.50 
+
+Table 2: Incremental value (Exp. 7): CV R2 for cross seed semantic disagreement. Distributional structure (M2 to M6) does not beat plain pairwise dispersion (M0). Model CV R2
+
+M0 pairwise 0.243 M1 scalar uq 0.289 M2 simple geometry 0.237 M3 dist structure 0.235 M4 full sourceblind 0.294 M5 ref simple 0.256 M6 full profile 0.240 
+
+every ranking can be tested for encoder dependence. Structured cross seed semantic disagreement over subject, setting, action, style, mood, color, and composition is elicited from a source blind vision language annotator applied to seed mid frames, supplying an observable target that never sees the reference. 
+
+## 5 Applying the Protocol 
+
+5.1 RQ1: Are the scalar estimators redundant? 
+
+Across the source blind estimators the mean absolute pairwise correlation is 0.56, and 10 of 21 pairs are redundant ( |r| > 0.8), reaching a maximum of 1.00. DCU, pairwise dispersion, embedding variance, and centroid concentration behave as near monotone transforms of one another. 
+
+Conclusion: the source blind scalars occupy essentially one dispersion axis, and a further dispersion scalar contributes little. 
+
+5.2 RQ2: Does the profile recover structure a scalar cannot? 
+
+On controlled seed sets of known geometry (compact, 3+1 , 2+2 , diffuse), the profile’s topology selector attains balanced accuracy 0.98 and macro F1 0.98 (chance 0.25), and its outlier gap component detects the 3+1 configuration at AUROC 1.00 where DCU reaches only 0.35 (Table 1, Figure 3b). Under graded perturbations, anisotropy rises with directional noise ( ρ = −0.14 ) but far less with isotropic noise ( ρ = 0 .41 ), exactly as intended. The lone weak point is the symmetric two mode case: the mode ratio component detects 2+2 at AUROC 0.49 only (DCU 0.64), which we report rather than conceal. Conclusion: the profile recovers outlier and directional structure well and topology as a whole very well, while symmetric bimodality at K=4 remains hard. 4B1_dcu B2_pairwise B3_embvar B4_centroid B5_semantic B6_align_instability B7_temporal P_spread P_median P_tail P_outlier_max P_outlier_gap P_mode P_mode_entropy P_anis P_eff_dim P_influence C_best C_kernel 
+
+> overall subject setting action style mood color composition
+> Uncertainty component vs semantic disagreement (Spearman)
+> 1.00
+> 0.75
+> 0.50
+> 0.25
+> 0.00 0.25 0.50 0.75 1.00
+
+Figure 4: Spearman correlation of each uncertainty component (columns) with per attribute cross seed semantic disagreement (rows). 
+
+Table 3: Two axis taxonomy (Exp. 6): high seed uncertainty splits into reference covering and reference missing diversity. Quadrant n Sem. disagr. Mean sim. Best sim. Low unc., high cov. 60 0.57 0.45 0.50 High unc., high cov. 97 0.65 0.45 0.51 Low unc., low cov. 37 0.53 0.34 0.39 High unc., low cov. 56 0.64 0.32 0.37 
+
+5.3 RQ3: What does the uncertainty track? 
+
+Against structured cross seed semantic disagreement, the dispersion estimators are the strongest single correlates (DCU ρ = 0 .50 ), and pairwise dispersion identifies the most divergent quartile at AUROC 0.79 (Figure 4). The purely structural components (outlier gap, mode ratio, anisotropy) carry little additional linear signal for this target. Conclusion: source blind uncertainty tracks observable semantic disagreement, and does so chiefly through its dispersion magnitude. 
+
+5.4 RQ4 and RQ5: Reference coverage and its separation from uncertainty 
+
+The best seed reference similarity exceeds the mean by 0.054 (95% CI [0 .050 , 0.057] ), so some seed sets already contain a faithful rendering that the mean obscures. Kernel inclusion, however, is nearly identical to mean similarity ( ρ = 1 .00 ) and to best of K (ρ = 0 .95 ) on this corpus, adding little beyond them; only the parametric vMF likelihood departs from it ( ρ = 0 .47 ). Seed uncertainty and reference coverage form separate axes: the two axis taxonomy (Table 3) divides high uncertainty cases into reference covering diversity ( n=97 ) and reference missing diversity ( n=56 ). Conclusion: 
+
+high diversity is not a single phenomenon, and the protocol distinguishes meaningful variation from a failure to cover the target. 
+
+5.5 RQ6: Does the profile beat a single scalar? 
+
+This is the strongest negative test. Nested models from pairwise only (M0) to the full distributional profile (M6) predict cross seed semantic disagreement at cross validated R2 of 0.243 (M0) and 0.240 (M6): the full profile does not improve on the single scalar ( ∆R2 = −0.004 ), and the primary M6 against M5 comparison is likewise flat ( ∆ = −0.011 , 95% CI [−0.215 , 0.045] ; Table 2). 
+
+Conclusion: for predicting semantic disagreement, distributional structure is diagnostic rather than additive, in keeping with the redundancy established in RQ1. 
+
+5.6 RQ7 and RQ8: Reliability at four seeds and across encoders 
+
+The simple estimators are reliable from subsets: three of four seed rankings reproduce the full four ranking at Spearman 1.00 (pairwise), 1.00 (DCU), and 1.00 (kernel coverage), and even two of four holds at 1.00 (Table 4). Across the four encoders (Table 5) the dispersion estimators agree at 5Table 4: Seed count reliability (Exp. 8): Spearman agreement of subset estimates with the full four seed ranking. Estimator 2 of 4 ρ 3 of 4 ρ
+
+DCU 1.00 1.00 Pairwise 1.00 1.00 Emb. variance 1.00 1.00 Centroid 1.00 1.00 Semantic entropy 0.97 0.98 Best of K 0.98 0.99 Kernel incl. 1.00 1.00 
+
+Table 5: Cross backbone rank agreement over the four encoders (Exp. 9): mean and minimum Spearman over encoder pairs. Estimator Mean ρ Min ρ
+
+Pairwise 0.80 0.70 DCU 0.80 0.70 Temporal 0.94 0.92 Kernel incl. 0.70 0.57 Outlier gap 0.23 0.17 Mode ratio 0.35 0.22 
+
+mean Spearman 0.80 (pairwise) and 0.80 (DCU), kernel coverage is moderately stable (0.70), and the mode ratio component is fragile (0.35). Conclusion: the simple components are trustworthy at 
+
+K=4 and robust across encoders, while the richer structural components demand more seeds. 
+
+5.7 Temporal decomposition and a downstream use 
+
+A temporal decomposition of global uncertainty into within video instability ( =0 .016 ), across seed same timestep disagreement (0.289), and trajectory disagreement (0.144) shows that the three contribute unequally, with the dominant source of global seed spread on this corpus being trajectory .Finally, as one concrete use, ranking artworks by predicted risk yields a selective prediction curve: on the reference risk target the profile model improves over random by 0.088 and 3 scorers beat random, while on the semantic risk target 7 scorers beat random, evidence that the identified structure is actionable rather than a policy contribution. 
+
+## 6 Discussion 
+
+The protocol accomplishes two things a scalar cannot. It names the structure of a seed set (compact, outlier, bimodal, diffuse, directional) and recovers that structure reliably (RQ2), and it separates 
+
+seed uncertainty from reference coverage, resolving high diversity into meaningful variation versus a failure to cover the target (RQ4, RQ5). These are the diagnostic uses we recommend. Equally, the protocol is candid about where structure does not help. Adding outlier, mode, and anisotropy components does not improve the prediction of semantic disagreement over a single dispersion scalar (RQ6), because on this corpus the source blind estimators span largely one axis (RQ1), and source blind uncertainty is interpretive rather than reconstructive, measuring how the seeds vary rather than their fidelity to the withheld artwork. A practitioner should therefore deploy the profile to classify uncertainty and route decisions, but should not expect a richer scalar to predict 
+
+meaning better than pairwise dispersion, nor any source blind score to substitute for reference fidelity. 
+
+## 7 Conclusion 
+
+We presented the first systematic study of the structure of generative uncertainty for modern art animation, with a protocol (baseline suite, distributional profile, distribution model ablation, eight identification questions, and an artwork level statistical protocol) applied end to end to a purpose built corpus of 1000 source blind videos across 4 encoders. As a diagnostic it recovers seed set topology, isolates outliers, and separates reference covering from reference missing diversity, reliably at four seeds and across encoders, while two negative results mark its limits: structure does not beat a single scalar for semantic disagreement, and source blind uncertainty is interpretive rather than reconstructive. Both the protocol and the corpus are released. 
+
+## References                
+
+> Souradeep Chattopadhyay, Brendan Kennedy, Sai Munikoti, Soumik Sarkar, and Karl Pazdernik. Directional concentration uncertainty: Arepresentational approach to uncertainty quantification for generative models. arXiv preprint arXiv:2602.13264 , 2026. URL https://arxiv.org/abs/2602.13264 . Preprint; not peer reviewed. Vivan Doshi and Mengyuan Li. Writing in symbiosis: Mapping human creative agency in the AI era. arXiv preprint arXiv:2512.13697 , 2025. URL https://arxiv.org/abs/2512.13697 . Also NeurIPS 2025 Creative AI Track. Sebastian Farquhar, Jannik Kossen, Lorenz Kuhn, and Yarin Gal. Detecting hallucinations in large language models using
+
+6semantic entropy. Nature , 630:625–630, 2024. doi: 10.1038/s41586-024-07421-0. URL https://www.nature. com/articles/s41586-024-07421-0 .Junjie Hu, Shuyong Gao, Qianyu Guo, Yan Wang, Qishan Wang, Yuang Feng, and Wenqiang Zhang. Animatepainter: A self supervised rendering framework for reconstructing painting process. arXiv preprint arXiv:2503.17029 , 2025. URL 
+
+https://arxiv.org/abs/2503.17029 .Ziqi Huang, Yinan He, Jiashuo Yu, Fan Zhang, et al. Vbench: Comprehensive benchmark suite for video generative models. In CVPR , 2024. doi: 10.1109/CVPR52733.2024.02060. URL https://arxiv.org/abs/2311.17982 .Alayt Issak, Jeba Rezwana, and Casper Harteveld. Mosaaic: Managing optimization towards shared autonomy, authority, and initiative in cocreation. In International Conference on Computational Creativity (ICCC) , 2025. URL https: //arxiv.org/abs/2505.11481 . arXiv:2505.11481. Lorenz Kuhn, Yarin Gal, and Sebastian Farquhar. Semantic uncertainty: Linguistic invariances for uncertainty estimation in natural language generation. In International Conference on Learning Representations (ICLR) , 2023. URL https: //arxiv.org/abs/2302.09664 . arXiv:2302.09664. Lingyu Liu, Yaxiong Wang, Li Zhu, and Zhedong Zheng. Every painting awakened: A training free framework for painting to animation generation. arXiv preprint arXiv:2503.23736 , 2025. URL https://arxiv.org/abs/2503.23736 .Aniruddha Mahapatra, Aliaksandr Siarohin, Hsin Ying Lee, Sergey Tulyakov, and Jun Yan Zhu. Text guided synthesis of eulerian cinemagraphs. ACM Transactions on Graphics (SIGGRAPH Asia) , 2023. doi: 10.1145/3618326. URL 
+
+https://doi.org/10.1145/3618326 .Zhiting Mei, Tenny Yin, Micah Baker, Ola Shorinwa, and Anirudha Majumdar. World models that know when they don’t know: Controllable video generation with calibrated uncertainty. arXiv preprint arXiv:2512.05927 , 2025. URL 
+
+https://arxiv.org/abs/2512.05927 .Janet Rafner, Blanka Zana, Iben Have Beck Hansen, Simon Ceh, Jacob Sherson, Mathias Benedek, and Izabela Lebuda. Agency in human AI collaboration for image generation and creative writing: Preliminary insights from think aloud protocols. Creativity Research Journal , 2025. doi: 10.1080/10400419.2025.2587803. URL https://doi.org/10. 1080/10400419.2025.2587803 .Team Wan, Ang Wang, et al. Wan: Open and advanced large scale video generative models. arXiv preprint arXiv:2503.20314 ,2025. URL https://arxiv.org/abs/2503.20314 .Yi Wang et al. Internvid: A large scale video text dataset for multimodal understanding and generation. arXiv preprint arXiv:2307.06942 , 2023. URL https://arxiv.org/abs/2307.06942 .Yueqi Xie, Tao Qi, Jingwei Yi, Xiyuan Yang, Ryan Whalen, Junming Huang, Qian Ding, Yu Xie, Xing Xie, and Fangzhao Wu. Measuring human contribution in AI assisted content generation. arXiv preprint arXiv:2408.14792 , 2024. URL 
+
+https://arxiv.org/abs/2408.14792 .Shuning Zhang, Hui Wang, and Xin Yi. Exploring collaboration patterns and strategies in human AI cocreation through the lens of agency: A scoping review of the top tier HCI literature. arXiv preprint arXiv:2507.06000 , 2025. URL 
+
+https://arxiv.org/abs/2507.06000 .
+
+7

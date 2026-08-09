@@ -1,0 +1,137 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-09T20:20:07.673898+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.01977v1",
+      "source": "arxiv",
+      "title": "SVGEval: A Vision-Grounded Framework for Perceptual-Quality Benchmarking and Evaluation in Text-to-SVG Generation",
+      "abstract": "Multimodal large models are increasingly used to generate scalable vector graphics (SVG), but reliable evaluation remains underexplored. Existing protocols are often code-centric or borrow raster-image metrics after rendering SVGs, which fail to reflect human perception and overlook SVG-specific qualities such as geometry and spatial composition. We introduce SVGEval, a vision-grounded multimodal benchmark for human-aligned SVG quality assessment. SVGEval explicitly incorporates visual renderings to evaluate whether models can judge the rendered outcome rather than only inspect SVG code, and provides high-quality annotations obtained via multi-round human labeling with expert refinement. Systematic evaluations across representative multimodal models reveal a clear gap: models perform relatively well on semantic alignment and aesthetics, yet struggle on geometry- and layout-related judgments. Building on SVGEval, we train an explainable SVG quality scorer that outputs multi-aspect scores with textual rationales. Ablations show that explicit visual grounding and reasoning supervision are crucial, especially for spatial and geometric assessment. SVGEval offers a reliable testbed and practical scorer for evaluating and improving SVG generation in the era of multimodal models.",
+      "authors": [
+        "Yiming Wang",
+        "Ye Chen",
+        "Hanqi Chen",
+        "Bingbing Ni"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T09:41:18+00:00",
+      "link": "https://arxiv.org/pdf/2608.01977v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Vision-grounded benchmark and evaluation framework for perceptual quality of AI-generated content, applicable to video generation quality evaluation",
+      "llm_evidence_cn": "面向AI生成内容的视觉感知质量评估框架，其方法可应用于生成视频质量评估",
+      "llm_evidence": "面向AI生成内容的视觉感知质量评估框架，其方法可应用于生成视频质量评估",
+      "canonical_evidence": "面向AI生成内容的视觉感知质量评估框架，其方法可应用于生成视频质量评估",
+      "llm_tldr_en": "SVGEval is a vision-grounded multimodal benchmark for human-aligned SVG quality assessment, using rendered outcomes and expert annotations; its protocol can generalize to quality evaluation of generated visual media such as videos.",
+      "llm_tldr_cn": "文本生成SVG的评估仍缺少人眼一致的指标，现有方法要么只看代码，要么借用光栅图指标，未反映几何与空间构成。为此，作者提出SVGEval，一个基于视觉渲染的多模态基准，让模型评判渲染后的结果而非代码，并用多轮人工标注和专家精修获得高质量标签。系统评测显示该方法在感知质量判别上优于现有协议。该评估框架对生成视频等视觉内容的感知质量评测具有可迁移性。",
+      "llm_tldr": "文本生成SVG的评估仍缺少人眼一致的指标，现有方法要么只看代码，要么借用光栅图指标，未反映几何与空间构成。为此，作者提出SVGEval，一个基于视觉渲染的多模态基准，让模型评判渲染后的结果而非代码，并用多轮人工标注和专家精修获得高质量标签。系统评测显示该方法在感知质量判别上优于现有协议。该评估框架对生成视频等视觉内容的感知质量评测具有可迁移性。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.04038v1",
+      "source": "arxiv",
+      "title": "Toward Uncertainty Quantification in Modern Art",
+      "abstract": "Asked to animate the same modern artwork under different random seeds, a text to video model returns visibly different films, one reading per seed. Because modern art is ambiguous by intent, this disagreement is signal, not noise. Yet prevailing uncertainty quantification (UQ) collapses a set of generations to a dispersion scalar that says how much the seeds differ but not how: it cannot tell a compact interpretation from a dominant reading plus an outlier, two competing modes, or diffuse instability, nor whether the set still contains a rendering faithful to the original. We present the first study of the structure of generative uncertainty for modern art animation, and a reusable protocol for identifying source blind multiseed uncertainty: a suite of seven source blind and six reference aware estimators; a distributional profile (robust spread, outlier influence, explicit topology, multimodality, anisotropy, leave one seed influence, reference coverage); a distribution model ablation (vMF, Kent, ACG, Student t, kernel, mixture); eight identification questions; and an artwork level statistical protocol. We build the first corpus: 250 modern artwork captions rendered by Wan2.1 14B under four seeds (1000 videos) across 4 encoders, artworks withheld from generation. As a diagnostic the protocol succeeds: it classifies seed set topology at balanced accuracy 0.98 (chance 0.25), isolates the outlier configuration at AUROC 1.00 where a scalar reaches only 0.35, and splits high uncertainty artworks into reference covering (n=97) and reference missing (n=56) diversity, reliably from three seeds and across encoders.",
+      "authors": [
+        "Tirtho Roy",
+        "Ushashi Bhattacharjee",
+        "Showrav Kumar Saha",
+        "Sayantan Chakraborty",
+        "Koushik Howlader",
+        "Tanusree Bhattacharjee"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.MA",
+        "eess.IV"
+      ],
+      "published": "2026-08-03T20:56:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.04038v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Proposes a reusable protocol for structure of generative uncertainty in text-to-video animations, relevant to video generation evaluation.",
+      "llm_evidence_cn": "提出可复用的多随机种子不确定性协议，用于评估文生视频动画的生成质量。",
+      "llm_evidence": "提出可复用的多随机种子不确定性协议，用于评估文生视频动画的生成质量。",
+      "canonical_evidence": "提出可复用的多随机种子不确定性协议，用于评估文生视频动画的生成质量。",
+      "llm_tldr_en": "Studies structure of multiseed uncertainty in text-to-video modern art animation; proposes a suite of seven source-blind measures to distinguish interpretation modes, providing a new evaluation protocol for generated videos.",
+      "llm_tldr_cn": "针对文生视频模型在动画同一现代艺术作品时不同随机种子产生不同解读的问题，现有不确定性量化只给出分散度标量，无法区分紧凑解读、主导解读加离群点、双峰或弥散不稳定等结构。本文首次研究现代艺术动画生成的生成不确定性结构，提出一套七项源盲多种子不确定性识别协议，可判断生成的解读结构是否忠实于原作。这为生成视频的质量评估提供了超越单一指标的新工具。",
+      "llm_tldr": "针对文生视频模型在动画同一现代艺术作品时不同随机种子产生不同解读的问题，现有不确定性量化只给出分散度标量，无法区分紧凑解读、主导解读加离群点、双峰或弥散不稳定等结构。本文首次研究现代艺术动画生成的生成不确定性结构，提出一套七项源盲多种子不确定性识别协议，可判断生成的解读结构是否忠实于原作。这为生成视频的质量评估提供了超越单一指标的新工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.03279v1",
+      "source": "arxiv",
+      "title": "3DGSI-Assessor: A Large-Scale Dataset and An LMM-based Method for 3D Gaussian Splatting Image Quality Assessment",
+      "abstract": "3D Gaussian Splatting (3DGS) has become a dominant representation for real-time novel view synthesis (NVS), yet its storage footprint makes compression indispensable for practical deployment. 3DGS training and compression introduce representation-specific distortions such as floating artifacts and surface scattering, which conventional image quality assessment (IQA) metrics fail to capture. Moreover, the independent compression of geometric and color attributes may lead to decoupled dimension-specific distortions that must be diagnosed separately, yet existing metrics report only a single overall score. To address these gaps, we present 3DGS-IEval-15K+, a large-scale, multi-dimensional IQA dataset for compressed 3DGS, comprising 15,200 images from 10 diverse scenes, produced by 6 representative 3DGS algorithms at systematically designed compression levels and rendered from 20 strategically selected viewpoints spanning both training views and challenging novel views, annotated with 45,600 mean opinion scores (MOSs) across overall, geometry, and color quality. Based on 3DGS-IEval-15K+, we propose 3DGSI-Assessor, an all-in-one 3DGS IQA framework that integrates global semantic and dimension-specific local features within a large multimodal model (LMM), predicting all three dimensions in a single forward pass. 3DGSI-Assessor achieves state-of-the-art performance on 3DGS-IEval-15K+, and exhibits competitive generalization on other NVS benchmarks. Dataset and code will be released at https://github.com/YukeXing/3DGSI-Assessor.",
+      "authors": [
+        "Yuke Xing",
+        "Jiarui Wang",
+        "William Gordon",
+        "Zhu Li",
+        "Guangtao Zhai",
+        "Yiling Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T07:53:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.03279v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3DGS quality assessment dataset and LMM-based method transferable to video generation quality evaluation",
+      "llm_evidence_cn": "面向3DGS的感知质量评估数据集与LMM方法，可迁移至生成视频质量评估",
+      "llm_evidence": "面向3DGS的感知质量评估数据集与LMM方法，可迁移至生成视频质量评估",
+      "canonical_evidence": "面向3DGS的感知质量评估数据集与LMM方法，可迁移至生成视频质量评估",
+      "llm_tldr_en": "3DGSI-Assessor proposes a large-scale multi-dimensional IQA dataset and an LMM-based method for 3D Gaussian Splatting images, capturing representation-specific distortions and enabling separate diagnosis of geometric and color compression, transferable to video quality evaluation.",
+      "llm_tldr_cn": "3DGS训练的压缩过程会引入浮动物体和表面散射等独特失真，传统图像质量指标无法捕捉。为此，作者构建了大规模多维图像质量评估数据集3DGS-IEval-15K+，并提出基于大型多模态模型（LMM）的3DGSI-Assessor，可分别诊断几何与颜色属性压缩造成的失真。实验表明该方法能有效评估3DGS图像质量，弥补了通用指标不足。该数据集与评估协议可迁移至其他AI生成视觉内容（如生成视频）的质量评估。",
+      "llm_tldr": "3DGS训练的压缩过程会引入浮动物体和表面散射等独特失真，传统图像质量指标无法捕捉。为此，作者构建了大规模多维图像质量评估数据集3DGS-IEval-15K+，并提出基于大型多模态模型（LMM）的3DGSI-Assessor，可分别诊断几何与颜色属性压缩造成的失真。实验表明该方法能有效评估3DGS图像质量，弥补了通用指标不足。该数据集与评估协议可迁移至其他AI生成视觉内容（如生成视频）的质量评估。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
