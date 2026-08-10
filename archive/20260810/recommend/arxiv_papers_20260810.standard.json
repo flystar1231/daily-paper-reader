@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-10T20:57:19.109959+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.01103v1",
+      "source": "arxiv",
+      "title": "SSR: Similarity-Shift Refinement for Training-Free Object-Centric Masks",
+      "abstract": "Object-centric models often produce fragmented masks, boundary leakage, and incorrect region merging. We introduce Similarity-Shift Refinement (SSR), a training-free post-hoc method for improving object-centric masks with a frozen self-supervised Vision Transformer. SSR measures changes in pairwise patch similarity before and after self-attention value aggregation, retains positively strengthened relations, and constructs a sparse affinity graph. This graph propagates the initial soft slot assignments in a single refinement step, without retraining or modifying either model. Across natural-image, synthetic-video, and real-world-video benchmarks, SSR improves all-pixel Adjusted Rand Index in all 24 evaluated model-dataset combinations, with an average gain of 8.5 percentage points. Ablations show that value-space similarity shifts outperform query- and key-space variants as well as static Transformer affinities. However, texture-dense scenes may cause visually similar regions to be over-grouped. Overall, SSR provides a simple and transferable signal for training-free object-centric mask refinement.",
+      "authors": [
+        "Xiaoqian Lu",
+        "Guangfu Guo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-02T09:06:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.01103v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "mask refinement method and mask quality metrics (ARI) transferable to alpha channel generation and evaluation in transparent videos",
+      "llm_evidence_cn": "掩码精修方法与掩码质量指标（ARI）可迁移到透明视频的alpha通道生成与评估",
+      "llm_evidence": "掩码精修方法与掩码质量指标（ARI）可迁移到透明视频的alpha通道生成与评估",
+      "canonical_evidence": "掩码精修方法与掩码质量指标（ARI）可迁移到透明视频的alpha通道生成与评估",
+      "llm_tldr_en": "Presents a training-free object-centric mask refinement method using patch similarity shifts in a frozen ViT, improving mask quality across image and video benchmarks, with metrics transferable to alpha channel evaluation.",
+      "llm_tldr_cn": "针对对象中心模型生成掩码经常出现碎片化、边界泄漏和区域合并错误的问题，论文引入一种无需训练的相似性漂移精修（SSR）方法，利用冻结的自监督Vision Transformer在自注意力聚合前后补丁相似度的变化，构造稀疏亲和图并单步传播初始掩码，在不重新训练或修改模型的情况下提升掩码质量。在自然图像、合成视频和真实视频的多个基准上，SSR在所有24种模型-数据集组合上均提升了全像素调整兰德指数。该掩码精修技术与相关质量指标可迁移到透明视频alpha通道的生成与评估中。",
+      "llm_tldr": "针对对象中心模型生成掩码经常出现碎片化、边界泄漏和区域合并错误的问题，论文引入一种无需训练的相似性漂移精修（SSR）方法，利用冻结的自监督Vision Transformer在自注意力聚合前后补丁相似度的变化，构造稀疏亲和图并单步传播初始掩码，在不重新训练或修改模型的情况下提升掩码质量。在自然图像、合成视频和真实视频的多个基准上，SSR在所有24种模型-数据集组合上均提升了全像素调整兰德指数。该掩码精修技术与相关质量指标可迁移到透明视频alpha通道的生成与评估中。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "methods for transparent video generation",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-10",
+  "date": "2026-08-10",
+  "generated_at": "2026-08-10T20:57:56",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/10/2608.01103v1-ssr-similarity-shift-refinement-for-training-free-object-centric-masks",
+      "section": "quick",
+      "title_en": "SSR: Similarity-Shift Refinement for Training-Free Object-Centric Masks",
+      "authors": "Xiaoqian Lu, Guangfu Guo",
+      "date": "2026-08-02",
+      "pdf": "https://arxiv.org/pdf/2608.01103v1",
+      "score": "6.0",
+      "evidence": "掩码精修方法与掩码质量指标（ARI）可迁移到透明视频的alpha通道生成与评估",
+      "tldr": "对象中心模型常产生碎片化掩码、边界泄漏和区域误合并。本文提出免训练的相似性偏移精炼方法SSR，利用冻结的自监督ViT，通过测量自注意力值聚合前后成对补丁相似性的变化，保留正向增强关系并构建稀疏亲和图，以单步精炼初始软槽分配。在24种模型-数据集组合上，SSR均提升全像素调整兰德指数，平均提高8.5个百分点，无需重训练或修改原模型。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Object-centric models often produce fragmented masks, boundary leakage, and incorrect region merging. We introduce Similarity-Shift Refinement (SSR), a training-free post-hoc method for improving object-centric masks with a frozen self-supervised Vision Transformer. SSR measures changes in pairwise patch similarity before and after self-attention value aggregation, retains positively strengthened relations, and constructs a sparse affinity graph. This graph propagates the initial soft slot assignments in a single refinement step, without retraining or modifying either model. Across natural-image, synthetic-video, and real-world-video benchmarks, SSR improves all-pixel Adjusted Rand Index in all 24 evaluated model-dataset combinations, with an average gain of 8.5 percentage points. Ablations show that value-space similarity shifts outperform query- and key-space variants as well as static Transformer affinities. However, texture-dense scenes may cause visually similar regions to be over-grouped. Overall, SSR provides a simple and transferable signal for training-free object-centric mask refinement.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
