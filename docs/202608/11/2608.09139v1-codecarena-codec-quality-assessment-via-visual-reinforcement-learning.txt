@@ -1,0 +1,512 @@
+Title: CodecArena: Codec Quality Assessment via Visual Reinforcement Learning
+
+URL Source: https://arxiv.org/pdf/2608.09139v1
+
+Published Time: Tue, 11 Aug 2026 01:52:17 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+## CodecArena: Codec Quality Assessment via Visual Reinforcement Learning 
+
+Jiaye Fu 1,2 †, Weiqi Li 1,3 †, Qiankun Gao 1, Yanchen Zhao 2,Xiandong Meng 3, Jian Zhang 1, Siwei Ma 2, Jiaqi Zhang 2∗
+
+> 1
+
+School of Electronic and Computer Engineering, Peking University 
+
+> 2
+
+School of Computer Science, Peking University 
+
+> 3
+
+Pengcheng Laboratory 
+
+Abstract 
+
+Video coding is advancing into the low and ultra-low bi-trate regime, driven by end-to-end codecs that replace the hand-crafted pipeline with jointly optimized neural networks and generative codecs that exploit the priors of video genera-tion models. Yet the dominant metrics, LPIPS and DISTS, measure feature and texture similarity rather than content fidelity: a reconstruction that hallucinates a wrong face or blurs text into convincing strokes can still score well, even when a human rejects it instantly. To address this, we pro-pose CodecArena , the first vision-language framework for video coding quality assessment, casting codec evaluation as source-conditioned comparative reasoning between a refer-ence and its reconstructions. We optimize CodecArena with 
+
+Facet-GRPO , a visual reinforcement learning scheme that aligns pairwise codec preferences while grounding the ver-dict in five fidelity facets: identity, objects, text, texture, and temporal consistency. Its facet-anchored reward uses auto-matically derived facet directions as weak anchors, rather than human per-facet labels, to prevent any single sub-score from dominating the holistic preference and to yield inter-pretable fine-grained quality judgments. To support training and evaluation in this underexplored regime, we construct two complementary resources: CodecArena-1K, a fully au-tomatic preference dataset of 1,500 comparison groups built from traditional, neural, and generative codec reconstructions with fused vision-language and objective supervision; and CodecArena-Bench, a human-ranked benchmark with source-disjoint videos for fair out-of-domain evaluation. Extensive experiments demonstrate that CodecArena achieves state-of-the-art agreement with human judgments on source-disjoint content across diverse codecs and bitrates, surpassing percep-tual metrics and prior vision-language evaluators. The project page is: https://jyfu-vcl.github.io/codecarena. 
+
+Introduction 
+
+Video coding is central to streaming, communication, and storage, and its rate-distortion efficiency has been refined for decades. End-to-end neural codecs (Li, Li, and Lu 2023; Jia et al. 2025) and, more recently, generative codecs (Chen et al. 2025; Qi et al. 2025; Mao et al. 2026) now reach into the low and ultra-low bitrate regime, where fine content is 
+
+> †
+
+These authors contributed equally. 
+
+> ∗
+
+Corresponding author. Preprint. Original  GLC -Video  DCVC -RT                          
+
+> LPIPS ↓/ DISTS ↓/Ours ↑0.088 /0.140 /0.12
+> 0.117 /0.147 /0.26
+> 0.264 /0.247 /0.44
+> 0.293 /0.222 /0.60
+> Unrecognized Recognized
+> Indistinguishable Distinguishable
+> LPIPS ↓/ DISTS ↓/Ours ↑
+
+Figure 1: At a matched bitrate of around 0.15 bpp, LPIPS and DISTS rank GLC-Video above DCVC-RT, yet GLC-Video corrupts the face identity (top) and on-screen text (bot-tom) that DCVC-RT preserves; CodecArena instead prefers DCVC-RT, matching human judgment. ( ↓/↑: lower/higher is better.) no longer transmitted but synthesized by the decoder. These reconstructions stay sharp where conventional codecs break down, but the distortion changes in kind: blocking and blur give way to hallucinated detail that looks plausible yet departs from the source. This regime undermines the metrics on which codec re-search relies. LPIPS (Zhang et al. 2018) and DISTS (Ding et al. 2022), the perceptual metrics most widely adopted to report progress in recent generative coding (Chen et al. 2025; Qi et al. 2025; Xue et al. 2025; Zheng et al. 2026), average feature distances over the whole frame; a globally realistic reconstruction therefore scores well even when a face takes on a different identity, text becomes illegible, or texture is replaced by convincing but incorrect detail, the failures a viewer notices first. This bias is self-reinforcing: many gen-erative codecs are themselves trained against an LPIPS-style perceptual loss (Mentzer et al. 2022; Qi et al. 2025; Mao et al. 2026), so evaluating with the same metric rewards reconstructions that exploit it rather than preserve content. Because these metrics operate frame by frame, they are also blind to temporal artifacts such as flicker and identity drift. Judging whether a reconstruction is faithful is therefore a question of content rather than signal distance. It requires recognizing that a face still belongs to the same person, reading whether on-screen text is unchanged, and check-arXiv:2608.09139v1 [cs.CV] 10 Aug 2026 ing that objects, textures, and motion remain consistent with the reference. These are the perceptual, world-knowledge, and reasoning abilities of vision-language models, and they mirror how a person rates a codec: by inspecting the source beside its reconstructions and weighing what is preserved. Casting codec quality assessment as vision-language reason-ing is thus the natural formulation of the task rather than a borrowed technique. Reinforcement-trained vision-language evaluators already reason reliably about natural and gener-ated content (Li et al. 2025; Zhang et al. 2026), yet none targets the comparative, source-conditioned coding setting, in which reconstructions of one source from heterogeneous codecs must be ranked by faithfulness. Quality assessment for video coding therefore remains open. We address this with CodecArena , a vision-language judge that, conditioned on the source video, rates how faith-fully each reconstruction preserves identity, objects, text, tex-ture, and temporal consistency, and ranks competing recon-structions against one another. The central difficulty is that human preference supervision is naturally holistic: annota-tors can reliably rank which reconstruction is more faithful, but obtaining calibrated human labels for every quality facet is costly and ambiguous. Faithful codec evaluation, however, must still reason about each facet separately. To bridge this gap, we propose Facet-GRPO , a group-relative policy opti-mization scheme that learns from holistic preferences while using automatically derived facet directions as weak anchors. By tying the verdict to multiple fidelity facets, Facet-GRPO prevents any single sub-score from dominating the holistic judgment and enables calibrated, fine-grained scoring with-out manual per-facet annotation. Supervision of this form does not yet exist, and we there-fore construct it. Our pipeline re-encodes natural source videos with traditional, neural, and generative codecs across a range of bitrates, gathers the reconstructions of each source into comparison groups, and labels them automatically by fusing vision-language pairwise judgments with objective perceptual signals under a within-codec rate-monotonicity constraint, producing CodecArena-1K , a corpus of 1,500 preference groups built without manual annotation. To mea-sure progress where conventional metrics fail, we further release CodecArena-Bench , the first quality-assessment benchmark for low and ultra-low bitrate coding degrada-tions, with 80 source videos spanning diverse scenes, resolu-tions, and codecs, labeled by weighted aggregation of expert and non-expert human rankings. On source-disjoint content across diverse codecs and bitrates, CodecArena attains state-of-the-art agreement with human judgments, surpassing both perceptual metrics and prior vision-language evaluators. Our contributions are: 
+
+❑ (1) We identify and analyze why perceptual metrics and existing quality models fail in the low and ultra-low bi-trate coding regime, and cast codec evaluation as source-conditioned comparative reasoning in CodecArena .
+
+❑ (2) We propose Facet-GRPO , a facet-grounded prefer-ence learning scheme that combines holistic pairwise alignment with automatically derived facet-direction an-chors, yielding hack-resistant and interpretable per-facet quality scores without requiring human per-facet labels. 
+
+❑ (3) To address the lack of data for quality assessment of low and ultra-low bitrate video coding, we build a fully automatic pipeline that produces the 1,500-group 
+
+CodecArena-1K training set and CodecArena-Bench ,the first human-ranked benchmark for this task. 
+
+❑ (4) On CodecArena-Bench, CodecArena aligns closely with human preference on source-disjoint content, sur-passing both perceptual metrics and prior vision-language evaluators. 
+
+Related Work 
+
+Evolution of Video Compression 
+
+Video compression has long been driven by the rate-distortion trade-off. Traditional hybrid codecs, from H.264/AVC (Wiegand et al. 2003) and HEVC (Sullivan et al. 2012) to VVC (Bross et al. 2021) and AV1 (Han et al. 2021), combine prediction, transform coding, quantization, in-loop filtering, and entropy coding to exploit spatial and tempo-ral redundancy, yet at low bitrates information must still be discarded or approximated. Neural codecs instead replace hand-designed modules with learned components, from end-to-end predictive systems (Lu et al. 2019; Agustsson et al. 2020) to the DCVC family, which advances conditional cod-ing through decoded feature contexts (Li, Li, and Lu 2021, 2023; Jia et al. 2025). In parallel, generative and perceptual codecs introduce adversarial losses and generative priors to produce visually plausible reconstructions under severe rate constraints, from generative image (Mentzer et al. 2020) and video (Mentzer et al. 2022) compression to recent video-oriented methods such as GVC (Chen et al. 2025), GLC-Video (Qi et al. 2025), and GNVC-VD (Mao et al. 2026). Diffusion priors push per-ceptual quality still higher at extremely low bitrates for both images (Xu et al. 2025; Jia et al. 2026) and video (Xue et al. 2025; Zheng et al. 2026). This shift from signal-level toward learned and perceptual reconstruction broadens compression artifacts beyond blocking, blur, and ringing; low-bitrate re-construction may now also alter object identity, semantic consistency, fine structure, and temporal consistency. 
+
+Quality Assessment for Video Coding 
+
+Objective metrics remain the main protocol for compar-ing codecs. Full-reference metrics such as PSNR, SSIM (Wang et al. 2004), and MS-SSIM (Wang, Simoncelli, and Bovik 2003), together with perceptual metrics such as LPIPS (Zhang et al. 2018), DISTS (Ding et al. 2022), and VMAF (Li et al. 2016), improve correlation with human judgment. Nev-ertheless, they penalize visually acceptable changes while missing semantic or identity-level failures, and they are ap-plied as feature distances rather than as source-conditioned reasoning over what content should be preserved. More recently, multimodal large language models and vision-language models (VLMs) have moved beyond scalar scores toward interpretable, reasoning-based evaluation (Wu et al. 2024a; You et al. 2024; Ge et al. 2025), and reward mod-els trained on large preference datasets capture fine-grained human preferences for generation (He et al. 2024; Xu et al. 2026; Wang et al. 2025). Casting quality understanding as reinforcement learning, Q-Insight (Li et al. 2025) and VQ-Insight (Zhang et al. 2026) show that reward-driven reason-ing yields generalizable evaluators. These methods, however, target natural, user-generated, or AI-generated content rather than codec-induced distortions, and do not compare a source video against multiple reconstructions from heterogeneous traditional, neural, and generative codecs. CodecArena is designed for exactly this comparative, source-conditioned setting. 
+
+Methodology 
+
+Preliminaries 
+
+Group Relative Policy Optimization (GRPO) (Shao et al. 2024) is a reinforcement learning framework for aligning large language and vision-language models. Unlike PPO (Schulman et al. 2017), which relies on a separate value net-work to estimate returns, GRPO removes the explicit critic and instead derives advantages from the relative quality of a group of responses sampled for the same query, reducing both compute overhead and the instability of a learned value function. Given a query q, GRPO samples N candidate re-sponses {o1, . . . , o N } from the old policy πθold , each assigned a scalar reward ri by task-specific reward functions. The rela-tive advantage is obtained by normalizing the rewards within the group: 
+
+ˆAi = ri − mean ({r1, . . . , r N })
+
+std ({r1, . . . , r N }) . (1) The policy is then updated to favor high-advantage responses under a clipped objective with a KL regularization term: 
+
+JGRP O (θ) = E[q∼Q,o i∼πθold (o|q)] 
+
+n
+
+min 
+
+h
+
+ρi ˆAi, (2) 
+
+clip( ρi, 1 − δ, 1 + δ) ˆAi
+
+i
+
+− β · DKL [πθ ∥πref ]
+
+o
+
+,
+
+where ρi = πθnew (oi | q)/π θold (oi | q), δ bounds the per-step update, and β weights the KL penalty against a frozen reference policy πref . As GRPO is agnostic to the reward form, its effectiveness hinges on the design of the reward functions. 
+
+Motivations of Our CodecArena 
+
+At low and ultra-low bitrates, generative codecs synthesize visually sharp reconstructions that score well under LPIPS and DISTS yet corrupt semantically critical content, with drifting identities, illegible characters, and flicker across frames. Figure 1 shows a concrete case in which both met-rics prefer a generative reconstruction that has already lost the person’s identity and made the on-screen text unreadable. Be-cause they aggregate feature distances over the whole frame, these metrics overlook such localized failures; because they operate frame by frame, they also miss temporal incoher-ence. Many generative codecs also adopt an LPIPS-based term in their rate-distortion objective, so evaluating with the same insensitive metric lets a codec inflate its score without Stage 2: Quality Annotation       
+
+> Natural Source Video
+> Traditional Codec Neural Codec Generative Codec
+> Compressed Video: 1580 groups, > 100k frames
+> ArcFace
+> LPIPS DISTS
+> MUSIQ CLIP-IQA
+> OCR T-SSIM KIMI-K2.6 Opus 4.7
+> Facet Auto-Scoring Stratifying Dataset
+
+Stage 1: Video Group Curation Stage 3: Refine and Dataset Assembly  
+
+> CodecArena-1K
+> 1500 groups, ～95k frames
+> Human Labeling
+> 10 Coding experts, 5 CVer labelers
+> CodecArena-Bench
+> 80 groups
+
+Figure 2: Our coding-oriented preference data curation pipeline. Stage 1 re-encodes natural source videos with tra-ditional, neural, and generative codecs and curates the re-constructions into comparison groups. Stage 2 scores every group automatically by fusing the VLM-ensemble judgments with objective signals. Stage 3 assembles CodecArena-1K from the automatic labels and refines CodecArena-Bench with weighted human rankings. preserving the source. This motivates CodecArena, a frame-work that, conditioned on the source video, judges how faith-fully each reconstruction preserves the original in semantics, structure, and temporal consistency. Compression degradations also differ fundamentally from the synthetic or in-the-wild distortions studied by VLM-based quality assessment such as Q-Insight (Li et al. 2025). They are shaped by rate constraints, prediction, and codec-specific tools, couple spatial distortion with temporal behav-ior, and are even less understood for generative coding, where a) CodecArena-1K b) CodecArena-Bench Figure 3: Word clouds of CodecArena-1K (a) and CodecArena-Bench (b). The two datasets share no source content, supporting fair evaluation on held-out content, while each spans diverse subjects, scenes, and objects. part of the reconstruction is hallucinated. Reliable quality as-sessment for the coding scenario is therefore essential, which CodecArena is built to provide. 
+
+Coding-oriented Preference Data Curation 
+
+Existing video quality datasets target natural, user-generated, or AI-generated distortions and overlook codec-induced degradations, especially the hallucinated artifacts that gen-erative coding produces at low bitrate; they also rarely provide source-conditioned labels over several reconstruc-tions of the same content. To fill this gap, the three-stage pipeline in Figure 2 builds two resources: CodecArena-1K ,a fully automatically labeled training corpus of 1,500 source-conditioned comparison groups, and CodecArena-Bench , a human-verified benchmark of 80 held-out source videos. 
+
+(1) Multi-codec re-encoding and group curation. 
+
+We collect natural source clips from five complementary datasets, Vimeo-90K (Xue et al. 2019), DAVIS 2019 (Caelles et al. 2019), BVI-AOM (Nawała et al. 2024), OpenVid (Nan et al. 2025), and Xiph.org test sequences (Xiph.Org Founda-tion 2026), spanning content that stresses faces, text, motion, and texture, with training and benchmark clips drawn from disjoint sources to evaluate generalization to held-out con-tent. Each source is re-encoded by all three codec families, HEVC (Sullivan et al. 2012) and VVC (Bross et al. 2021), the neural DCVC-DC (Li, Li, and Lu 2023) and DCVC-RT (Jia et al. 2025), and the generative GLC-Video (Qi et al. 2025). To our knowledge GLC-Video is the only generative video codec with publicly released implementation, as the authors provide an official codebase with both image and video com-pression support. Reconstructions from these codecs form comparison groups that balance content, codec family and rate, so that evaluations hinge on subtle semantic and tem-poral differences rather than gross distortion. 
+
+(2) Quality annotation. Every group is scored automat-ically. A vision-language judge, an ensemble of Kimi-K2.6 (Moonshot AI 2026) and Opus-4.7 (Anthropic 2026) for re-liability, compares the reconstructions pairwise over seven-frame filmstrips and rates each side from 0 to 1 along five facets, identity, objects, text, texture, and temporal consis-tency, under a rubric that penalizes hallucinated or identity-shifting content over honest blur. We fuse this VLM score with seven objective signals spanning face identity, full- and no-reference quality, text legibility, and temporal consistency into a single quality score, normalizing per group before a weighted average that also enforces the within-codec rate monotonicity the VLM alone does not guarantee. 
+
+(3) Grading and dataset assembly. Ranking each group by this score into ordinal grades yields CodecArena-1K ,the 1,500-group corpus that supervises CodecArena without manual annotation. For CodecArena-Bench , 15 annotators, 10 video-coding experts and 5 non-domain viewers, indepen-dently re-rank every group, and we aggregate their orderings under an expertise-weighted scheme into human labels over 80 videos spanning diverse scenes, resolutions, and codecs at medium-low to ultra-low bitrate. As the word clouds in Fig-ure 3 confirm, both datasets cover diverse subjects, scenes, and objects despite disjoint sources, so evaluation on held-out content remains representative. The complete pipeline, the exact objective signals, and the fusion weights are given in the supplementary. 
+
+Facet-GRPO Preference Learning 
+
+We post-train the vision-language judge with Facet-GRPO, a group-relative scheme tailored to source-conditioned codec comparison, summarized in Figure 4. A query q = ( R, A, B )
+
+presents a reference video R and two reconstructions A
+
+and B as filmstrips, and the policy response o ends with a structured verdict that assigns a score skX (o) ∈
+
+[0 , 1] to each side X ∈ {A, B } and facet k ∈ F =
+
+{identity, objects, text, texture, temporal }, with facets absent from the reference marked NA. The side-level quality ¯sX (o)
+
+is the mean over present facets and the preferred side is 
+
+w(o) = arg max X ¯sX (o). The curated data supplies three supervision signals per comparison, namely Bradley–Terry latent qualities bA, b B encoding the holistic preference, an objective composite quality yX ∈ [0 , 1] per side, and per-facet objective signals ykX . The central risk in this setting is reward hacking. Since ¯sX averages over facets, a policy can win a comparison by inflating one salient facet, such as syn-thesized texture, while a face or a caption is corrupted, mir-roring the very failure of LPIPS-style feedback. Facet-GRPO therefore instantiates the reward ri of Eq. (1) as complemen-tary terms that constrain the verdict at both the holistic and the facet level, optimized under an elastic temporal context. 
+
+Reasoning and format rewards. Following the think-then-answer convention of Q-Insight (Li et al. 2025), the policy reasons inside <think> tags and emits the score lines inside <answer> tags. A format term rfmt grants a small constant when the facet scores of both sides are well formed, and a reasoning term rthink grants full credit only when a substantive reasoning block precedes a well-formed answer, reduced credit when reasoning is present but the an-swer is malformed, and zero when reasoning is absent. With-out rthink , GRPO gradually collapses the chain-of-thought into score-only outputs; with it, the verdict remains grounded in explicit visual evidence. 
+
+Preference and calibration rewards. The Preference Re-ward aligns the model’s choice with the curated ranking Elastic Temporal Context Query     
+
+> Image Video Clip
+> Identity Text Texture Object Temporal
+
+Policy Model 
+
+> Reference Model
+> KL Divergence
+> Facet Verdict
+> <think>
+> For Reconstruction A, …… For Reconstruction B, ……
+> </think> <answer>
+> A_IDENTITY: 0.82 A_OBJECTS: 0.75 A_TEXT: 0.62 A_TEXTURE: 0.79 A_TEMPORAL: 0.52 B_IDENTITY: 0.39 B_OBJECTS: 0.92 B_TEXT: 0.32 B_TEXTURE: 0.49 B_TEMPORAL: 0.57
+> </answer>
+> Parsing A: 0.7 B: 0.538
+> Reward Function
+> Preference Reward Calibration Reward
+> Facet-Anchored Reward
+
+Facet-GRPO Trainer Figure 4: Overview of CodecArena’s Facet-GRPO training. An Elastic Temporal Context Query presents the reference and two reconstructions at a variable temporal granularity, from a single still image to a multi-frame clip, together with the quality facets to be judged. The trainable policy reasons inside <think> and emits a per-facet Facet Verdict inside <answer> , regularized toward a frozen reference model by a KL term. Parsing the verdict yields the side-level qualities that the Facet-GRPO trainer scores with the Preference, Facet-Anchored, and Calibration rewards. through the Bradley–Terry probability 
+
+rpref (o) = σ bw(o) − bl(o)
+
+, (3) where l(o) denotes the rejected side and σ the logistic func-tion; a confident pair thus rewards a correct call near 1 and a wrong one near 0. The Calibration Reward matches the magnitude of the side-level quality to the objective compos-ite, 
+
+rreg (o) = 1 − 12
+
+  |¯sA(o) − yA| + |¯sB (o) − yB | . (4) Together they fix the ordering and the scale of the verdict. 
+
+Facet-anchored reward. The preference and calibra-tion terms leave the facet decomposition under-determined, precisely the loophole that hacking exploits. The Facet-Anchored Reward closes it. Let D(q) = {k : |ykA − ykB | > ϵ }
+
+collect the facets on which the objective signals separate the two sides unambiguously, with direction pk = sign( ykA −
+
+ykB ). We reward agreement with every such direction, 
+
+rfacet (o) = 1
+
+|D (q)|
+
+X
+
+> k∈D (q)
+
+σ γ p k (skA(o) − skB (o)) , (5) where γ sharpens the per-facet margin and a comparable facet left unscored contributes zero. Credit is shared across all separated facets, such that no single sub-score can carry the comparison. This term injects no human per-facet target value, only the direction in which the automatically derived signals already order the pair, so calibrated per-facet scoring emerges without human per-facet annotation. 
+
+Elastic temporal context query. Rather than fixing the input format, we pose each comparison as an elastic tem-poral context query: at every training step we draw a frame count K ∈ { 1, 3, 5, 7} and render the whole batch, reference and reconstructions alike, at that granularity. For K > 1 the query is a short clip and all five facets apply; for K = 1 it degenerates to a single decoded still, an image-level assess-ment in which the temporal facet is declared not scorable and removed from D(q), while the remaining rewards operate unchanged. Treating temporal context as an elastic training variable rather than a fixed format yields a single judge that assesses codec quality from one still frame to a full clip. 
+
+Overall objective. The terms combine into 
+
+ri = rfmt + rpref + rreg + λf rfacet + λt rthink , (6) where λf controls the facet-direction anchors and λt controls the reasoning bonus. The reward enters the group-relative advantage of Eq. (1) and is optimized with Eq. (2) over N
+
+sampled verdicts, requiring neither a value network nor a learned reward model. Unlike Q-Insight, which regresses a holistic image score with auxiliary degradation labels, or VQ-Insight (Zhang et al. 2026), which regresses dense opinion scores for a single generated video, Facet-GRPO is com-parative and source-conditioned. It grounds decomposition through directional, automatically derived facet signals plus holistic preferences, yielding hack-resistant per-facet scores without human per-facet labels. 
+
+Experiments 
+
+Implementation Details 
+
+We instantiate CodecArena on Qwen2.5-VL-7B-Instruct (Bai et al. 2025a) and Qwen3-VL-8B-Instruct (Bai et al. 2025b). The 1,500 groups of CodecArena-1K are split into 1,050 training and 450 held-out validation groups, and the judges are evaluated on the source-disjoint CodecArena-Bench. We set N =8 , β=1 × 10 −3, λf =0 .6, and λt=0 .2,and fine-tune each model for 2 epochs on 8 NVIDIA A800 GPUs with learning rate 1 × 10 −6 and effective batch size 128. Each query samples K ∈ { 1, 3, 5, 7}.
+
+Quantitative Results 
+
+No established benchmark exists for this regime, so we eval-uate on the human-labeled, source-disjoint CodecArena-Bench . Each protocol is tested at K=1 (image), K=7 
+
+(trained clip length), and K=14 (extrapolation). Baselines include PSNR, SSIM (Wang et al. 2004), LPIPS (Zhang et al. 2018), DISTS (Ding et al. 2022), VMAF (Li et al. 2016), Q-ReAlign-Pro-9B (Q-Future 2026), DeQA-Score (You et al. Table 1: Score-based ranking on CodecArena-Bench .Best/second-best are bold /underlined.                                                                                       
+
+> K=1 K=7 K=14
+> Method SRCC ↑PLCC ↑SRCC ↑PLCC ↑SRCC ↑PLCC ↑
+> Score-based metrics
+> PSNR 0.687 0.817 0.808 0.876 0.813 0.876 SSIM (Wang et al. 2004) 0.753 0.833 0.829 0.892 0.841 0.891 LPIPS (Zhang et al. 2018) 0.798 0.817 0.723 0.758 0.748 0.763 DISTS (Ding et al. 2022) 0.661 0.722 0.658 0.729 0.669 0.724 VMAF (Li et al. 2016) 0.782 0.853 0.876 0.919 0.878 0.917
+> Vision-language evaluators
+> VLM Ensemble 0.798 0.799 0.794 0.798 0.753 0.766 Q-ReAlign-Pro-9B (Q-Future 2026) 0.636 0.675 0.642 0.679 0.691 0.687 DeQA-Score (You et al. 2025) 0.511 0.650 0.483 0.647 0.461 0.632 Q-Insight (Li et al. 2025) 0.587 0.650 0.589 0.651 0.614 0.659 VQ-Insight (Zhang et al. 2026) 0.663 0.681 0.573 0.639 0.672 0.674
+> CodecArena (Qwen2.5-VL-7B) 0.871 0.906 0.902 0.912 0.906 0.908
+> ∆vs. Qwen2.5-VL-7B-Instruct +0.235 +0.228 +0.407 +0.365 +0.456 +0.413
+> CodecArena (Qwen3-VL-8B) 0.877 0.909 0.895 0.923 0.894 0.924
+> ∆vs. Qwen3-VL-8B-Instruct +0.161 +0.185 +0.190 +0.198 +0.199 +0.228
+
+2025), Q-Insight (Li et al. 2025), and VQ-Insight (Zhang et al. 2026). We additionally report a VLM Ensemble, the arithmetic mean of Opus-4.7 (Anthropic 2026) and Kimi-K2.6 (Moonshot AI 2026) scores. Q-Insight and VQ-Insight are developed on Qwen2.5-VL-7B (Bai et al. 2025a), while Q-ReAlign-Pro-9B is an improved Q-Align (Wu et al. 2024b) built on Qwen3.5-9B (Qwen Team 2026). 
+
+Score-based ranking. Each model scores one reconstruc-tion against the reference, inducing a within-group ranking evaluated by SRCC and PLCC. Table 1 shows that VMAF is the strongest non-learned metric and remains competitive on PLCC, but the two CodecArena variants occupy the top SRCC positions at every granularity. LPIPS and DISTS fall behind PSNR and VMAF on SRCC, confirming that feature similarity diverges from human preference here. CodecArena also beats all language baselines, including the larger Q-ReAlign-Pro-9B, and maintains accuracy at K=14 despite training only with K≤7.
+
+Pairwise preference. Each model selects the better recon-struction from a randomly ordered A/B pair. Table 2 shows that CodecArena is first and second at every granularity; the Qwen3-VL-8B model reaches 93 .7% , 94 .9% , and 93 .0% ac-curacy from K=1 to K=14 . VMAF’s strong PLCC does not translate into pairwise choice, and the language baselines col-lapse close comparisons to a single appearance impression, whereas CodecArena weighs per-facet differences. 
+
+Ablation Study 
+
+We ablate Facet-GRPO by cumulatively adding each reward component to the native Qwen3-VL-8B backbone in Table 3. Preference supervision alone is insufficient, as it improves coarse ranking but still leaves the model vulnerable to under-specified reasoning and unstable facet scores. Elastic context, calibration, and facet anchoring each improve ranking, with calibration giving the largest jump and the final facet anchor further regularizing sub-scores. We treat this as evidence that Table 2: Pairwise preference accuracy on CodecArena-Bench . Best/second-best are bold /underlined. 
+
+Accuracy (%) ↑
+
+Method K=1 K=7 K=14 
+
+Score-based metrics 
+
+PSNR 80.8 85.8 86.7 SSIM (Wang et al. 2004) 83.3 87.9 88.9 LPIPS (Zhang et al. 2018) 82.9 79.6 78.9 DISTS (Ding et al. 2022) 73.8 75.0 76.1 VMAF (Li et al. 2016) 85.8 89.2 90.0 
+
+Vision-language evaluators 
+
+VLM Ensemble 85.2 80.9 83.6 Q-ReAlign-Pro-9B (Q-Future 2026) 78.3 77.5 81.1 DeQA-Score (You et al. 2025) 73.4 72.1 73.9 Q-Insight (Li et al. 2025) 80.9 76.5 75.6 VQ-Insight (Zhang et al. 2026) 81.8 79.0 83.4 
+
+CodecArena (Qwen2.5-VL-7B) 89.5 92.7 92.3 
+
+CodecArena (Qwen3-VL-8B) 93.7 94.9 93.0 
+
+Table 3: Ablation of Facet-GRPO components , added cu-mulatively to Qwen3-VL-8B. The full model uses λf =0 .6;metrics follow Table 1.                                       
+
+> K=1 K=7 K=14
+> Configuration SRCC ↑PLCC ↑SRCC ↑PLCC ↑SRCC ↑PLCC ↑
+> Qwen3-VL-8B-Instruct 0.716 0.724 0.705 0.725 0.695 0.696 + Preference reward 0.770 0.795 0.789 0.831 0.782 0.819 + Elastic context 0.770 0.822 0.841 0.861 0.794 0.832 + Calibration reward 0.844 0.872 0.894 0.905 0.884 0.897
+> + Facet-anchored (Ours) 0.877 0.909 0.895 0.923 0.894 0.924
+
+automatic facet directions provide complementary structure beyond holistic preference supervision, while the supple-mentary hard-case audit directly measures their effect on facet-level reward hacking. More ablations are present in Appendix. 
+
+Qualitative Results 
+
+Figures 5 and 6 cover a clip and a single image with the same judge. LPIPS, DISTS, VMAF, and prior VLM evaluators fold these errors into one appearance score and may prefer the lower-distortion but unfaithful reconstruction, while Code-cArena’s facet scores remain grounded by objective signals. 
+
+More qualitative results are provided in the appendix. 
+
+These cases clarify why the pairwise gains in Table 2 are larger than the score-correlation gains in Table 1. Codec de-cisions often hinge on a localized but decisive failure: one reconstruction may be slightly sharper overall while chang-ing a face, corrupting a caption, or introducing temporal drift. A single scalar metric can still correlate with broad quality trends and yet choose the wrong side in exactly these close comparisons. CodecArena instead compares the source and both reconstructions facet by facet, so the final preference is tied to the content that humans use to reject unfaithful gen-erative outputs. The protocol also makes the reported gains conservative. Each benchmark group compares reconstruc-Original Video (7 Frames)  Reconstructed Video Case 1  Reconstructed Video Case 2 
+
+Video Case 1 
+
+Human Label: Win 
+
+LPIPS  ↓ : 0.1675 
+
+DISTS  ↓ : 0.1274 
+
+VQ-Insight  ↑ : 69 
+
+<think>  The video seems to capture the action of a curling match with good contrast between 
+
+players and the ice rink.  …, and all players' expressions convey the intensity of the game. However, 
+
+there's not perfect alignment on all elements, but overall message clear. </think> 
+
+<answer> 69 </answer> 
+
+CodecArena  ↑: 0.55 
+
+Video Case 2 
+
+Human Label: Lose 
+
+LPIPS  ↓ : 0.1182 
+
+DISTS  ↓ : 0.0710 
+
+VQ-Insight  ↑ : 72 
+
+<think>  The video captures all the details of the curling match, from the players' expressions to 
+
+the contrast between the blue and yellow uniforms against the white ice rink.  …The lighting looks 
+
+balanced ,… . The crowd seems to be engaged, though not very visible. </think> 
+
+<answer> 72</answer> 
+
+The main issue in the reconstruction is the distortion of text and faces. The names and team 
+
+identifiers are heavily garbled or unreadable …. The faces of the curlers are distorted, making it 
+
+difficult to recognize them clearly …. The objects are still recognizable but appear blurred or 
+
+misshapen,  …. The texture details  are lost or smeared,  …. …, but the reconstruction introduces 
+
+artifacts and instability ….</think> 
+
+<answer> 
+
+IDENTITY: 0.3  OBJECTS: 0.4  TEXT: 0.2  TEXTURE: 0.3  TEMPORAL: 0.4 
+
+</answer> 
+
+CodecArena  ↑: 0.38 
+
+The main issue in the reconstruction is the blurring effect  …. However, the identity of the curlers is 
+
+still recognizable, even if their features are not as sharp. The object categories are all present, but 
+
+their shapes and details are less distinct. The text on the scoreboard and the lower third banner is 
+
+present but blurred, making it harder to read. The texture details,  …, are lost to some extent due 
+
+to the blurring. The temporal stability is compromised due to the blurring,  ….</think> 
+
+<answer> 
+
+IDENTITY: 0.55  OBJECTS: 0.6  TEXT: 0.55  TEXTURE: 0.5  TEMPORAL: 0.55 
+
+</answer> 
+
+Original Video (14 Frames)  Reconstructed Video Case 1  Reconstructed Video Case 2 
+
+Video Case 1 
+
+Human Label: Win 
+
+LPIPS  ↓ : 0.1009 
+
+DISTS  ↓ : 0.0627 
+
+VQ-Insight  ↑ : 78 
+
+<think>  This video seems to be professionally shot with balanced lighting,  …, creating a balanced 
+
+message across the message is clear. The call -to -action at the bottom looks balanced with good 
+
+color contrast. </think> 
+
+<answer> 78 </answer> 
+
+<think>  The main subject in the reference is a man holding a colorful motorcycle helmet. In the 
+
+reconstruction, the man's facial features and posture are preserved …. The text "LEARN MORE AT 
+
+REVZILLA.COM" is visible in both images, but appears slightly less sharp in the reconstruction. The 
+
+overall texture of the image is somewhat lost compared to the reference , …. The temporal stability 
+
+is mostly maintained,  ….</think> 
+
+<answer> 
+
+IDENTITY: 0.85  OBJECTS: 0.8  TEXT: 0.8  TEXTURE: 0.75  TEMPORAL: 0.7 
+
+</answer> 
+
+CodecArena  ↑: 0.78 
+
+Video Case 2 
+
+Human Label: Lose 
+
+LPIPS  ↓ : 0.0783 
+
+DISTS  ↓ : 0.0395 
+
+VQ-Insight  ↑ : 78 
+
+<think>  This video seems to be professionally shot with balanced lighting,  …, creating a balanced 
+
+message across the message is clear. The call -to -action at the bottom looks balanced with good 
+
+color contrast. </think> 
+
+<answer> 78 </answer> 
+
+<think>  The main subject in the reference is a man holding a colorful motorcycle helmet. In the 
+
+reconstruction, the man's facial features are distorted,  …. The text at the bottom of the frame is 
+
+garbled, with "LEARN MORE AT REVZILLA.COM" becoming "LEARN MOBE AT RBVZILLA.COM" in 
+
+the reconstruction, which is a significant error. The overall texture of the image is lost,  …. The 
+
+temporal stability is compromised,  ….</think> 
+
+<answer> 
+
+IDENTITY: 0.4  OBJECTS: 0.4  TEXT: 0.3  TEXTURE: 0.4  TEMPORAL: 0.4 
+
+</answer> 
+
+CodecArena  ↑: 0.32 Figure 5: Single-stimulus scoring on a 7-frame (left) and 14 -frame (right) clip. CodecArena aligns with the human preference, while LPIPS, DISTS, and VQ-Insight do not. Ori. Image  Rec. Image A  Rec. Image B 
+
+Human Label ：
+
+LPIPS  ↓:
+
+DISTS  ↓:
+
+Q-insight: 
+
+<think>  The comparison of the two enhanced images to the reference image reveals some differences in terms 
+
+of clarity and color intensity. Both images appear to have an increase in brightness and saturation compared to 
+
+the original, but Image A seems slightly more vibrant and detailed than Image B. The colors in both images are 
+
+more vivid, but Image A's colors seem to be more consistent with the reference image. 
+
+In terms of noise reduction and clarity, Image B appears to have a slight edge over Image A, as it seems to 
+
+have less noise and a clearer depiction of the scene. However, Image A still maintains a higher level of detail 
+
+and color accuracy. </think> 
+
+<answer>  Image A  </answer> 
+
+CodecArena: 
+
+For Reconstruction A, the main issue is that the image has noticeable blurring and color distortion, particularly 
+
+around the faces and costumes. The central performer's face is distorted, making it difficult to recognize 
+
+identity clearly. The overall structure of the scene is preserved, but details like the star -patterned costume and 
+
+the background elements are lost or altered. The objects are still recognizable (e.g., the trampoline, the 
+
+performers, the stage), but their shapes and textures are compromised. There is no visible text in the image, so 
+
+TEXT score is  NA . The texture is significantly degraded, with loss of fine details like fabric patterns and facial 
+
+features. 
+
+For Reconstruction B, the image is closer to the reference, with less blurring and better preservation of details. 
+
+The performers ’ poses and costumes are more recognizable, though some blurring is still present. The main 
+
+objects (performers, stage, trampoline) are mostly intact. However, the image lacks sharpness, and some details 
+
+are lost compared to the reference. There is no visible text, so TEXT score is  NA . The texture is better 
+
+preserved than in A, but still not as crisp as the reference. </think> 
+
+<answer> 
+
+A_IDENTITY: 0. 5 A_OBJECTS:  0.5  A_TEXT:  NA  A_TEXTURE: 0. 4 A_TEMPORAL:  NA 
+
+B_IDENTITY: 0. 75  B_OBJECTS: 0. 7 B_TEXT:  NA  B_TEXTURE: 0. 65  B_TEMPORAL:  NA 
+
+</answer> 
+
+0.467  0.70 
+
+Win 
+
+0.1107 
+
+0.1374 
+
+Lose 
+
+0.1035 
+
+0.1096 
+
+Figure 6: Pairwise preference at K=1 . Although humans prefer B, only CodecArena aligns with this preference, while LPIPS, DISTS, and Q-Insight favor A. tions of the same source, so color, composition, and semantic content are shared and the decision turns on what each codec preserves or fabricates. The held-out sources are disjoint from CodecArena-1K, and the K=14 setting further tests a temporal context never seen during training. The remaining errors are therefore not dominated by easy cases such as ob-vious blur or severe blocking; they arise from fine trade-offs between honest softness and plausible but wrong detail. This is precisely where automatic metrics are most likely to re-ward generative sharpness, and where a source-conditioned facet judge is most useful. 
+
+Conclusion 
+
+We presented CodecArena, a source-conditioned VLM judge for low- and ultra-low-bitrate codec assessment. Facet-GRPO learns from holistic preferences while grounding fine-grained scores with automatic facet-direction anchors, avoid-ing human per-facet labels. This design targets the eval-uation gap created by generative codecs: a reconstruction can look sharper and still be less faithful to the source. By separating identity, objects, text, texture, and temporal con-sistency, CodecArena makes such trade-offs explicit rather than hiding them in one appearance score. This also changes what codec progress means in the generative regime: qual-ity is not only smoother pixels or lower feature distance, but preservation of the source information a viewer relies on. To-gether with CodecArena-1K and the 80-group human-ranked CodecArena-Bench, it aligns with human rankings more closely than perceptual metrics and prior VLM evaluators, especially when plausible reconstructions alter identity, text, or temporal consistency. We hope this benchmark and judge encourage codec research to report semantic fidelity along-side rate-distortion efficiency, making future codec compar-isons more faithful to the failures viewers actually notice and less dependent on metrics that generative models can ex-ploit. This matters as learned decoders increasingly synthe-size missing content rather than merely compress transmitted detail. References 
+
+Agustsson, E.; Minnen, D.; Johnston, N.; Ballé, J.; Hwang, S. J.; and Toderici, G. 2020. Scale-Space Flow for End-to-End Optimized Video Compression. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Anthropic. 2026. Claude Opus 4.7. https://www.anthropic. com/claude. Large language model. Accessed: 2026-06-08. Bai, S.; Chen, K.; Liu, X.; Wang, J.; Ge, W.; et al. 2025a. Qwen2.5-VL Technical Report. arXiv:2502.13923. Bai, S.; et al. 2025b. Qwen3-VL Technical Report. arXiv:2511.21631. Bross, B.; Wang, Y.-K.; Ye, Y.; Liu, S.; Chen, J.; Sullivan, G. J.; and Ohm, J.-R. 2021. Overview of the Versatile Video Coding (VVC) Standard and its Applications. IEEE Transac-tions on Circuits and Systems for Video Technology (TCSVT) ,31(10): 3736–3764. Caelles, S.; Pont-Tuset, J.; Perazzi, F.; Montes, A.; Maninis, K.-K.; and Van Gool, L. 2019. The 2019 DAVIS Chal-lenge on VOS: Unsupervised Multi-Object Segmentation. arXiv:1905.00737. Chen, X.; Luo, J.; Xu, J.; Yi, F.; Zhang, C.; and Li, X. 2025. Generative Video Compression: Towards 0.01% Compres-sion Rate for Video Transmission. arXiv:2512.24300. Ding, K.; Ma, K.; Wang, S.; and Simoncelli, E. P. 2022. Image Quality Assessment: Unifying Structure and Texture Similarity. IEEE Transactions on Pattern Analysis and Ma-chine Intelligence (TPAMI) , 44(5): 2567–2581. Ge, Q.; Sun, W.; Zhang, Y.; Li, Y.; Ji, Z.; Sun, F.; Jui, S.; Min, X.; and Zhai, G. 2025. LMM-VQA: Advancing Video Quality Assessment with Large Multimodal Models. IEEE Transactions on Circuits and Systems for Video Technology (TCSVT) , 35(11): 11083–11096. Han, J.; Li, B.; Mukherjee, D.; Chiang, C.-H.; Grange, A.; Chen, C.; Su, H.; Parker, S.; Deng, S.; Joshi, U.; Chen, Y.; Wang, Y.; Wilkins, P.; Xu, Y.; and Bankoski, J. 2021. A Tech-nical Overview of AV1. Proceedings of the IEEE , 109(9): 1435–1462. He, X.; Jiang, D.; Zhang, G.; Ku, M.; Soni, A.; Siu, S.; Chen, H.; Chandra, A.; Jiang, Z.; Arulraj, A.; Wang, K.; Do, Q. D.; Ni, Y.; Lyu, B.; Narsupalli, Y.; Fan, R.; Lyu, Z.; Lin, B. Y.; and Chen, W. 2024. VideoScore: Building Automatic Metrics to Simulate Fine-grained Human Feedback for Video Generation. In Proceedings of the Conference on Empirical Methods in Natural Language Processing (EMNLP) .Jia, Z.; Li, B.; Li, J.; Xie, W.; Qi, L.; Li, H.; and Lu, Y. 2025. Towards Practical Real-Time Neural Video Compression. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition (CVPR) .Jia, Z.; Zheng, Z.; Xue, N.; Li, J.; Li, B.; Guo, Z.; Zhang, X.; Li, H.; and Lu, Y. 2026. CoD: A Diffusion Foundation Model for Image Compression. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Li, J.; Li, B.; and Lu, Y. 2021. Deep Contextual Video Compression. In Advances in Neural Information Processing Systems (NeurIPS) .Li, J.; Li, B.; and Lu, Y. 2023. Neural Video Compression with Diverse Contexts. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Li, W.; Zhang, X.; Zhao, S.; Zhang, Y.; Li, J.; Zhang, L.; and Zhang, J. 2025. Q-Insight: Understanding Image Quality via Visual Reinforcement Learning. In Advances in Neural Information Processing Systems (NeurIPS) .Li, Z.; Aaron, A.; Katsavounidis, I.; Moorthy, A.; and Manohara, M. 2016. Toward A Practical Perceptual Video Quality Metric. https://netflixtechblog.com/toward-a-practical-perceptual-video-quality-metric-653f208b9652. Netflix Technology Blog article introducing VMAF. Accessed: 2026-05-30. Lu, G.; Ouyang, W.; Xu, D.; Zhang, X.; Cai, C.; and Gao, Z. 2019. DVC: An End-to-End Deep Video Compression Framework. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Mao, Q.; Cheng, H.; Yang, T.; Jin, L.; and Ma, S. 2026. Gen-erative Neural Video Compression via Video Diffusion Prior. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Mentzer, F.; Agustsson, E.; Ballé, J.; Minnen, D.; Johnston, N.; and Toderici, G. 2022. Neural Video Compression using GANs for Detail Synthesis and Propagation. In Proceedings of the European Conference on Computer Vision (ECCV) .Mentzer, F.; Toderici, G.; Tschannen, M.; and Agustsson, E. 2020. High-Fidelity Generative Image Compression. In Ad-vances in Neural Information Processing Systems (NeurIPS) .Moonshot AI. 2026. Kimi K2.6. https://www.moonshot.ai/. Large language model. Accessed: 2026-06-08. Nan, K.; Xie, R.; Zhou, P.; Fan, T.; Yang, Z.; Chen, Z.; Li, X.; Yang, J.; and Tai, Y. 2025. OpenVid-1M: A Large-Scale High-Quality Dataset for Text-to-Video Generation. In 
+
+Proceedings of the International Conference on Learning Representations (ICLR) .Nawała, J.; Jiang, Y.; Zhang, F.; Zhu, X.; Sole, J.; and Bull, D. 2024. BVI-AOM: A New Training Dataset for Deep Video Compression Optimization. In Proceedings of the Inter-national Conference on Visual Communications and Image Processing (VCIP) .Q-Future. 2026. Q-ReAlign – Pro (9B). https://huggingface. co/q-future/Q-ReAlign-Pro-9B. Hugging Face model card for a multimodal quality judge. Accessed: 2026-06-29. Qi, L.; Jia, Z.; Li, J.; Li, B.; Li, H.; and Lu, Y. 2025. Gener-ative Latent Coding for Ultra-Low Bitrate Image and Video Compression. IEEE Transactions on Circuits and Systems for Video Technology (TCSVT) , 35(10): 10500–10515. Qwen Team. 2026. Qwen3.5: Accelerating Productivity with Native Multimodal Agents. Schulman, J.; Wolski, F.; Dhariwal, P.; Radford, A.; and Klimov, O. 2017. Proximal Policy Optimization Algorithms. arXiv:1707.06347. Shao, Z.; Wang, P.; Zhu, Q.; Xu, R.; Song, J.; Bi, X.; Zhang, H.; Zhang, M.; Li, Y. K.; Wu, Y.; and Guo, D. 2024. DeepSeekMath: Pushing the Limits of Mathematical Rea-soning in Open Language Models. arXiv:2402.03300. Sullivan, G. J.; Ohm, J.-R.; Han, W.-J.; and Wiegand, T. 2012. Overview of the High Efficiency Video Coding (HEVC) Standard. IEEE Transactions on Circuits and Systems for Video Technology (TCSVT) , 22(12): 1649–1668. Wang, Y.; Zang, Y.; Li, H.; Jin, C.; and Wang, J. 2025. Unified Reward Model for Multimodal Understanding and Generation. arXiv:2503.05236. Wang, Z.; Bovik, A. C.; Sheikh, H. R.; and Simoncelli, E. P. 2004. Image Quality Assessment: From Error Visibility to Structural Similarity. IEEE Transactions on Image Process-ing (TIP) , 13(4): 600–612. Wang, Z.; Simoncelli, E. P.; and Bovik, A. C. 2003. Multi-scale Structural Similarity for Image Quality Assessment. In 
+
+Proceedings of the Asilomar Conference on Signals, Systems and Computers .Wiegand, T.; Sullivan, G. J.; Bjøntegaard, G.; and Luthra, A. 2003. Overview of the H.264/AVC Video Coding Stan-dard. IEEE Transactions on Circuits and Systems for Video Technology (TCSVT) , 13(7): 560–576. Wu, H.; Zhang, Z.; Zhang, E.; Chen, C.; Liao, L.; Wang, A.; Li, C.; Sun, W.; Yan, Q.; Zhai, G.; and Lin, W. 2024a. Q-Bench: A Benchmark for General-Purpose Foundation Mod-els on Low-level Vision. In Proceedings of the International Conference on Learning Representations (ICLR) .Wu, H.; Zhang, Z.; Zhang, W.; Chen, C.; Liao, L.; Li, C.; Gao, Y.; Wang, A.; Zhang, E.; Sun, W.; Yan, Q.; Min, X.; Zhai, G.; and Lin, W. 2024b. Q-Align: Teaching LMMs for Visual Scoring via Discrete Text-Defined Levels. In International Conference on Machine Learning (ICML) .Xiph.Org Foundation. 2026. Xiph.org Video Test Media (derf’s collection). https://media.xiph.org/. Video test media collection. Accessed: 2026-06-08. Xu, J.; Huang, Y.; Cheng, J.; Yang, Y.; Xu, J.; Wang, Y.; Duan, W.; Yang, S.; Jin, Q.; Li, S.; Teng, J.; Yang, Z.; Zheng, W.; Liu, X.; Zhang, D.; Ding, M.; Zhang, X.; Gu, X.; Huang, S.; Huang, M.; Tang, J.; and Dong, Y. 2026. VisionReward: Fine-Grained Multi-Dimensional Human Preference Learn-ing for Image and Video Generation. In Proceedings of the AAAI Conference on Artificial Intelligence (AAAI) .Xu, T.; Li, J.; Li, B.; Wang, Y.; Zhang, Y.-Q.; and Lu, Y. 2025. PICD: Versatile Perceptual Image Compression with Diffu-sion Rendering. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Xue, N.; Jia, Z.; Li, J.; Li, B.; Zheng, Z.; Zhang, Y.; and Lu, Y. 2025. Single-Step Diffusion-Based Video Coding with Semantic-Temporal Guidance. arXiv:2512.07480. Xue, T.; Chen, B.; Wu, J.; Wei, D.; and Freeman, W. T. 2019. Video Enhancement with Task-Oriented Flow. International Journal of Computer Vision (IJCV) , 127(8): 1106–1125. You, Z.; Cai, X.; Gu, J.; Xue, T.; and Dong, C. 2025. Teaching Large Language Models to Regress Accurate Image Qual-ity Scores Using Score Distribution. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .You, Z.; Li, Z.; Gu, J.; Yin, Z.; Xue, T.; and Dong, C. 2024. Depicting Beyond Scores: Advancing Image Qual-ity Assessment through Multi-modal Language Models. In 
+
+Proceedings of the European Conference on Computer Vi-sion (ECCV) .Zhang, R.; Isola, P.; Efros, A. A.; Shechtman, E.; and Wang, O. 2018. The Unreasonable Effectiveness of Deep Features as a Perceptual Metric. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Zhang, X.; Li, W.; Zhao, S.; Li, J.; Zhang, L.; and Zhang, J. 2026. VQ-Insight: Teaching VLMs for AI-Generated Video Quality Understanding via Progressive Visual Reinforcement Learning. In Proceedings of the AAAI Conference on Artifi-cial Intelligence (AAAI) .Zheng, Z.; Jia, Z.; Xue, N.; Li, J.; Li, B.; Guo, Z.; Zhang, X.; Chen, Z.; Li, H.; and Lu, Y. 2026. Generative Video Compression with One-Dimensional Latent Representation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .

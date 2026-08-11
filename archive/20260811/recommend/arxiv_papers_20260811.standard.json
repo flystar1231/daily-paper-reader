@@ -1,0 +1,291 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-11T19:39:08.962374+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 5,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2608.09111v1",
+      "source": "arxiv",
+      "title": "RAVEN-Eval: Rubric-Guided Automatic Evaluation for AI Video Generation Models Based on LMM Preference Judgement",
+      "abstract": "AI video generation has advanced rapidly and entered widespread commercial use. As a result, quality differences among videos produced by state-of-the-art AI video generation models~(AIVGMs) have become increasingly difficult to discern using conventional evaluation criteria, such as visual fidelity and semantic instruction following. Meanwhile, human evaluation now requires more expertise and sustained attention, substantially increasing annotation costs. This calls for automated evaluation that can reliably distinguish fine-grained differences among advanced AIVGMs with minimal human intervention. To address this challenge, we present RAVEN-Eval, a rubric-guided automated evaluation framework for AIVGMs, built primarily on the LMM-as-a-judge paradigm. Through an automatic task curation and quality-filtering pipeline, RAVEN-Eval curates 150 text-to-video~(T2V) tasks and 100 image-to-video~(I2V) tasks, and systematically collects more than 4,500 AIGVs. At its core, RAVEN-Eval adopts rubric-guided automated LMM preference judgement, in which LMM judges conduct pairwise comparisons according to task-specific rubrics. It further introduces an anchor-based model insertion approach to reduce the evaluation cost of incorporating new models. Finally, we evaluate 20 high-performance AIVGMs, as well as the judging capabilities of 13 LMM judges, and establish the RAVEN-Eval Leaderboards. Overall, RAVEN-Eval paves a scalable path for automatic and trustworthy evaluation of rapidly evolving AIVGMs.",
+      "authors": [
+        "Ziheng Jia",
+        "Jiaying Qian",
+        "Zicheng Zhang",
+        "Xiaorong Zhu",
+        "Lancheng Gao",
+        "Xiongkuo Min"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-10T04:38:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.09111v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Rubric-guided automatic evaluation framework for AI video generation models based on LMM preference judgment",
+      "llm_evidence_cn": "基于大型多模态模型偏好判断的视频生成模型自动评估框架",
+      "llm_evidence": "基于大型多模态模型偏好判断的视频生成模型自动评估框架",
+      "canonical_evidence": "基于大型多模态模型偏好判断的视频生成模型自动评估框架",
+      "llm_tldr_en": "RAVEN-Eval automates the evaluation of AI video generation models using rubric-guided LMM preference judgment to capture fine-grained quality differences with minimal human intervention.",
+      "llm_tldr_cn": "AI视频生成模型发展迅速，但仅凭视觉保真度和语义指令跟随等传统指标，已难以区分前沿模型之间的细微质量差异，人工评估又需要专家注意力且成本高昂。针对这一挑战，本文提出RAVEN-Eval，一个基于评分准则引导和大语言多模态模型偏好判断的自动评估框架。RAVEN-Eval能够在极少人为干预下可靠地分辨先进视频生成模型的细粒度质量差异，显著降低标注成本，为视频生成模型的自动化质量评估提供了重要工具。",
+      "llm_tldr": "AI视频生成模型发展迅速，但仅凭视觉保真度和语义指令跟随等传统指标，已难以区分前沿模型之间的细微质量差异，人工评估又需要专家注意力且成本高昂。针对这一挑战，本文提出RAVEN-Eval，一个基于评分准则引导和大语言多模态模型偏好判断的自动评估框架。RAVEN-Eval能够在极少人为干预下可靠地分辨先进视频生成模型的细粒度质量差异，显著降低标注成本，为视频生成模型的自动化质量评估提供了重要工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09355v1",
+      "source": "arxiv",
+      "title": "Alpha as an Efficiency Signal: Visibility-Routed RGBA Image-to-Video Generation",
+      "abstract": "RGBA videos combine RGB appearance with an alpha channel, enabling animated assets to be applied across arbitrary backgrounds, which are heavily used in gaming industry. However, generating high-quality RGBA animations for games remains challenging for two reasons. First, most existing RGBA video datasets are dominated by photorealistic content, with limited coverage of game assets. Second, the traditional generate-then-matte pipelines estimate alpha only after RGB synthesis, so semi-transparent regions are often blurred by background, resulting in unstable matting outputs. More recently, many methods have begun to model RGB and alpha jointly, but existing approaches are mostly text-conditioned, and still have unresolved issues in efficiency and quality. To address these challenges, we introduce GameAlpha-2.4K, a 2.4K-clip game-style RGBA video dataset built with matte-friendly synthesis, multi-hypothesis alpha recovery, and compositing-based quality gates. Using this dataset, we train a reference-conditioned RGBA video generator that jointly produces RGB frames and alpha mattes in a single pass. To improve efficiency, we propose a visibility router that identifies transparent tokens in an early stage and bypasses their later DiT updates, while x_0-lock guides them along the original flow-matching schedule toward self-predicted endpoints. Our model obtains lower FVD than traditional two-stage pipelines, and the visibility router skips 35% of token evaluations in the final two DiT denoising steps, providing a 1.2x backbone speedup with negligible quality degradation compared to dense inference.",
+      "authors": [
+        "Zhe Li",
+        "Honghao Qiao",
+        "Zhixin Xu",
+        "Qijie Wang",
+        "Bo Peng",
+        "Dawei Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-10T09:35:36+00:00",
+      "link": "https://arxiv.org/pdf/2608.09355v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Directly addresses transparent/alpha channel video generation via joint RGB-alpha modeling in RGBA image-to-video generation",
+      "llm_evidence_cn": "直接面向透明/alpha通道视频生成，在RGBA图像到视频生成中联合建模RGB与alpha",
+      "llm_evidence": "直接面向透明/alpha通道视频生成，在RGBA图像到视频生成中联合建模RGB与alpha",
+      "canonical_evidence": "直接面向透明/alpha通道视频生成，在RGBA图像到视频生成中联合建模RGB与alpha",
+      "llm_tldr_en": "Presents visibility-routed RGBA image-to-video generation that jointly models RGB and alpha, improving efficiency and stability for semi-transparent game assets.",
+      "llm_tldr_cn": "针对RGBA视频生成中数据以写实内容为主、生成后抠图导致半透明区域模糊且不稳定等问题，提出以可见性路由的RGBA图像到视频生成方法，将RGB与alpha通道联合建模。方法在游戏资产动画上提升了生成质量与效率，缓解了传统生成后抠图管线的不稳定性。该工作直接推动了透明/alpha通道视频生成技术的发展。",
+      "llm_tldr": "针对RGBA视频生成中数据以写实内容为主、生成后抠图导致半透明区域模糊且不稳定等问题，提出以可见性路由的RGBA图像到视频生成方法，将RGB与alpha通道联合建模。方法在游戏资产动画上提升了生成质量与效率，缓解了传统生成后抠图管线的不稳定性。该工作直接推动了透明/alpha通道视频生成技术的发展。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09594v1",
+      "source": "arxiv",
+      "title": "Illusion or Integrity? Geometrical Consistency Metric for AIGC Video Quality Evaluation",
+      "abstract": "Recently, AI-driven video generation has attracted considerable attention. This surge increases the demand for reliable video quality assessment (VQA) metrics to evaluate AI-generated content (AIGC) videos and guide model optimization. Existing studies assess video quality through visual harmony, video-text consistency, and domain-specific alignment, yet lack quantitative metrics for measuring fidelity to physical laws. To address this limitation, we present a novel benchmark that evaluates the quality of AIGC videos based on their compliance with physical principles by quantitatively measuring geometric consistency across frames extracted from generated sequences. This serves as a proxy for estimating the extent to which generated videos conform to real-world physical rules. Specifically, GeoCon-Bench captures global motion through translation estimation, fits homography or fundamental matrix models using background correspondences, and reports complementary metrics, including inlier ratio and geometric error. We also release a dataset containing 20 scenes across six motion categories. Experiments on state-of-the-art AIGC models demonstrate the reliability of GeoCon-Bench as a video quality assessment metric.",
+      "authors": [
+        "Yifei Xue",
+        "Yuanchen Fei",
+        "Hao Zhang",
+        "Chenzhi Nie",
+        "Tie ji",
+        "Yizhen Lao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-10T13:28:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.09594v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes a new metric for evaluating AIGC video quality via geometric consistency across frames",
+      "llm_evidence_cn": "提出基于几何一致性度量的AIGC视频质量评估方法",
+      "llm_evidence": "提出基于几何一致性度量的AIGC视频质量评估方法",
+      "canonical_evidence": "提出基于几何一致性度量的AIGC视频质量评估方法",
+      "llm_tldr_en": "Proposes a geometric consistency metric to evaluate AIGC video quality by measuring compliance with physical laws across frames, addressing the lack of quantitative metrics for physical fidelity in generated videos.",
+      "llm_tldr_cn": "针对现有AIGC视频质量评估主要关注视觉和谐、文本一致性而缺乏物理规律量化指标的问题，本文提出一种基于几何一致性度量的视频质量评估基准，通过跨帧定量测量几何结构的保持程度来反映生成视频是否符合物理规律，实验表明该度量能有效区分不同质量的生成视频，为视频生成模型的评价与优化提供了新工具。",
+      "llm_tldr": "针对现有AIGC视频质量评估主要关注视觉和谐、文本一致性而缺乏物理规律量化指标的问题，本文提出一种基于几何一致性度量的视频质量评估基准，通过跨帧定量测量几何结构的保持程度来反映生成视频是否符合物理规律，实验表明该度量能有效区分不同质量的生成视频，为视频生成模型的评价与优化提供了新工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09666v1",
+      "source": "arxiv",
+      "title": "Open Evaluation Agent: Efficient and Promptable Evaluation of Visual Generative Models",
+      "abstract": "Recent advances in visual generative models have enabled high-quality image and video generation, but evaluating these models often demands sampling hundreds or thousands of images or videos, which is computationally expensive. Existing evaluation methods also rely on rigid pipelines that overlook specific user needs and provide numerical results without clear explanations. Mimicking how humans quickly form impressions of a model's capabilities from only a few samples, we propose the Evaluation Agent framework, which employs human-like strategies for efficient, dynamic, multi-round evaluations, offering detailed, user-tailored analyses. Given a natural-language evaluation request, the agent decomposes it into sub-aspects, generates targeted prompts, samples images or videos from the evaluated model, invokes suitable evaluation tools, and iteratively updates its plan from the observed evidence, covering both predefined benchmark dimensions and open-ended user concerns. The framework is thus efficient, promptable, explainable, and scalable across models and tools. Experiments show that Evaluation Agent reduces evaluation time to 10% of traditional methods while delivering comparable results. We further introduce Open Evaluation Agent (Open-EA) by constructing EA-CoT-10K, a corpus of history-conditioned step-level instruction-tuning records derived from multi-round evaluation rollouts, and training EA-3B from Qwen2.5-3B-Instruct as a local planning backbone that preserves the structured reasoning, tool invocation, and summary protocol of the API-based agent while reducing dependence on proprietary backbones. Experiments validate the API-based agent on established T2I/T2V benchmarks and open-ended queries, and evaluate Open-EA on four in-domain and three out-of-domain T2V generator families, showing partial cross-family transfer of the learned policy.",
+      "authors": [
+        "Shulin Tian",
+        "Ziqi Huang",
+        "Fan Zhang",
+        "Hongyuan Zhu",
+        "Yu Qiao",
+        "Ziwei Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-10T14:42:10+00:00",
+      "link": "https://arxiv.org/pdf/2608.09666v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Evaluation framework for visual generative models including video quality assessment",
+      "llm_evidence_cn": "针对图像与视频生成模型的评估代理框架",
+      "llm_evidence": "针对图像与视频生成模型的评估代理框架",
+      "canonical_evidence": "针对图像与视频生成模型的评估代理框架",
+      "llm_tldr_en": "Proposes an evaluation agent that mimics human strategies for efficient dynamic multi-round evaluation of visual generative models including video with detailed user-tailored analyses.",
+      "llm_tldr_cn": "现有视觉生成模型评估需采样大量样本且流程僵化，难以满足个性化需求。该论文提出评估代理框架，将自然语言请求分解为子方面，通过动态多轮采样与人类式策略进行高效评估。实验显示仅需少量样本即可获得详细且个性化的分析。为视频生成模型质量评估提供了新范式。",
+      "llm_tldr": "现有视觉生成模型评估需采样大量样本且流程僵化，难以满足个性化需求。该论文提出评估代理框架，将自然语言请求分解为子方面，通过动态多轮采样与人类式策略进行高效评估。实验显示仅需少量样本即可获得详细且个性化的分析。为视频生成模型质量评估提供了新范式。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09873v1",
+      "source": "arxiv",
+      "title": "Sci-VBench: Evaluating Knowledge- and Reasoning-Intensive Video Generation in Science Domains",
+      "abstract": "We introduce Sci-VBench, a comprehensive benchmark for evaluating knowledge- and reasoning-intensive video generation across scientific domains. It contains 1,253 expert-annotated examples spanning 60 subjects across four core disciplines: Natural Science, Healthcare, Humanities & Social Sciences, and Engineering. Each example requires models to generate temporally rich videos that demand scientific reasoning and knowledge-grounded synthesis, going beyond surface-level visual plausibility. We further establish a rubric-based evaluation protocol. Our analysis shows that, under this protocol, both non-expert human evaluators and MLLM-as-Judge systems can achieve relatively high agreement with expert judgments, supporting reproducible evaluation at scale. We benchmark 16 frontier proprietary and open-source models and find that, while automatic perceptual-quality scores cluster tightly across systems, performance on Prompt Grounding and Scientific and Causal Correctness varies substantially, with a pronounced proprietary-open-source gap. These findings show that advances in visual realism have not yet translated into reliable modeling of scientific and causal dynamics.",
+      "authors": [
+        "Diandian Zhang",
+        "Tingyu Song",
+        "Lin Fu",
+        "Zheyuan Yang",
+        "Yilun Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-10T17:27:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.09873v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "New benchmark and rubric-based evaluation protocol for knowledge-intensive video generation",
+      "llm_evidence_cn": "面向知识密集视频生成的新基准与基于量规的评估协议",
+      "llm_evidence": "面向知识密集视频生成的新基准与基于量规的评估协议",
+      "canonical_evidence": "面向知识密集视频生成的新基准与基于量规的评估协议",
+      "llm_tldr_en": "Sci-VBench introduces a 1,253-example benchmark across scientific domains with a rubric-based protocol for evaluating knowledge- and reasoning-intensive video generation, showing reliable evaluator agreement.",
+      "llm_tldr_cn": "针对科学与推理密集型视频生成缺乏专门评测的问题，提出Sci-VBench基准，包含1253个专家标注样本，覆盖自然科学、医疗健康、人文社科与工程四大学科。该基准采用基于量规的评估协议，并验证了非专家人类评价者与MLLM评审系统能与专家判断保持较高一致性。该工作为视频生成模型在复杂知识推理场景下的质量评估奠定了可复现的基础。",
+      "llm_tldr": "针对科学与推理密集型视频生成缺乏专门评测的问题，提出Sci-VBench基准，包含1253个专家标注样本，覆盖自然科学、医疗健康、人文社科与工程四大学科。该基准采用基于量规的评估协议，并验证了非专家人类评价者与MLLM评审系统能与专家判断保持较高一致性。该工作为视频生成模型在复杂知识推理场景下的质量评估奠定了可复现的基础。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.09139v1",
+      "source": "arxiv",
+      "title": "CodecArena: Codec Quality Assessment via Visual Reinforcement Learning",
+      "abstract": "Video coding is advancing into the low and ultra-low bitrate regime, driven by end-to-end codecs that replace the hand-crafted pipeline with jointly optimized neural networks and generative codecs that exploit the priors of video generation models. Yet the dominant metrics, LPIPS and DISTS, measure feature and texture similarity rather than content fidelity: a reconstruction that hallucinates a wrong face or blurs text into convincing strokes can still score well, even when a human rejects it instantly. To address this, we propose CodecArena, the first vision-language framework for video coding quality assessment, casting codec evaluation as source-conditioned comparative reasoning between a reference and its reconstructions. We optimize CodecArena with Facet-GRPO, a visual reinforcement learning scheme that aligns pairwise codec preferences while grounding the verdict in five fidelity facets: identity, objects, text, texture, and temporal consistency. Its facet-anchored reward uses automatically derived facet directions as weak anchors, rather than human per-facet labels, to prevent any single sub-score from dominating the holistic preference and to yield interpretable fine-grained quality judgments. To support training and evaluation in this underexplored regime, we construct two complementary resources: CodecArena-1K, a fully automatic preference dataset of 1,500 comparison groups built from traditional, neural, and generative codec reconstructions with fused vision-language and objective supervision; and CodecArena-Bench, a human-ranked benchmark with source-disjoint videos for fair out-of-domain evaluation. Extensive experiments demonstrate that CodecArena achieves state-of-the-art agreement with human judgments on source-disjoint content across diverse codecs and bitrates, surpassing perceptual metrics and prior vision-language evaluators.",
+      "authors": [
+        "Jiaye Fu",
+        "Weiqi Li",
+        "Qiankun Gao",
+        "Yanchen Zhao",
+        "Xiandong Meng",
+        "Jian Zhang",
+        "Siwei Ma",
+        "Jiaqi Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-10T05:37:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.09139v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "vision-language framework for video coding quality assessment; transferable to generated video quality metrics",
+      "llm_evidence_cn": "面向视频编解码质量评估的视觉-语言框架，可迁移至生成视频质量度量",
+      "llm_evidence": "面向视频编解码质量评估的视觉-语言框架，可迁移至生成视频质量度量",
+      "canonical_evidence": "面向视频编解码质量评估的视觉-语言框架，可迁移至生成视频质量度量",
+      "llm_tldr_en": "Proposes CodecArena, a vision-language comparative framework for assessing codec and generative-codec video quality, addressing limitations of LPIPS/DISTS with source-conditioned reasoning.",
+      "llm_tldr_cn": "面向低码率与生成式编解码器，现有LPIPS和DISTS等指标只衡量特征与纹理相似度，无法反映内容保真，出现错误人脸或模糊文字仍会被打高分。本文提出CodecArena，首个将视频编码质量评估建模为源条件对比推理的视觉-语言框架，并以视觉强化学习优化。该框架在参考视频与重建视频间进行细粒度比较，能捕捉人类直觉上拒绝的内容失真。这项工作为生成视频的质量评估提供了可借鉴的评价思路与工具。",
+      "llm_tldr": "面向低码率与生成式编解码器，现有LPIPS和DISTS等指标只衡量特征与纹理相似度，无法反映内容保真，出现错误人脸或模糊文字仍会被打高分。本文提出CodecArena，首个将视频编码质量评估建模为源条件对比推理的视觉-语言框架，并以视觉强化学习优化。该框架在参考视频与重建视频间进行细粒度比较，能捕捉人类直觉上拒绝的内容失真。这项工作为生成视频的质量评估提供了可借鉴的评价思路与工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.08508v1",
+      "source": "arxiv",
+      "title": "Towards Adaptive Super-Resolution and Quality Assessment via Test-Time Adaptation",
+      "abstract": "This paper presents doctoral research on adaptive video super-resolution and perceptual quality modeling under real-world conditions. Existing video super-resolution (VSR) methods struggle to generalize under unknown degradations arising from heterogeneous devices, codecs, and network environments. We address this challenge through test-time adaptation (TTA), a unified paradigm that improves robustness and perceptual quality without retraining or high-quality supervision. Specifically, we: 1) propose a TTA-based framework for no-reference video quality assessment (VQA), where adapted quality predictions provide perceptual guidance for VSR under unseen distortions; 2) develop a transformer-based architecture for screen-content super-resolution that preserves text clarity and structural fidelity; and 3) introduce a region-aware TTA strategy that selectively refines text and non-text regions without requiring high-resolution ground truth. Experimental results across diverse benchmarks demonstrate consistent improvements in perceptual quality and readability. We also outline ongoing work toward fully adaptive video enhancement systems capable of generalizing across unseen domains.",
+      "authors": [
+        "Ajeet Kumar Verma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-09T06:10:20+00:00",
+      "link": "https://arxiv.org/pdf/2608.08508v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "No-reference video quality assessment via test-time adaptation for real-world video",
+      "llm_evidence_cn": "基于测试时自适应的无参考视频质量评估方法",
+      "llm_evidence": "基于测试时自适应的无参考视频质量评估方法",
+      "canonical_evidence": "基于测试时自适应的无参考视频质量评估方法",
+      "llm_tldr_en": "This doctoral work applies test-time adaptation to adaptive video super-resolution and no-reference video quality assessment, improving robustness under unseen degradations without retraining or high-quality supervision.",
+      "llm_tldr_cn": "针对视频超分辨率在真实世界未知退化下泛化困难的问题，提出基于测试时自适应（TTA）的通用范式，并具体实现了TTA驱动的无参考视频质量评估与屏幕内容超分transformer架构。在无重训练和无需高质量监督的条件下，该方法能同时提升超分感知质量和质量预测的可靠性，为视频质量评估提供了一种实时自适应的解决路径。",
+      "llm_tldr": "针对视频超分辨率在真实世界未知退化下泛化困难的问题，提出基于测试时自适应（TTA）的通用范式，并具体实现了TTA驱动的无参考视频质量评估与屏幕内容超分transformer架构。在无重训练和无需高质量监督的条件下，该方法能同时提升超分感知质量和质量预测的可靠性，为视频质量评估提供了一种实时自适应的解决路径。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

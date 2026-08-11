@@ -6,26 +6,41 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-10
-- 运行时间：2026-08-10 20:57:50 UTC
+- 最新运行日期：2026-08-11
+- 运行时间：2026-08-11 19:46:15 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：0
-- 速读区：1
+- 本次总论文数：7
+- 精读区：5
+- 速读区：2
 
 ### 今日简报（AI）
-今日仅速读1篇论文，聚焦无训练目标感知掩码的相似性偏移修正。  
-最值得看的是《SSR》提出的相似性偏移修正方法，可用于提升目标掩码质量（6.0/10）。  
-下一篇可对比其他无监督分割方案，或关注SSR在真实场景中的稳定性验证。
-- 详情：[/202608/10/README](/202608/10/README)
+今日精读5篇、速读2篇，重点聚焦AI视频生成模型的评估方法与RGBA图像转视频效率优化。最值得关注的是《RAVEN-Eval》提出基于LMM偏好判断的自动评估框架，以及《Alpha》用可见性路由提升视频生成效率，均获9.0高分。建议普通读者优先理解评估标准的意义，再跟进效率优化方向。
+- 详情：[/202608/11/README](/202608/11/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [RAVEN-Eval: Rubric-Guided Automatic Evaluation for AI Video Generation Models Based on LMM Preference Judgement](/202608/11/2608.09111v1-raven-eval-rubric-guided-automatic-evaluation-for-ai-video-generation-models-based-on-lmm-preference-judgement)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：基于大型多模态模型偏好判断的视频生成模型自动评估框架
+2. [Alpha as an Efficiency Signal: Visibility-Routed RGBA Image-to-Video Generation](/202608/11/2608.09355v1-alpha-as-an-efficiency-signal-visibility-routed-rgba-image-to-video-generation)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：直接面向透明/alpha通道视频生成，在RGBA图像到视频生成中联合建模RGB与alpha
+3. [Illusion or Integrity? Geometrical Consistency Metric for AIGC Video Quality Evaluation](/202608/11/2608.09594v1-illusion-or-integrity-geometrical-consistency-metric-for-aigc-video-quality-evaluation)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：提出基于几何一致性度量的AIGC视频质量评估方法
+4. [Open Evaluation Agent: Efficient and Promptable Evaluation of Visual Generative Models](/202608/11/2608.09666v1-open-evaluation-agent-efficient-and-promptable-evaluation-of-visual-generative-models)  
+   标签：评分：8.0/10、query:vgen-metrics
+   evidence：针对图像与视频生成模型的评估代理框架
+5. [Sci-VBench: Evaluating Knowledge- and Reasoning-Intensive Video Generation in Science Domains](/202608/11/2608.09873v1-sci-vbench-evaluating-knowledge--and-reasoning-intensive-video-generation-in-science-domains)  
+   标签：评分：8.0/10、query:vgen-metrics
+   evidence：面向知识密集视频生成的新基准与基于量规的评估协议
 
 ### 速读区论文标签
-1. [SSR: Similarity-Shift Refinement for Training-Free Object-Centric Masks](/202608/10/2608.01103v1-ssr-similarity-shift-refinement-for-training-free-object-centric-masks)  
+1. [CodecArena: Codec Quality Assessment via Visual Reinforcement Learning](/202608/11/2608.09139v1-codecarena-codec-quality-assessment-via-visual-reinforcement-learning)  
+   标签：评分：7.0/10、query:vgen-metrics
+   evidence：面向视频编解码质量评估的视觉-语言框架，可迁移至生成视频质量度量
+2. [Towards Adaptive Super-Resolution and Quality Assessment via Test-Time Adaptation](/202608/11/2608.08508v1-towards-adaptive-super-resolution-and-quality-assessment-via-test-time-adaptation)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：掩码精修方法与掩码质量指标（ARI）可迁移到透明视频的alpha通道生成与评估
+   evidence：基于测试时自适应的无参考视频质量评估方法
 
 
 <div class="dpr-home-promo-card">
