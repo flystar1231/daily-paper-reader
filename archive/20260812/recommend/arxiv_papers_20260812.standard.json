@@ -1,0 +1,110 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-12T21:31:29.922639+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.11205v1",
+      "source": "arxiv",
+      "title": "AdvFD: Boosting Visual Generation via Adversarial Fr'echet Distance Loss",
+      "abstract": "Fréchet distance has recently emerged as an effective distribution-level objective for generator post-training, complementing the conventional sample-level diffusion and flow-matching losses. However, directly optimizing Fréchet objectives can cause Fréchet hacking. The target metrics keep improving, but visual quality and Fréchet alignment in other feature spaces may stagnate or deteriorate. We attribute this failure to the static pretrained feature spaces used by existing Fréchet losses. These feature spaces provide incomplete and fixed views of the differences between real and generated distributions. To address this limitation, we propose Adversarial Fréchet Distance (AdvFD), which complements the static representation targets in FD-Loss with a calibrated adversarially learned representation. AdvFD augments the original static Fréchet objective with a learnable representation that adversarially maximizes the Fréchet discrepancy between real and generated samples, while the generator minimizes the same discrepancy in the resulting adaptive feature space. To prevent the adversarial representation from trivially increasing the objective through feature amplification, we further introduce real-feature whitening, which normalizes its scale and covariance geometry and stabilizes the min--max optimization. Extensive experiments show that AdvFD consistently improves one-step generator post-training across both JiT and pMF backbones and across different model scales.",
+      "authors": [
+        "Mingju Gao",
+        "Jingkai Zhou",
+        "Kun Gai",
+        "Changqian Yu",
+        "Hao Tang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T17:59:56+00:00",
+      "link": "https://arxiv.org/pdf/2608.11205v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Proposes adversarial Frechet distance loss to optimize generation quality against distribution-level metrics, directly relevant to evaluation metrics for visual/video generation models",
+      "llm_evidence_cn": "提出对抗Frechet距离损失，围绕分布级指标优化生成质量，与视觉/视频生成模型评估指标直接相关",
+      "llm_evidence": "提出对抗Frechet距离损失，围绕分布级指标优化生成质量，与视觉/视频生成模型评估指标直接相关",
+      "canonical_evidence": "提出对抗Frechet距离损失，围绕分布级指标优化生成质量，与视觉/视频生成模型评估指标直接相关",
+      "llm_tldr_en": "Frechet distance objectives can cause metric hacking; AdvFD adds an adversarial feature space to complement static Frechet losses, improving generated visual quality and cross-space alignment while preventing stagnation.",
+      "llm_tldr_cn": "现有基于Frechet距离的生成器后训练目标会出现Frechet hacking，即目标指标持续提升而视觉质量与跨特征空间对齐变差。本文提出Adversarial Frechet Distance（AdvFD），用对抗特征空间补充静态Frechet损失，避免静态视角局限，从而在提升分布级指标的同时保持视觉质量与不同特征空间的对齐。这对视觉与视频生成模型的质量评估与优化有借鉴意义。",
+      "llm_tldr": "现有基于Frechet距离的生成器后训练目标会出现Frechet hacking，即目标指标持续提升而视觉质量与跨特征空间对齐变差。本文提出Adversarial Frechet Distance（AdvFD），用对抗特征空间补充静态Frechet损失，避免静态视角局限，从而在提升分布级指标的同时保持视觉质量与不同特征空间的对齐。这对视觉与视频生成模型的质量评估与优化有借鉴意义。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.08852v1",
+      "source": "arxiv",
+      "title": "Findings of the First Teaching Monster Challenge: A Benchmark of Pedagogical Content Knowledge in AI Agents",
+      "abstract": "AI agents can now solve problems, answer like subject experts, and generate long-form multimodal content. However, whether they can adapt a lesson to fit a specified learner, which education calls Pedagogical Content Knowledge (PCK), has not been benchmarked. To measure it, we introduce the Teaching Monster Challenge, the first instructional video generation benchmark to treat the learner persona as an explicit evaluation criterion. Each system is given a topic and a learner persona and must generate a complete instructional video. Every video is screened by an LLM-judge, ranked by crowd pairwise voting, and finalized by an expert panel. The first edition shows that today's systems handle the content well but are far weaker at presenting it and adapting it to the learner. The same process exposes a limit of automatic judging. The LLM-judge separates a clear low-performing tail but ranks the strongest systems poorly. The strongest systems receive nearly identical scores from the judge, so its ranking of them does not match human preference. Progress therefore requires not only better teaching systems but also better automatic judges, and we release the benchmark, rubric, and human judgments as a testbed for both.",
+      "authors": [
+        "Yi-Cheng Lin",
+        "Yu-Kai Guo",
+        "Szu-Chi Chen",
+        "Bo-Han Feng",
+        "Yun-Man Hsu",
+        "Hsiang Hsieh",
+        "Yu-Jung Lin",
+        "Yue-Ling Wu",
+        "Jia-Kai Dong",
+        "An-Yu Cheng",
+        "Yu-Han Huang",
+        "Lok-Lam Ieong",
+        "Kuan-Yu Chen",
+        "Ming-Douo Tchouang",
+        "Shao-Hua Sun",
+        "Che Lin",
+        "Jian-Jiun Ding",
+        "Hung-yi Lee"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CY",
+        "cs.HC",
+        "cs.MA"
+      ],
+      "published": "2026-08-09T18:28:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.08852v1",
+      "tags": [
+        "keyword:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Benchmark for instructional video generation with learner persona as evaluation criterion, using LLM-judge and human ranking",
+      "llm_evidence_cn": "以学习者人设作为评价条件的教学视频生成基准，采用LLM评判与人工投票",
+      "llm_evidence": "以学习者人设作为评价条件的教学视频生成基准，采用LLM评判与人工投票",
+      "canonical_evidence": "以学习者人设作为评价条件的教学视频生成基准，采用LLM评判与人工投票",
+      "llm_tldr_en": "A benchmark for instructional video generation that treats learner persona as an explicit evaluation criterion, using LLM-judge, crowd ranking, and expert review to assess pedagogical content knowledge.",
+      "llm_tldr_cn": "针对AI教学能力缺乏以学习者人设为评价标准的基准，本文提出教学怪兽挑战赛，这是第一个将学习者人设作为明确评价条件的教学视频生成基准。系统需根据主题和学习者人设生成完整教学视频，并由LLM评判、人群成对投票和专家评审共同打分。首届结果显示现有系统内容处理尚可，但在适配特定学习者方面明显不足，为教育内容生成评估提供了新基准。",
+      "llm_tldr": "针对AI教学能力缺乏以学习者人设为评价标准的基准，本文提出教学怪兽挑战赛，这是第一个将学习者人设作为明确评价条件的教学视频生成基准。系统需根据主题和学习者人设生成完整教学视频，并由LLM评判、人群成对投票和专家评审共同打分。首届结果显示现有系统内容处理尚可，但在适配特定学习者方面明显不足，为教育内容生成评估提供了新基准。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-12",
+  "date": "2026-08-12",
+  "generated_at": "2026-08-12T21:33:31",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/12/2608.11205v1-advfd-boosting-visual-generation-via-adversarial-frechet-distance-loss",
+      "section": "quick",
+      "title_en": "AdvFD: Boosting Visual Generation via Adversarial Fr'echet Distance Loss",
+      "authors": "Mingju Gao, Jingkai Zhou, Kun Gai, Changqian Yu, Hao Tang",
+      "date": "2026-08-11",
+      "pdf": "https://arxiv.org/pdf/2608.11205v1",
+      "score": "7.0",
+      "evidence": "提出对抗Frechet距离损失，围绕分布级指标优化生成质量，与视觉/视频生成模型评估指标直接相关",
+      "tldr": "Fréchet距离损失作为分布级后训练目标，可有效补充样本级扩散损失并提升生成质量。然而直接优化Fréchet目标会导致Fréchet hacking：目标指标持续改善，但视觉质量和在其他特征空间的Fréchet对齐却停滞或退化，根源在于静态预训练特征空间只提供不完整且固定的分布差异视角。为此提出Adversarial Fréchet Distance，用对抗学习的表示补充静态目标，并通过真实特征白化防止特征放大，稳定最小最大优化。大量实验表明，该方法在JiT和pMF骨干及不同模型规模上一致改善一步生成器后训练。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Fréchet distance has recently emerged as an effective distribution-level objective for generator post-training, complementing the conventional sample-level diffusion and flow-matching losses. However, directly optimizing Fréchet objectives can cause Fréchet hacking. The target metrics keep improving, but visual quality and Fréchet alignment in other feature spaces may stagnate or deteriorate. We attribute this failure to the static pretrained feature spaces used by existing Fréchet losses. These feature spaces provide incomplete and fixed views of the differences between real and generated distributions. To address this limitation, we propose Adversarial Fréchet Distance (AdvFD), which complements the static representation targets in FD-Loss with a calibrated adversarially learned representation. AdvFD augments the original static Fréchet objective with a learnable representation that adversarially maximizes the Fréchet discrepancy between real and generated samples, while the generator minimizes the same discrepancy in the resulting adaptive feature space. To prevent the adversarial representation from trivially increasing the objective through feature amplification, we further introduce real-feature whitening, which normalizes its scale and covariance geometry and stabilizes the min--max optimization. Extensive experiments show that AdvFD consistently improves one-step generator post-training across both JiT and pMF backbones and across different model scales.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/12/2608.08852v1-findings-of-the-first-teaching-monster-challenge-a-benchmark-of-pedagogical-content-knowledge-in-ai-agents",
+      "section": "quick",
+      "title_en": "Findings of the First Teaching Monster Challenge: A Benchmark of Pedagogical Content Knowledge in AI Agents",
+      "authors": "Yi-Cheng Lin, Yu-Kai Guo, Szu-Chi Chen, Bo-Han Feng, Yun-Man Hsu, Hsiang Hsieh, Yu-Jung Lin, Yue-Ling Wu, Jia-Kai Dong, An-Yu Cheng, Yu-Han Huang, Lok-Lam Ieong, Kuan-Yu Chen, Ming-Douo Tchouang, Shao-Hua Sun, Che Lin, Jian-Jiun Ding, Hung-yi Lee",
+      "date": "2026-08-09",
+      "pdf": "https://arxiv.org/pdf/2608.08852v1",
+      "score": "6.0",
+      "evidence": "以学习者人设作为评价条件的教学视频生成基准，采用LLM评判与人工投票",
+      "tldr": "AI代理已能解决复杂任务，但能否针对特定学习者调整教学，即教学内容知识，尚无基准。我们提出Teaching Monster Challenge，首个以学习者角色为显式评估指标的教学视频生成基准：系统需按主题和角色生成完整视频，经LLM评审、人群投票和专家小组综合评定。首轮结果显示，现有系统内容处理良好，但教学呈现与适配能力明显不足；同时自动评审存在局限，LLM评审对最强系统排名与人类偏好不符。我们发布基准、评分标准及人类判断，为改进教学系统和自动评审提供试验台。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "AI agents can now solve problems, answer like subject experts, and generate long-form multimodal content. However, whether they can adapt a lesson to fit a specified learner, which education calls Pedagogical Content Knowledge (PCK), has not been benchmarked. To measure it, we introduce the Teaching Monster Challenge, the first instructional video generation benchmark to treat the learner persona as an explicit evaluation criterion. Each system is given a topic and a learner persona and must generate a complete instructional video. Every video is screened by an LLM-judge, ranked by crowd pairwise voting, and finalized by an expert panel. The first edition shows that today's systems handle the content well but are far weaker at presenting it and adapting it to the learner. The same process exposes a limit of automatic judging. The LLM-judge separates a clear low-performing tail but ranks the strongest systems poorly. The strongest systems receive nearly identical scores from the judge, so its ranking of them does not match human preference. Progress therefore requires not only better teaching systems but also better automatic judges, and we release the benchmark, rubric, and human judgments as a testbed for both.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

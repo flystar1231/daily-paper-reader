@@ -1,0 +1,555 @@
+Title: Findings of the First Teaching Monster Challenge: A Benchmark of Pedagogical Content Knowledge in AI Agents
+
+URL Source: https://arxiv.org/pdf/2608.08852v1
+
+Published Time: Tue, 11 Aug 2026 01:56:40 GMT
+
+Number of Pages: 19
+
+Markdown Content:
+# Findings of the First Teaching Monster Challenge: A Benchmark of Pedagogical Content Knowledge in AI Agents 
+
+# Yi-Cheng Lin 1, Yu-Kai Guo ∗1, Szu-Chi Chen ∗1, Bo-Han Feng ∗1, Yun-Man Hsu ∗1, Hsiang Hsieh ∗1,Yu-Jung Lin ∗1, Yue-Ling Wu ∗1, Jia-Kai Dong ∗1, An-Yu Cheng 1, Yu-Han Huang 1, Lok-Lam Ieong 1,Kuan-Yu Chen 1, Ming-Douo Tchouang 1, Shao-Hua Sun 1,2 , Che Lin 1, Jian-Jiun Ding 1,Hung-yi Lee 1,2 
+
+> 1
+
+National Taiwan University 
+
+> 2
+
+NTU AI Center of Research Excellence 
+
+Abstract 
+
+AI agents can now solve problems, answer like subject ex-perts, and generate long-form multimodal content. However, whether they can adapt a lesson to fit a specified learner, which education calls Pedagogical Content Knowledge (PCK), has not been benchmarked. To measure it, we introduce the Teach-ing Monster Challenge, the first instructional video generation benchmark to treat the learner persona as an explicit evalu-ation criterion. Each system is given a topic and a learner persona and must generate a complete instructional video. Every video is screened by an LLM-judge, ranked by crowd pairwise voting, and finalized by an expert panel. The first edition shows that today’s systems handle the content well but are far weaker at presenting it and adapting it to the learner. The same process exposes a limit of automatic judging. The LLM-judge separates a clear low-performing tail but ranks the strongest systems poorly. The strongest systems receive nearly identical scores from the judge, so its ranking of them does not match human preference. Progress therefore requires not only better teaching systems but also better automatic judges, and we release the benchmark, rubric, and human judgments as a testbed for both. 
+
+# 1 Introduction 
+
+Around the world, most students are taught in groups from a single curriculum, even though instruction matched to each learner’s level is far more effective (Banerjee et al. 2016). Tailoring instruction to every learner would require more teachers than currently exist, and the shortage is growing, with UNESCO estimating that 44 million more are needed by 2030 (UNESCO and International Task Force on Teachers for Education 2030 2024). AI agents have meanwhile grown proficient at subject-matter tasks, solving problems and an-swering questions like subject experts (Hendrycks et al. 2020; Cobbe et al. 2021; Chen et al. 2021) and generating long-form multimodal content. If such an agent could teach, it 
+
+> ∗
+
+These authors contributed equally. Copyright © 2027, Association for the Advancement of Artificial Intelligence (www.aaai.org). All rights reserved. 
+
+could bring instruction fitted to each learner within reach at a scale human capacity cannot. Teaching requires more than answering correctly. Shulman divides teacher knowledge into three kinds (Shulman 1986). Content knowledge is mastery of the subject matter itself, and pedagogical knowledge is the general craft of teaching that holds across subjects. Pedagogical Content Knowledge (PCK) is the blend of the two, the ability to transform a subject into a form a particular learner can grasp. Since knowing a subject does not guarantee being able to make a learner understand it, an agent’s ability to teach depends not only on knowledge alone but also on whether it can adapt what it knows to a given learner. This ability has not been benchmarked. Existing bench-marks measure problem-solving accuracy (Hendrycks et al. 2020; Cobbe et al. 2021; Chen et al. 2021), tutor responses in text dialogues (Tack et al. 2023; Kochmar et al. 2025; Macina et al. 2025), or perceptual video quality (Huang et al. 2024; Liu et al. 2024), and none of them treats adaptation to a par-ticular learner as an explicit criterion of evaluation. A system can thus score well on all three and still remain untested on whether it can teach. This gap is what the present paper sets out to fill. We introduce the Teaching Monster Challenge 1, the first instructional video generation benchmark to treat the learner persona as an explicit evaluation criterion. 2 Given a course requirement and a learner persona, an agent must produce one complete instructional video from end to end with no human in the loop. The task does not extend to interactive tutoring, where a teacher responds to a learner’s questions and errors, which are too open-ended to compare across systems. Because the input specifies which learner a video must fit, generic content is not enough, and this is what makes the challenge teaching rather than generation. Submissions are scored on four evaluation dimensions. 
+
+Content Accuracy measures factual correctness, Pedagogical Logic measures coherent instructional sequencing, Learner 
+
+> 1
+
+https://teaching.monster/ 
+
+> 2
+
+The origin of the challenge’s name is given in Appendix A. arXiv:2608.08852v1 [cs.AI] 9 Aug 2026 Adaptability measures adaptation to the learner, and Engage-ment and Multimodal Presentation measures the quality of the video as a viewing experience. The first edition is positioned to answer three questions about whether an agent can teach: 
+
+RQ1. Which aspects of PCK do current systems already support well, and which remain challenging? 
+
+RQ2. Do systems adapt their instruction to the learner per-sona, and can people perceive that adaptation? 
+
+RQ3. Does the LLM-judge align with human judgment, and what explains their disagreements? This paper reports the first edition’s findings, character-izing where the strongest systems meet expert pedagogical judgment and where they fall short. The findings indicate that current systems are more mature at delivering content than at adapting it to the learner, and that the automated LLM-judge clearly separates weak submissions but performs poorly as a final ranker relative to human evaluation. This paper also re-leases the first edition’s assets, so that later work can compare systems on the same task and evaluation protocol. 
+
+# 2 Related Work 
+
+Document-to-Presentation Generation. Instructional video generation follows a pipeline of ingesting information, converting it into a visual modality, and presenting it to a learner. Document-to-presentation generation shares this architectural philosophy, making it the most struc-turally analogous line of prior work. DOC2PPT (Fu et al. 2022) introduced an early neural pipeline for this task; DocPres (Bandyopadhyay et al. 2024) and PPTAgent (Zheng et al. 2025) extend it with instruction-tuned LLMs. Persona-Aware-D2S (Mondal et al. 2024) further conditions generation on pre-defined user classification. These works take structured documents as input and slides or presen-tation videos as output, whereas our benchmark takes a course requirement and a learner persona as input and an instructional video as output. 
+
+Tutoring Benchmarks. Mainstream tutoring benchmarks evaluate pedagogical quality within text-based teacher-student dialogues. BEA 2023 (Tack et al. 2023) frames tutoring evaluation as a generation task, scoring next-utterance generation using text-similarity metrics. BEA 2025 (Kochmar et al. 2025) reframes the problem as classification, training separate classifiers for four pedagogical criteria on dialogue data and reporting F1 and accuracy. MathTutor-Bench (Macina et al. 2025) spans math expertise, student understanding, and open-ended scaffolding generation, com-bining accuracy-based metrics with a trained reward model to score response quality. These benchmarks operate exclu-sively on text-based dialogues and do not extend to video. 
+
+Instructional Video Generation Benchmarks. Common video generation benchmarks mainly cover perceptual qual-ity (Huang et al. 2024; Liu et al. 2024). Recent work has be-gun to incorporate instructional content into the evaluation. TheoremExplainBench (Ku et al. 2025) evaluates generated videos across five dimensions, but does not address Learner Adaptability. Paper2Video (Zhu, Lin, and Shou 2025) in-troduces PresentArena, an automated pairwise comparison protocol following the Arena paradigm (Chiang et al. 2024; Jiang et al. 2024), using a VideoLLM as a proxy audience. Code2Video (Chen et al. 2025) introduces TeachQuiz, quan-tifying net knowledge transfer via VLM question answering and unlearning. None of these works conditions on a spec-ified learner. To our knowledge, our benchmark is the first instructional video generation benchmark to treat learner per-sona as an explicit evaluation criterion. 
+
+# 3 Task Design 
+
+Our challenge frames teaching as a single-shot task. Given a learning need written in natural language, a system must return one complete instructional video, produced end-to-end with no human involved. Asking for a complete video, rather than the isolated tutor turns of AI-tutoring bench-marks, forces the system to plan and build a whole lesson at once. That means breaking the concept down, ordering it, illustrating it, and delivering it across text, visuals, and narration. Figure 1 summarizes the task flow. 
+
+Input. The benchmark is made up of items, and each item gives the system two inputs: a
+
+course_requirement and a learner_persona .The course_requirement states the learning objective and the key concepts the lesson should cover, and the 
+
+learner_persona describes, in free text, the learner’s background, prior knowledge, and gaps. Pairing the two is what makes the task teaching rather than generation, because the same material must be taught differently to different learners. 
+
+Scope and Matched-Pair Design. Items span four secondary-level STEM subjects (Physics, Biology, Computer Science, and Mathematics) and are anchored to the Advanced Placement curriculum (College Board 2024), a college-level secondary-school curriculum standard widely used in the United States. A subset of items is organized into matched pairs that hold the course_requirement fixed and vary the learner_persona , so that a system’s two videos for one pair differ only in the learner they target (Figure 1). Dif-ferencing within a pair removes item-level confounds such as topic difficulty and baseline production quality, so any remaining gap is attributable to the manipulated learner per-sona, yielding controlled evidence of adaptive teaching. 
+
+# 4 Evaluation Framework 
+
+Measuring student learning gains directly from each video is infeasible at benchmark scale. We therefore evaluate teach-ing quality as a proxy for learning. This follows established practice, where observer ratings of teaching quality predict achievement gains in classrooms (Allen et al. 2013; Kane and Staiger 2012) and design-quality ratings of instructional videos relate to how much learners take from them (Brame 2016). Evaluation proceeds through a three-layer protocol: a Layer 1 LLM-judge screen over all submissions, a Layer 2 crowdsourced pairwise comparison over the shortlisted sys-tems, and a Layer 3 expert ranking that determines the final Figure 1: Task overview. A shared course requirement is paired with different student personas; systems must generate persona-adapted instructional videos, enabling comparison of whether a system adapts to the target learner. challenge outcome. Each layer narrows the field passed to the next, so that the more costly human evaluation of the later layers is concentrated on the strongest systems. The following subsections describe each layer in turn. 
+
+## 4.1 Layer 1: LLM-judge Screening 
+
+Layer 1 scores every submitted video with an automated LLM-judge and passes only the top systems on to human evaluation. Scoring covers four dimensions, and the first three correspond to Shulman’s three kinds of teacher knowl-edge (Shulman 1986). Each instructional video is scored on the following four evaluation dimensions. 
+
+Content Accuracy Content Accuracy measures factual correctness and whether the claims in the exposition are free of hallucination. As the most fundamental requirement of teaching, it captures the Subject Matter Content Knowl-edge that Shulman identifies among teacher knowledge, the foundation on which PCK is built. 
+
+Pedagogical Logic Pedagogical Logic measures the scaf-folding of the instruction, its coherence, and the clarity of the expository process. This reflects pedagogical knowledge, another component of PCK. 
+
+Learner Adaptability Learner Adaptability measures whether the instructional content matches the given learner persona, including the learner’s grade level, attention span, and prior knowledge. It operationalizes the adaptation of content to the specified learner, the transformation that is the core of PCK. 
+
+Engagement and Multimodal Presentation Engagement and Multimodal Presentation measures the pacing of the nar-ration, the alignment between the visuals and the speech, and whether instructional strategies such as analogies are used appropriately to elicit the learner’s engagement. It draws on Mayer’s Cognitive Theory of Multimedia Learning. The scoring procedure conducted by the LLM-judge uti-lizes this three-agent architecture, dividing evaluation tasks among three collaborating agents: one for structured video perception, one for content and pedagogy scoring, and one for learner-persona scoring, as shown in Figure 2. The de-tailed scoring procedure and score computation are described in the Technical Appendix. The four dimension scores se-lect the top systems for Layer 2, so Layer 1 functions as a screening filter rather than the final arbiter of the challenge outcome. Its fidelity is audited against the later human stages in Section 7.4. 
+
+Figure 2: Data Flow for LLM-judge Scoring 
+
+## 4.2 Layer 2: Crowdsourced Pairwise Comparison 
+
+The highest-ranked systems from Layer 1 enter an Arena-style blind comparison(Chiang et al. 2024) study conducted with human raters recruited through a crowdsourcing plat-form. For each comparison, the rater is shown the learner per-sona and course requirements, and is then asked to evaluate two instructional videos generated by two different systems for the same item to determine which one better helps the specified learner understand the topic. This pairwise format avoids asking non-specialist raters to assign absolute scores on the full rubric, while still producing a preference sig-nal suitable for system ranking. The pairwise outcomes are aggregated into Elo ratings(Chiang et al. 2024) with boot-strap confidence intervals, and the resulting Layer 2 ranking selects the top systems for the final phase. 4.3 Layer 3: Expert Ranking 
+
+The top systems selected by Layer 2 generated instructional videos for expert-designed final-phase items. These videos were evaluated by an expert panel composed of 10 secondary-school teachers, school principals, and university professors. Each panel member reviewed a subset of the videos, watching them according to the descriptions of the same four evalu-ation dimensions and their sub-items, and ranked them di-rectly without any instructions regarding score computation. The aggregated expert ranking determines the final challenge outcome. The expert layer also provides the reference signal used to interpret where the Layer 1 LLM-judge agrees with, or diverges from, human evaluation. 
+
+# 5 Logistics 
+
+The Teaching Monster Challenge was organized into three competition phases: a Warm-up calibration phase, a Prelim-inary phase, and a Final phase. These phases defined the competition timeline, while ranked evaluation followed the three-layer protocol described in Section 4. The Warm-up phase allowed teams to validate their systems without affect-ing the ranking. The Preliminary phase served as the primary competi-tive pipeline. In this phase, Layer 1 was applied as an auto-mated screening filter to evaluate the full field of submissions, forwarding only the highest-ranked systems to the Layer 2 crowdsourced evaluation. Together, these two layers selected the three finalists, and the Final phase subsequently used Layer 3 to determine the overall challenge outcome. All phases operated through an organizer-built submission platform. Each participating team registered an API endpoint through which the platform delivered released items in the in-put format described in Section 3. Each API request enforced a 30-minute generation budget, and responses exceeding the budget were treated as failed submissions. Throughout the competition, the organizers maintained a Slack workspace for announcements, technical support, and the exchange of implementation experiences among participating teams. The Warm-up calibration phase consisted of two rounds and did not contribute to the final ranking. The first round began on March 1, 2026, and used learning requests auto-matically generated by LLMs to stress-test API endpoints and validate the end-to-end submission pipeline. The sec-ond round began on April 14, 2026, and used committee-authored items. Across the two rounds, 46 teams submitted at least one instructional video, producing 1,696 videos in total. Together, the rounds allowed teams to test system re-liability, familiarize themselves with the request format, and refine their pipelines using non-ranking feedback from the LLM-judge. The Preliminary phase began on May 1, 2026, and con-sisted of two item-release rounds with 16 items each. Across the two rounds, 77 teams submitted at least one instructional video, producing 1,612 videos in total. In Layer 1, the LLM-judge, adapting the three-agent design of EduPanel (Dong, Lin, and yi Lee 2026) and running on gemini-3-flash ,assessed each submitted instructional video against a rubric of 22 items. These items produced a score from 1 to 5 on each of the four evaluation dimensions, where a higher score is better. The participating systems were ranked by the mean of their scores on four dimensions. The 10 highest-ranked systems advanced to Layer 2. In total, 59 raters recruited through Prolific contributed 246 comparisons within a fixed budget, and the outcomes were combined into Elo ratings with 90% bootstrap confidence intervals. The top three sys-tems advanced to the Final phase; other ranking details are described in Appendix E. The Final phase began on June 12, 2026, and determined the challenge outcome. The three finalist systems gener-ated 48 instructional videos for 16 expert-designed items. These videos were evaluated in Layer 3 by an expert panel of secondary-school teachers, school principals, and univer-sity professors. Each subject was covered by three panel members, two in the subject matter and one in pedagogy. These experts watched every video in their subject and ranked the videos directly by the four evaluation dimensions, with-out giving numerical scores, using the evaluation interface shown in Appendix F. Each system’s average rank across the experts determined the final challenge standings. To en-force the no-human-in-the-loop requirement and support re-producibility, award-candidate teams were subsequently re-quired to submit a complete system image, such as a Docker image, for post hoc verification of the end-to-end automated generation pipeline in an isolated environment. 
+
+# 6 Systems 
+
+## 6.1 Submitted Systems 
+
+A post-challenge questionnaire sent to all teams shows that nearly all submissions instantiate a six-stage cascade: persona parsing and routing, lesson planning, slide and script composition, visual rendering, narration synthesis, and assembly. Recurring design choices include structur-ing the persona as JSON conditioning for every stage, difficulty-based model routing, web-search grounding of lesson plans, Bloom’s-taxonomy constraints enforced by closed-loop LLM review, HTML/CSS slide templates with reviewer–fixer loops, split handling of conceptual (generated) versus mathematical (programmatic) figures, two-step plan-ning for Manim animation, and forced alignment of narration to animation via word-level timestamps. The Warm-up cali-bration and preliminary phases involved 46 and 77 teams, re-spectively. We sent a questionnaire to all participating teams about their system architecture, and 15 teams responded. We also reviewed every submitted video. The following para-graphs are organized by the six stages, highlighting at each the notable design choices of the ten teams shortlisted in Layer 2. 
+
+Learner Persona Parsing and Routing. Eight teams out of the top 10 teams in Layer 2 first parse the free-text 
+
+learner_persona prompt into a structured persona pro-file in JSON format (grade level, prior knowledge, attention span) and use the structured persona as a condition in every following stage. Apart from that, one shortlisted team fur-ther analyzes what content is suitable for the corresponding educational level, deleting those out-of-scope topics that are too difficult for the learner persona. Aside from limiting the contents, some teams design a router that chooses the appropriate model for lesson planning depending on the educational level of the learner persona. For example, one team chooses the planning model according to the learner’s attention span. For a persona with a normal attention span, it uses Claude Opus 4, which can produce more in-depth lessons. For a persona with a short attention span, it uses Claude Sonnet 4, whose shorter plans keep the lesson from running too long. 
+
+Lesson Planning & Curriculum Blueprint. At this stage, the structured persona and the course_requirement 
+
+are passed to an LLM to generate a complete outline of the teaching slides. While most designs create a system prompt to instruct the LLM to collect information on the learning topic, the model is still prone to hallucination, producing out-of-scope or factually incorrect content. To reduce these errors, some teams ground the planning stage in retrieved sources, using web search through the Gemini API. This lowers the rate of factual errors, though it does not eliminate them. On top of correctness, a good teaching video should also be well structured to effectively guide students to understand the concepts. As a result, some designs impose Bloom’s taxonomy as a structural constraint, with a closed-loop LLM-judge check that verifies the outline against it. 
+
+Slide Composition & Script Generation. After the out-line is generated, slide composition and script generation can be derived from the outline page by page through another LLM agent. Slides are authored in various markup formats (Marp Markdown, LaTeX, HTML); among respondents in the Layer 2 shortlist, HTML/CSS was the most common choice, allowing richer layout control. In order to prevent the generated slides from having format issues or coding bugs, some teams constrain the generation to a fixed template library, reducing rendering errors; others add a review loop in which a checker agent reports layout and code issues back to the composition agent until the slide passes. 
+
+Visual & Video Rendering. Images and animation are also key components of a good teaching slide. Although text-to-image models are widely available, respondents reported frequent hallucinations in images requiring factual precision (e.g., labeled diagrams). Therefore, some created an image library in advance for the agent to choose from. Others clas-sify the needed images into conceptual and mathematical and only use AI-generated images for conceptual images while using matplotlib (Hunter 2007) to generate mathematical im-ages. Manim (Sanderson 2015) was the most common anima-tion engine (4 of the top 10 respondents). Because one-shot LLM generation of Manim code fails frequently, several teams split generation into a JSON storyboard step and a code-generation step, raising the rendering success rate. 
+
+Narration & Audio Synthesis. Now that the slides and animation are ready, narration and other audio can be con-structed by a text-to-speech model. At this stage, some teams map persona attributes to TTS parameters. For example, the            
+
+> 1815 22 29 36 43 50 57 64 71 77 12345
+> Team rank Mean LLM-judge score
+
+Figure 3: LLM-judge scores for all submitted systems. Each point shows one system’s mean score over its preliminary-round videos, ordered by rank, with 95% confidence inter-vals. speaking rate is slowed for younger learners, who need more time to process spoken explanations. Although most of the teaching videos are presented in the voice of only one person, some teams adopt a two-voice design: one voice delivers the introduction and background, the other explains core con-cepts. 
+
+Video Composition & Assembly. Lastly, the slides and the audio are combined to generate the final video. Some animations must fire exactly when the narration mentions them, which requires word-level timestamps. Top-ranked re-spondents recover word-level timestamps by running faster-whisper (SYSTRAN 2023) (a reimplementation of Whis-per (Radford et al. 2023)) over the synthesized narration, effectively performing forced alignment, and triggering ani-mations at the aligned words. 
+
+## 6.2 Organizer baselines. 
+
+Three organizer-built reference systems mark distinct re-gions of the design space. They are reference points rather than competition entries, and we score them with the same Layer 1 LLM-judge as the submitted systems so that the two can be read on a common scale. A cascaded pipeline 
+
+chains zero-shot commercial LLM APIs and open-weight local models through pedagogical planning, concurrent slide and narration generation, and a deterministic compilation phase in which word-level timestamps schedule an instruc-tional pointer. A commercial black-box generator (Google NotebookLM Video Overview, accessed May 2026) syn-thesizes narrated instructional video end to end from the same two input fields. A static retrieval framework returns an existing Creative Commons video by ranking a frozen 257-video corpus with a cross-encoder (Nogueira and Cho 2019), a model that reads the request and the candidate video together and scores how well the video’s content matches the request, capturing genuine instructional relevance rather than surface keyword overlap. The learner persona is used only to keep the video within the learner’s attention span, not to match its content. This baseline bounds what the reuse of existing content can achieve without any generation. Module versions, configurations, and operational details for all three are given in Appendix C. 7 Results 
+
+We first report the aggregate challenge results in Sec. 7.1 and then examine them in greater detail. We analyze the ped-agogical strengths and weaknesses revealed by the Layer 1 rubric (RQ1), investigate learner-persona adaptation (RQ2), and finally compare the Layer 1 judge with human evaluation (RQ3). 
+
+## 7.1 Overall Challenge Results 
+
+Table 1 reports all three evaluation layers, from 77 submitting teams through the ten-system shortlist to the three finalists. Figure 3 shows a long tail of weak or off-topic submissions whose scores fall well below the others. Removing this tail let the costly human evaluation in Layers 2 and 3 focus on the ten shortlisted systems instead of every team. Among these ten, the crowd ranked tsunumon first but could not or-der OmegaZeroRe and ScaffoldAI , whose Elo intervals overlapped. The Layer 3 experts settled that order, and their rankings agreed at Kendall’s W = 0 .41 . tsunumon won the challenge, followed by OmegaZeroRe and ScaffoldAI .Table 1 also scores the three organizer baselines, which the judge and the human raters see very differently. The judge gives the static retrieval framework the lowest scores of all, mainly on Content Accuracy and Pedagogical Logic. Its deduction records show that most penalties come from videos missing or only partly covering the requested topic, not from factual errors. The low scores measure how well retrieval matched the item, not how well the videos teach. Table 2 then compares each baseline against the first-, second-, and fifth-ranked systems under the Layer 2 protocol. All three placed between first and second. The judge’s content scores therefore do not track what raters reward, a gap Section 7.4 examines. Only the challenge winner tsunumon beat the baselines, so the systems below it have not yet clearly improved on a mature commercial product or a well-chosen human-made video. 
+
+## 7.2 RQ1: Where Do Systems Succeed and Struggle? 
+
+Table 1 and Figure 4 give the dimension-level answer. The two content dimensions, Accuracy and Logic, score higher than the two delivery dimensions, Engagement and Adapt-ability, and the pattern holds for most individual systems. Accuracy and Logic concentrate near the top of the scale, while Adaptability and Engagement spread into the middle and below, with Adaptability lowest overall. To find the causes, we group the deductions in Table 3 into four analytical categories. These categories describe types of deficiency and are separate from the four evaluation dimen-sions. Of the 6,699 deduction flags, visual delivery draws the largest share (39%), led by ineffective visual representation, which draws a deduction in a third of the videos. Learner adaptation is at 27%, mostly due to missing scaffolding, jar-gon overload, and prerequisite gaps, so systems struggle to match explanations to the learner’s assumed background. Content problems are rarer (16%) and mostly concern cover-age and depth rather than correctness, with narration issues adding 8%. Explanation errors, counted separately by four     
+
+> 123450510 15 20 25 30 35
+> Score % of videos
+> Accuracy Logic Adaptability Engagement
+
+Figure 4: Distribution of videos across the four instructional quality dimensions. Solid lines represent score distributions, and dashed vertical lines indicate the respective means. The spike near a score of 1 in every dimension comes from teams that submitted off-topic or placeholder videos rather than competitive instructional content.  
+
+> Persona-independent baseline Experimental Human-video
+> 020 40 60 80
+> 30.8% 51.7% 61.9% Persona-identification accuracy (%)
+
+Figure 5: Persona-identification accuracy by group, the rate at which raters pick the intended learner of a video from three candidates. Bars show per-group accuracy with Wilson 95% confidence intervals, and the dashed line marks the 33.3% chance rate. count-based metrics, make up the remaining 10% of flags, and about one video in six still contains a critical factual error, so high content scores coexist with occasional explanation mistakes. In short, current systems can cover and organize content well but still deliver and adapt it poorly. 
+
+## 7.3 RQ2: Do Systems Adapt to the Persona? 
+
+We next ask whether current systems truly adapt to the spec-ified learner, since the aggregate Layer 1 scores cannot sepa-rate a system that adapts poorly from one that does not adapt at all. We probe this with a human study that asks whether a human can recognize the learner for which a video was made from a video. 
+
+Persona identification study. A rater watches one instruc-tional video and then chooses a persona that the video was made for among three candidate learner personas that differ in grade level and prior knowledge, so the chance baseline is one in three. The three options are matched in length and for-mat and shown in random order. The study spans three groups of videos over the same eight topics, two from each subject. Table 1: Results of all three evaluation layers, with the ten shortlisted systems ordered by Layer 2 rank and the organizer baselines below. The dimension columns abbreviate Content Accuracy, Pedagogical Logic, Learner Adaptability, Engagement, and Multimodal Presentation. Elo entries carry 90% bootstrap confidence intervals, and “–” means not ranked at that stage.                                                                                                                           
+
+> Layer 1 (LLM judge) Layer 2 (crowd) Layer 3 System Acc. Logic Adapt. Eng. Rank Elo (90% CI) Rank Rank tsunumon 4.72 4.66 4.48 4.46 41670 (1588–1742) 11ScaffoldAI 4.72 4.66 4.47 4.64 31570 (1459–1669) 23OmegaZeroRe 4.71 4.64 4.28 4.34 91567 (1472–1660) 32babyshark 4.71 4.64 4.33 4.55 61505 (1419–1592) 4–Phd.ICU 4.66 4.60 4.24 4.39 10 1494 (1403–1583) 5–Softfoundry Facepro 4.62 4.57 4.43 4.59 71479 (1400–1562) 6–BlackShiba Labs 4.67 4.64 4.42 4.58 51477 (1362–1577) 7–Team 67 4.75 4.69 4.56 4.64 11475 (1376–1582) 8–teacher fat orange cat 4.59 4.48 4.41 4.64 81388 (1296–1476) 9–Kuro 4.74 4.67 4.53 4.59 21380 (1269–1499) 10 –All submissions (mean) 4.31 4.19 3.77 3.86 ––––
+> Organizer baselines
+> Cascaded pipeline 4.52 4.70 3.64 4.12 ––––Commercial black-box generator (NotebookLM) 4.53 4.48 4.00 4.26 ––––Static retrieval framework 2.12 2.47 3.53 4.01 ––––
+
+Table 2: Crowd evaluation of the three organizer baselines under the Layer 2 protocol, each compared against the first-, second-, and fifth-ranked systems. Entries are wins across nine comparisons, and the final column indicates each baseline’s placement.                  
+
+> Pairwise wins (out of 9) Inferred Baseline vs. PhD.ICU (L2 #5) vs. ScaffoldAI (L2 #2) vs. tsunumon (L2 #1) Slot Cascaded Pipeline 6/9 6/9 2/9 1–2 Commercial Black-Box Generator (NotebookLM) 8/9 8/9 4/9 1–2 Static Retrieval Framework 8/9 6/9 3/9 1–2
+
+The experimental group is the output of the ten shortlisted systems, two videos per system. The persona-independent baseline is the output of the static retrieval framework, which selects a video by content relevance without adapting it to the learner, serving as a lower anchor. The human-video group is eight Creative Commons instructional videos with clearly identifiable audiences, one per item, whose best-fit persona was assigned by two researchers and reconciled by discus-sion, serving as a topline. 
+
+Results. In total, 69 Prolific raters contributed 214 ratings, summarized in Figure 5. For the persona-independent base-line, the intended learner is identified only at the chance level. For the experimental group, it is identified well above this baseline, so their adaptation is perceptible to raters. Be-cause the ratings are clustered by video and by rater and thus not independent, we confirm the gap using a mixed-effects logistic regression with random intercepts for both, and the gap remains (full coefficients in Appendix H). The learner persona in the human-video group is identified more often than in the experimental group, but the difference is not sta-tistically significant. In response to RQ2, systems do adapt to the specified learner in ways that people can perceive. Their low Learner Adaptability score in RQ1 therefore does not mean they fail to adapt, only that they do not adapt well. 
+
+## 7.4 RQ3: Does the LLM-Judge Align with Human Judgment? 
+
+We next evaluate how well the LLM-judge aligns with hu-man judgment, analyzing the 320 preliminary-round videos and the 48 final videos. The short answer is that the judge separates clearly weak submissions from the rest but ranks the strongest systems poorly. 
+
+The LLM-Judge Ranks the Strongest Systems Poorly. 
+
+Table 1 shows the ten shortlisted systems all scoring near the ceiling of 5, which leaves the judge little room to tell them apart. As a result, its ranking of these ten has almost no agreement with the Layer 2 crowd ranking (Spearman ρ =
+
+−0.17 ). tsunumon , the eventual winner, ranks only fourth under the judge, while the judge’s top two, Team 67 and 
+
+Kuro , finish eighth and tenth with the crowd. This mismatch is not measurement noise on either side. On the judge’s side, scores are stable across repeated runs, as the rescoring check in the appendix shows. On the crowd’s side, tsunumon ’s 90% Elo interval overlaps neither Team 67 ’s nor Kuro ’s. 
+
+Prevalence vs. Salience in Evaluation Criteria. To see why the judge and the crowd disagree, we compare what each emphasizes. For the 320 preliminary videos, we group the judge’s metrics and the crowd’s written rationales, available for 145 of the 246 comparisons, into the four categories of Table 3: Distribution of Layer 1 score deductions across 1,612 preliminary-round videos. Category percentages rep-resent the share of the 6,699 total negative flags. Metric percentages indicate the proportion of videos triggering that specific metric (non-mutually exclusive).                            
+
+> Category Metric (%)
+> Severity-scored metrics Visual (39%)
+> ineffective visual representation 33% AI-generated fatigue 27% narration–visual disconnect 23% visual signaling 24% visual alignment issue 18% decorative eye-candy 11% visual accessibility 10% visual clutter 9%
+> Learner (27%)
+> missing scaffolding 29% jargon overload 23% prerequisite gap 22% pacing mismatch 18% scaffolding failure 16%
+> Content (16%)
+> title–depth mismatch 23% content completeness 21% explanatory depth 20% pure calculation bias <1%
+> Narration (8%) monotone / robotic audio 33%
+> Count-based factual-error metrics Explanation errors
+> (10%)
+> critical fact error 17% causal inconsistency 12% minor slip 9% information overload 4%
+
+Section 7.2. The judge is summarized by prevalence, the share of videos on which a criterion is recorded, favorably or not. The crowd is summarized by salience, the share of rationales that cite a criterion as the reason for a preference. Table 4 lists the top ten of each. The two broadly agree on what matters, since learner adaptation and content coverage fill eight of the crowd’s ten reasons and six of the judge’s ten criteria. The rankings still differ because the judge gives the top systems almost the same scores. Criteria the judge records heavily but the crowd seldom cites apply to nearly every video or to almost none, so they separate nothing. Pure-calculation bias, for example, is recorded on 99.7% of videos and almost always favorably. Even on the criteria both sides value, the top systems’ scores are nearly identical. Ranking on such scores amounts to ranking on tiny, essentially random differences, while the crowd’s pairwise choices turn on the small differences their rationales actually cite. The judge and the human layers are thus complementary, one screening every video and the other comparing the strongest few. 
+
+# 8 Discussion 
+
+## 8.1 A Qualitative Case Study of a Finalist Video 
+
+To complement the preceding quantitative analyses, we ex-amine two slides from one of the three finalist videos. Fig-ure 6 shows a final-round instructional video on Mendelian genetics. The hook slide poses a blood-type puzzle, while the token-algorithm slide explains Mendel’s law of segregation by modeling each parent as contributing one allele. Although illustrative rather than representative, this case shows how a high-ranking video can remain limited across the four eval-uation dimensions introduced in Section 4.1. 
+
+Content Accuracy. The two slides are broadly accurate and use basic terminology appropriately. The hook slide distinguishes phenotype from genotype, while the token-algorithm slide correctly shows that an offspring receives one allele from each parent. Several statements, neverthe-less, lack precision. The title “Mendel’s Segregation” is less precise than “Mendel’s law of segregation,” and “Gamete = randomly pick 1 token” describes an action rather than the resulting reproductive cell. More importantly, the phrase “4 genotype boxes” can be read as four distinct genotypes. An 
+
+Aa × Aa cross has four equally likely gamete-pair outcomes but only three genotype categories because two cells repre-sent Aa . Their probabilities are AA = 0 .25 , Aa = 0 .50 , and 
+
+aa = 0 .25 . The wording therefore conflates Punnett-square cells with genotype categories. The generated visuals introduce further ambiguity. At Step 4 of the token-algorithm slide, children with different skin tones appear even though skin tone is never defined as the modeled trait. This may suggest that the A/a alleles directly encode racial appearance, and the dark-skinned child ap-pears without any explanation for that visual variation. In the Punnett square inset, colors also cease to consistently mark maternal and paternal origin. Keeping one red maternal to-ken and one blue paternal token in every cell would preserve the one-allele-per-parent rule. 
+
+Pedagogical Logic. The video follows a clear progression from a concrete puzzle to a procedural explanation supported by text, diagrams, and a probability grid. However, the hook slide uses ABO blood type, whereas the token-algorithm slide shifts to a generic Aa × Aa cross without explaining the abstraction. The token-algorithm slide also introduces “locus” without using it later and repeats similar content across the text list, flowchart, and Punnett square. Integrating these representations and preserving consistent conventions would reduce attention switching without removing content. 
+
+Learner Adaptability. The learner persona specified a seventh-grade learner with a 25-minute focus time, basic knowledge of reproduction and probability, and no prior for-mal genetics knowledge. The requested objective was to an-alyze how alleles are distributed to offspring in classical genetics. The hook slide fits this persona by using a familiar human blood-type example, while the token-algorithm slide directly models allele distribution. However, several techni-cal terms are introduced in rapid succession, and the explana-tion skips from random parental selection to four outcomes labeled 0.25. For a learner with no formal genetics training and only basic probability knowledge, the video should ex-plicitly derive each outcome from two independent choices, 
+
+0.5 × 0.5 = 0 .25 .Table 4: What the Layer 1 judge and the Layer 2 crowd each emphasize in the preliminary round. Left: the ten Layer 1 metrics that register most frequently, as the percentage of the 320 preliminary-round videos submitted by the ten shortlisted systems; a registration can be favorable, so high prevalence reflects how often the judge records a criterion, not how often videos fail it. Right: the ten reasons cited most frequently in the 145 written pairwise-comparison rationales, as the percentage of rationales that mention each. The two halves are not on a common scale and are read down, not across. Metric % of 320 videos Reason % of 145 rationales pure-calculation bias (content) 99 .7 visuals (visual) 33 .8
+
+visual signaling (visual) 97 .5 coverage (content) 29 .7
+
+visual alignment issue (visual) 96 .6 examples (adaptation) 26 .2
+
+scaffolding failure (adaptation) 88 .1 level (adaptation) 25 .5
+
+narration-visual disconnect (visual) 82 .2 structure (content) 24 .8
+
+ineffective visual representation (visual) 81 .6 scaffolding (adaptation) 24 .1
+
+missing scaffolding (adaptation) 67 .2 depth (content) 24 .1
+
+explanatory depth (content) 45 .6 voice (narration) 20 .7
+
+pacing mismatch (adaptation) 22 .5 concise (adaptation) 17 .2
+
+content completeness (content) 9.7 interactivity (adaptation) 11 .0
+
+Figure 6: Two slides from a finalist instructional video on genetics. Left: the hook slide introduces a blood-type puzzle. Right: the token-algorithm slide explains Mendelian segregation. 
+
+Engagement and Multimodal Presentation. The question-based hook slide, familiar example, orderly layout, and large illustrations make the video visually engaging. However, visual polish does not ensure effective multimodal teaching. In our review, some technical terms and formulas in the text-to-speech narration were difficult to discern, while the delivery used limited prosodic variation and little slowing during the probability explanation. The token-algorithm slide is also dense, combining terminology, a flowchart, a Punnett square, and a probability summary. The video also provides no cursor or pointer to guide attention. This case illustrates, at the level of a single finalist video, the pattern quantified in Table 1 and Section 7.2: strong content scores coexisting with weaknesses in multimodal signaling and learner adaptation. We use it to make those aggregate deductions concrete, not as independent evidence of a capability ceiling. 
+
+## 8.2 Feedback from Participants 
+
+As detailed in Appendix G, feedback from 15 teams indi-cated that while the end-to-end challenge design was highly valued, primary engineering frictions stemmed from multi-modal synchronization under strict latency constraints and ambiguous LLM-judge feedback. These self-reported con-cerns regarding evaluator noise align directly with the near-zero judge-human correlation found in Section 7.4. Ulti-mately, this highlights the critical need for transparent, in-spectable evaluation trails in future benchmarks. 
+
+# 9 Limitations 
+
+The first Teaching Monster Challenge was limited to AP-aligned STEM subjects at the secondary-school level, includ-ing Physics, Biology, Computer Science, and Mathematics, and all instructional videos were generated in English. The findings may not generalize to other subject areas or non-English educational settings. Future work can extend the benchmark to a broader range of subjects and languages. Human evaluation in this study also reflects a specific ed-ucational context. The final expert panel consisted mainly of secondary-school teachers, school principals, and university professors with experience in Taiwan’s education system. Their judgments reflect the instructional practices and eval-uation traditions of Taiwanese secondary education, rather than a universal standard across educational systems. Fu-ture work could include more internationally diverse expert panels. This benchmark evaluates single-shot instructional video generation rather than interactive tutoring. Systems generate a complete instructional episode from a course requirement and learner persona, but do not adapt to later learner ques-tions, errors, or confusion. The challenge measures the ability to turn learning needs into structured instructional content, rather than continuous diagnosis, adaptation, and individu-alized feedback. Future work could incorporate multi-turn interaction and learner responses. 
+
+# 10 Conclusion 
+
+We introduced the Teaching Monster Challenge, the first instructional video generation benchmark to make learner adaptation, the transformation at the core of PCK, an ex-plicit evaluation criterion. The first edition shows that current agents have the content knowledge teaching rests on. They mostly get the material right and organize it into coherent lessons, yet they fall short in presenting it clearly and adapt-ing it to the learner. People can recognize whom a lesson was made for, so the adaptation PCK requires is present, only not yet done well. Judging the systems proved a challenge in itself. The judge screens out clearly weak submissions, but the best systems all score near the top of its scale, so its ranking of them no longer matches human preference. In this edition, the judge decided who advanced, and only humans could decide who won. Progress on this task therefore has two fronts: better teaching systems and better judges of teaching. We release the items, rubric, scoring traces, and human judgments as one testbed for both. Later editions will move past AP-level STEM and single-shot generation toward interactive tutoring, where teaching is hardest and matters most. 
+
+# Acknowledgments 
+
+We thank Shou-De Lin for his advice and discussions throughout this work. We also thank the members of the ex-pert panel who designed the test items and served as judges for the Layer 3 evaluation: Tsung-Hau Jen, Chi-Ta Chia, Pei-Chun Liao, Chia-Hui Cheng, Kuo Yuan Lin, J Will James, Shihkuan Hsu, and Hsiou-Huai Wang. This work was sup-ported by the Ministry of Education (MOE) of Taiwan under the project Taiwan Centers of Excellence in Artificial Intel-ligence, through the NTU Artificial Intelligence Center of Research Excellence (NTU AI-CoRE). 
+
+# References 
+
+Allen, J.; Gregory, A.; Mikami, A.; Lun, J.; Hamre, B.; and Pianta, R. 2013. Observations of Effective Teacher–Student Interactions in Secondary School Classrooms: Predicting Student Achievement With the Classroom Assessment Scor-ing System—Secondary. School Psychology Review , 42(1): 76–98. PMID: 28931966. Bandyopadhyay, S.; Maheshwari, H.; Natarajan, A.; and Sax-ena, A. 2024. Enhancing Presentation Slide Generation by LLMs with a Multi-staged End-to-End Approach. In Pro-ceedings of the 17th International Natural Language Gener-ation Conference , 222–229. Banerjee, A.; Banerji, R.; Berry, J.; Duflo, E.; Kannan, H.; Mukherji, S.; Shotland, M.; and Walton, M. 2016. Main-streaming an Effective Intervention: Evidence from Ran-domized Evaluations of “Teaching at the Right Level” in India. Working Paper 22746, National Bureau of Economic Research. Brame, C. J. 2016. Effective educational videos: Principles and guidelines for maximizing student learning from video content. CBE—Life Sciences Education , 15(4): es6. Chen, H.; et al. 2025. Code2Video: A Code-centric Paradigm for Educational Video Generation. arXiv preprint arXiv:2510.01174 .Chen, M.; Tworek, J.; Jun, H.; Yuan, Q.; de Oliveira Pinto, H. P.; Kaplan, J.; Edwards, H.; Burda, Y.; Joseph, N.; Brock-man, G.; Ray, A.; Puri, R.; Krueger, G.; Petrov, M.; Khlaaf, H.; Sastry, G.; Mishkin, P.; Chan, B.; Gray, S.; Ryder, N.; Pavlov, M.; Power, A.; Kaiser, L.; Bavarian, M.; Winter, C.; Tillet, P.; Such, F. P.; Cummings, D.; Plappert, M.; Chantzis, F.; Barnes, E.; Herbert-Voss, A.; Guss, W. H.; Nichol, A.; Paino, A.; Tezak, N.; Tang, J.; Babuschkin, I.; Balaji, S.; Jain, S.; Saunders, W.; Hesse, C.; Carr, A. N.; Leike, J.; Achiam, J.; Misra, V.; Morikawa, E.; Radford, A.; Knight, M.; Brundage, M.; Murati, M.; Mayer, K.; Welinder, P.; Mc-Grew, B.; Amodei, D.; McCandlish, S.; Sutskever, I.; and Zaremba, W. 2021. Evaluating Large Language Models Trained on Code. arXiv:2107.03374. Chiang, W.-L.; Zheng, L.; Sheng, Y.; Angelopoulos, A. N.; Li, T.; Li, D.; Zhu, B.; Zhang, H.; Jordan, M. I.; Gonzalez, J. E.; and Stoica, I. 2024. Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference. In Proceedings of the 41st International Conference on Machine Learning .Cobbe, K.; Kosaraju, V.; Bavarian, M.; Chen, M.; Jun, H.; Kaiser, L.; Plappert, M.; Tworek, J.; Hilton, J.; Nakano, R.; Hesse, C.; and Schulman, J. 2021. Training Verifiers to Solve Math Word Problems. arXiv:2110.14168. College Board. 2024. AP Course and Exam Descriptions. https://apcentral.collegeboard.org/courses. Advanced Place-ment Program. Dong, J.-K.; Lin, Y.-C.; and yi Lee, H. 2026. EduPanel: A Three-Agent LLM Judge for Teaching Videos – Re-liability, Complementarity, and Human Trust Calibration. arXiv:2607.18529. Fu, T.-J.; Wang, W. Y.; McDuff, D.; and Song, Y. 2022. DOC2PPT: Automatic Presentation Slides Generation from Scientific Documents. In Proceedings of the AAAI Confer-ence on Artificial Intelligence , volume 36, 634–642. Hendrycks, D.; Burns, C.; Basart, S.; Zou, A.; Mazeika, M.; Song, D.; and Steinhardt, J. 2020. Measuring mas-sive multitask language understanding. arXiv preprint arXiv:2009.03300 .Huang, Z.; He, Y.; Yu, J.; Zhang, F.; Si, C.; Jiang, Y.; Zhang, Y.; Wu, T.; Jin, Q.; Chanpaisit, N.; et al. 2024. VBench: Com-prehensive Benchmark Suite for Video Generative Models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 21807–21818. Hunter, J. D. 2007. Matplotlib: A 2D Graphics Environment. 
+
+Computing in Science & Engineering , 9(3): 90–95. Jiang, D.; Ku, M.; Li, T.; Ni, Y.; Sun, S.; Fan, R.; and Chen, W. 2024. GenAI Arena: An Open Evaluation Platform for Generative Models. In Advances in Neural Information Pro-cessing Systems , volume 37. Kane, T. J.; and Staiger, D. O. 2012. Gathering Feedback for Teaching: Combining High-Quality Observations with Student Surveys and Achievement Gains. Research Paper. MET Project. Bill & Melinda Gates Foundation .Kochmar, E.; et al. 2025. Findings of the BEA 2025 Shared Task on Pedagogical Ability Assessment of AI-powered Tu-tors. In Proceedings of the 20th Workshop on Innovative Use of NLP for Building Educational Applications .Ku, M.; Chong, T.; Leung, J.; Shah, K.; Yu, A.; and Chen, W. 2025. TheoremExplainAgent: Towards Video-based Multi-modal Explanations for LLM Theorem Understanding. In 
+
+Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics .Liu, Y.; Cun, X.; Liu, X.; Wang, X.; Zhang, Y.; Chen, H.; Liu, Y.; Zeng, T.; Chan, R.; and Shan, Y. 2024. EvalCrafter: Benchmarking and Evaluating Large Video Generation Mod-els. In Proceedings of the IEEE/CVF Conference on Com-puter Vision and Pattern Recognition , 22139–22149. Macina, J.; Daheim, N.; Hakimi, I.; Kapur, M.; Gurevych, I.; and Sachan, M. 2025. MathTutorBench: A Benchmark for Measuring Open-ended Pedagogical Capabilities of LLM Tutors. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing , 204–221. Mondal, I.; Shwetha, S.; Natarajan, A.; Garimella, A.; Bandyopadhyay, S.; and Boyd-Graber, J. 2024. Presentations by the Humans and for the Humans: Harnessing LLMs for Generating Persona-Aware Slides from Documents. In Pro-ceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics , 2664–2684. Nogueira, R.; and Cho, K. 2019. Passage Re-ranking with BERT. arXiv preprint arXiv:1901.04085 .Radford, A.; Kim, J. W.; Xu, T.; Brockman, G.; McLeavey, C.; and Sutskever, I. 2023. Robust Speech Recognition via Large-Scale Weak Supervision. In International Conference on Machine Learning , 28492–28518. PMLR. Sanderson, G. 2015. Manim: Animation engine for ex-planatory math videos. https://github.com/3b1b/manim. Ac-cessed: 2026-07-17. Shulman, L. S. 1986. Those Who Understand: Knowledge Growth in Teaching. Educational Researcher , 15(2): 4–14. SYSTRAN. 2023. faster-whisper: Faster Whisper transcrip-tion with CTranslate2. https://github.com/SYSTRAN/faster-whisper. Accessed: 2026-07-17. Tack, A.; Kochmar, E.; Yuan, Z.; Bibauw, S.; and Piech, C. 2023. The BEA 2023 Shared Task on Generating AI Teacher Responses in Educational Dialogues. In Proceedings of the 18th Workshop on Innovative Use of NLP for Building Educational Applications , 785–795. UNESCO; and International Task Force on Teachers for Ed-ucation 2030. 2024. Global Report on Teachers: Addressing Teacher Shortages and Transforming the Profession. Xiao, S.; Liu, Z.; Zhang, P.; Muennighoff, N.; Lian, D.; and Nie, J.-Y. 2024. C-Pack: Packaged Resources To Advance General Chinese Embedding. In Proceedings of the 47th International ACM SIGIR Conference on Research and De-velopment in Information Retrieval .Zheng, H.; Guan, X.; Kong, H.; Zhang, W.; Zheng, J.; Zhou, W.; Lin, H.; Lu, Y.; Han, X.; and Sun, L. 2025. PPTAgent: Generating and Evaluating Presentations Beyond Text-to-Slides. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing , 14402–14418. Zhu, Z.; Lin, K. Q.; and Shou, M. Z. 2025. Paper2Video: Au-tomatic Video Generation from Scientific Papers. In NeurIPS 2025 Workshop on Scaling Environments for Agents .
+
+# A Origin of the Name Teaching Monster 
+
+The name of the challenge pays tribute to two works of pop-ular culture. The first is the reality show Chinese Monster, produced by the YouTuber Ku’s Dream, whose popularity started a trend of naming competitions after the word mon-ster. In that context, the word sheds its usual negative conno-tation and instead denotes a top performer who breaks con-ventions in a given field, and the challenge adopts the word in the same spirit, in the hope that AI agents can become teaching monsters that break the frame of conventional in-struction. The second is the anime Assassination Classroom, whose teacher character, Koro-sensei, is depicted as a mon-ster capable of moving at Mach 20, an ability he uses to prepare tailored materials and give one-on-one guidance to every student in the class at the same time. This vision of fully individualized instruction for every learner was once imaginable only in fiction, and the challenge asks whether AI agents can begin to provide personalized instruction of that kind for every student. 
+
+# B LLM-Judge Scoring Protocol 
+
+## B.1 Scoring Mechanism 
+
+The scoring procedure conducted by the LLM-judge is di-vided among three agents working in collaboration. First, the perceiving agent watches the original video, extracts a time-stamped content map, and conducts a multimodal audit, but does not itself assign scores. Second, the grading agent pro-duces the Content Accuracy and Pedagogical Logic scores based only on the content map and the multimodal audit results of the perceiving agent. Third, the persona judging agent, while referring to the structured output of the perceiv-ing agent, watches the original video again and scores the two more subjective dimensions, Learner Adaptability and Engagement and Multimodal Presentation. In the scoring mechanism for the LLM-judge, each dimen-sion has an independent score that starts from a baseline of 
+
+4.0. The score is then adjusted according to the performance of each indicator within the dimension, through a penalty, a bonus when expectations are exceeded, or no effect on the score. For penalties, indicators scored by severity, such as the degree of agreement between title and content, are deducted in three graded levels according to the severity of the vio-lation of each indicator. Indicators scored by count, such as factual errors, are deducted according to the number of occur-rences multiplied by the deduction per occurrence, although the deduction for a single count-based penalty is capped at 
+
+2.0 points. All penalties have different deduction values for each indicator, which are detailed below. The bonus, in turn, is computed according to the number of bonus items ob-tained in each dimension, adding to the score the number of bonus items obtained divided by the total number of bonus items available in that dimension, which means that the up-per bound of the bonus is 1.0. The final score is clipped to 
+
+[1 .0, 5.0] .
+
+## B.2 Rubric Items 
+
+Detailed rating rubrics are shown in Tables 5, 6, 7, and 8. Note that Content Accuracy and Pedagogical Logic share four sub-items: Scaffolding Failure, Pure Calculation Bias, Content Completeness, and Explanatory Depth. This is because a deficiency in any one of these four indicators will inevitably harm both Content Accuracy and Pedagogical Logic. 
+
+## B.3 LLM-Judge Consistency 
+
+To assess the stability of the LLM-judge, we repeated the evaluation of a subset of videos and compared the resulting scores. We define a (system, topic) cell as one evaluation in-stance of a given system on a given topic. Among 3 repeated evaluations of the same cell, the median within-cell standard deviation of the overall score is 0.14 on the 1.0–5.0 scor-ing scale, indicating that repeated judgments are generally stable. Averaging multiple evaluations therefore provides a sufficiently robust signal for admit-or-reject screening. 
+
+# C Organizer Baselines: Implementation Details 
+
+Cascaded Pipeline. This baseline is a linear chain of self-contained, zero-shot services and models in which each stage consumes only the artifacts produced by earlier stages, with no joint optimization and no end-to-end feedback. It operated under the same 30-minute generation limit as the submitted systems. It runs in three sequential phases. First, in the planning phase, an outline module expands the 
+
+course_requirement and learner_persona into a structured storyboard ( gemini-3-flash-preview 
+
+for context analysis, then gemini-3.1-pro-preview 
+
+with search grounding), and a wrapper stage converts the storyboard into per-slide content specifications and narration scripts ( gemini-3-flash-preview ). Second, in the asset generation phase, slides and narration are produced concurrently: each slide passes through a design-and-review loop in which an LLM designer proposes a layout, a deterministic renderer realizes it, and a vision-LLM reviewer requests fixes ( gemini-3.1-pro-preview ,inline images by gemini-2.5-flash-image ), while narration is synthesized by an open-weight TTS model (Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice )and word-level timing is recovered by aligning the narration audio against a faster-whisper 
+
+transcription. Two open-weight vision-language models (Qwen/Qwen3-VL-8B-Instruct and 
+
+ByteDance-Seed/UI-TARS-1.5-7B ) then ground each narration segment to a coordinate on its slide, defining the path of an instructional pointer. Finally, in the compilation phase, a deterministic rendering loop overlays the pointer, scheduling its movements at the aligned word timestamps, and concatenates the slide imagery and audio segment by segment, with each segment temporally bounded by its narration duration; this final phase is the only deterministic one, while the planning and slide-design stages sample from LLMs. The storyboard fixes the slide count (bounded between three and ten), so the output video length follows from the narration rather than from an explicit persona-conditioned duration target. Table 9 summarizes the per-module configurations; full identifiers appear in the text above. 
+
+Commercial Black-Box Generator. The black-box base-line drives NotebookLM’s Video Overview feature pro-grammatically rather than through the web interface, us-ing the Explainer format with automatic style selection, and was accessed between May 1 and May 15, 2026. For each item, a lightweight adapter derives a research query and a host-steering instruction from the two input fields; the service gathers its own source material through the query and generates under the instruction, which sets au-dience level, prerequisites, and target length according to the learner_persona . The first successfully generated video was used for every item, with retries only on techni-cal failure and no quality-based selection among candidates. Outputs were downloaded as MP4 files and served to the evaluation platform. Because the generation process is pro-prietary and closed, how these inputs shape the output cannot be verified, and the reported scores characterize the service as accessed at that time rather than a reproducible system. 
+
+Static Asset Retrieval Framework. The retrieval frame-work uses no generative language model at any stage. It retrieves an existing video in two steps, building a fixed cor-pus and then ranking that corpus for instructional relevance, and so marks the non-generative corner of the design space. The corpus is assembled in advance from Creative Commons (CC) licensed instructional videos covering the target do-main, so that retrieval runs against a fixed pool rather than the continually changing open web. For each preliminary-phase task, candidate videos are gathered through CC-filtered YouTube searches, using queries derived automatically from the course_requirement . Each candidate’s license is automatically verified from platform metadata, and filtering by duration and deduplication yield a frozen set of 257 Table 5: Content Accuracy scoring metrics provided to LLM-judge                              
+
+> Metric Rating description Value
+> Scaffolding Failure: Formula / Logic Leap (shared) Every major formula is motivated and derivations are step-complete; scaffolding clearly stronger than typical bonus Skips the “why” for 1 key concept, OR 1–2 unjustified derivation jumps −0.5
+> Multiple key formulas lack rationale, OR multiple critical steps skipped −1.0
+> Entire video presents formulas as facts with zero scaffolding, OR derivations riddled with leaps −1.5
+> Pure Calculation Bias (shared) Calculations subordinate to a visible conceptual spine; concept-first feel bonus Theory exists but brief ( ∼60% calculation) −0.3
+> Heavily skewed ( ∼75% calculation) −0.6
+> Almost pure calculation ( >85%) −1.0
+> Content Completeness (shared) Content notably richer than the title implies; goes beyond stated scope bonus 1 minor supporting concept missing, or content slightly thinner than implied −0.5
+> 1 core concept absent, OR multiple supporting concepts missing, OR video too short −1.0
+> Multiple core concepts absent; fails stated scope; OR near-empty −1.5
+> Explanatory Depth (shared) Depth clearly above typical and sustained; critical steps not skipped, assumptions explicit bonus Some topics shallower than the title implies; key steps occasionally rushed; a few only “mentioned” −0.5
+> Most topics “mentioned” without explanation; OR title implies derivation but content heavily abbreviated
+> −1.5
+> Title promises concept/derivation but delivery entirely procedural; OR topics merely listed −2.0
+> Title–Depth Mismatch Minor overpromising (small scope or depth difference) −0.5
+> Clear mismatch (e.g. “Derivation” video shows only a formula) −2.0
+> Fundamental mismatch (different topic, or concept promised but video is plug-and-chug) −4.0
+> Visual Alignment Issue Visuals track the spoken argument in real time; anticipate/repair confusion bonus Occasional misalignment −0.2
+> Decorative images during technical content; slides lag −0.5
+> Visuals actively contradict or distract −1.0
+> Critical Fact Error (count) Each uncorrected scientific/mathematical error −0.3per counting Minor Slip (count) Each persistent minor error (typo, dropped sign, imprecise term) −0.2per counting
+
+videos. Retrieval follows the standard cross-encoder rerank-ing approach (Nogueira and Cho 2019): a cross-encoder (cross-encoder/ms-marco-MiniLM-L-6-v2 )reads the query jointly with a candidate and scores whether the video actually teaches the requested content rather than merely mentioning its keywords, the relevance signal a bi-encoder alone misses. The query is formed from the subject and course_requirement alone; the 
+
+learner_persona is deliberately excluded so that content matching stays separate from personalization and does not inflate the persona-adaptation measured by the judge. Because a full transcript far exceeds the cross-encoder’s 512-token input window, a bi-encoder (BAAI/bge-small-en-v1.5 (Xiao et al. 2024)) first locates each video’s most query-relevant transcript passage, and the cross-encoder reads that passage together with the title and description. Two objective adjustments then refine the relevance score: one penalizes a subject mismatch, which prevents a keyword-similar video from another subject from displacing an on-subject one, and one penalizes a video whose length departs from the learner_persona ’s stated attention span. The attention span is the only persona signal admitted, used as a duration constraint rather than for content matching; by design the persona influences only the admissible length, so the baseline probes how much of the task pure content retrieval can satisfy and provides a calibration point for the judge’s Learner Adaptability dimension. The cross-encoder’s top-ranked video is returned as the answer. 
+
+Reproducibility. The cross-encoder reads each candidate’s title, description, and most query-relevant transcript passage, truncated to its 512-token window. Its relevance score is ad-justed by an off-subject penalty of 3.0 and a duration penalty of 2.0 × (1 − f ), where f equals 1 when the video runs between 0.4 and 1.5 times the attention span and decays to 0 at 3 times the span. 
+
+# D Example Question Sets 
+
+This appendix shows two worked matched-pair examples drawn from the first edition. The Type A pair varies only the student persona to isolate the persona-conditioning ef-fect. The Type B pair holds the topic fixed and raises the target cognitive level, so the learning objective is rewritten to demand higher-order skills. 
+
+Type A example: persona contrast. The two items below adapt the same lesson for an 8th grader (Item 1) and a 1st-year university student (Item 2). Table 6: Pedagogical Logic scoring metrics provided to LLM-judge 
+
+Metric Rating description Value 
+
+Scaffolding Failure: Formula / Logic Leap (shared) Every major formula is motivated and derivations are step-complete; scaffolding clearly stronger than typical bonus Skips the “why” for 1 key concept, OR 1–2 unjustified derivation jumps −0.5
+
+Multiple key formulas lack rationale, OR multiple critical steps skipped −1.0
+
+Entire video presents formulas as facts with zero scaffolding, OR derivations riddled with leaps −1.5
+
+Pure Calculation Bias (shared) Calculations subordinate to a visible conceptual spine; concept-first feel bonus Theory exists but brief ( ∼60% calculation) −0.3
+
+Heavily skewed ( ∼75% calculation) −0.6
+
+Almost pure calculation ( >85%) −1.0
+
+Content Completeness (shared) Content notably richer than the title implies; goes beyond stated scope bonus 1 minor supporting concept missing, or content slightly thinner than implied −0.5
+
+1 core concept absent, OR multiple supporting concepts missing, OR video too short −1.0
+
+Multiple core concepts absent; fails stated scope; OR near-empty −1.5
+
+Explanatory Depth (shared) Depth clearly above typical and sustained; critical steps not skipped, assumptions explicit bonus Some topics shallower than the title implies; key steps occasionally rushed; a few only “mentioned” −0.5
+
+Most topics “mentioned” without explanation; OR title implies derivation but content heavily abbreviated 
+
+−1.5
+
+Title promises concept/derivation but delivery entirely procedural; OR topics merely listed −2.0
+
+Causal In-consistency (count) Each conclusion stated without supporting logic/evidence −0.4 per counting Information Overload (count) Each segment cramming too much without clear transitions −0.2 per counting 
+
+Item 1 (Type A: persona contrast) Topic: Overfitting vs. Underfitting: Why the Best Model Is Not Always the Most Complex. 
+
+Learning objective: Deliver a clear lecture explaining the con-cepts of overfitting and underfitting, visually guiding students through the “training/test error vs. model complexity” curves and explicitly identifying the regions corresponding to each. 
+
+Bloom-level: {Remember, Understand}. 
+
+Grade level: 8th grade. 
+
+Prior knowledge: Has basic scatter-plot and line-graph reading. Lacks any data-science, modeling, or statistics background; no notion of what a “model” is; no functions beyond basic arith-metic. 
+
+Attention span: 20 minutes. 
+
+Item 2 (Type A: persona contrast) Topic: Overfitting vs. Underfitting: Why the Best Model Is Not Always the Most Complex. 
+
+Learning objective: Deliver a clear lecture explaining the con-cepts of overfitting and underfitting, visually guiding students through the “training/test error vs. model complexity” curves and explicitly identifying the regions corresponding to each. 
+
+Bloom-level: {Remember, Understand}. 
+
+Grade level: 1st-year university student, non-CS major. 
+
+Prior knowledge: Has basic algebra and the polynomial-function concept; has heard of machine learning. Lacks hands-on ML experience; no train/test-split notion; never seen a learning curve or heard of overfitting. 
+
+Attention span: 20 minutes. 
+
+Type B example: cognitive-level contrast. The two items below configure the same lesson at a lower cognitive level (Item 3) and a higher cognitive level (Item 4). 
+
+Item 3 (Type B: cognitive-level contrast) Topic: Why 99% Accuracy Can Still Be a Bad Model. 
+
+Learning objective: Explain why accuracy alone can be mis-leading on imbalanced datasets, and describe a case where a 99%-accurate model is still not useful. 
+
+Bloom-level: {Remember, Understand}. 
+
+Grade level: 10th grade. 
+
+Prior knowledge: Has percentages and ratios. Lacks confusion matrices, precision, recall, and cost-sensitive evaluation. 
+
+Attention span: 20 minutes. 
+
+Item 4 (Type B: cognitive-level contrast) Topic: Why 99% Accuracy Can Still Be a Bad Model. 
+
+Learning objective: Use a confusion matrix to compare accu-racy, precision, and recall, and judge whether a 99%-accurate classifier is acceptable for spam filtering, fraud detection, or dis-ease screening. 
+
+Bloom-level: {Remember, Understand, Apply, Analyze, Evalu-ate}. 
+
+Grade level: 10th grade. 
+
+Prior knowledge: Has percentages and ratios. Lacks confusion matrices, precision, recall, and cost-sensitive evaluation. 
+
+Attention span: 20 minutes. Table 7: Learner Adaptability scoring metrics provided to LLM-judge                         
+
+> Metric Rating description Value
+> Jargon Overload 1 slide with undefined terms −0.3
+> 2 slides −0.6
+> 3+ or video-wide style −1.0
+> Prerequisite Gap Proactively bridges background gaps beyond what the persona’s knowledge requires bonus Speed bump: a few gaps, patchable while watching −0.3
+> Stop & fix: must pause/rewind/Google repeatedly −0.6
+> Roadblock: core content incomprehensible, would give up −1.0
+> Pacing Mismatch Ideal rhythm for this persona’s focus time and grade-level processing speed bonus Occasionally too fast/slow; still finishes −0.3
+> Often mismatched; frequently lost or time wasted −0.6
+> Unwatchable at this pace for this persona −1.0
+> Visual Accessibility 1 slide with clear legibility problem −0.3
+> 2 slides −0.6
+> 3+ or default style throughout −1.0
+> Missing Scaffolding Scaffolding goes beyond the persona’s minimum needs, proactively anticipating confusion bonus 1 stretch feels under-explained −0.3
+> Major stretches missing preferred support −0.6
+> Opposite of need for long stretches; learning fails −1.0
+> Ineffective Visual Representation Visuals exceptionally illuminate concepts bonus 1 slide/beat missing a needed visual aid −0.3
+> 2 slides/beats; mental simulation tiring −0.6
+> 3+ or nearly all conceptual parts lack visuals −1.0
+
+# E Layer 2 Crowd Pairwise Evaluation Protocol 
+
+Figure 7 illustrates the interface used for the Layer 2 pairwise evaluation. In each round, raters viewed the item information and two instructional videos generated for the same item before selecting the better teaching video. 
+
+Raters and Sessions. Raters were recruited through Pro-lific and screened at the platform level for at least high-school education and English fluency. The collected corpus com-prises 246 pairwise comparisons contributed by 59 unique Prolific participants between 25 and 31 May 2026, covering 43 of the  10 2
+
+ = 45 possible team-pairs. One exact duplicate submission (identical timestamp, identifier, rationale, and vote, from a client-side double-submit) was removed during cleaning, leaving 246 comparisons in the analysis. Each ses-sion locks one team-pair for its full duration and rotates it across four distinct topics drawn from that pair’s shared topic pool, closing with a comprehension check. Participants were compensated on Prolific at approximately £7 per hour, with a mean completion time of about 70 minutes per participant (≈ £8.17 per participant on average). 
+
+Attention Checks and Exclusions. Every session enforces four behavioural gates: (i) a 15-second minimum on the rubric-review page with an explicit acknowledgement check-box; (ii) a per-side watch-gate that refuses submission until both videos have played in full (2-second buffering toler-ance), with forward seeks blocked on native players and re-verted on YouTube embeds; (iii) a written justification of at least eight characters, persisted with the vote; (iv) a per-session comprehension check whose failure permits joint exclusion of the session. 
+
+Pair Sampling. Comparisons are not sampled at ran-dom. Each candidate pair (A, B ) is assigned a priority that combines outcome uncertainty with a rank-proximity weight, and the highest-priority pair is drawn next. Let 
+
+p = 1 /(1 + 10 (sB −sA)/400 ) be the Elo-implied probabil-ity that A beats B, so that p(1 − p) is largest when the two systems are closest in score, and let m = min(1 , c/C ) be a maturity term, where c is the number of comparisons already collected in the current stage and C is the total comparison budget. The evaluation runs in two stages that share p(1 − p)
+
+and m and differ only in the rank weight: Stage 1: priority = p(1 − p)
+
+
+
+1 + 0.35 m
+
+|rA − rB | + 1 
+
+
+
+, (1) Stage 2: priority = p(1 − p)
+
+
+
+1 + 0.8 m
+
+(dA + dB )/2 + 0 .5
+
+
+
+,
+
+(2) where rA, r B are the systems’ current ranks and dA, d B are their distances from the top-three admission boundary. To keep exposure balanced, no pair may be sampled more than two comparisons beyond the least-sampled pair. Stage 1 (190 comparisons) compares broadly to establish the field; Stage 2 (50 comparisons) concentrates on the admission boundary, for a fixed total of 246. The stage split and the weight con-stants ( 0.35 , 0.8) were selected by offline simulation using AI-student scores as a proxy ground truth, with the total budget fixed in advance; the stopping point is therefore inde-pendent of the observed standings. Table 8: Engagement and Multimodal Presentation scoring metrics provided to LLM-judge 
+
+Metric Rating description Value 
+
+Monotone / Robotic Audio Energizing delivery with clear vocal variety bonus Somewhat flat; mild urge to tune out −0.4
+
+Drone-like / TTS chunking breaks immersion; rewind needed −0.8
+
+Would stop or skip due to voice −1.2
+
+AI Generated Fatigue 1 slide feels cheap/samey/uncanny −0.3
+
+2 instances −0.6
+
+3+ or dominant AI art style end-to-end −1.0
+
+Visual Clutter 1 slide hard to scan while listening −0.3
+
+2 slides −0.6
+
+3+ or clutter is the norm −1.0
+
+Narration / Visual Disconnect Visuals and narration tightly synchronized bonus 1 noticeable mismatch; meaning recoverable −0.3
+
+2 mismatches or 1 long misleading stretch −0.6
+
+3+ or visuals repeatedly contradict narration −1.0
+
+Decorative Eye-Candy 1 segment of flashy but empty spectacle −0.3
+
+2 segments −0.6
+
+3+ or eye-candy replaces substance −1.0
+
+Visual Signaling Signaling is consistently timed and precise — viewer always knows where to look, enhancing comprehension noticeably beyond baseline. bonus 1–2 moments viewer must hunt for the relevant element −0.3
+
+Multiple segments narrate specifics with no visual guidance −0.6
+
+Systematically no cueing throughout; cannot follow along −1.0                            
+
+> Stage Backbone Key settings Context analysis gemini-3-flash-preview structured JSON Storyboard gemini-3.1-pro-preview search grounding Wrapper gemini-3-flash-preview structured JSON Slide designer gemini-3.1-pro-preview temperature 0.7 Slide reviewer gemini-3.1-pro-preview temp. 0.3; ≤5 rounds Image generation gemini-2.5-flash-image image modality Image check gemini-3.1-pro-preview temperature 0.2 TTS Qwen3-TTS-1.7B single English voice Alignment faster-whisper (medium) word timestamps Pointer grouping Qwen3-VL-8B-Instruct greedy; 4-bit Pointer grounding UI-TARS-1.5-7B greedy; 4-bit Compilation moviepy 15 fps; H.264
+
+Table 9: Module configurations of the cascaded pipeline baseline; the planning and wrapper calls use provider-default sampling. 
+
+Rating and Confidence Intervals. Each system starts at Elo 1500 and is updated after every comparison as s ←
+
+s+32 ( outcome − ˆp), with K = 32 and ˆp the Elo-implied win probability. Confidence intervals come from a bootstrap that resamples the collected comparisons B = 1 ,000 times and recomputes Elo from scratch each time; a system’s reported rating is the median over the 1,000 replicates, and its 90% interval is the 5th–95th percentile. 
+
+Advancement and the Third-Place Tie-Break. The top three systems by Elo advance. When the third slot cannot be separated within the fixed budget, it is decided by pre-specified tie-breakers rather than by extending sampling. Here OmegaZeroRe and babyshark retained overlap-ping 90% intervals, so the third slot was resolved in order by (i) head-to-head record, which was tied at 4:4; (ii) overall Elo, 1567 versus 1505 ; and (iii) common-opponent record against Phd.ICU , 60% (12 :8) versus 25% (2:6). All three point to OmegaZeroRe , which therefore advanced as the third system. 
+
+# F Layer 3 Expert Panel Evaluation Protocol 
+
+The 16 final-phase items covered four AP-aligned subjects: Physics, Biology, Mathematics, and Computer Science. For each subject, the evaluation panel included two subject-matter experts and one pedagogy expert. Panel members reviewed the finalist videos using the same four evaluation dimensions described in Section 4 and ranked the videos di-rectly without computing numerical scores. The aggregated rankings determined the final challenge standing. Figure 8 shows the interface used for the Layer 3 expert evaluation. The item information was displayed above the finalist videos, which panel members reviewed and reordered to record their rankings. 
+
+# G Participant Feedback and Survey Methodology 
+
+To contextualize the quantitative benchmark results, we an-alyzed post-competition surveys. The feedback survey was distributed to all submitting groups. We received 18 non-empty submissions, which were deduplicated to 15 unique team responses. Open-ended responses were coded by two annotators against a predefined codebook; Slack discussions and direct correspondence were used only as supplementary qualitative context. Figure 7: Interface for the Layer 2 pairwise evaluation. Each comparison presents the learning objective, learner persona, the four dimension descriptions, and two instructional videos generated for the same item. A session contains four comparisons of the same system pair across four topics. Overall sentiment was highly positive: 13 of the 15 re-sponding teams (approx. 87%) valued the task as a holis-tic end-to-end engineering benchmark requiring tight co-optimization of planning, rendering, and narration. Four teams ( ∼ 27% ) highlighted the automated leaderboard loop, and 6 teams (40%) praised cross-team learning. Participants treated the challenge less as a model demonstration and more as a realistic product benchmark. Engineering friction, however, concentrated around the de-velopmental iteration loop, with 11 out of 15 teams ( ∼ 73% )reporting platform or evaluator bottlenecks. Specifically, 4 teams encountered platform UX constraints (e.g., slow score synchronization), 3 teams requested a friendlier submission API, and 5 teams asked for annotated boundary examples for rubric calibration. Crucially, 6 out of 15 teams (40%) raised explicit concerns regarding LLM-judge noise, hal-lucinated feedback, and systemic mismatches with human judgments. This self-reported friction strongly corroborates the near-zero rank agreement between the automated judge and human evaluators quantified in the RQ3 analysis of the main paper. The strict 30-minute latency budget effectively constrained runtime pipelines but forced explicit quality-speed trade-offs. Four teams explicitly cited latency or rate-limiting thresholds as severe bottlenecks. The primary technical barrier cen-tered on multi-modal synchronization: 10 out of 15 teams (∼ 67% ) reported audio-visual misalignment, subtitle over-lapping, rendering instability, or flat text-to-speech prosody. Participants’ self-reports suggest that pedagogical planning is insufficient unless the final pipeline successfully synchro-nizes narration, visual focus, pacing, and learner needs. Participant suggestions for future editions prioritize plat-form transparency. The highest requested feature was an inspectable evaluation trail detailing artifact hashes, fetch times, and exact video versions used for scoring. To miti-gate judge variance, the pipeline should expose confidence intervals or implement score averaging. Finally, 11 of the 15 teams ( ∼ 73% ) requested higher-level capabilities (e.g., sentence-level synchronization, progressive reveals, and in-teractive checks), suggesting these complex dimensions be integrated as optional bonus metrics in future iterations. Figure 8: Interface for the Layer 3 expert evaluation. Panel members reviewed the item information and finalist videos, then reordered the videos to record their rankings. 
+
+# H Persona Identification: Full Model Coefficients 
+
+The persona identification study (RQ2) asks whether raters can recover the intended learner of an instructional video. Because each rater judges several videos and each video is judged by several raters, the 214 binary outcomes (correct / incorrect) are clustered at two levels. Ignoring this clustering would understate the standard errors, so we fit two models that account for it in complementary ways. 
+
+Model 1: Variational Bayes GLMM. A generalized lin-ear mixed-effects model (GLMM) with a logistic link pre-dicts whether the rater’s choice is correct from the video’s group assignment (experimental, human-video, or persona-independent baseline), including crossed random intercepts for video and for participant: 
+
+logit Pr( correct ij ) = β0 + βgroup + uvideo j + vparticipant i .
+
+The random intercepts absorb systematic differences in item difficulty ( u) and rater ability ( v). Estimation uses variational Bayes (VB), which approximates the posterior and yields posterior means with posterior standard deviations rather than frequentist p-values. The estimated random-intercept standard deviations are 0.45–0.69 (video) and 0.41–0.43 (participant) on the logit scale, confirming that both clus-tering sources matter. 
+
+Model 2: GEE. A generalized estimating equation (GEE) with the same logistic link and the same fixed-effect predictor clusters observations by participant under an exchangeable working-correlation structure and reports robust (sandwich) standard errors. Unlike the GLMM, GEE targets population-averaged effects and produces conventional p-values. 
+
+Reading the table. Table 10 reports each pairwise group contrast on two scales. The coefficient b is the log-odds dif-ference: a positive b means that the first-named group has higher identification accuracy. The odds ratio OR = eb re-states the same quantity multiplicatively: OR = 2 .44 means the odds of a correct identification are 2.44 times higher. A 95% confidence interval excluding 1.0 (for the OR) or 0.0 (for b) indicates a statistically significant difference at the 5% level. Both models agree on every contrast. The experimental group’s odds of correct identification are roughly 2.4 times those of the persona-independent baseline ( p = 0 .007 ), and the human-video group’s odds are roughly 3 times the base-line’s ( p = 0 .002 ), so both AI-adapted and human-made videos carry a learner signal that raters can perceive well above chance. By contrast, the experimental-versus-human-video contrast is small ( OR ≈ 0.78 ) and not significant (p = 0 .42 ): raters recover the intended persona from AI-adapted videos about as often as from human-made ones, meaning the adaptation that systems produce is, in aggre-gate, statistically indistinguishable from that of the human topline—though this is a failure to detect a difference, not proof of equivalence. VB GLMM GEE Contrast b (post. SD) OR [95% CI] b (robust SE) OR [95% CI] GEE p                     
+
+> Experimental vs. baseline +0 .869 (0.189) 2.39 [1.65, 3.46] +0 .892 (0.330) 2.44 [1.28, 4.66] 0.0069 Human-video vs. baseline +1 .126 (0.319) 3.08 [1.65, 5.76] +1 .092 (0.350) 2.98 [1.50, 5.92] 0.0018 Experimental vs. human-video −0.249 (0.191) 0.78 [0.54, 1.13] −0.244 (0.304) 0.78 [0.43, 1.42] 0.4220
+
+Table 10: Full coefficients for the persona identification models. Each row is one pairwise contrast between video groups. The baseline is the persona-independent static retrieval framework. VB GLMM reports posterior means and posterior standard deviations; GEE reports robust standard errors and two-sided p-values. 
+
+# I Ethics Statement 
+
+All human studies in this work were reviewed and approved by the behavioral and social sciences research ethics commit-tee of the authors’ institution under its minimal-risk review track. The approval covers the Layer 2 crowd comparisons, the persona identification study, and the Layer 3 expert eval-uation. All participants were adults aged 18 or older. No minors or members of vulnerable groups were recruited, and no par-ticipants were students or employees of the research team. Crowd raters were recruited through Prolific. Before each session, the platform presented the full consent document, which explains the purpose of the study, the procedure, the expected risks, and the right to withdraw at any time without penalty. A session began only after the participant gave con-sent. The expected risks were limited to mild fatigue from screen viewing. Raters were compensated at about £7 per hour, with a mean session length of about 70 minutes. Ex-pert panel members likewise took part with informed consent and are reported only in aggregate. All collected data were coded and de-identified, and iden-tity information is stored separately from experimental data on encrypted storage that only authorized members of the research team can access. The released human judgments contain no personal identifiers.
