@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-13",
+  "date": "2026-08-13",
+  "generated_at": "2026-08-13T21:26:22",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/13/2608.12088v1-ra-clipscore-making-generative-model-evaluation-more-interpretable",
+      "section": "quick",
+      "title_en": "RA-ClipScore: Making Generative Model Evaluation More Interpretable",
+      "authors": "Yifan Lu, Taras Kucherenko, Hedvig Kjellström, Judith Bütepage",
+      "date": "2026-08-12",
+      "pdf": "https://arxiv.org/pdf/2608.12088v1",
+      "score": "7.0",
+      "evidence": "提出 RA-CLIPScore，一种可解释的生成模型评估指标",
+      "tldr": "生成模型评估面临可解释性挑战，传统FID等标量指标缺乏诊断信息，CLIP指标受训练范式限制难以分析属性。本文提出RA-CLIPScore，通过双提示解耦竞争属性并利用局部patch token捕获区域语义，实现空间分布对齐评估。实验证明该方法在分布错位或属性无关时更稳健，能揭示模型空间偏差。用户评估表明其区域单属性分歧与人类视觉多样性感知更一致。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Generative models can produce images nearly indistinguishable from real data, yet rigorous and interpretable evaluation remains challenging. Conventional metrics such as FID provide only scalar scores with limited diagnostic insight. Widely adopted CLIP-based metrics enable semantic evaluation beyond simple training class labels, but inherit limitations from CLIP's training paradigm that restrict attribute-wise analysis. We propose RA-CLIPScore, a novel metric that mitigates these issues and extends CLIP-based evaluation to spatial distribution alignment, measuring whether generated objects adhere to the positional priors found in the training data. RA-CLIPScore introduces dual prompts to decouple competing attributes and leverages local patch tokens to capture fine-grained regional semantics. We evaluate image generative models on their ability to match both attribute and spatial distributions of the training data. Extensive experiments show that RA-CLIPScore provides more robust and interpretable evaluations than prior methods, particularly under distribution misalignment or partially irrelevant textual attributes. We further demonstrate how it reveals spatial biases in generative models. User evaluations confirm that Regional Single Attribute Divergence based on our RA-CLIPScore aligns more closely with human perception of visual diversity than existing semantic metrics.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
