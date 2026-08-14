@@ -6,26 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-13
-- 运行时间：2026-08-13 21:26:14 UTC
+- 最新运行日期：2026-08-14
+- 运行时间：2026-08-14 21:16:22 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日仅速读1篇论文，暂未精读。
-最值得关注的是《RA-ClipScore》，它致力于让生成模型评估更具可解释性。
-建议后续可围绕该评分机制深入精读，并结合具体生成任务验证其效果。
-- 详情：[/202608/13/README](/202608/13/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202608/14/README](/202608/14/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [RA-ClipScore: Making Generative Model Evaluation More Interpretable](/202608/13/2608.12088v1-ra-clipscore-making-generative-model-evaluation-more-interpretable)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：提出 RA-CLIPScore，一种可解释的生成模型评估指标
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
