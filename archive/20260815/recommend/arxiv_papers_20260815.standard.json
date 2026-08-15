@@ -1,0 +1,102 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-15T20:36:20.821006+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2608.13552v1",
+      "source": "arxiv",
+      "title": "PlayWorld: Benchmarking World Models with Agent Players over Long-Horizon Objectives",
+      "abstract": "Video world models simulate future states conditioned on current observations and user actions. Recent systems have demonstrated impressive video consistency and action controllability over long sequences. However, fairly comparing these interactive models remains challenging. In practice, a human player typically evaluates a world model by pursuing long-horizon objectives through interaction. For example, a user may turn around 360 degrees to see whether the environment remains consistent, or walk into the water and inspect whether realistic water ripples are generated. The action sequence required to achieve the same objective may vary substantially between models, making fixed action-conditioned evaluation unsuitable for cross-model comparison. To address this, we employ multi-modal Agent Players to interact with world models toward specified long-horizon objectives. Building on this paradigm, we introduce PlayWorld, a benchmark providing 171 scenarios, each with a specified objective. To evaluate performance thoroughly, we assess models along four core dimensions: geometry consistency, interaction fidelity, out-of-sight evolution, and insight evolution. In addition, we incorporate basic ability metrics for video quality and controllability. Experiments across nine state-of-the-art world models reveal that current models remain unreliable on long-horizon interactive objectives, particularly in maintaining spatial consistency and persistent state evolution. Code and data are available at https://github.com/kxding/PlayWorld.",
+      "authors": [
+        "Kaixin Ding",
+        "Xi Chen",
+        "Minghong Cai",
+        "Zhiyuan Xu",
+        "Yiyang Wang",
+        "Yuxiang Lu",
+        "Junyi Li",
+        "Shuyang Chen",
+        "Yuan Gao",
+        "Xin Tao",
+        "Pengfei Wan",
+        "Hengshuang Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T17:59:30+00:00",
+      "link": "https://arxiv.org/pdf/2608.13552v1",
+      "tags": [
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Benchmarking methodology for evaluating video world models",
+      "llm_evidence_cn": "面向视频世界模型的评测方法",
+      "llm_evidence": "面向视频世界模型的评测方法",
+      "canonical_evidence": "面向视频世界模型的评测方法",
+      "llm_tldr_en": "Proposes PlayWorld, an agent-based benchmarking framework that evaluates video world models under long-horizon interactive objectives, overcoming fixed action-conditioned evaluation limitations.",
+      "llm_tldr_cn": "视频世界模型在长序列一致性和可控性上表现优秀，但现有固定动作条件评测难以公平比较不同模型。PlayWorld通过让智能体玩家追求长时目标来评测模型，例如转身检查环境一致性或走进水中观察波纹。该框架使跨模型比较更贴近真实使用，为视频生成模型的评价提供了新思路。",
+      "llm_tldr": "视频世界模型在长序列一致性和可控性上表现优秀，但现有固定动作条件评测难以公平比较不同模型。PlayWorld通过让智能体玩家追求长时目标来评测模型，例如转身检查环境一致性或走进水中观察波纹。该框架使跨模型比较更贴近真实使用，为视频生成模型的评价提供了新思路。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.08487v1",
+      "source": "arxiv",
+      "title": "RenderMatte: Exact-Alpha Rendering and Group-Relative Alignment for Image Matting",
+      "abstract": "Image matting is an essential enabling technology for modern visual content production, where foreground extraction determines the realism and editability of downstream creation workflows. However, precise alpha estimation in open-world scenes remains challenging because real foregrounds exhibit highly diverse appearances and opacity patterns. This makes existing methods struggle with semantic ambiguity and fine-grained opacity variation, especially in sparse boundary regions that are fragile and difficult to supervise. To address this gap, we present RenderMatte, a trimap-guided matting framework that adapts FLUX.1 Kontext through full-parameter fine-tuning, leveraging image editing priors for structure-preserving alpha prediction. During supervised adaptation, an alpha-edge objective preserves the latent flow-matching signal while strengthening pixel-space boundary supervision. We further introduce group-relative alpha alignment for post-training. It compares multiple mattes sampled under the same trimap condition using matting-specific rewards for alpha accuracy, boundary fidelity, trimap compliance, and compositional consistency. To overcome the lack of precise edge annotations, we construct the RenderMatte dataset, a large-scale synthetic dataset combining 3D-rendered RGBA foregrounds with diverse multi-source assets. It features exact strand-level alpha annotations and diverse background composites. Experiments show state-of-the-art performance across all benchmarks, demonstrating a scalable path toward high-fidelity matting in open-world scenes.",
+      "authors": [
+        "Zecheng Ren",
+        "Yafei Hu",
+        "Jianing Zhao",
+        "Ruichen Cong",
+        "Qun Jin",
+        "Yiren Song"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-09T05:07:56+00:00",
+      "link": "https://arxiv.org/pdf/2608.08487v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Alpha estimation method for matting, transferable to transparency video",
+      "llm_evidence_cn": "面向抠图的Alpha估计方法，可迁移至透明视频生成",
+      "llm_evidence": "面向抠图的Alpha估计方法，可迁移至透明视频生成",
+      "canonical_evidence": "面向抠图的Alpha估计方法，可迁移至透明视频生成",
+      "llm_tldr_en": "Presents RenderMatte, a trimap-guided matting framework using exact-alpha rendering and group-relative alignment, adapting FLUX.1 for structure-preserving alpha prediction.",
+      "llm_tldr_cn": "真实前景具有多样的外观和透明度，导致开放世界场景下的精确Alpha估计仍具挑战。RenderMatte利用FLUX.1 Kontext全参数微调，通过精确Alpha渲染和分组相对对齐进行三图引导抠图，改善稀疏边界区域的透明度预测。该方法为图像提供高质量Alpha，可作为透明视频中逐帧Alpha生成的基础技术。",
+      "llm_tldr": "真实前景具有多样的外观和透明度，导致开放世界场景下的精确Alpha估计仍具挑战。RenderMatte利用FLUX.1 Kontext全参数微调，通过精确Alpha渲染和分组相对对齐进行三图引导抠图，改善稀疏边界区域的透明度预测。该方法为图像提供高质量Alpha，可作为透明视频中逐帧Alpha生成的基础技术。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "methods for transparent video generation",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

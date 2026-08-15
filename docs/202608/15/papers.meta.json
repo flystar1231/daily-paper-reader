@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-15",
+  "date": "2026-08-15",
+  "generated_at": "2026-08-15T20:40:15",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/15/2608.13552v1-playworld-benchmarking-world-models-with-agent-players-over-long-horizon-objectives",
+      "section": "deep",
+      "title_en": "PlayWorld: Benchmarking World Models with Agent Players over Long-Horizon Objectives",
+      "authors": "Kaixin Ding, Xi Chen, Minghong Cai, Zhiyuan Xu, Yiyang Wang, Yuxiang Lu, Junyi Li, Shuyang Chen, Yuan Gao, Xin Tao, Pengfei Wan, Hengshuang Zhao",
+      "date": "2026-08-13",
+      "pdf": "https://arxiv.org/pdf/2608.13552v1",
+      "score": "8.0",
+      "evidence": "面向视频世界模型的评测方法",
+      "tldr": "视频世界模型评估常依赖固定动作序列，但不同模型完成相同目标所需动作可能差异巨大，难以公平对比。为此，PlayWorld引入多模态Agent Players交互式评估，提供171个带目标的场景，并从几何一致性、交互保真度、视线外演变和洞察演变四维度评测。在9个先进模型上的实验表明，当前模型在长时程交互目标上仍不可靠，尤其空间一致性和持久状态演变。该基准为世界模型的长时程交互能力提供了标准化测试平台。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video world models simulate future states conditioned on current observations and user actions. Recent systems have demonstrated impressive video consistency and action controllability over long sequences. However, fairly comparing these interactive models remains challenging. In practice, a human player typically evaluates a world model by pursuing long-horizon objectives through interaction. For example, a user may turn around 360 degrees to see whether the environment remains consistent, or walk into the water and inspect whether realistic water ripples are generated. The action sequence required to achieve the same objective may vary substantially between models, making fixed action-conditioned evaluation unsuitable for cross-model comparison. To address this, we employ multi-modal Agent Players to interact with world models toward specified long-horizon objectives. Building on this paradigm, we introduce PlayWorld, a benchmark providing 171 scenarios, each with a specified objective. To evaluate performance thoroughly, we assess models along four core dimensions: geometry consistency, interaction fidelity, out-of-sight evolution, and insight evolution. In addition, we incorporate basic ability metrics for video quality and controllability. Experiments across nine state-of-the-art world models reveal that current models remain unreliable on long-horizon interactive objectives, particularly in maintaining spatial consistency and persistent state evolution. Code and data are available at https://github.com/kxding/PlayWorld.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/15/2608.08487v1-rendermatte-exact-alpha-rendering-and-group-relative-alignment-for-image-matting",
+      "section": "quick",
+      "title_en": "RenderMatte: Exact-Alpha Rendering and Group-Relative Alignment for Image Matting",
+      "authors": "Zecheng Ren, Yafei Hu, Jianing Zhao, Ruichen Cong, Qun Jin, Yiren Song",
+      "date": "2026-08-09",
+      "pdf": "https://arxiv.org/pdf/2608.08487v1",
+      "score": "6.0",
+      "evidence": "面向抠图的Alpha估计方法，可迁移至透明视频生成",
+      "tldr": "开放世界图像抠图因前景外观多样、透明度变化细微，导致语义模糊且稀疏边界难以监督。为此提出RenderMatte框架，基于trimap引导对FLUX.1 Kontext进行全参数微调，利用图像编辑先验保持结构；通过alpha边缘目标保留流匹配信号并强化像素级边界监督，同时引入组相对alpha对齐，以抠图特定奖励优化多个采样结果。构建含精确strand级alpha标注的大规模合成数据集，在多个基准上达到最优性能，为高保真抠图提供可扩展路径。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Image matting is an essential enabling technology for modern visual content production, where foreground extraction determines the realism and editability of downstream creation workflows. However, precise alpha estimation in open-world scenes remains challenging because real foregrounds exhibit highly diverse appearances and opacity patterns. This makes existing methods struggle with semantic ambiguity and fine-grained opacity variation, especially in sparse boundary regions that are fragile and difficult to supervise. To address this gap, we present RenderMatte, a trimap-guided matting framework that adapts FLUX.1 Kontext through full-parameter fine-tuning, leveraging image editing priors for structure-preserving alpha prediction. During supervised adaptation, an alpha-edge objective preserves the latent flow-matching signal while strengthening pixel-space boundary supervision. We further introduce group-relative alpha alignment for post-training. It compares multiple mattes sampled under the same trimap condition using matting-specific rewards for alpha accuracy, boundary fidelity, trimap compliance, and compositional consistency. To overcome the lack of precise edge annotations, we construct the RenderMatte dataset, a large-scale synthetic dataset combining 3D-rendered RGBA foregrounds with diverse multi-source assets. It features exact strand-level alpha annotations and diverse background composites. Experiments show state-of-the-art performance across all benchmarks, demonstrating a scalable path toward high-fidelity matting in open-world scenes.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
