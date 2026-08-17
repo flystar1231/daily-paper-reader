@@ -1,0 +1,116 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-17T20:41:43.011196+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.09122v1",
+      "source": "arxiv",
+      "title": "Visual Distortion Detection in UGC Images Using Large Multimodal Models",
+      "abstract": "The localized depiction of perceptual quality has long been a crucial, yet underexplored, challenge in image quality assessment (IQA). Existing approaches based on large multimodal models (LMMs) predominantly rely on text-driven supervised fine-tuning (SFT).   However, this training paradigm exhibits notable limitations in detection accuracy. Moreover, synthetically distorted images, which are often used as the primary training data source,   show a significant generalization gap when deployed in real-world scenarios; thus, the \\textbf{synthetic-to-authentic (\\textit{S2A})} problem represents a critical challenge. Motivated by these issues, we propose \\textbf{\\textit{VIGIL}}, which leverages the LMM architecture for precise visual distortion detection. From a candidate pool of over 1000K samples, we construct the \\textbf{\\textit{VIGIL-140K}} training set, which consists of over 140K distorted images. These images are obtained through rigorous quality filtering and carefully crafted distortion injection, covering 8 major synthetic distortion categories.   Our model leverages different layers of the large language model (LLM) decoder, treating them as \\textit{multiple detectors} that perform synchronous distortion detection using multi-level features. Additionally, we retain distortion cues from predictions assigned to the non-distortion class, which helps mitigate the ambiguous foreground-background (\\textit{FG-BG}) separation commonly encountered in the \\textit{S2A} problem.   After post-processing, our model consistently outperforms strong baselines on both in-domain synthetic distortion detection and \\textit{S2A} tasks.",
+      "authors": [
+        "Ziheng Jia",
+        "Yingji Liang",
+        "Jiaying Qian",
+        "Xiongkuo Min"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-10T05:00:12+00:00",
+      "link": "https://arxiv.org/pdf/2608.09122v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "perceptual quality detection method transferable to video quality assessment",
+      "llm_evidence_cn": "感知质量检测方法可迁移至生成视频质量评估",
+      "llm_evidence": "感知质量检测方法可迁移至生成视频质量评估",
+      "canonical_evidence": "感知质量检测方法可迁移至生成视频质量评估",
+      "llm_tldr_en": "Proposes VIGIL, an LMM-based method for precise visual distortion detection in UGC images, overcoming limitations of text-driven SFT and synthetic-to-authentic generalization gap.",
+      "llm_tldr_cn": "图像质量评估中局部感知质量刻画长期未被充分探索。现有基于大型多模态模型的方法依赖文本驱动的监督微调，检测精度有限，且合成失真数据在真实场景中存在泛化差距。论文提出VIGIL，利用LMM架构实现精准视觉失真检测，针对合成到真实（S2A）问题进行了建模。该方法对生成视频帧的质量评估具有方法迁移潜力，但尚未直接应用于视频或透明通道。",
+      "llm_tldr": "图像质量评估中局部感知质量刻画长期未被充分探索。现有基于大型多模态模型的方法依赖文本驱动的监督微调，检测精度有限，且合成失真数据在真实场景中存在泛化差距。论文提出VIGIL，利用LMM架构实现精准视觉失真检测，针对合成到真实（S2A）问题进行了建模。该方法对生成视频帧的质量评估具有方法迁移潜力，但尚未直接应用于视频或透明通道。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.14284v1",
+      "source": "arxiv",
+      "title": "PRM-as-a-Judge 1.5: A Toolkit for Robot Process Assessment",
+      "abstract": "Fine-grained robotic evaluation matters for understanding embodied models, going beyond binary success rates and rule-based process scores. We present PRM-as-a-Judge 1.5, a toolkit for robot process assessment that turns rollout videos into dense progress curves and derives multiple fine metrics. PRM-as-a-Judge 1.5 introduces three metrics, building on version 1.0, that characterize failure-side progress, post-drawdown recovery, and success-side execution quality, helping users understand embodied model capability. Based on the rollout videos from benchmarks, we perform a comprehensive assessment of the embodied models, providing some fine-grained metric results and key findings. We further introduce RoboPulse++ to evaluate the reliability of process reward models (PRM), providing evaluators with a more accurate testing platform. Moreover, we release a user-friendly assessment suite, including the benchmark, metric implementation, and visualization tools, to support reproducible manipulation process evaluation. We call on the community to rethink how robots are evaluated and establish transparent, procedural, and reproducible assessment as a foundation for the next generation of embodied intelligence.",
+      "authors": [
+        "Yuyang Liu",
+        "Yanqing Shen",
+        "Ruike Chen",
+        "Jifan Zhao",
+        "Yuxuan Tian",
+        "Yichi Zhang",
+        "Tianfeng Long",
+        "Zixuan Yin",
+        "Yipu Wang",
+        "Ziheng Qin",
+        "Wenxing Tan",
+        "Yang Shi",
+        "Mingyu Cao",
+        "Runze Xiao",
+        "Ziqi Wang",
+        "Zhixin Yin",
+        "Shiwei Chu",
+        "Yi-Fan Zhang",
+        "Yao Mu",
+        "Yuheng Ji",
+        "Yihao Wang",
+        "Jun Yan",
+        "Zhongyuan Wang",
+        "Pengwei Wang",
+        "Xiaolong Zheng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-08-14T13:10:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.14284v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Extracts dense progress curves and fine-grained metrics from rollout videos for assessing model behavior",
+      "llm_evidence_cn": "从回放视频中提取密集进度曲线并派生多种细粒度评估指标",
+      "llm_evidence": "从回放视频中提取密集进度曲线并派生多种细粒度评估指标",
+      "canonical_evidence": "从回放视频中提取密集进度曲线并派生多种细粒度评估指标",
+      "llm_tldr_en": "This paper presents a toolkit that converts robot rollout videos into dense progress curves and derives multiple fine-grained metrics, enabling detailed assessment of embodied model behavior beyond binary success rates.",
+      "llm_tldr_cn": "现有机器人评估多依赖二值成功率或规则化过程分数，难以细粒度理解具身模型能力。为此提出PRM-as-a-Judge 1.5工具包，将回放视频转换为密集进度曲线，并推出三个细粒度指标，分别刻画失败侧进展、回撤后恢复和成功侧执行质量。在基准回放视频上对具身模型进行全面评估，同时引入RoboPulse++检验过程奖励模型的可靠性。该工作为视频级过程评估提供了通用工具，对生成视频质量评估方法有借鉴意义。",
+      "llm_tldr": "现有机器人评估多依赖二值成功率或规则化过程分数，难以细粒度理解具身模型能力。为此提出PRM-as-a-Judge 1.5工具包，将回放视频转换为密集进度曲线，并推出三个细粒度指标，分别刻画失败侧进展、回撤后恢复和成功侧执行质量。在基准回放视频上对具身模型进行全面评估，同时引入RoboPulse++检验过程奖励模型的可靠性。该工作为视频级过程评估提供了通用工具，对生成视频质量评估方法有借鉴意义。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

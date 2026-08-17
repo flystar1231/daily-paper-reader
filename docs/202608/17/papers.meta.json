@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-17",
+  "date": "2026-08-17",
+  "generated_at": "2026-08-17T20:48:16",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/17/2608.09122v1-visual-distortion-detection-in-ugc-images-using-large-multimodal-models",
+      "section": "quick",
+      "title_en": "Visual Distortion Detection in UGC Images Using Large Multimodal Models",
+      "authors": "Ziheng Jia, Yingji Liang, Jiaying Qian, Xiongkuo Min",
+      "date": "2026-08-10",
+      "pdf": "https://arxiv.org/pdf/2608.09122v1",
+      "score": "6.0",
+      "evidence": "感知质量检测方法可迁移至生成视频质量评估",
+      "tldr": "图像质量评估中局部失真检测困难，现有基于大语言模型的方法检测精度有限，且合成失真数据难以泛化到真实场景。为此提出VIGIL模型，构建VIGIL-140K数据集覆盖8类合成失真，利用LLM解码器多层作为多个检测器进行同步检测，并保留非失真类别的失真线索以缓解前景-背景分离。在域内和合成到真实任务上均优于强基线，为UGC图像失真检测提供了有效方案。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "The localized depiction of perceptual quality has long been a crucial, yet underexplored, challenge in image quality assessment (IQA). Existing approaches based on large multimodal models (LMMs) predominantly rely on text-driven supervised fine-tuning (SFT).   However, this training paradigm exhibits notable limitations in detection accuracy. Moreover, synthetically distorted images, which are often used as the primary training data source,   show a significant generalization gap when deployed in real-world scenarios; thus, the \\textbf{synthetic-to-authentic (\\textit{S2A})} problem represents a critical challenge. Motivated by these issues, we propose \\textbf{\\textit{VIGIL}}, which leverages the LMM architecture for precise visual distortion detection. From a candidate pool of over 1000K samples, we construct the \\textbf{\\textit{VIGIL-140K}} training set, which consists of over 140K distorted images. These images are obtained through rigorous quality filtering and carefully crafted distortion injection, covering 8 major synthetic distortion categories.   Our model leverages different layers of the large language model (LLM) decoder, treating them as \\textit{multiple detectors} that perform synchronous distortion detection using multi-level features. Additionally, we retain distortion cues from predictions assigned to the non-distortion class, which helps mitigate the ambiguous foreground-background (\\textit{FG-BG}) separation commonly encountered in the \\textit{S2A} problem.   After post-processing, our model consistently outperforms strong baselines on both in-domain synthetic distortion detection and \\textit{S2A} tasks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/17/2608.14284v1-prm-as-a-judge-15-a-toolkit-for-robot-process-assessment",
+      "section": "quick",
+      "title_en": "PRM-as-a-Judge 1.5: A Toolkit for Robot Process Assessment",
+      "authors": "Yuyang Liu, Yanqing Shen, Ruike Chen, Jifan Zhao, Yuxuan Tian, Yichi Zhang, Tianfeng Long, Zixuan Yin, Yipu Wang, Ziheng Qin, Wenxing Tan, Yang Shi, Mingyu Cao, Runze Xiao, Ziqi Wang, Zhixin Yin, Shiwei Chu, Yi-Fan Zhang, Yao Mu, Yuheng Ji, Yihao Wang, Jun Yan, Zhongyuan Wang, Pengwei Wang, Xiaolong Zheng",
+      "date": "2026-08-14",
+      "pdf": "https://arxiv.org/pdf/2608.14284v1",
+      "score": "6.0",
+      "evidence": "从回放视频中提取密集进度曲线并派生多种细粒度评估指标",
+      "tldr": "现有机器人评估多依赖二元成功率和规则化流程评分，粒度不足。本文提出PRM-as-a-Judge 1.5工具包，将rollout视频转为密集进度曲线，引入三个细粒度指标刻画失败侧进展、回撤恢复与成功侧执行质量。基于基准视频对具身模型综合评估，取得细粒度结果与发现，并推出RoboPulse++校验过程奖励模型。发布含基准、指标与可视化工具的评估套件，推动透明、程序化、可复现的机器人评估范式。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Fine-grained robotic evaluation matters for understanding embodied models, going beyond binary success rates and rule-based process scores. We present PRM-as-a-Judge 1.5, a toolkit for robot process assessment that turns rollout videos into dense progress curves and derives multiple fine metrics. PRM-as-a-Judge 1.5 introduces three metrics, building on version 1.0, that characterize failure-side progress, post-drawdown recovery, and success-side execution quality, helping users understand embodied model capability. Based on the rollout videos from benchmarks, we perform a comprehensive assessment of the embodied models, providing some fine-grained metric results and key findings. We further introduce RoboPulse++ to evaluate the reliability of process reward models (PRM), providing evaluators with a more accurate testing platform. Moreover, we release a user-friendly assessment suite, including the benchmark, metric implementation, and visualization tools, to support reproducible manipulation process evaluation. We call on the community to rethink how robots are evaluated and establish transparent, procedural, and reproducible assessment as a foundation for the next generation of embodied intelligence.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
