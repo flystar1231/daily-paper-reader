@@ -1,0 +1,54 @@
+{
+  "label": "2026-08-18",
+  "date": "2026-08-18",
+  "generated_at": "2026-08-18T21:03:42",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/18/2608.15555v1-rigidbench-evaluating-rigid-body-physics-in-video-generation-models",
+      "section": "deep",
+      "title_en": "RigidBench: Evaluating Rigid-Body Physics in Video Generation Models",
+      "authors": "Swarnim Jain, Shangzhe Wu",
+      "date": "2026-08-16",
+      "pdf": "https://arxiv.org/pdf/2608.15555v1",
+      "score": "9.0",
+      "evidence": "提出RigidBench基准，为视频生成模型提供刚体物理、运动、几何与视觉相似性等评估指标。",
+      "tldr": "视频生成模型常被用于预测场景演化，但现有整体帧级指标无法区分运动、几何等错误。我们提出RigidBench，一个基于模拟器的刚体物理基准，提供五类任务和精确轨迹、掩码等，用十个分离指标评测八个模型。结果显示排名高度依赖指标，且SSIM越高3D轨迹误差越大。全量微调可将轨迹误差降低约20%而不影响视觉相似度，为物理感知评估提供新工具。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video models are increasingly used to predict what happens next in a scene, yet the metrics commonly used to compare their outputs say little about whether the predicted objects move correctly. Motion, geometry, identity, background stability, and visual similarity can fail independently, but whole-frame scores often mix these errors together. We introduce RigidBench, a simulator-grounded benchmark that compares a generated continuation with a reference rollout from the same initial frame and motion description. Its five rigid-body tasks vary objects, materials, viewpoints, and indoor and outdoor scenes, with per-frame masks, depth, 6-DoF trajectories, and contacts available for scoring. We evaluate eight models on the same 100 examples with ten measurements that keep these aspects separate. The resulting rankings depend strongly on what is measured: no model leads on all ten, and across model means, higher SSIM accompanies larger 3D trajectory error (r = 0.89). RigidBench also includes 5,000 training videos with exact simulator state, which we use to fine-tune and analyze Wan 2.2 TI2V-5B. Full fine-tuning reduces 3D trajectory error by about 20% with almost no change in SSIM, while teacher-forced probes and targeted interventions show that object position is represented throughout Wan's diffusion transformer and used by its denoising computation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/18/2608.16717v1-personashot-benchmarking-person-centric-narrative-continuity-in-multi-shot-video-generation",
+      "section": "deep",
+      "title_en": "PersonaShot: Benchmarking Person-Centric Narrative Continuity in Multi-Shot Video Generation",
+      "authors": "Yuji Wang, Yuheng Chen, Teng Hu, Ran Yi, Yijia Hong, Han Feng, Weijian Cao, Chengjie Wang, Lizhuang Ma, Jiangning Zhang",
+      "date": "2026-08-17",
+      "pdf": "https://arxiv.org/pdf/2608.16717v1",
+      "score": "8.0",
+      "evidence": "为视频生成模型提供标准特定评估指标的基准测试",
+      "tldr": "多镜头视频生成中，人物作为叙事核心，但现有基准多关注外观或单镜头质量，缺乏对跨镜头物理与情感状态连贯性的评测。PersonaShot提出首个以人物为中心的叙事连贯基准，包含约1000个多镜头片段和16个指标，覆盖物理、情感与电影语法。通过从大模型中蒸馏出轻量级专用评估器，并与专家判断对齐。评测显示现有模型在感知质量与跨镜头连续性间存在明显差距，常出现状态重置和情感突变等问题。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Video generation is rapidly evolving from single-shot clips to multi-shot narratives, where the human character serves as the core narrative anchor. However, existing benchmarks mainly assess character appearance or individual-shot quality, without measuring whether physical and emotional states remain coherent across cuts. They also rarely provide criterion-specific evaluation methods, although physical continuity, facial dynamics, and cinematic relations require different visual, temporal, and relational evidence. To address these limitations, we introduce PersonaShot, the first person-centric benchmark for narrative continuity in multi-shot video generation. PersonaShot contains approximately 1,000 multi-shot segments and 16 metrics spanning physical continuity, affective dynamics, and cinematic grammar. \\textbf{\\textit{1)} Narrative Continuity Benchmark:} We evaluate character coherence across three temporal levels: within-shot states, cross-shot transitions, and sequence-level trajectories. \\textbf{\\textit{2)} Human-Aligned Specialist Evaluators:} We distill reasoning from a large multimodal teacher into lightweight criterion-specific evaluators, each grounded in the visual, temporal, or relational evidence required by its metric, and align them with expert human judgments. \\textbf{\\textit{3)} Systematic Evaluation and Insights:} Our evaluation reveals distinct capability profiles across state-of-the-art models and a clear gap between perceptual quality and cross-shot narrative continuity. Even visually compelling videos frequently exhibit physical-state resets, abrupt affective shifts, and broken cinematic relations across shots. Human studies further demonstrate strong agreement between our evaluators and expert judgments.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/18/2608.16513v1-mllm-guided-semantic-correction-for-text-to-video-generation",
+      "section": "quick",
+      "title_en": "MLLM-Guided Semantic Correction for Text-to-Video Generation",
+      "authors": "Junhao Chen, Zheqi Lv, Keting Yin, Shengyu Zhang, Zhou Zhao, Feiyang Chen, Xinyu Duan, Baoxing Huai, Fei Wu",
+      "date": "2026-08-17",
+      "pdf": "https://arxiv.org/pdf/2608.16513v1",
+      "score": "6.0",
+      "evidence": "将MLLM语义评估反馈注入视频扩散采样，用于纠正语义错误。",
+      "tldr": "文本到视频生成虽在扩散模型与Transformer支持下进展迅速，但视频常存在语义偏差，如对象缺失、属性错误或动作不符。已有方法多在采样前优化或采样后精修，未实现在采样过程中的动态反馈。为此，我们提出一种无需训练的、可解释的中间生成校正框架，将MLLM反馈嵌入扩散采样循环，先由语义评估监督器基于中间帧诊断偏差，再由语义修改助理对潜在轨迹进行可控干预。在多个基准上的实验表明，该框架显著提高语义对齐、视觉保真和时序一致性，且保持参数不变。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Recent advances in diffusion models and Transformer architectures have led to significant progress in text-to-video generation. However, these models often suffer from semantic errors such as missing objects, incorrect attributes, or mismatched actions. Although some semantic correction methods perform optimization before sampling or refinement after sampling, how to detect and correct semantic deviations during the video generation process remains underexplored. In this paper, we introduce a training-free, interpretable mid-generation correction framework that integrates multimodal large language model (MLLM) feedback directly into the diffusion sampling loop. Our framework achieves diffusion trajectory correction by injecting semantic evaluation signals during video synthesis, enabling the model to optimize the generated content through continuous self-reflection. We propose two key modules: a Semantic Assessment Supervisor that generates intermediate preview frames for semantic evaluations and deviation diagnostics, and a Semantic Modification Assistant that corrects semantic drift during inference via a controllable latent trajectory intervention. Our method improves semantic alignment, visual fidelity, and temporal consistency without modifying model parameters. We validate the effectiveness of our approach through extensive experiments across multiple benchmarks.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

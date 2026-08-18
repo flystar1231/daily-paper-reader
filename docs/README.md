@@ -6,29 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-17
-- 运行时间：2026-08-17 20:48:11 UTC
+- 最新运行日期：2026-08-18
+- 运行时间：2026-08-18 21:03:37 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：0
-- 速读区：2
+- 本次总论文数：3
+- 精读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-今日速读2篇论文，均获6分，暂无精读。  
-最值得关注的方向：用多模态大模型检测UGC图像失真，以及机器人流程评估工具PRM-as-a-Judge。  
-建议下一步精读这两篇，重点关注大模型在视觉质量评估中的适用性和评估工具的实操细节。
-- 详情：[/202608/17/README](/202608/17/README)
+今日精读2篇视频生成评测论文，速读1篇T2V语义修正研究。最值得看的是物理正确性榜单RigidBench（9分）与人物叙事连续性PersonaShot（8分）。建议优先关注视频生成中的物理合理性与多镜头叙事一致性。
+- 详情：[/202608/18/README](/202608/18/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [RigidBench: Evaluating Rigid-Body Physics in Video Generation Models](/202608/18/2608.15555v1-rigidbench-evaluating-rigid-body-physics-in-video-generation-models)  
+   标签：评分：9.0/10、query:vgen-metrics
+   evidence：提出RigidBench基准，为视频生成模型提供刚体物理、运动、几何与视觉相似性等评估指标。
+2. [PersonaShot: Benchmarking Person-Centric Narrative Continuity in Multi-Shot Video Generation](/202608/18/2608.16717v1-personashot-benchmarking-person-centric-narrative-continuity-in-multi-shot-video-generation)  
+   标签：评分：8.0/10、query:vgen-metrics
+   evidence：为视频生成模型提供标准特定评估指标的基准测试
 
 ### 速读区论文标签
-1. [Visual Distortion Detection in UGC Images Using Large Multimodal Models](/202608/17/2608.09122v1-visual-distortion-detection-in-ugc-images-using-large-multimodal-models)  
+1. [MLLM-Guided Semantic Correction for Text-to-Video Generation](/202608/18/2608.16513v1-mllm-guided-semantic-correction-for-text-to-video-generation)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：感知质量检测方法可迁移至生成视频质量评估
-2. [PRM-as-a-Judge 1.5: A Toolkit for Robot Process Assessment](/202608/17/2608.14284v1-prm-as-a-judge-15-a-toolkit-for-robot-process-assessment)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：从回放视频中提取密集进度曲线并派生多种细粒度评估指标
+   evidence：将MLLM语义评估反馈注入视频扩散采样，用于纠正语义错误。
 
 
 <div class="dpr-home-promo-card">
