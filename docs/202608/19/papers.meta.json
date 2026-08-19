@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-19",
+  "date": "2026-08-19",
+  "generated_at": "2026-08-19T20:47:19",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/19/2608.17426v1-semcomp-bench-benchmarking-semantic-task-completion-in-video-generation",
+      "section": "deep",
+      "title_en": "SemComp-Bench: Benchmarking Semantic Task Completion in Video Generation",
+      "authors": "Keyu Tu, Zhuowei Chen, Mengqi Huang, Yuxin Wang, Jiahao Zhu, Zhendong Mao, Yongdong Zhang",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.17426v1",
+      "score": "9.0",
+      "evidence": "提出了视频生成中语义任务完成的评测基准",
+      "tldr": "视频生成领域现有任务侧重过程一致性，本文提出面向结果的语义任务完成视频生成，要求生成结果既达成预期目标又保持与参考图像的任务相关语义对应。为此构建包含六领域、经四阶段流程标准化处理的SemComp-Data数据集，并设计基于视觉语言模型回答结构化问题的SemComp-Bench评估协议，分别报告成果达成与生成可靠性分数。实验表明现有代表性模型在此任务上仍面临明显挑战。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We introduce Semantic Task Completion Video Generation, an outcome-oriented video generation task. Under this formulation, success requires both achievement of the intended outcome and semantic grounding. Semantic grounding characterizes the correspondence between the reference image and the generated outcome in terms of high-level semantics relevant to the task. Evaluation focuses on the generated outcome and requires neither the presentation of a complete sequence of intermediate task steps nor conventional appearance consistency with the reference image. To support systematic evaluation, we construct SemComp-Data, an evaluation dataset covering six domains. Each instance comprises a reference image, a detailed instruction, a brief instruction, and an outcome-centric video clip. A scalable four-stage curation pipeline converts raw videos into standardized SemComp-Data instances. We further introduce SemComp-Bench, an evaluation protocol that uses a vision-language model (VLM) to answer structured binary questions. SemComp-Bench reports the OA Score and the GR Score for Outcome Achievement and Generation Reliability, respectively. Experiments on representative video generation models show that achieving intended outcomes while maintaining task-relevant semantic grounding in reference images remains challenging.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/19/2608.13989v1-a-subjective-study-on-a-new-sharpness-informed-class-of-metrics",
+      "section": "quick",
+      "title_en": "A Subjective Study on a New Sharpness Informed Class of Metrics",
+      "authors": "Uditangshu Aurangabadkar, Vibhoothi Vibhoothi, Darren Ramsook, Anil Kokaram",
+      "date": "2026-08-14",
+      "pdf": "https://arxiv.org/pdf/2608.13989v1",
+      "score": "6.0",
+      "evidence": "提出锐度感知的图像质量评估指标，可迁移用于生成视频的质量评估",
+      "tldr": "图像去模糊的感知损失通常忽视显式锐度优化。本文通过四协议主观研究探索锐度偏好，构建均匀锐度增量数据集并给出DMOS，提出锐度感知IQA指标SI-PSNR，有效惩罚过度锐化，其相关统计优于PSNR变体。实验表明，锐度感知复合损失在67%二值比较中更受偏好。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Perceptual loss functions in Deep Neural Network (DNN) deblurring architectures improve the overall quality of restored images. However, few focus on explicitly targeting sharpness in the restorations. We conduct a subjective study of models trained with and without losses which explicitly target sharpness using a four-protocol approach, exploring preferred sharpness levels and effects on image quality. We introduce a novel dataset of images with uniform sharpness increments along with Difference Mean Opinion Scores (DMOS). Additionally, we propose a novel class of Sharpness Informed (SI) Image Quality Assessment (IQA) metrics which properly penalize over-sharpening. Our new SI-PSNR metric outperforms all other PSNR variants in terms of correlation statistics on IQA benchmarking datasets. We show that, on average, images restored using a sharpness-aware composite loss are preferred in 67% of binarized comparisons, as opposed to losses that do not explicitly target sharpness.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,98 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-19T20:45:29.115378+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2608.17426v1",
+      "source": "arxiv",
+      "title": "SemComp-Bench: Benchmarking Semantic Task Completion in Video Generation",
+      "abstract": "We introduce Semantic Task Completion Video Generation, an outcome-oriented video generation task. Under this formulation, success requires both achievement of the intended outcome and semantic grounding. Semantic grounding characterizes the correspondence between the reference image and the generated outcome in terms of high-level semantics relevant to the task. Evaluation focuses on the generated outcome and requires neither the presentation of a complete sequence of intermediate task steps nor conventional appearance consistency with the reference image. To support systematic evaluation, we construct SemComp-Data, an evaluation dataset covering six domains. Each instance comprises a reference image, a detailed instruction, a brief instruction, and an outcome-centric video clip. A scalable four-stage curation pipeline converts raw videos into standardized SemComp-Data instances. We further introduce SemComp-Bench, an evaluation protocol that uses a vision-language model (VLM) to answer structured binary questions. SemComp-Bench reports the OA Score and the GR Score for Outcome Achievement and Generation Reliability, respectively. Experiments on representative video generation models show that achieving intended outcomes while maintaining task-relevant semantic grounding in reference images remains challenging.",
+      "authors": [
+        "Keyu Tu",
+        "Zhuowei Chen",
+        "Mengqi Huang",
+        "Yuxin Wang",
+        "Jiahao Zhu",
+        "Zhendong Mao",
+        "Yongdong Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-18T06:45:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.17426v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "introduces benchmark and evaluation for semantic task completion in video generation",
+      "llm_evidence_cn": "提出了视频生成中语义任务完成的评测基准",
+      "llm_evidence": "提出了视频生成中语义任务完成的评测基准",
+      "canonical_evidence": "提出了视频生成中语义任务完成的评测基准",
+      "llm_tldr_en": "Introduces Semantic Task Completion Video Generation and a benchmark evaluating generated outcomes for semantic grounding, enabling outcome-oriented assessment of video generation.",
+      "llm_tldr_cn": "现有视频生成评测通常依赖中间步骤或外观一致性，难以衡量生成结果是否真正完成任务。本文提出语义任务完成视频生成这一面向结果的评测任务，要求生成结果既达成预期目标又具备语义依据，并构建了覆盖六个领域的评测数据集SemComp-Data。评测关注最终生成结果，不需要完整中间步骤序列或与参考图像的外观一致性。该基准为视频生成模型提供了更具任务导向性的评价方式。",
+      "llm_tldr": "现有视频生成评测通常依赖中间步骤或外观一致性，难以衡量生成结果是否真正完成任务。本文提出语义任务完成视频生成这一面向结果的评测任务，要求生成结果既达成预期目标又具备语义依据，并构建了覆盖六个领域的评测数据集SemComp-Data。评测关注最终生成结果，不需要完整中间步骤序列或与参考图像的外观一致性。该基准为视频生成模型提供了更具任务导向性的评价方式。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.13989v1",
+      "source": "arxiv",
+      "title": "A Subjective Study on a New Sharpness Informed Class of Metrics",
+      "abstract": "Perceptual loss functions in Deep Neural Network (DNN) deblurring architectures improve the overall quality of restored images. However, few focus on explicitly targeting sharpness in the restorations. We conduct a subjective study of models trained with and without losses which explicitly target sharpness using a four-protocol approach, exploring preferred sharpness levels and effects on image quality. We introduce a novel dataset of images with uniform sharpness increments along with Difference Mean Opinion Scores (DMOS). Additionally, we propose a novel class of Sharpness Informed (SI) Image Quality Assessment (IQA) metrics which properly penalize over-sharpening. Our new SI-PSNR metric outperforms all other PSNR variants in terms of correlation statistics on IQA benchmarking datasets. We show that, on average, images restored using a sharpness-aware composite loss are preferred in 67% of binarized comparisons, as opposed to losses that do not explicitly target sharpness.",
+      "authors": [
+        "Uditangshu Aurangabadkar",
+        "Vibhoothi Vibhoothi",
+        "Darren Ramsook",
+        "Anil Kokaram"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-08-14T06:11:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.13989v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Proposes sharpness-aware image quality assessment metrics, transferable to video quality evaluation",
+      "llm_evidence_cn": "提出锐度感知的图像质量评估指标，可迁移用于生成视频的质量评估",
+      "llm_evidence": "提出锐度感知的图像质量评估指标，可迁移用于生成视频的质量评估",
+      "canonical_evidence": "提出锐度感知的图像质量评估指标，可迁移用于生成视频的质量评估",
+      "llm_tldr_en": "Proposes Sharpness Informed (SI) IQA metrics, e.g., SI-PSNR, that penalize over-sharpening. Subjective study with new dataset and DMOS shows SI-PSNR correlates better than other PSNR variants, aiding quality evaluation of restored outputs.",
+      "llm_tldr_cn": "现有去模糊网络的感知损失缺乏对锐度的显式关注，本文提出了一类锐度感知的SI-IQA指标，并引入具有均匀锐度增量和DMOS评分的数据集进行主观研究。实验表明SI-PSNR在相关性统计上优于所有PSNR变体，能更好地惩罚过度锐化，为生成图像/视频的质量评估提供了可迁移的锐度指标。",
+      "llm_tldr": "现有去模糊网络的感知损失缺乏对锐度的显式关注，本文提出了一类锐度感知的SI-IQA指标，并引入具有均匀锐度增量和DMOS评分的数据集进行主观研究。实验表明SI-PSNR在相关性统计上优于所有PSNR变体，能更好地惩罚过度锐化，为生成图像/视频的质量评估提供了可迁移的锐度指标。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

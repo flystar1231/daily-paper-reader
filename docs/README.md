@@ -6,29 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-18
-- 运行时间：2026-08-18 21:03:37 UTC
+- 最新运行日期：2026-08-19
+- 运行时间：2026-08-19 20:47:14 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：2
+- 本次总论文数：2
+- 精读区：1
 - 速读区：1
 
 ### 今日简报（AI）
-今日精读2篇视频生成评测论文，速读1篇T2V语义修正研究。最值得看的是物理正确性榜单RigidBench（9分）与人物叙事连续性PersonaShot（8分）。建议优先关注视频生成中的物理合理性与多镜头叙事一致性。
-- 详情：[/202608/18/README](/202608/18/README)
+今日精读1篇、速读1篇，重点集中在视频生成评估与清晰度感知指标。最值得关注的是《SemComp-Bench》，它以9.0分提出视频生成中“语义任务完成度”基准，比清晰度指标更贴近实用场景。建议普通读者优先了解该基准的评测维度，后续可据此挑选更可靠的视频生成模型。
+- 详情：[/202608/19/README](/202608/19/README)
 
 ### 精读区论文标签
-1. [RigidBench: Evaluating Rigid-Body Physics in Video Generation Models](/202608/18/2608.15555v1-rigidbench-evaluating-rigid-body-physics-in-video-generation-models)  
+1. [SemComp-Bench: Benchmarking Semantic Task Completion in Video Generation](/202608/19/2608.17426v1-semcomp-bench-benchmarking-semantic-task-completion-in-video-generation)  
    标签：评分：9.0/10、query:vgen-metrics
-   evidence：提出RigidBench基准，为视频生成模型提供刚体物理、运动、几何与视觉相似性等评估指标。
-2. [PersonaShot: Benchmarking Person-Centric Narrative Continuity in Multi-Shot Video Generation](/202608/18/2608.16717v1-personashot-benchmarking-person-centric-narrative-continuity-in-multi-shot-video-generation)  
-   标签：评分：8.0/10、query:vgen-metrics
-   evidence：为视频生成模型提供标准特定评估指标的基准测试
+   evidence：提出了视频生成中语义任务完成的评测基准
 
 ### 速读区论文标签
-1. [MLLM-Guided Semantic Correction for Text-to-Video Generation](/202608/18/2608.16513v1-mllm-guided-semantic-correction-for-text-to-video-generation)  
+1. [A Subjective Study on a New Sharpness Informed Class of Metrics](/202608/19/2608.13989v1-a-subjective-study-on-a-new-sharpness-informed-class-of-metrics)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：将MLLM语义评估反馈注入视频扩散采样，用于纠正语义错误。
+   evidence：提出锐度感知的图像质量评估指标，可迁移用于生成视频的质量评估
 
 
 <div class="dpr-home-promo-card">
