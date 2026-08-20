@@ -6,26 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-19
-- 运行时间：2026-08-19 20:47:14 UTC
+- 最新运行日期：2026-08-20
+- 运行时间：2026-08-20 20:57:05 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：1
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日精读1篇、速读1篇，重点集中在视频生成评估与清晰度感知指标。最值得关注的是《SemComp-Bench》，它以9.0分提出视频生成中“语义任务完成度”基准，比清晰度指标更贴近实用场景。建议普通读者优先了解该基准的评测维度，后续可据此挑选更可靠的视频生成模型。
-- 详情：[/202608/19/README](/202608/19/README)
+今日精读一篇高分论文《CamWorldQA》，聚焦摄像机控制的世界视频生成质量评估（9.0/10）。该研究为该领域提供了重要的质量评估视角。建议关注视频生成质量评估的读者阅读原文以了解具体方法。
+- 详情：[/202608/20/README](/202608/20/README)
 
 ### 精读区论文标签
-1. [SemComp-Bench: Benchmarking Semantic Task Completion in Video Generation](/202608/19/2608.17426v1-semcomp-bench-benchmarking-semantic-task-completion-in-video-generation)  
+1. [CamWorldQA: Perceptual Quality Assessment of Camera-Controlled World Video Generation](/202608/20/2608.18710v1-camworldqa-perceptual-quality-assessment-of-camera-controlled-world-video-generation)  
    标签：评分：9.0/10、query:vgen-metrics
-   evidence：提出了视频生成中语义任务完成的评测基准
+   evidence：面向相机控制世界视频生成的首个感知质量评估基准，直接对生成视频进行质量评估
 
 ### 速读区论文标签
-1. [A Subjective Study on a New Sharpness Informed Class of Metrics](/202608/19/2608.13989v1-a-subjective-study-on-a-new-sharpness-informed-class-of-metrics)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出锐度感知的图像质量评估指标，可迁移用于生成视频的质量评估
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
