@@ -1,0 +1,237 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-21T20:34:02.480491+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2608.13929v1",
+      "source": "arxiv",
+      "title": "RGBX-Next: Towards Realistic Generative Rendering from G-Buffers",
+      "abstract": "Diffusion models have achieved impressive results in image, video, and streaming generation. However, compared to traditional 3D rendering, they still lack precise control over the generated output. We believe a viable path forward is to use generative models as learned renderers conditioned on traditionally rendered G-buffers. We introduce RGBX-Next, a unified generative framework for forward and inverse rendering, which allows estimating G-buffers from images, videos, and streams, and rendering realistic images, videos, and streams from G-buffers. Our key contribution is a general recipe for finetuning diffusion transformer (DiT) models into generative forward and inverse renderers. We show that the resulting models achieve high quality in both realistic generative rendering and intrinsic decomposition. We will make all our models publicly available. We believe that the design principles presented in this paper will benefit future research on controllable generative forward and inverse rendering.",
+      "authors": [
+        "Zheng Zeng",
+        "Marco Salvi",
+        "Lifan Wu",
+        "Jan Novák",
+        "Daqi Lin",
+        "Saeed Hadadan",
+        "Yichen Sheng",
+        "Robert Pottorff",
+        "Shiqiu Liu",
+        "Ravi Ramamoorthi",
+        "Ling-Qi Yan",
+        "Miloš Hašan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-14T03:57:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.13929v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "G-buffer based generative rendering enables outputting auxiliary channels such as alpha in video generation",
+      "llm_evidence_cn": "基于G-buffer的生成式渲染可在视频生成中输出alpha等辅助通道",
+      "llm_evidence": "基于G-buffer的生成式渲染可在视频生成中输出alpha等辅助通道",
+      "canonical_evidence": "基于G-buffer的生成式渲染可在视频生成中输出alpha等辅助通道",
+      "llm_tldr_en": "Proposes RGBX-Next, a unified generative forward/inverse renderer conditioned on G-buffers, enabling realistic image/video/stream generation from and estimation of rasterized buffers including alpha-like channels.",
+      "llm_tldr_cn": "针对扩散模型在视频生成中缺乏精确控制的问题，RGBX-Next提出将传统渲染的G-buffer作为条件，把DiT微调为生成式前向/逆向渲染器。该方法既可以从视频中估计G-buffer，也可以从G-buffer渲染逼真的视频，从而支持生成包含alpha等辅助通道的透明视频。实验表明该框架在质量与可控性上均取得良好效果，为透明视频生成提供了统一方案。",
+      "llm_tldr": "针对扩散模型在视频生成中缺乏精确控制的问题，RGBX-Next提出将传统渲染的G-buffer作为条件，把DiT微调为生成式前向/逆向渲染器。该方法既可以从视频中估计G-buffer，也可以从G-buffer渲染逼真的视频，从而支持生成包含alpha等辅助通道的透明视频。实验表明该框架在质量与可控性上均取得良好效果，为透明视频生成提供了统一方案。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.19583v1",
+      "source": "arxiv",
+      "title": "VGI-BENCH: Probing Visual Intelligence in Video Generation Models",
+      "abstract": "Recent studies suggest that video generation models can exhibit certain forms of zero-shot visual reasoning through generated frames. Yet reliable evaluation remains challenging: benchmarks should adopt inputs aligned with the visual priors of current video models, require valid evolving processes rather than only plausible final states, and calibrate task difficulty to remain challenging yet partly feasible. To this end, we introduce VGI-bench, containing 27 tasks and 810 instances, organized by a two-level taxonomy of task domains and skill tags for fine-grained evaluation of visual reasoning capabilities of video generation models. Our evaluations show that current generative systems can solve a subset of visually grounded reasoning tasks, but remain far from reliable, with even the strongest model, Seedance~2.0, achieving only 51.0% under our evaluation criteria. Our analysis further explore the output failure modes, input condition sensitivity, performance transfer boundary from synthetic fine-tuning, and internal denoising perspective revealing limited self-correction, where later steps mainly refine early hypotheses rather than correct reasoning errors. We hope VGI-bench will help stimulate the development of next-generation video generation models. We will release our code and data.",
+      "authors": [
+        "Xuan He",
+        "Cong Wei",
+        "Yuhao Cheng",
+        "Linrui Ma",
+        "Yuxuan Zhang",
+        "Zuojun Li",
+        "Yuhao Wen",
+        "Zeyi Liu",
+        "Yuren Hao",
+        "Songcheng Cai",
+        "Keming Wu",
+        "Penghui Du",
+        "Kai Zou",
+        "Rui Yang",
+        "Chenkai Sun",
+        "Ke Yang",
+        "Ping Nie",
+        "Kelsey R Allen",
+        "Chenglong Wang",
+        "Michel Galley",
+        "Jianfeng Gao",
+        "ChengXiang Zhai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-20T02:56:56+00:00",
+      "link": "https://arxiv.org/pdf/2608.19583v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Introduces a benchmark with 27 tasks and 810 instances to evaluate visual reasoning in video generation models",
+      "llm_evidence_cn": "提出27任务810实例的基准，用于评估视频生成模型的视觉推理能力",
+      "llm_evidence": "提出27任务810实例的基准，用于评估视频生成模型的视觉推理能力",
+      "canonical_evidence": "提出27任务810实例的基准，用于评估视频生成模型的视觉推理能力",
+      "llm_tldr_en": "Introduces VGI-bench, a 27-task benchmark probing visual intelligence in video generation models, showing current models solve only a subset of tasks.",
+      "llm_tldr_cn": "视频生成模型虽展现一定零样本视觉推理能力，但现有评测难以可靠评估。为此作者提出VGI-bench，包含27个任务和810个实例，从任务领域与技能标签两个层次细粒度评估视频生成模型的视觉推理能力。评测表明当前生成系统只能解决部分任务，距离全面视觉智能仍有较大差距。该基准为视频生成模型的评估提供了新工具。",
+      "llm_tldr": "视频生成模型虽展现一定零样本视觉推理能力，但现有评测难以可靠评估。为此作者提出VGI-bench，包含27个任务和810个实例，从任务领域与技能标签两个层次细粒度评估视频生成模型的视觉推理能力。评测表明当前生成系统只能解决部分任务，距离全面视觉智能仍有较大差距。该基准为视频生成模型的评估提供了新工具。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.20107v1",
+      "source": "arxiv",
+      "title": "BeyondMasks: Evaluating Causal and Physical Consistency in Video Object Removal",
+      "abstract": "Recent advances in generative video models have significantly improved visual realism in video object removal, yet evaluation protocols still focus on masked region fidelity, treating removal as local inpainting. In real scenes, object removal is a causal intervention: eliminating an object also requires removing its induced physical effects, such as shadows, reflections, illumination changes, translucency, and dynamic traces. Existing benchmarks lack aligned clean references or remain limited to simplified synthetic settings, preventing systematic evaluation of causal consistency. We introduce BeyondMasks, a paired benchmark for causally consistent video object removal, consisting of temporally aligned synthetic and real world video pairs with clean background references. The dataset spans diverse photometric, geometric, volumetric, and dynamic interactions, and supports both mask based and instruction driven editing. We further propose CORE, a structured vision language model based evaluation protocol that jointly measures object disappearance and after effect consistency, aligning more closely with human judgments than existing metrics. Benchmarking state of the art methods reveals systematic failures in removing secondary physical effects despite high masked region fidelity, exposing a gap between visual plausibility and causal correctness. BeyondMasks reframes video object removal as causal scene consistency rather than local reconstruction and provides a unified framework for its evaluation.",
+      "authors": [
+        "Yigit Ekin",
+        "Enes Sanli",
+        "Aykut Erdem",
+        "Erkut Erdem",
+        "Aysegul Dundar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-20T14:37:40+00:00",
+      "link": "https://arxiv.org/pdf/2608.20107v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "benchmark for evaluating causal and physical consistency in video object removal, moving beyond masked-region fidelity",
+      "llm_evidence_cn": "针对视频物体移除的因果与物理一致性评估基准，突破掩膜区域保真度的局限",
+      "llm_evidence": "针对视频物体移除的因果与物理一致性评估基准，突破掩膜区域保真度的局限",
+      "canonical_evidence": "针对视频物体移除的因果与物理一致性评估基准，突破掩膜区域保真度的局限",
+      "llm_tldr_en": "BeyondMasks is a paired benchmark with aligned synthetic and real video pairs to evaluate whether generated videos remove objects along with their physical effects such as shadows, reflections and illumination changes.",
+      "llm_tldr_cn": "现有视频物体移除的评价协议只关注掩膜区域的图像保真度，把移除当作局部修复，忽视了物体移除带来的阴影、反射、光照等因果物理效果。BeyondMasks构建了时间对齐的合成与真实视频配对基准，系统评估移除后的因果一致性。它填补了缺乏干净对齐参考的空白，为生成视频的物理一致性评估提供了更全面的标准。",
+      "llm_tldr": "现有视频物体移除的评价协议只关注掩膜区域的图像保真度，把移除当作局部修复，忽视了物体移除带来的阴影、反射、光照等因果物理效果。BeyondMasks构建了时间对齐的合成与真实视频配对基准，系统评估移除后的因果一致性。它填补了缺乏干净对齐参考的空白，为生成视频的物理一致性评估提供了更全面的标准。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.19556v1",
+      "source": "arxiv",
+      "title": "Stream4D: 4D-Consistency for Streaming Autoregressive Diffusion Video Models",
+      "abstract": "Streaming autoregressive diffusion models enable real-time, long-horizon video generation, but their training objectives optimize local frame prediction rather than the geometry and dynamics of a coherent world: long rollouts accumulate geometric drift and degrade into static or unnatural motion. Recent bidirectional approaches address this problem using rewards signals built upon 3D Gaussian-Splatting reconstruction. However, a single rigid 3d reconstruction cannot model a dynamic scene, so this critic penalizes genuine object motion as reconstruction error and is maximized by freezing the video. This shortcut is especially detrimental in the AR setting, where each chunk can propagate an already-static configuration. In this work, we propose Stream4D, which replaces the static critic with a feed-forward 4D reconstruction reward that explicitly models scene dynamics, allowing coherent motion to receive high consistency rewards. To further guide motion magnitude and quality, we add a motion prior that rewards natural scene-flow magnitude while penalizing jitter and non-rigid artifacts. Our final recipe combines these two terms with a lightweight perceptual anchor. Across various autoregressive video backbones and various generation horizons, Stream4D improves 4D reconstruction quality, preserves motion more effectively, and achieves higher human-aligned preference. Project page: https://banyuanhao.github.io/Stream4D/",
+      "authors": [
+        "Yuanhao Ban",
+        "Jiaqi Feng",
+        "Hengguang Zhou",
+        "Xiaohuan Pei",
+        "Justin Cui",
+        "Cho-Jui Hsieh"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-20T01:54:26+00:00",
+      "link": "https://arxiv.org/pdf/2608.19556v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "reward and critic signals based on 3D reconstruction evaluate consistency of generated video, avoiding freeze shortcuts",
+      "llm_evidence_cn": "基于3D重建的奖励与评判信号评估生成视频的一致性，避免静态捷径",
+      "llm_evidence": "基于3D重建的奖励与评判信号评估生成视频的一致性，避免静态捷径",
+      "canonical_evidence": "基于3D重建的奖励与评判信号评估生成视频的一致性，避免静态捷径",
+      "llm_tldr_en": "Proposes Stream4D, which replaces rigid 3D Gaussian-Splatting critic with a 4D-consistency reward for streaming autoregressive diffusion video models, preventing geometric drift and static-video shortcuts in long-horizon generation.",
+      "llm_tldr_cn": "流式自回归扩散视频模型采用3D重建奖励来约束一致性，但刚性3D场景无法建模动态，导致惩罚真实运动并偏向冻结视频。该文提出Stream4D，引入4D一致性奖励以评估并引导长时视频生成，避免几何漂移和静态化捷径。该方法改善了流式长视频生成的几何与动态一致性，为视频生成模型的训练评估提供了有效信号。",
+      "llm_tldr": "流式自回归扩散视频模型采用3D重建奖励来约束一致性，但刚性3D场景无法建模动态，导致惩罚真实运动并偏向冻结视频。该文提出Stream4D，引入4D一致性奖励以评估并引导长时视频生成，避免几何漂移和静态化捷径。该方法改善了流式长视频生成的几何与动态一致性，为视频生成模型的训练评估提供了有效信号。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.19812v1",
+      "source": "arxiv",
+      "title": "When Saying No Makes Better Videos: Designing Dual Gatekeeping for Pedagogically Grounded AI Content Creation",
+      "abstract": "To prevent the adoption of aesthetically polished but pedagogically flawed AI content, we study a video authoring pipeline featuring two layers of structured refusal. The first layer empowers educators to iteratively reshape AI scripts based on multimedia learning theory, while the second employs automated metrics to flag violations in instructional coherence and narrative-visual synchronization. While neither layer is exhaustive, their synergy ensures that principled resistance--the act of deferring AI output until it meets rigorous standards--becomes a catalyst for higher quality. Evaluation combining a study with 23 educators across 3 topics and automated metrics across 7 topics drawn from established science and philosophy curricula shows that both layers independently improve the same instructional dimensions, suggesting that thoughtful resistance and generative AI are not opposites but partners.",
+      "authors": [
+        "Yearim Kim",
+        "Njun Baek",
+        "Nojun Kwak"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-08-20T09:07:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.19812v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "automated metrics to evaluate quality of AI-generated educational videos",
+      "llm_evidence_cn": "使用自动化指标评价AI生成教育视频的质量",
+      "llm_evidence": "使用自动化指标评价AI生成教育视频的质量",
+      "canonical_evidence": "使用自动化指标评价AI生成教育视频的质量",
+      "llm_tldr_en": "This paper proposes a dual gatekeeping video authoring pipeline that uses automated metrics to flag instructional coherence and narrative-visual synchronization violations, improving quality of AI-generated educational videos.",
+      "llm_tldr_cn": "针对教学中AI生成视频虽精美但可能存在教学缺陷的问题，本文设计了一种包含两层结构化拒绝的视频创作流程：第一层让教育者基于多媒体学习理论迭代改写AI脚本，第二层用自动化指标检测教学连贯性与叙述-视觉同步违规。结果表明，该机制可提升AI视频质量，并提供了基于教育者研究和多项自动化评测的经验证据。",
+      "llm_tldr": "针对教学中AI生成视频虽精美但可能存在教学缺陷的问题，本文设计了一种包含两层结构化拒绝的视频创作流程：第一层让教育者基于多媒体学习理论迭代改写AI脚本，第二层用自动化指标检测教学连贯性与叙述-视觉同步违规。结果表明，该机制可提升AI视频质量，并提供了基于教育者研究和多项自动化评测的经验证据。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
