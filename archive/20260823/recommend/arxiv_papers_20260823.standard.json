@@ -1,0 +1,60 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-23T20:24:29.177048+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.17707v1",
+      "source": "arxiv",
+      "title": "DynaForcing: Overcoming Dynamic Collapse in Self-Forcing Distillation for Streaming Avatar Generation",
+      "abstract": "Audio-driven avatar generation requires realistic lip-sync, expressive motion, and real-time streaming. Recent work achieves the latter via self-forcing with Distribution Matching Distillation (DMD), but this paradigm suffers from a critical failure that has not been systematically characterized: dynamic collapse, where the student model converges to a near-static optimum with high perceptual quality but severely suppressed temporal dynamics. We trace this to two causes: the reverse KL objective in DMD, which biases toward low-motion modes, and unanchored self-conditioning, which creates a feedback loop that amplifies collapse. This is especially harmful for avatars, where even subtle motion loss breaks lip-sync and expression.   To address this, we propose DynaForcing, a training framework with three complementary strategies applied at different levels. Specifically, Hybrid Forcing anchors rollouts to ground-truth dynamics at the data level to break the feedback loop. Dynamics-Aware Reward Regularization introduces explicit motion rewards via the RL interpretation of DMD to counteract the reverse KL bias at the loss level. Reference Perturbation perturbs reference images to decouple identity from static details, forcing the model to rely on audio for motion at the conditioning level. We further introduce computation graph pruning and gradient replay, reducing the GPU footprint of self-forcing by over an order of magnitude. Experiments show that DynaForcing recovers dynamics to teacher-comparable levels (Dyn-Deg: 0.31 -> 0.73, Sync-C: 7.03 -> 7.68) while improving visual quality, resolving the quality-dynamics trade-off throughout training without early stopping.",
+      "authors": [
+        "Yubo Huang",
+        "Sirui Zhao",
+        "Xinchen Yao",
+        "Zhengye Zhang",
+        "Jinyang Huang",
+        "Fengqi Cui",
+        "Shiwei Wu",
+        "Enhong Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.MM"
+      ],
+      "published": "2026-08-18T12:29:56+00:00",
+      "link": "https://arxiv.org/pdf/2608.17707v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "analyzes dynamic collapse where generated videos look sharp but lack temporal motion, relevant to video quality evaluation",
+      "llm_evidence_cn": "分析了生成视频看似清晰但时间动态被抑制的动态崩溃现象，与生成视频质量评估相关",
+      "llm_evidence": "分析了生成视频看似清晰但时间动态被抑制的动态崩溃现象，与生成视频质量评估相关",
+      "canonical_evidence": "分析了生成视频看似清晰但时间动态被抑制的动态崩溃现象，与生成视频质量评估相关",
+      "llm_tldr_en": "DynaForcing diagnoses dynamic collapse in self-forcing distillation for streaming avatars, where generated videos appear sharp but lack temporal motion, and proposes anchored self-conditioning to restore dynamics.",
+      "llm_tldr_cn": "实时流媒体虚拟人生成要求高口型同步和自然运动，但自强制蒸馏结合分布匹配蒸馏会导致动态崩溃：学生模型收敛到近静态最优解，感知质量高而时间动态严重被抑制。论文将原因归结为DMD中的逆向KL目标的低运动偏差和无锚定自条件形成的反馈放大。通过DynaForcing方法缓解该问题，使生成的虚拟人恢复运动并保持口型同步。这项工作对生成视频的质量评估有启示，说明评估不能只看感知质量，还需关注时间动态。",
+      "llm_tldr": "实时流媒体虚拟人生成要求高口型同步和自然运动，但自强制蒸馏结合分布匹配蒸馏会导致动态崩溃：学生模型收敛到近静态最优解，感知质量高而时间动态严重被抑制。论文将原因归结为DMD中的逆向KL目标的低运动偏差和无锚定自条件形成的反馈放大。通过DynaForcing方法缓解该问题，使生成的虚拟人恢复运动并保持口型同步。这项工作对生成视频的质量评估有启示，说明评估不能只看感知质量，还需关注时间动态。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

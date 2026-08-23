@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-23",
+  "date": "2026-08-23",
+  "generated_at": "2026-08-23T20:25:36",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/23/2608.17707v1-dynaforcing-overcoming-dynamic-collapse-in-self-forcing-distillation-for-streaming-avatar-generation",
+      "section": "quick",
+      "title_en": "DynaForcing: Overcoming Dynamic Collapse in Self-Forcing Distillation for Streaming Avatar Generation",
+      "authors": "Yubo Huang, Sirui Zhao, Xinchen Yao, Zhengye Zhang, Jinyang Huang, Fengqi Cui, Shiwei Wu, Enhong Chen",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.17707v1",
+      "score": "7.0",
+      "evidence": "分析了生成视频看似清晰但时间动态被抑制的动态崩溃现象，与生成视频质量评估相关",
+      "tldr": "音频驱动化身生成中，自强制蒸馏方法会导致动态崩溃，使模型退化为近静态的高质量输出，时间运动被严重抑制。针对反向KL目标偏好低运动和无锚定自条件化造成的反馈回路，DynaForcing采用三个层面的策略：混合强制在数据层锚定真实动态，动态感知奖励在损失层引入显式运动信号，参考扰动在条件层解耦身份与静态细节。实验表明，动态指标从零点三一提升到零点七三，同步性从七点零三提升到七点六八，视觉质量同步改善。该框架解决了质量与动态的权衡，无需提前停止，并通过计算图剪枝和梯度重放大幅降低显存开销。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Audio-driven avatar generation requires realistic lip-sync, expressive motion, and real-time streaming. Recent work achieves the latter via self-forcing with Distribution Matching Distillation (DMD), but this paradigm suffers from a critical failure that has not been systematically characterized: dynamic collapse, where the student model converges to a near-static optimum with high perceptual quality but severely suppressed temporal dynamics. We trace this to two causes: the reverse KL objective in DMD, which biases toward low-motion modes, and unanchored self-conditioning, which creates a feedback loop that amplifies collapse. This is especially harmful for avatars, where even subtle motion loss breaks lip-sync and expression.   To address this, we propose DynaForcing, a training framework with three complementary strategies applied at different levels. Specifically, Hybrid Forcing anchors rollouts to ground-truth dynamics at the data level to break the feedback loop. Dynamics-Aware Reward Regularization introduces explicit motion rewards via the RL interpretation of DMD to counteract the reverse KL bias at the loss level. Reference Perturbation perturbs reference images to decouple identity from static details, forcing the model to rely on audio for motion at the conditioning level. We further introduce computation graph pruning and gradient replay, reducing the GPU footprint of self-forcing by over an order of magnitude. Experiments show that DynaForcing recovers dynamics to teacher-comparable levels (Dyn-Deg: 0.31 -> 0.73, Sync-C: 7.03 -> 7.68) while improving visual quality, resolving the quality-dynamics trade-off throughout training without early stopping.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
