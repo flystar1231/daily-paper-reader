@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-24",
+  "date": "2026-08-24",
+  "generated_at": "2026-08-24T20:37:26",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/24/2608.20770v1-motionphys-detecting-ai-generated-videos-via-physical-consistency-of-optical-flow-trajectories",
+      "section": "deep",
+      "title_en": "MotionPhys: Detecting AI-Generated Videos via Physical Consistency of Optical-Flow Trajectories",
+      "authors": "Haojin He, Hao Tan, Zichang Tan, Ajian Liu, Jun Wan",
+      "date": "2026-08-21",
+      "pdf": "https://arxiv.org/pdf/2608.20770v1",
+      "score": "8.0",
+      "evidence": "基于光流轨迹物理一致性评分进行生成视频质量评估",
+      "tldr": "AI视频生成模型虽能输出高保真且时序平滑的影像，但视觉真实不等于物理运动一致。由于生成器仅在像素或隐空间做分布匹配，缺乏惯性、连续力与轨迹几何等物理约束，完整动作轨迹会出现系统性统计偏差。MotionPhys将稀疏运动轨迹作为物理证据，跨多个时间尺度建模其几何演化，从而将细微的不一致转换为紧凑判别表示。在多个数据集上，该方法可有效检测各生成器的视频，且泛化能力良好。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Modern AI video generation models can produce videos with high visual fidelity and seemingly smooth temporal transitions. However, visual realism does not necessarily imply physical motion consistency. Existing generative models mainly optimize distribution matching in pixel or latent spaces, without explicitly enforcing real-world constraints such as inertia, continuous forces, and trajectory geometry. Our experiments show that AI-generated videos remain visually plausible over short sequences of consecutive frames, yet fail to preserve physical motion consistency throughout a complete object action, resulting in systematic statistical discrepancies in their motion trajectories. Based on this observation, we introduce MotionPhys, a lightweight and interpretable framework that treats sparse motion trajectories as physical evidence rather than relying on appearance artifacts or generator-specific traces. By modeling the geometric evolution of trajectories across multiple temporal scales, MotionPhys reveals subtle motion inconsistencies that are difficult to capture with conventional visual cues and transforms them into a compact representation for efficient detection. Experiments on multiple datasets show that MotionPhys can effectively detect physical inconsistencies in generated videos and generalizes well across different video generators.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/24/2608.15659v2-worldrover-a-scalable-synthetic-video-data-engine-for-world-exploration-with-rich-annotations",
+      "section": "quick",
+      "title_en": "WorldRover: A Scalable Synthetic Video Data Engine for World Exploration with Rich Annotations",
+      "authors": "Xiaojie Xu, Zhengyuan Lin, Runyi Li, Yihao Liu, Kaipeng Zhang, Yongtao Ge",
+      "date": "2026-08-16",
+      "pdf": "https://arxiv.org/pdf/2608.15659v2",
+      "score": "6.0",
+      "evidence": "合成视频数据引擎，提供丰富标注，支持视频质量评估",
+      "tldr": "真实采集难以提供密集几何与长程对应，现有合成数据又缺乏多信号联合标注。本文提出一种基于虚幻引擎的渲染管道，可离线渲染分钟级探索路线，支持多视点重放及环境变化。构建的大规模数据集将颜色、深度、轨迹及动作信号配对，第三人称子集额外包含密集光流与长程点跟踪。该方法将长视野世界探索转化为可扩展数据生成问题，为可探索世界模型提供监督。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Learning to generate or reconstruct explorable worlds requires video paired with more than RGB: camera motion, scene geometry, temporal correspondence and, for interactive models, control signals. Real capture can provide some of these signals, but dense geometry and long-range correspondence usually rely on estimation or specialised instrumentation. Rendering provides these quantities directly, yet existing synthetic resources rarely combine them on the same frames while also supporting controlled changes of viewpoint and appearance. We introduce WorldRover, a data engine for generating richly annotated, long-range explorations of artist-built environments. At its core, WorldRover-Engine is an Unreal Engine pipeline that executes and offline-renders minute-scale routes while preserving their full trajectories and scene geometry. The same exploration can be replayed from first-person, third-person, and 360 panoramic cameras under different environmental states. Using WorldRover-Engine, we construct WorldRover-10M, whose sequences pair RGB with metric depth, camera trajectories, and trajectory-derived action signals throughout each exploration. Third-person subsets additionally provide dense optical flow, long-range 2D/3D point tracks with visibility, and a character trajectory distinct from the camera trajectory. The engine can render a traversal from first-person, third-person and 360 panoramic viewpoints, under different environmental states or with a neutral white material, while preserving the route and scene geometry. WorldRover therefore turns long-horizon world exploration into a scalable data-generation problem, providing supervision for models that must build, maintain, and revisit coherent representations of an explorable world.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

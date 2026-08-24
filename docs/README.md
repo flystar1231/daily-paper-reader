@@ -6,28 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-23
-- 运行时间：2026-08-23 20:25:31 UTC
+- 最新运行日期：2026-08-24
+- 运行时间：2026-08-24 20:37:21 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：0
+- 本次总论文数：2
+- 精读区：1
 - 速读区：1
 
 ### 今日简报（AI）
-今日仅速读1篇流式虚拟人像生成论文，无精读，整体节奏偏轻。
-
-最值得关注的是《DynaForcing》提出的动态坍缩克服方法，针对自强制蒸馏的流式生成优化，评分7.0/10。
-
-若时间有限，可先浏览该文摘要与实验对比，后续再补精读或扩展相关蒸馏技术。
-- 详情：[/202608/23/README](/202608/23/README)
+今日精读1篇、速读1篇，聚焦AI视频检测与合成数据引擎。最值得关注的是精读《MotionPhys》（8/10），利用光流轨迹物理一致性识别AI生成视频，是当前深度伪造检测的有效新方向；速读《WorldRover》则提供可扩展的合成视频数据生成方案，适合作为辅助参考。下一步可结合这两项技术，用物理一致性检测器标注并验证合成数据集的真实性，降低误判风险。
+- 详情：[/202608/24/README](/202608/24/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [MotionPhys: Detecting AI-Generated Videos via Physical Consistency of Optical-Flow Trajectories](/202608/24/2608.20770v1-motionphys-detecting-ai-generated-videos-via-physical-consistency-of-optical-flow-trajectories)  
+   标签：评分：8.0/10、query:vgen-metrics
+   evidence：基于光流轨迹物理一致性评分进行生成视频质量评估
 
 ### 速读区论文标签
-1. [DynaForcing: Overcoming Dynamic Collapse in Self-Forcing Distillation for Streaming Avatar Generation](/202608/23/2608.17707v1-dynaforcing-overcoming-dynamic-collapse-in-self-forcing-distillation-for-streaming-avatar-generation)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：分析了生成视频看似清晰但时间动态被抑制的动态崩溃现象，与生成视频质量评估相关
+1. [WorldRover: A Scalable Synthetic Video Data Engine for World Exploration with Rich Annotations](/202608/24/2608.15659v2-worldrover-a-scalable-synthetic-video-data-engine-for-world-exploration-with-rich-annotations)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：合成视频数据引擎，提供丰富标注，支持视频质量评估
 
 
 <div class="dpr-home-promo-card">
