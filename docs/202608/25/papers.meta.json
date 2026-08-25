@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-25",
+  "date": "2026-08-25",
+  "generated_at": "2026-08-25T20:52:31",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/25/2608.23234v1-mllm-assisted-audio-vos-a-3rd-place-report-for-the-mevis-audio-track-8th-lsvos-challenge",
+      "section": "quick",
+      "title_en": "MLLM-Assisted Audio VOS: A 3rd Place Report for the MeViS-Audio Track, 8th LSVOS Challenge",
+      "authors": "Liangtao Shi, Jinxia Xie, Xiantao Hu, Ting Liu",
+      "date": "2026-08-24",
+      "pdf": "https://arxiv.org/pdf/2608.23234v1",
+      "score": "6.0",
+      "evidence": "音频引导视频分割结合SAM生成逐帧目标掩码，可复用作alpha通道",
+      "tldr": "音频引导的视频目标分割需对齐跨模态信息，现有方法常需任务特定训练。本报告提出训练免费框架，将任务分解为语义理解、目标定位与掩码生成，利用多模态大语言模型建模文本-视觉对应，结合SAM输出精确掩码。无需额外训练即在MeViS-Audio竞赛取得第三名，证明基础模型组合能高效解决复杂多模态任务，为后续研究提供新范式。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "In this technical report, we present a training-free framework for audio-guided video object segmentation, which integrates Multimodal Large Language Models (MLLMs) with SAM-based segmentation models. We decompose the task into several stages and identify suitable foundation models for each stage. Without introducing additional model training or task-specific fine-tuning, our approach leverages the strong multimodal reasoning capabilities of MLLMs to model text-visual correspondence and employs SAM-based models for accurate object mask generation. The proposed framework demonstrates the effectiveness of leveraging foundation models for audio-guided video segmentation and achieves competitive performance in the MeViS-Audio Track of the 8th LSVOS Challenge.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-25T20:51:59.808623+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.23234v1",
+      "source": "arxiv",
+      "title": "MLLM-Assisted Audio VOS: A 3rd Place Report for the MeViS-Audio Track, 8th LSVOS Challenge",
+      "abstract": "In this technical report, we present a training-free framework for audio-guided video object segmentation, which integrates Multimodal Large Language Models (MLLMs) with SAM-based segmentation models. We decompose the task into several stages and identify suitable foundation models for each stage. Without introducing additional model training or task-specific fine-tuning, our approach leverages the strong multimodal reasoning capabilities of MLLMs to model text-visual correspondence and employs SAM-based models for accurate object mask generation. The proposed framework demonstrates the effectiveness of leveraging foundation models for audio-guided video segmentation and achieves competitive performance in the MeViS-Audio Track of the 8th LSVOS Challenge.",
+      "authors": [
+        "Liangtao Shi",
+        "Jinxia Xie",
+        "Xiantao Hu",
+        "Ting Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T13:22:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.23234v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Audio-guided VOS with SAM generates per-frame object masks reusable as alpha channels",
+      "llm_evidence_cn": "音频引导视频分割结合SAM生成逐帧目标掩码，可复用作alpha通道",
+      "llm_evidence": "音频引导视频分割结合SAM生成逐帧目标掩码，可复用作alpha通道",
+      "canonical_evidence": "音频引导视频分割结合SAM生成逐帧目标掩码，可复用作alpha通道",
+      "llm_tldr_en": "A training-free framework combining MLLM reasoning with SAM segmentation for audio-guided video object segmentation, achieving competitive results in the MeViS-Audio Track.",
+      "llm_tldr_cn": "音频引导的视频目标分割通常需要额外训练或任务微调。本文提出一种免训练框架，将多模态大语言模型的推理能力与SAM分割模型结合，分阶段完成任务分解与目标掩码生成，无需改动模型参数。该系统在MeViS-Audio赛道取得具有竞争力的成绩，验证了基础模型组合在视频目标分割中的有效性，也为将掩码用作透明视频alpha通道提供了可迁移方案。",
+      "llm_tldr": "音频引导的视频目标分割通常需要额外训练或任务微调。本文提出一种免训练框架，将多模态大语言模型的推理能力与SAM分割模型结合，分阶段完成任务分解与目标掩码生成，无需改动模型参数。该系统在MeViS-Audio赛道取得具有竞争力的成绩，验证了基础模型组合在视频目标分割中的有效性，也为将掩码用作透明视频alpha通道提供了可迁移方案。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "techniques for generating transparent or alpha channel videos",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
