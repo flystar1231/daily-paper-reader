@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-26",
+  "date": "2026-08-26",
+  "generated_at": "2026-08-26T22:08:35",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/26/2608.24329v1-how-do-professional-editors-evaluate-the-editing-quality-of-ai-generated-cinematic-video-ads",
+      "section": "deep",
+      "title_en": "How Do Professional Editors Evaluate the Editing Quality of AI-Generated Cinematic Video Ads?",
+      "authors": "Po-Ming Law, Weizhi Li, Arpit Narechania",
+      "date": "2026-08-25",
+      "pdf": "https://arxiv.org/pdf/2608.24329v1",
+      "score": "8.0",
+      "evidence": "借助专业剪辑师评估AI生成电影级视频广告质量的细粒度框架",
+      "tldr": "社交媒体上常见采用电影剪辑技巧的短视频广告，但现有AI生成工具难以评估其剪辑质量。本文刻画了此类广告的格式，提出两阶段生成流程：先用大语言模型生成镜头计划，再用视频生成模型渲染成片，并据此制作了70个真实品牌的电影感广告。通过邀请专业剪辑师评审，归纳出叙事推进、视听协调、视觉构图、镜头连续性、品牌一致性与节奏韵律六个评估维度，为生成、人工评估与自动评估提供参考框架。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "On social media, we often encounter short-form video ads that employ cinematic editing techniques to evoke an emotional response. While AI tools are beginning to generate such cinematic ads automatically, we lack a fine-grained framework for evaluating these ads. In this paper, we first characterize social media video ad formats and identify cinematic ads as a recurring format in our corpus. We then analyze the duration, shot structure, audio and text elements, and editing techniques of cinematic ads to inform a two-stage generation pipeline in which an LLM first generates a shot plan and a video generation model renders the video. Using this pipeline, we generated 70 cinematic ads for 35 real brands and recruited professional video editors to critique their editing choices. From their critiques, we derive six dimensions of editing quality: narrative progression, audiovisual coordination and sound design, visual composition and graphics, shot-to-shot continuity, message and brand coherence, and temporal rhythm and pacing. We discuss how these dimensions can guide editing-aware generation, human evaluation, and automated evaluation of AI-generated cinematic ads.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

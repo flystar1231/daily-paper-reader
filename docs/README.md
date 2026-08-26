@@ -6,28 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-25
-- 运行时间：2026-08-25 20:52:27 UTC
+- 最新运行日期：2026-08-26
+- 运行时间：2026-08-26 22:08:29 UTC
 - 运行状态：成功
 - 本次总论文数：1
-- 精读区：0
-- 速读区：1
+- 精读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日仅速读1篇论文，无精读，主题聚焦音视频分割方向。
-
-最值得关注的是《MLLM-Assisted Audio VOS》这一篇，得分6.0，属于LSVOS挑战赛的实战方案。
-
-若想快速入门音频引导的视频分割，可从该报告的多模态大模型辅助思路读起。
-- 详情：[/202608/25/README](/202608/25/README)
+今日精读 1 篇论文，聚焦 AI 生成电影视频广告的编辑质量评估，获 8.0/10 高分。核心方向：专业编辑如何评判 AI 广告的剪辑水平，结论极具参考价值。建议进一步扩大样本，对比不同 AI 工具的编辑表现。
+- 详情：[/202608/26/README](/202608/26/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [How Do Professional Editors Evaluate the Editing Quality of AI-Generated Cinematic Video Ads?](/202608/26/2608.24329v1-how-do-professional-editors-evaluate-the-editing-quality-of-ai-generated-cinematic-video-ads)  
+   标签：评分：8.0/10、query:vgen-metrics
+   evidence：借助专业剪辑师评估AI生成电影级视频广告质量的细粒度框架
 
 ### 速读区论文标签
-1. [MLLM-Assisted Audio VOS: A 3rd Place Report for the MeViS-Audio Track, 8th LSVOS Challenge](/202608/25/2608.23234v1-mllm-assisted-audio-vos-a-3rd-place-report-for-the-mevis-audio-track-8th-lsvos-challenge)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：音频引导视频分割结合SAM生成逐帧目标掩码，可复用作alpha通道
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
