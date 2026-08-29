@@ -7,27 +7,27 @@
 
 ## 每次日报
 - 最新运行日期：2026-08-29
-- 运行时间：2026-08-29 03:09:16 UTC
+- 运行时间：2026-08-29 22:22:49 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：1
+- 本次总论文数：1
+- 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日两篇世界模型评测：精读PAWBench夺9分，速读R2M-Bench获7分。  
-最值得关注的是概率对齐的世界建模评估（PAWBench），其次是交互视频世界模型的记忆一致性（R2M-Bench）。  
-普通读者可优先跟进PAWBench的基准结论，再看R2M-Bench对记忆一致性的探索。
+今日精选1篇速读论文，主题聚焦弱监督视频异常检测的评估方法。
+
+值得关注：文章指出帧级评估指标实际更多反映视频级排序能力，提醒研究者谨慎解读帧级性能。
+
+建议普通读者优先关注该论文中的评估偏差结论，后续可搭配精读深入理解实验细节。
 - 详情：[/202608/29/README](/202608/29/README)
 
 ### 精读区论文标签
-1. [PAWBench: How Far Are We from Probabilistically Aligned World Modeling?](/202608/29/2608.27345v1-pawbench-how-far-are-we-from-probabilistically-aligned-world-modeling)  
-   标签：评分：9.0/10、query:vgen-metrics
-   evidence：提出PAWBench基准，评估视频生成模型的概率对齐能力
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [R2M-Bench: Evaluating Revisit Memory via Relative Consistency in Interactive Video World Models](/202608/29/2608.27328v1-r2m-bench-evaluating-revisit-memory-via-relative-consistency-in-interactive-video-world-models)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：提出视频世界模型的相对一致性评估基准
+1. [Frame-Level Evaluation in Weakly Supervised Video Anomaly Detection Mostly Measures Video-Level Ranking](/202608/29/2608.21854v1-frame-level-evaluation-in-weakly-supervised-video-anomaly-detection-mostly-measures-video-level-ranking)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：将帧级视频评估指标分解为视频内与跨视频部分
 
 
 <div class="dpr-home-promo-card">

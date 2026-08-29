@@ -1,0 +1,645 @@
+Title: Frame-Level Evaluation in Weakly Supervised Video Anomaly Detection Mostly Measures Video-Level Ranking
+
+URL Source: https://arxiv.org/pdf/2608.21854v1
+
+Published Time: Tue, 25 Aug 2026 00:37:36 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# FRAME -L EVEL EVALUATION IN 
+
+# WEAKLY SUPERVISED VIDEO ANOMALY DETECTION 
+
+# MOSTLY MEASURES VIDEO -L EVEL RANKING 
+
+Inpyo Song 
+
+SungKyunKwan University South Korea 
+
+songinpyo@skku.edu 
+
+Jangwon Lee 
+
+SungKyunKwan University South Korea 
+
+leejang@skku.edu 
+
+# ABSTRACT 
+
+Weakly supervised video anomaly detectors are trained with video-level labels but are commonly evaluated as temporal localizers using Micro-AUROC or AP over pooled test frames. Because these metrics compare frames from different videos, a detector can score well by separating videos without accurately ordering mo-ments within them. We exactly decompose Micro-AUROC by video identity into Within-AUROC for temporal ordering within videos and Cross-AUROC for com-parisons across videos. Across ShanghaiTech, XD-Violence, and UCF-Crime, only 0.071 –0.388% of comparisons between anomalous and normal frames oc-cur within the same video. When both classes remain distributed across V videos, this share decreases as O(1 /V ), a benchmark property we call temporal dilution .We train anomaly video binary classifiers under the same video-level supervision and repeat each video score across all frames. These video-constant outputs reach 
+
+81 .40 –97 .18 Micro-AUROC despite having no within-video variation. Across 72 controlled runs, replacing every frame score with its video mean preserves a median 98.6% of the Micro-AUROC margin above chance. The same empirical pattern holds for author-released outputs and for XD-Violence under its official AP evaluation. A detector can therefore achieve a high pooled score even when it assigns the same score to every moment within each video. 
+
+# 1 INTRODUCTION 
+
+Weakly supervised video anomaly detection (WSVAD) learns to identify when anomalous events occur using only video-level supervision. Since its original formulation (Sultani et al., 2018), meth-ods have improved their learning objectives and feature representations while retaining a common evaluation protocol (Tian et al., 2021; Wu et al., 2022a; Joo et al., 2023; Song et al., 2025). At test time, the frame scores from all videos are concatenated and ranked together. ShanghaiTech and UCF-Crime report this pooled ranking through Micro-AUROC, while XD-Violence reports AP. Although these metrics consume frame-indexed scores, they do not exclusively evaluate temporal localization. The source of this ambiguity is clearest for Micro-AUROC. Temporal localization requires a de-tector to rank anomalous frames above normal frames within the same video. Micro-AUROC also compares frames from different videos. A detector can win many of these comparisons by assigning different overall score levels to different videos. It need not identify the anomalous interval within either video. Consider a scorer that assigns one constant value to every frame of a video. This scorer has no temporal resolution, yet it can obtain a high pooled score when its video-level values correlate with video labels. A metric reported at frame level can therefore reward video-level ranking. This distinction matters in practice. A video-level alert identifies which recording should be in-spected, while temporal localization identifies where the anomalous event occurs (Ramachandra & Jones, 2020; Liu et al., 2025). Yet pooled evaluation remains the dominant protocol in WSVAD. Among the 42 peer-reviewed methods in our survey, 41 report pooled Micro-AUROC or AP. Prior alternatives provide complementary views (Lv et al., 2021; 2023; Acsintoae et al., 2022; Ristea et al., 1arXiv:2608.21854v1 [cs.CV] 22 Aug 2026 (a) Positive frames x Negative frames 
+
+> Abnormal
+> Same-video pairs
+> Normal
+> Cross-video pairs
+
+(b) Video-mean replacement Figure 1: A pooled frame ranking can remain high without temporal localization. (a) Micro-AUROC compares anomalous and normal frames from the same video or from different videos. Same-video pairs test temporal ordering. Cross-video pairs can reward video-level score differences even when every video has one constant score. (b) Video-mean replacement maps every frame score in video i to ¯si and removes all within-video variation. Across 13 author-released outputs from XD-Violence and UCF-Crime, this intervention retains between 89 .5% and 99 .8% of the original Micro-AUROC margin above chance. 2024), but they do not reveal how much of the standard pooled score comes from temporal ordering within videos. 
+
+When a WSVAD method obtains high Micro-AUROC, how much of that score is direct evidence of temporal localization? 
+
+We answer this question with an exact decomposition of Micro-AUROC by video identity. Within-AUROC measures the ordering of anomalous and normal frames from the same video. Cross-AUROC measures comparisons between frames from different videos. These cross-video compar-isons may support useful video-level triage, but they do not require a detector to identify when an anomaly occurs. We evaluate this distinction across three benchmarks using 72 controlled runs and 14 author-released outputs. The decomposition reveals that Micro-AUROC assigns almost all of its pair mass to comparisons across videos. Same-video pairs account for only 0.071% to 0.388% of the pair mass on Shang-haiTech, XD-Violence, and UCF-Crime. When both classes remain distributed across V videos, this share decreases as O(1 /V ) as the benchmark grows. We call this benchmark property temporal dilution .Temporal dilution creates a large opportunity for video-level prediction. We ask whether standard weak supervision can exploit this opportunity. We train video-level anomaly classifiers and repeat each prediction across every frame of the corresponding video. These video-constant classifiers reach 81 .40% to 97 .18% Micro-AUROC despite assigning the same score to every frame in a video. The same pattern appears in existing detector outputs. Replacing every frame score in a video with its mean removes all within-video variation. This intervention preserves a median 98.6% of the Micro-AUROC margin above chance across the controlled runs. Author-released outputs show the same behavior, including under the official AP evaluation on XD-Violence. The pooled score therefore remains high even after the score variation needed to distinguish moments within a video has been removed. Taken together, these findings show that a high pooled score does not establish when an anomaly occurs. Pooled evaluation may still measure useful video-level triage, but temporal localization requires separate evidence. We therefore recommend evaluating these capabilities separately. 22 RELATED WORK 
+
+Evaluation strategies in VAD and WSVAD. The standard WSVAD protocol uses one pooled ranking over all concatenated test frames (Sultani et al., 2018). We call this statistic Micro-AUROC ,matching prior VAD usage (Acsintoae et al., 2022; Song & Lee, 2026a). Existing evaluation re-sponses follow two design axes. The first changes which examples or weights enter the ranking. AUC A removes all-normal videos before concatenating the remaining frames (Lv et al., 2021; 2023). In broader VAD evaluation, Macro-AUROC computes AUROC within each mixed-label video and gives every such video one vote (Acsintoae et al., 2022; Ristea et al., 2024) (see Appendix J for the WSVAD reporting survey). AUC A narrows the pair population but remains a pooled ranking over the retained frames. Macro-AUROC replaces the estimand with performance on the average mixed-label video rather than attributing the reported pooled statistic. The second axis adds a localization-or deployment-oriented measure, including region- and track-based detection, temporal-IoU mAP, event-level evaluation, and false-alarm rates at fixed operating points (Ramachandra & Jones, 2020; Chu et al., 2026; Liu et al., 2025; Acharya et al., 2026; Xu et al., 2026). These approaches expose important failure modes and can disagree with the Micro-AUROC leaderboard (Sun et al., 2026a). We retain Micro-AUROC and attribute it to same-video and cross-video pair populations. This also lets us test whether deleting all-normal videos removes the same ambiguity (Table 5). 
+
+Attribution through decomposition and diagnostic controls. Within- and cross-group AUROC decompositions are established in fairness, bipartite ranking, and clustered biostatistical evaluation (Borkan et al., 2019; Kallus & Zhou, 2019; Obuchowski, 1997; Van Elteren, 1960; Vogel et al., 2021). In those settings, the grouping variable is external to the target capability. In WSVAD, the group is the video, and within-group ordering is the advertised temporal task. Song & Lee (2026b) combine an exact decomposition with a capability-blind control in open-world VAD, conditioning on the queried anomaly definition. We instead condition on video identity in the standard WSVAD protocol. Reference scorers and oracle substitutions are also used to diagnose metric and component behavior (Campos et al., 2016; van Klaveren et al., 2016; Hoiem et al., 2012; Bolya et al., 2020), and we adapt this diagnostic-substitution design as the video-constant oracle control and learned video-constant probes. We combine exact accounting, a video-constant capacity control, a weakly supervised attainability test, and interventions on controlled runs and author-released results. 
+
+# 3 HOW MUCH OF MICRO -AUROC DIRECTLY TESTS TEMPORAL ORDERING ?
+
+Micro-AUROC computes AUROC after concatenating the frame scores and labels from all test videos. We attribute it by video identity. Let video i contain ai anomalous frames and ni normal frames. Let A = P 
+
+> i
+
+ai and N = P 
+
+> i
+
+ni. Define the mixed-label video set M = {i : ai >
+
+0 and ni > 0} and its same-video pair count W = P 
+
+> i∈M
+
+aini. An equal-score positive–negative pair contributes 1/2. We report AUROC and AP values as percentages. The following identity separates pairs that directly test temporal ordering from cross-video pairs. 
+
+Proposition 1 (Exact decomposition by video identity) . Assume A > 0, N > 0, and 0 < W < AN .For any frame-score sequence, 
+
+Micro -AUROC = w Within -AUROC + (1 − w) Cross -AUROC , w = WAN . (1) Within-AUROC is the average correctness over the W same-video positive–negative pairs. Equiva-lently, it averages per-video AUROC over i ∈ M with weight aini/W . The pair-count weighting in Within-AUROC is required by the identity because each mixed-label video i contributes aini
+
+same-video pairs. We also report Macro-AUROC, the uniform average of per-video AUROC over mixed-label videos. Macro-AUROC characterizes the average mixed-label video, whereas Within-AUROC is the same-video term that attributes Micro-AUROC exactly. Videos outside M provide no same-video positive–negative pairs and are excluded from Within-AUROC (Figure 1a). Their frames remain in Micro-AUROC and contribute to Cross-AUROC through comparisons with frames from other videos. Cross-AUROC averages correctness over all such cross-video pairs. The condition 0 < W < AN requires both pair populations to be nonempty. It does not require every video to contain both classes. The proof partitions the AN positive–negative pairs according to whether their video identities match. Appendix A gives the derivation. 3Table 1: Same-video pairs receive less than 0.4% of the Micro-AUROC pair mass. The same-video pair share w (Equation 1) determines “Max. contribution,” the largest possible Micro-AUROC gain from improving Within-AUROC from chance to perfection while holding Cross-AUROC fixed (Corollary 1).              
+
+> Benchmark Test videos Same-video share wMax. contribution (pp) ShanghaiTech 199 0.140% 0.070
+> XD-Violence 800 0.071% 0.036
+> UCF-Crime 290 0.388% 0.194
+
+Temporal dilution. Define p+ 
+
+> i
+
+= ai/A and p− 
+
+> i
+
+= ni/N . The weight w is the probability that a sampled positive frame and a sampled negative frame come from the same video. It satisfies 
+
+w = X
+
+> i
+
+p+ 
+
+> i
+
+p− 
+
+> i
+
+= Pr( V + = V −) ≤ min ∥p+∥∞, ∥p−∥∞ . (2) If positive and negative frame mass are both spread over Θ( V ) videos, the two maximum masses are O(1 /V ) and therefore w = O(1 /V ). This derivation uses only binary labels partitioned into groups and a pooled pairwise ranking, with no property specific to video. Exact replication gives a finite-sample counterpart. Making k disjoint copies of a test set sends w to w/k because the same-video pair count grows linearly while the total pair count grows quadratically. We call this loss of direct temporal weight temporal dilution . The claim is conditional on diffuse class mass or exact replication. 
+
+Corollary 1 (Maximum direct contribution of temporal ordering) . If Cross-AUROC is fixed, im-proving Within-AUROC from chance to perfection can increase Micro-AUROC by at most w/ 2.
+
+Across the three benchmarks in Table 1, the maximum contribution is 0.036 –0.194 percentage points. This bound depends only on benchmark composition, not on the detector. For i ∈ M , define 
+
+αi = aini/W as video i’s share of the same-video pair mass. We then define Neff = 1 / P 
+
+> i∈M
+
+α2 
+
+> i
+
+,the number of equally contributing videos that would produce the same pair-mass concentration. Appendix F reports the per-benchmark values. The decomposition establishes what the benchmark directly weights. The next stages ask what scores are available to the video-constant scorer family and whether detector Micro-AUROC values depend on temporal variation. 
+
+# 4 HOW HIGH CAN A SCORER RANK WITHOUT LOCALIZING ?
+
+Consider scorers that emit one scalar ci for every frame of video i. Every same-video positive– negative pair is tied, so Within -AUROC = 50 . This scorer family cannot indicate when an anomaly occurs. It tests how high Micro-AUROC can be for a non-localizing output. 
+
+What can the metric reward? The maximizing order is the video-constant specialization of likelihood-ratio ordering in bipartite ranking and ROC analysis (Fawcett & Niculescu-Mizil, 2007; Cl´ emenc ¸on et al., 2008; Menon & Williamson, 2016). 
+
+Proposition 2 (Optimal video-constant Micro-AUROC scorer) . Among all video-constant scorers, Micro-AUROC is maximized by ordering videos according to their ground-truth anomaly fraction 
+
+ai/(ai + ni), with arbitrary tie breaking among equal fractions. 
+
+For two videos i and j, placing i above j correctly orders ainj cross-video pairs. The reverse order correctly orders aj ni pairs. The first order is weakly preferable exactly when video i has at least as large an anomaly fraction. These pairwise preferences are transitive, so sorting by anomaly fraction is globally optimal within the video-constant family. Appendix A gives the proof. The resulting value depends on test composition and test labels. The resulting video-constant optimum is 98 .35 Micro-AUROC on ShanghaiTech, 95 .46 on XD-Violence’s auxiliary Micro-AUROC, and 92 .95 on UCF-Crime. A score with no within-video varia-tion can therefore receive 92 .95 –98 .35 Micro-AUROC. This establishes metric capacity. It does not 4Table 2: Video-constant learners reach 97 .18 Micro-AUROC on ShanghaiTech, 90 .78 on XD-Violence, and 81 .40 on UCF-Crime, while every Within-AUROC equals 50 . For each prediction head, separate columns report Micro-AUROC and Cross-AUROC percentages as three-seed means. The largest three-seed sample SD of Micro-AUROC across the 24 head–feature–benchmark cells is 
+
+2.12 points, and every Within-AUROC entry has sample SD 0.00 by construction. Bold marks the highest Micro-AUROC within each fixed representation.                                                                        
+
+> (a) Mean-pool (b) Seq.-linear (c) Bi-GRU (d) Transformer (a-d) All heads Benchmark Features Micro Cross Micro Cross Micro Cross Micro Cross Within ShanghaiTech CLIP 96.87 96.94 96.60 96.67 97.16 97.23 97.18 97.25 50.00
+> I3D 92.06 92.12 91.18 91.24 91.10 91.16 85.34 85.39 50.00 XD-Violence CLIP 88.76 88.79 90.78 90.81 89.92 89.95 88.13 88.16 50.00
+> I3D 89.22 89.25 89.33 89.36 90.45 90.48 87.30 87.33 50.00 UCF-Crime CLIP 78.50 78.61 80.03 80.15 77.84 77.95 80.40 80.52 50.00 I3D 79.21 79.32 81.40 81.52 77.26 77.37 79.07 79.18 50.00
+
+show that ordinary training attains the oracle order. Across the three benchmarks, a one-bit compo-sition control reaches 81.57%–96.32% Micro-AUROC (Appendix C). The oracle requires the full anomaly-fraction ordering induced by the test labels, whereas this control repeats only each video’s binary anomaly label over its frames. ⋅ ⋅ ⋅       
+
+> (a) Mean Pool
+> (b) Flatten
+> (c) Bi-GRU Mean Pool
+> (d) Transformer Mean Pool
+> Linear Layer
+> (Video Classifier)
+
+Figure 2: Architecture of the four video-level probe heads. 
+
+Can weak supervision attain high Micro-AUROC? We train four lightweight video-level heads under standard video-label supervision (Fig-ure 2). The mean-pool head pools before a linear logit and is order-invariant. Sequence-linear, bi-GRU, and Transformer heads may use the 32-position feature sequence internally, following the standard 32-segment WSVAD input representation (Sultani et al., 2018). Every head reduces a video to one scalar and repeats that scalar over its frames. The four heads span order-invariant to order-aware internal architectures while all emit-ting one scalar per video, so the attainability test is not tied to one head choice. We evaluate three seeds with separate CLIP and I3D features. The strongest video-constant heads score 31 .40 –47 .18 points above AU-ROC chance across the three benchmarks. On ShanghaiTech, the strongest probe reaches 97 .18 Micro-AUROC, 0.56 points below the audited CLIP-TSA result of 97 .74 in Table 4. Cross-AUROC exceeds Micro-AUROC by only 0.03 –0.12 points, the near-equality implied by Equation 1 when w is below 0.4% . Within-AUROC remains at chance by construction. These scores show that weak video supervision can learn much of the ranking that Micro-AUROC rewards without producing a localized output. 
+
+# 5 DOES DETECTOR MICRO -AUROC DEPEND ON WITHIN -VIDEO SCORE VARIATION ?
+
+The previous controls show what Micro-AUROC permits. We now test which parts of detector outputs the pooled score actually depends on. If Micro-AUROC requires temporal localization, removing all within-video score variation should materially reduce it. If video-level ranking supplies most of the value, Micro-AUROC should survive. The controlled audit crosses MIL ranking, RTFM, CLIP-TSA, and BN-WVAD objectives (Sultani et al., 2018; Tian et al., 2021; Joo et al., 2023; Zhou et al., 2024) with CLIP and I3D features on three benchmarks and three seeds. This 4 × 2 × 3 × 3
+
+design gives 72 Micro-AUROC runs. We include an author-released output only when its public frame scores preserve recoverable video boundaries and reproduce the source paper’s metric on the intended evaluation axis. Fourteen outputs from eight methods satisfy these criteria. Seven XD-Violence outputs also support evaluation on the official AP axis. 5Table 3: Video-mean replacement preserves at least 90% of the Micro-AUROC chance margin in 69 of 72 controlled runs. Retention is computed per run using Equation 4. All three seeds remain separate observations in the benchmark medians rather than being averaged first.                       
+
+> Benchmark nMedian retention Minimum retention Retention ≥90%
+> ShanghaiTech 24 99 .5% 95 .8% 24 /24
+> XD-Violence 24 100 .0% 94 .3% 24 /24
+> UCF-Crime 24 93 .1% 78 .1% 21 /24
+> All 72 98.6% 78 .1% 69/72
+
+Video-mean replacement. For the score trajectory si = ( si1, . . . , s iT i ) of video i, define 
+
+¯si = 1
+
+TiTiX
+
+> t=1
+
+sit , Rmean (s) 
+
+> it
+
+= ¯ si. (3) Let y denote the fixed frame labels and M the evaluation metric. We compute 
+
+Moriginal = M (s, y ), Mreplaced = M (Rmean (s), y ) , Rmean (M ) = Mreplaced − Mchance 
+
+Moriginal − Mchance 
+
+.
+
+(4) Equation 3 makes the observable output constant within each video while leaving the detector, frames, labels, and metric implementation fixed. AUROC uses chance 50 , whereas XD-Violence AP uses its frame prevalence. AP remains the official XD-Violence result, while auxiliary Micro-AUROC is used only for the exact decomposition. Appendices B and I specify the evaluation axes, seed policy, tie convention, and validation checks. 
+
+Replacement preserves the chance margin across the controlled grid. Table 3 shows that all 48 ShanghaiTech and XD-Violence runs retain at least 90% of their Micro-AUROC chance mar-gin. UCF-Crime does so in 21 /24 runs, with a minimum of 78 .1% . Equation 1 already forces Micro-AUROC to approximate Cross-AUROC when w is small, so their agreement is arithmetic. Replacement adds the empirical result that one mean per video reproduces most of the discrimi-native power of the original cross-video frame ordering. The identity does not guarantee this re-sult. Across the three benchmarks, 24/72 runs improve after video-mean replacement, showing that changes in cross-video ordering can outweigh the deleted temporal variation. On XD-Violence’s official AP axis, median retention is 94.1%, the minimum is 82 .6% , and 16 /24 runs retain at least 
+
+90% (Appendix Table 8). This extends the empirical pattern beyond the AUROC decomposition. In the lower-row ShanghaiTech instance with the same CLIP representation, CLIP-TSA obtains 
+
+97 .74 Micro-AUROC and 82 .59 Within-AUROC. RTFM obtains 96 .05 and 44 .99 , respectively. The 
+
+1.69 -point Micro-AUROC difference therefore coexists with a 37 .60 -point separation in within-video ordering. Appendix Table 11 reports the complete audit. 
+
+The pooled score masks training variability. Within-AUROC sample SD exceeds 5 points in 
+
+3/24 controlled cells. The controlled RTFM–CLIP ShanghaiTech cell has the largest Within-AUROC sample SD in the grid. Its three seeds obtain 95 .04 , 95 .15 , and 97 .97 Micro-AUROC, with mean 96 .05 and sample SD 1.66 . The same runs obtain 82 .26 , 29 .36 , and 23 .34 Within-AUROC, with mean 44 .99 and sample SD 32 .42 . Thus a 2.93 -point Micro-AUROC range coexists with a 
+
+58 .92 -point range in temporal ordering. 
+
+Cross-video ranking governs every audited output. Table 4 gives the exact decomposition for all 14 author-released results and three ShanghaiTech reproductions. For the author-released results, the Cross-AUROC chance margin is at least 99 .73% of the Micro-AUROC chance margin. This agreement indicates that the pooled headline is numerically gov-erned by cross-video ranking in every audited output. The two within-video summaries are not interchangeable. On UCF-Crime, VADTree exceeds S3R by 11 .20 points under Within-AUROC, whereas S3R exceeds VADTree by 7.70 points under Macro-AUROC. The reversal therefore shows 6Reproduced Methods: 
+
+> Feature:
+> Methods with Author
+> Released Results
+
+Figure 3: Micro-AUROC remains high after video-mean replacement, while Within-AUROC varies widely at similar Micro-AUROC values. In the top row, Micro-AUROC after video-mean replacement lies close to the original Micro-AUROC along the diagonal. In the bottom row, Within-AUROC spreads widely at similar Micro-AUROC values. Small markers are 24 controlled con-figurations averaged over three seeds. Among these configurations, marker shape identifies the reproduced method, while filled and open markers denote CLIP and I3D features. Diamonds denote 14 method–benchmark outputs from eight methods with author-released results. that pair-count concentration can change the method ordering. On XD-Violence’s official AP axis, the seven author-released results retain 81 .9–95 .1% of their chance margin after video-mean re-placement (Appendix Table 13). Appendix Table 11 gives the full Micro-AUROC records for the controlled runs and author-released results, including the values after video-mean replacement. 
+
+Within-video permutation. Video-mean replacement collapses each video’s score distribution while preserving its mean, so its retention alone cannot separate preserved level information from dispensable temporal alignment. Within-video permutation preserves each video’s complete score multiset while randomizing its alignment with the temporal labels. Its retention therefore rules out distributional collapse as the explanation. Appendix E derives its exact expected Micro-AUROC. Across the 14 author-released results, the median exact expected chance-margin retention is 89 .5% ,with a range of 81 .7–96 .0% (Appendix Table 9). Micro-AUROC can therefore remain high when temporal alignment is removed even though score variation is preserved. 
+
+Anomaly-only pooling. AUC A deletes all-normal videos and recomputes Micro-AUROC over the remaining frames (Lv et al., 2021). It therefore reduces the cross-video pair population without isolating within-video ordering. Table 5 shows that the same-video pair share rises only to 0.24 –
+
+1.90% . A video-constant scorer still reaches 77 .68 –84 .92 AUC A. Anomaly-only pooling is there-fore a restricted Micro-AUROC protocol, not Macro-AUROC or Within-AUROC. On UCF-Crime, the verified reported AUC A values for VadCLIP and UR-DMU are 70 .23 and 70 .81 . These values are 17 .78 and 16 .15 points below the corresponding Micro-AUROC values from author-released results in Table 4, but the retained pair population is still 98 .95% cross-video. 7Table 4: Cross-AUROC matches Micro-AUROC within 0.09 points across all 17 rows. Within-AUROC weights videos by their positive–negative pair counts to form the exact same-video term in Equation 1, whereas Macro-AUROC gives each mixed-label video equal weight. † denotes our three-seed reproduction, and unmarked rows use author-released results.                                                                             
+
+> Benchmark Method Micro Cross Within Macro ShanghaiTech S3R (Wu et al., 2022a) 97 .39 97 .42 82 .38 82 .29
+> RTFM †(Tian et al., 2021) 93 .14 93 .17 75 .45 75 .07
+> CLIP-TSA †(Joo et al., 2023) 97 .74 97 .76 82 .59 81 .85
+> BN-WVAD †(Zhou et al., 2024) 92 .74 92 .77 70 .90 72 .28
+> XD-Violence DSANet (Yin et al., 2026) 95 .40 95 .41 85 .48 79 .85
+> BN-WVAD (Zhou et al., 2024) 94 .71 94 .72 86 .36 78 .54
+> VadCLIP (Wu et al., 2024b) 94 .68 94 .69 84 .26 75 .29
+> UR-DMU (Zhou et al., 2023) 94 .02 94 .02 85 .44 77 .91
+> MGFN (Chen et al., 2022) 92 .88 92 .89 81 .84 75 .43
+> VADTree (Li et al., 2026) 90 .49 90 .50 80 .80 73 .94
+> LAVAD (Zanella et al., 2024) 85 .40 85 .42 64 .78 59 .94
+> UCF-Crime DSANet (Yin et al., 2026) 89 .44 89 .50 73 .72 70 .01
+> VadCLIP (Wu et al., 2024b) 88 .01 88 .07 72 .93 66 .62
+> UR-DMU (Zhou et al., 2023) 86 .96 87 .03 68 .30 74 .17
+> S3R (Wu et al., 2022a) 85 .99 86 .08 62 .97 71 .40
+> VADTree (Li et al., 2026) 84 .74 84 .78 74 .17 63 .70
+> LAVAD (Zanella et al., 2024) 80 .28 80 .36 61 .75 57 .85
+
+Micro-AUROC survives both temporal interventions. Together with the anomaly-only population variant, these results show that detector Micro-AUROC depends only marginally on within-video score variation, consistent with the small direct temporal weight established in Section 3. 
+
+# 6 IMPLICATIONS FOR EVALUATION AND BENCHMARK DESIGN 
+
+Detector developers. Table 4 shows that similar pooled scores can conceal large differences in within-video ordering. Pooled frame AUROC should not stand alone as localization evidence. For claims about whole-recording triage, pooled frame AUROC remains supporting evidence because it numerically coincides with Cross-AUROC in every audited output (Section 5). The explicit video-level measure recommended below for practitioners is the direct test. Report Micro-AUROC with Within-AUROC and Cross-AUROC as the core decomposition pair, w and Neff as benchmark-composition context, Macro-AUROC as the complementary per-video summary, and the tie con-vention as protocol hygiene. This reporting requires no new training or data collection because all score-dependent quantities are computable from frame scores that papers already release, while w
+
+and Neff depend only on ground truth. AUC A is not a substitute because Table 5 shows that it remains dominated by cross-video pairs. Appendix Table 11 shows that CLIP-TSA and RTFM have a 1.69 -point pooled-score gap on Shang-haiTech but differ by 37 .60 points in Within-AUROC. In Table 4, the UCF-Crime VADTree-minus-S3R margin reverses from +11 .20 points under Within-AUROC to −7.70 points under Macro-AUROC. A practitioner selecting by Within-AUROC would therefore choose VADTree over S3R, whereas Macro-AUROC and the pooled leaderboard select S3R. 
+
+Benchmark builders. Under the diffuse-mass or exact-replication conditions in Section 3, adding videos dilutes the metric’s direct temporal weight as O(1 /V ). Treat w as a controlled design quantity and report how it changes when videos are added. If localization is the target, preserve same-video comparisons by design. 
+
+Practitioners and deployers. Use an explicit video-level measure for whole-recording triage (for example, AUROC computed from one score per video against video-level labels). Evaluate moment localization with Within-AUROC or Macro-AUROC plus event-level boundary, delay, and frag-8mentation measures. Among the 42 surveyed methods, fixed-operating-point false-alarm reporting appears in main comparisons only in papers from 2018 through 2023 (Appendix J). Because both within-video summaries exclude all-normal videos, also report false alarms per normal video or per hour at a prespecified operating point. 
+
+# 7 LIMITATIONS 
+
+Operating-point coverage. Boundary accuracy, detection delay, fragmentation, and thresholded false alarms lie outside the pairwise ranking populations of Within-AUROC and Macro-AUROC. The reporting protocol above therefore complements rather than replaces event-level and operating-point evaluation. 
+
+Average Precision. Our exact results apply only to AUROC because AP has no additive pair identity. The XD-Violence evidence therefore consists of an achieved video-constant lower bound and temporal interventions. The strongest video-constant learner in our head–feature grid reaches 
+
+70 .73 AP, so the Micro-AUROC attainability result does not transfer to AP. Our achieved video-constant AP lower bound is 86 .75 , whereas DSANet’s recomputed AP is 86 .96 . A video-constant scorer obtained by adjacent-swap refinement of the likelihood-ratio ordering achieves this bound (Appendix C). The resulting 0.21 -point difference remains unresolved because the bound is not a certified optimum. An exact AP optimizer or tight upper bound is needed to close it. 
+
+Concentration of Within-AUROC weights. The same-video pair mass is as concentrated as if only Neff = 18 .7–43 .7 videos had equal weight (Appendix Table 10). This equivalent count is not a sample size or an uncertainty estimate. A few long or anomaly-dense videos can dominate Within-AUROC, whereas Macro-AUROC gives each mixed-label video one vote. Stability requires video-level resampling or a clustered-U-statistic variance analysis. 
+
+Coverage. Video-mean replacement, decomposition, and within-video permutation require aligned frame scores, limiting method coverage. This limitation is especially acute on Shang-haiTech, where only one author-released output meets the inclusion criteria in Table 4. The three benchmarks also do not span every domain or labeling protocol. Broader method and domain cover-age requires the same accounting and interventions. Protocols that sample same-video comparisons or score localized events fall outside our claim. 
+
+Annotation dependence. Within-AUROC and w are computed from frame-level annotations. Multi-round re-annotation of UCF-Crime and XD-Violence documents substantial annotator dis-agreement (Liu et al., 2025). For both benchmarks, disagreement is greater for event duration and end points than for start points. The decomposition identity and dilution bound hold exactly for any fixed labeling. This limitation therefore conditions the interpretation of Within-AUROC levels and gaps rather than the structural results. For UCF-Crime and XD-Violence, the endpoint-perturbation paired analysis in Appendix G recomputes method and video-constant-optimum Micro-AUROC un-der measured per-endpoint disagreement and shows that the capacity gap persists. The sensitivity of Within-AUROC levels and gaps remains unquantified and requires boundary-perturbation or multi-round-annotation evaluation (Liu et al., 2025). 
+
+# 8 CONCLUSION 
+
+We reformulate pooled frame evaluation as two estimands, namely same-video temporal ordering and cross-video ranking. Pair accounting exposes temporal dilution . On the audited benchmarks, video-constant controls and temporal interventions show that high pooled scores can be obtained and preserved without identifying anomalous moments. This does not make video-level triage use-less. It means that triage and localization must be named and evaluated separately. Under the same diffuse-mass condition, any pooled pairwise benchmark whose groups are the advertised capability unit inherits the same identity and dilution bound as the number of groups grows. We call on WS-VAD method authors and benchmark builders to report within-video and event-level performance alongside pooled metrics and to treat w as a benchmark design quantity, with the score-dependent quantities computable from already-released frame scores. 9AI U SE STATEMENT 
+
+In this work, we used generative AI tools to implement isolated utility functions in inference code, and these functions were verified and tested for correctness by the authors. Additionally, we used generative AI tools for proofreading, grammar checking, and typographical checks during writing. We have reviewed all AI-assisted work, and every reported number was produced by the determinis-tic evaluation pipeline of the Reproducibility Statement. We take responsibility for the final content of this work, including text, claims, and artifacts produced with the aid of generative AI. ETHICS STATEMENT 
+
+This work re-analyzes public surveillance-video benchmarks and introduces no new video collection or detector. REPRODUCIBILITY STATEMENT 
+
+The supplementary material contains code. Ground-truth-only quantities require no model execu-tion. We include analyses of author-released results only when aligned frame scores are available. 
+
+# REFERENCES 
+
+Anusha Acharya, Hitesh Sapkota, Qi Yu, and Xumin Liu. The road less seen: Segment exploration for weakly supervised video anomaly detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 14147–14156, 2026. Andra Acsintoae, Andrei Florescu, Mariana-Iuliana Georgescu, Tudor Mare, Paul Sumedrea, Radu Tudor Ionescu, Fahad Shahbaz Khan, and Mubarak Shah. Ubnormal: New benchmark for supervised open-set video anomaly detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 20143–20153, 2022. Giacomo D’ Amicantonio, Snehashis Majhi, Quan Kong, Lorenzo Garattoni, Gianpiero Francesca, Franc ¸ois Br´ emond, and Egor Bondarev. Mixture of experts guided by gaussian splatters matters: A new approach to weakly-supervised video anomaly detection. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pp. 10275–10285, 2025. Daniel Bolya, Sean Foley, James Hays, and Judy Hoffman. Tide: A general toolbox for identifying object detection errors. In European Conference on Computer Vision , pp. 558–573. Springer, 2020. Daniel Borkan, Lucas Dixon, John Li, Jeffrey Sorensen, Nithum Thain, and Lucy Vasserman. Lim-itations of pinned auc for measuring unintended bias. arXiv preprint arXiv:1903.02088 , 2019. Guilherme O Campos, Arthur Zimek, J¨ org Sander, Ricardo JGB Campello, Barbora Micenkov´ a, Erich Schubert, Ira Assent, and Michael E Houle. On the evaluation of unsupervised outlier detection: measures, datasets, and an empirical study. Data mining and knowledge discovery , 30 (4):891–927, 2016. Junxi Chen, Liang Li, Li Su, Zheng-jun Zha, and Qingming Huang. Prompt-enhanced multiple instance learning for weakly supervised video anomaly detection. In 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 18319–18329. IEEE, 2024. Yingxian Chen, Zhengzhe Liu, Baoheng Zhang, Wilton Fok, Xiaojuan Qi, and Yik-Chung Wu. Mgfn: Magnitude-contrastive glance-and-focus network for weakly-supervised video anomaly detection, 2022. URL https://arxiv.org/abs/2211.15098 .MyeongAh Cho, Taeoh Kim, Minho Shim, Dongyoon Wee, and Sangyoun Lee. Towards multi-domain learning for generalizable video anomaly detection. Advances in Neural Information Processing Systems , 37:50256–50284, 2024. Chengxi Chu, Nurul Japar, and Chee Kau Lim. Scene-dependent video anomaly detection: A bench-mark and weakly supervised model. Alexandria Engineering Journal , 133:477–486, 2025. 10 Chengxi Chu, Nurul Japar, and Chee Kau Lim. Reba: Residual mixture-of-experts and bidirec-tional video-text alignment for better fine-grained weakly supervised video anomaly detection. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings , pp. 8280–8290, June 2026. St´ ephan Cl´ emenc ¸on, G´ abor Lugosi, and Nicolas Vayatis. Ranking and empirical minimization of u-statistics. 2008. Tom Fawcett and Alexandru Niculescu-Mizil. Pav and the roc convex hull. Machine Learning , 68 (1):97–106, 2007. Ayush Ghadiya, Purbayan Kar, Vishal Chudasama, and Pankaj Wasnik. Cross-modal fusion and attention mechanism for weakly supervised video anomaly detection. In 2024 IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition Workshops (CVPRW) , pp. 1965–1974. IEEE, 2024. Derek Hoiem, Yodsawalai Chodpathumwan, and Qieyun Dai. Diagnosing error in object detectors. In European conference on computer vision , pp. 340–353. Springer, 2012. Yashika Jain, Ali Dabouei, and Min Xu. Cross-domain learning for video anomaly detection with limited supervision. In European Conference on Computer Vision , pp. 468–484. Springer, 2024. Wenping Jin, Li Zhu, and Jing Sun. Aligning first, then fusing: A novel weakly supervised multi-modal violence detection method. Knowledge-Based Systems , 322:113709, 2025. Hyekang Kevin Joo, Khoa Vo, Kashu Yamazaki, and Ngan Le. Clip-tsa: Clip-assisted temporal self-attention for weakly-supervised video anomaly detection. In 2023 IEEE International Conference on Image Processing (ICIP) , pp. 3230–3234. IEEE, 2023. Nathan Kallus and Angela Zhou. The fairness of risk scores beyond classification: Bipartite ranking and the xauc metric. Advances in neural information processing systems , 32, 2019. Hamza Karim, Keval Doshi, and Yasin Yilmaz. Real-time weakly supervised video anomaly de-tection. In 2024 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) , pp. 6834–6842. IEEE, 2024. Jiaxu Leng, Zhanjie Wu, Mingpi Tan, Yiran Liu, Ji Gan, Haosheng Chen, and Xinbo Gao. Beyond euclidean: Dual-space representation learning for weakly supervised video violence detection. 
+
+Advances in Neural Information Processing Systems , 37:17373–17397, 2024. Min Li, Jing Sang, Yuanyao Lu, and Lina Du. Wsvad-clip: Temporally aware and prompt learning with clip for weakly supervised video anomaly detection. Journal of Imaging , 11(10):354, 2025. Shuo Li, Fang Liu, and Licheng Jiao. Self-training multi-sequence learning with transformer for weakly supervised video anomaly detection. In Proceedings of the AAAI conference on artificial intelligence , volume 36, pp. 1395–1403, 2022. Wenlong Li, Yifei Xu, Yuan Rao, Zhenhua Wang, and Shuiguang Deng. Vadtree: Explainable training-free video anomaly detection via hierarchical granularity-aware tree. Advances in Neural Information Processing Systems , 38:148372–148404, 2026. Zihao Liu, Xiaoyu Wu, Wenna Li, Linlin Yang, and Shengjin Wang. Rethinking metrics and bench-marks of video anomaly detection. arXiv preprint arXiv:2505.19022 , 2025. Hui Lv, Chuanwei Zhou, Zhen Cui, Chunyan Xu, Yong Li, and Jian Yang. Localizing anomalies from weakly-labeled videos. IEEE transactions on image processing , 30:4505–4515, 2021. Hui Lv, Zhongqi Yue, Qianru Sun, Bin Luo, Zhen Cui, and Hanwang Zhang. Unbiased multiple instance learning for weakly supervised video anomaly detection. In 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 8022–8031. IEEE, 2023. Jingke Meng, Huilin Tian, Ge Lin, Jian-Fang Hu, and Wei-Shi Zheng. Audio-visual collaborative learning for weakly supervised video anomaly detection. IEEE Transactions on Multimedia ,2025. 11 Aditya Krishna Menon and Robert C Williamson. Bipartite ranking: a risk-theoretic perspective. 
+
+Journal of Machine Learning Research , 17(195):1–102, 2016. Nancy A Obuchowski. Nonparametric analysis of clustered roc curve data. Biometrics , pp. 567–578, 1997. Aniello Panariello, Angelo Porrello, Simone Calderara, and Rita Cucchiara. Consistency-based self-supervised learning for temporal anomaly localization. In European Conference on Computer Vision (ECCV) Workshops , 2022. Wenfeng Pang, Wei Xie, Qianhua He, Yanxiong Li, and Jichen Yang. Audiovisual dependency attention for violence detection in videos. IEEE Transactions on Multimedia , 25:4922–4932, 2023. Helei Qiu, Biao Hou, and Yanyu Cui. Learning opposite prompts for weakly supervised video anomaly detection. Knowledge-Based Systems , 324:113600, 2025. Bharathkumar Ramachandra and Michael Jones. Street scene: A new dataset and evaluation protocol for video anomaly detection. In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision , pp. 2569–2578, 2020. Nicolae-Catalin Ristea, Florinel-Alin Croitoru, Radu Tudor Ionescu, Marius Popescu, Fahad Shah-baz Khan, and Mubarak Shah. Self-distilled masked auto-encoders are efficient video anomaly detectors. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-nition , pp. 15984–15995, 2024. Inpyo Song and Jangwon Lee. Bounding-box trajectories matter for video anomaly detection. arXiv preprint arXiv:2605.21957 , 2026a. Inpyo Song and Jangwon Lee. Rethinking open-world video anomaly detection: Diagnosing defini-tion blindness. arXiv preprint arXiv:2607.20780 , 2026b. Inpyo Song, Sanghyeon Lee, Minjun Joo, and Jangwon Lee. Anomaly detection for people with visual impairments using an egocentric 360-degree camera. In IEEE/CVF Winter Conference on Applications of Computer Vision , 2025. Waqas Sultani, Chen Chen, and Mubarak Shah. Real-world anomaly detection in surveillance videos. In 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 6479– 6488. IEEE, 2018. Bo Sun, Junxi Chen, Zhe Wu, Feng Gao, Fan Yang, Li Su, and Yaowei Wang. Joint learning of general and diverse patterns with mixture of memory experts for weakly-supervised video anomaly detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 35638–35647, June 2026a. Shengyang Sun, Jiashen Hua, Junyi Feng, and Xiaojin Gong. Enhancing weakly supervised multi-modal video anomaly detection through text guidance. IEEE Transactions on Multimedia , 2026b. Wenwen Sun, Lin Cao, Yanan Guo, and Kangning Du. Multimodal and multiscale feature fusion for weakly supervised video anomaly detection. Scientific Reports , 2024. Weijun Tan, Qi Yao, and Jingfeng Liu. Overlooked video classification in weakly supervised video anomaly detection. In 2024 IEEE/CVF Winter Conference on Applications of Computer Vision Workshops (WACVW) , pp. 212–220. IEEE, 2024. Yu Tian, Guansong Pang, Yuanhong Chen, Rajvinder Singh, Johan W Verjans, and Gustavo Carneiro. Weakly-supervised video anomaly detection with robust temporal feature magnitude learning. In Proceedings of the IEEE/CVF international conference on computer vision , pp. 4975–4986, 2021. PH Van Elteren. On the combination of independent two sample tests of wilcoxon. Bull Inst Intern Staist , 37:351–361, 1960. 12 David van Klaveren, Mithat G¨ onen, Ewout W Steyerberg, and Yvonne Vergouwe. A new concor-dance measure for risk prediction models in external validation settings. Statistics in medicine ,35(23):4136–4152, 2016. Robin Vogel, Aur´ elien Bellet, and Stephan Cl´ emenc ¸on. Learning fair scoring functions: Bipartite ranking under roc-based fairness constraints. In International conference on artificial intelligence and statistics , pp. 784–792. PMLR, 2021. Jhih-Ciang Wu, He-Yen Hsieh, Ding-Jie Chen, Chiou-Shann Fuh, and Tyng-Luh Liu. Self-supervised sparse representation for video anomaly detection. In European Conference on Com-puter Vision , pp. 729–745. Springer, 2022a. Peng Wu, Jing Liu, Yujia Shi, Yujia Sun, Fangtao Shao, Zhaoyang Wu, and Zhiwei Yang. Not only look, but also listen: Learning multimodal violence detection under weak supervision. In 
+
+European conference on computer vision , pp. 322–339. Springer, 2020. Peng Wu, Xiaotao Liu, and Jing Liu. Weakly supervised audio-visual violence detection. IEEE Transactions on Multimedia , 25:1674–1685, 2022b. Peng Wu, Xuerong Zhou, Guansong Pang, Zhiwei Yang, Qingsen Yan, Peng Wang, and Yan-ning Zhang. Weakly supervised video anomaly detection and localization with spatio-temporal prompts. In Proceedings of the 32nd ACM International Conference on Multimedia , pp. 9301– 9310, 2024a. Peng Wu, Xuerong Zhou, Guansong Pang, Lingru Zhou, Qingsen Yan, Peng Wang, and Yanning Zhang. Vadclip: Adapting vision-language models for weakly supervised video anomaly detec-tion. In Proceedings of the AAAI conference on artificial intelligence , volume 38, pp. 6074–6082, 2024b. Rong Xu, Runqi Wang, Yingjun Zhang, Tao Tao, Xiaomeng Li, and Liping Jing. Tlma: Mitigating the impact of weakly labeled information for video anomaly detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 35597–35606, 2026. Muchao Ye, Weiyang Liu, and Pan He. Vera: Explainable video anomaly detection via verbalized learning of vision-language models. In 2025 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 8679–8688. IEEE, 2025. Wenti Yin, Huaxin Zhang, Xiang Wang, Yuqing Lu, Yicheng Zhang, Bingquan Gong, Jialong Zuo, Li Yu, Changxin Gao, and Nong Sang. Learning to tell apart: Weakly supervised video anomaly detection via disentangled semantic alignment. In Proceedings of the AAAI Conference on Artifi-cial Intelligence , volume 40, pp. 12027–12035, 2026. Jiashuo Yu, Jinyu Liu, Ying Cheng, Rui Feng, and Yuejie Zhang. Modality-aware contrastive in-stance learning with self-distillation for weakly-supervised audio-visual violence detection. In 
+
+Proceedings of the 30th ACM international conference on multimedia , pp. 6278–6287, 2022. Luca Zanella, Willi Menapace, Massimiliano Mancini, Yiming Wang, and Elisa Ricci. Harnessing large language models for training-free video anomaly detection. In 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 18527–18536. IEEE, 2024. Chen Zhang, Guorong Li, Yuankai Qi, Shuhui Wang, Laiyun Qing, Qingming Huang, and Ming-Hsuan Yang. Exploiting completeness and uncertainty of pseudo labels for weakly supervised video anomaly detection. In 2023 IEEE/CVF Conference on Computer Vision and Pattern Recog-nition (CVPR) , pp. 16271–16280. IEEE, 2023. Menghao Zhang, Yiyan Zhu, Pengfei Ren, Haifeng Sun, Qi Qi, Zirui Zhuang, Huazheng Wang, Lei Zhang, Jianxin Liao, and Jingyu Wang. Fine-vad: Towards fine-grained video anomaly detec-tion via progressive cross-granularity learning. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 35514–35523, 2026. Yaxin Zhao, Yang Wang, Wenya Guo, Sihan Xu, Xiangrui Cai, Xi Lin, Ying Zhang, and Xiaojie Yuan. Learning from noisy supervision: A denoising-debiasing framework for weakly supervised video anomaly detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 21326–21335, 2026. 13 Jia-Xing Zhong, Nannan Li, Weijie Kong, Shan Liu, Thomas H Li, and Ge Li. Graph convolu-tional label noise cleaner: Train a plug-and-play action classifier for anomaly detection. In 2019 IEEE/CVF conference on computer vision and pattern recognition (CVPR) , pp. 1237–1246. IEEE, 2019. Hang Zhou, Junqing Yu, and Wei Yang. Dual memory units with uncertainty regulation for weakly supervised video anomaly detection. In Proceedings of the AAAI conference on artificial intelli-gence , volume 37, pp. 3769–3777, 2023. Yixuan Zhou, Yi Qu, Xing Xu, Fumin Shen, Jingkuan Song, and Heng Tao Shen. Batchnorm-based weakly supervised video anomaly detection. IEEE Transactions on Circuits and Systems for Video Technology , 34(12):13642–13654, 2024. 
+
+# A PROOFS FOR AUROC ATTRIBUTION 
+
+Tie-aware pair contribution. For scores x and y, define 
+
+τ (x, y ) = 1[x > y ] + 12 1[x = y].
+
+Let Pi and Ni be the positive- and negative-frame index sets of video i. Micro-AUROC is 
+
+Micro -AUROC = 1
+
+AN 
+
+X
+
+> i
+
+X
+
+> t∈Pi
+
+X
+
+> j
+
+X
+
+> u∈Nj
+
+τ (sit , s ju ).
+
+Recall that M = {i : ai > 0 and ni > 0} contains the mixed-label videos. Videos outside M have no same-video positive–negative pairs, but their frames remain in the cross-video terms above. 
+
+Proof of Proposition 1. Partition the outer sum into terms with i = j and terms with i̸ = j. Define 
+
+Swithin = X
+
+> i∈M
+
+X
+
+> t∈Pi
+
+X
+
+> u∈Ni
+
+τ (sit , s iu ), Scross = X
+
+> i̸=j
+
+X
+
+> t∈Pi
+
+X
+
+> u∈Nj
+
+τ (sit , s ju ).
+
+Under the conditions of Proposition 1, the corresponding pair counts are W = P 
+
+> i∈M
+
+aini > 0 and 
+
+AN − W > 0. Therefore 
+
+Within -AUROC = Swithin 
+
+W , Cross -AUROC = Scross 
+
+AN − W ,
+
+and 
+
+Micro -AUROC = Swithin + Scross 
+
+AN = WAN Within -AUROC + AN − WAN Cross -AUROC .
+
+This is Equation 1 with w = W/ (AN ). At the excluded boundaries, one normalized component is undefined. If W = 0 , Micro-AUROC reduces to Cross-AUROC. If AN − W = 0 , it reduces to Within-AUROC. 
+
+Proof of Equation 2 and Corollary 1. Since p+ and p− are probability vectors, 
+
+w = X
+
+> i
+
+p+ 
+
+> i
+
+p− 
+
+> i
+
+≤ ∥ p+∥∞
+
+X
+
+> i
+
+p− 
+
+> i
+
+= ∥p+∥∞.
+
+Exchanging the two classes gives w ≤ ∥ p−∥∞, which proves Equation 2. If no video captures more than C+/V of the positive frames or more than C−/V of the negative frames, then w ≤
+
+min( C+, C −)/V .For the exact replication statement, make k disjoint copies of every video. Each copy contributes 
+
+aini same-video pairs, so the numerator of w becomes k P 
+
+> i
+
+aini. The total positive and negative frame counts each grow by k, so the denominator becomes k2AN . Hence the new weight is w/k .Finally, with Cross-AUROC fixed, changing Within -AUROC from 0.5 to 1 changes Micro-AUROC by w(1 − 0.5) = w/ 2. This proves Corollary 1. 14 Proof of Proposition 2. A video-constant scorer ties every positive–negative pair within a video, so all members of the family have Within -AUROC = 0 .5. Consider two distinct videos i and j. If 
+
+ci > c j , the ordering correctly ranks the ainj pairs whose positive frame is in i and negative frame is in j. Reversing the order instead correctly ranks aj ni pairs. Therefore placing i above j is weakly preferable exactly when 
+
+ainj ≥ aj ni.
+
+For nonempty videos, this condition is equivalent to 
+
+ai
+
+ai + ni
+
+≥ aj
+
+aj + nj
+
+.
+
+The pairwise preferences are thus induced by one scalar and are transitive. Sorting videos by anomaly fraction maximizes every pairwise exchange and therefore the total number of concordant cross-video pairs. Equal fractions can be tied or ordered arbitrarily without changing AUROC. 
+
+# B PROTOCOL AND EVALUATION -AXIS AUDIT 
+
+All analyses use the official test ordering, video boundaries, and frame labels for each benchmark. The mean-pool probes, controlled grid, video-constant controls, and audit of official outputs are evaluated on these same frame populations. Whenever frame scores are available, we recompute the reported quantities from those scores rather than from rounded paper values. We verify that every mean-pool probe output matches the benchmark frame count, is constant within each video, and reproduces its stored Micro-AUROC or AP. This fixes the evaluation axis . It does not make every comparison representation-matched. CLIP and I3D probes remain on their respec-tive feature axes, and we never choose the better representation after observing test performance. Table 5: AUC A still assigns 98 .1–99 .8% of its retained pair mass to cross-video comparisons. 
+
+“Cross mass kept” is the fraction of the original cross-video pair count left after deleting all-normal videos. The final column is the video-constant AUC A optimum on the retained videos. XD-Violence values use auxiliary Micro-AUROC.                        
+
+> Benchmark Videos kept Same-video pair share Micro →AUC ACross mass kept Video-constant optimum ShanghaiTech 44 /199 0.14% →1.90% 7.2% 77 .68
+> XD-Violence 500 /800 0.07% →0.24% 30 .1% 84 .92
+> UCF-Crime 140 /290 0.39% →1.05% 36 .6% 80 .87
+
+Training protocol. The mean-pool probe is trained on the standard training pool with video labels only. The training configuration uses BCE, Adam with learning rate 10 −3, batch size 128, 2,000 updates, and final-iterate reporting. There is no frame-label input, validation split, checkpoint selec-tion, or test-time fitting. Pooling is performed before the head, so the model receives one vector per video and cannot recover segment order. 
+
+Tie convention. All AUROCs use mid-ranks, so a tied positive–negative pair contributes 0.5. A video-constant score gives every mixed-label video’s per-video AUROC a value of 0.5, so Macro-AUROC and Within-AUROC are both 0.5. Pure-label videos have no defined per-video AUROC, so Macro-AUROC excludes them. They also contribute no pair to Within-AUROC. This equality provides a deterministic validation check. We also verify that every video-constant output has zero within-video variation. 
+
+Validation of official outputs. We call a frame-score vector an official output when it comes from the source paper’s public release. For each official output, we first reproduce the source paper’s metric on the corresponding feature and evaluation axes. Only validated official outputs enter the audit. 15 C HOW MUCH CAN THE VIDEO -CONSTANT FAMILY ATTAIN ?
+
+One-bit video-composition control. This analytic control assigns one to every frame of a video containing any anomaly and zero to every frame of an all-normal video. If N anom  
+
+> −
+
+is the number of negative frames inside anomaly-containing videos and N− is the total negative-frame count, every positive has score one and 
+
+AUROC binary = 1 − 12
+
+N anom 
+
+> −
+
+N−
+
+.
+
+This gives 96.32%, 84.93%, and 81.57% Micro-AUROC on ShanghaiTech, XD-Violence, and UCF-Crime. It uses test video labels as an analytic composition control, not as a trainable method. The mean-pool probe is the order-invariant control in the main text. Three additional heads test how much video classification improves when temporal structure is available internally while the output remains one scalar per video. The sequence-linear head maps a fixed 32-position sequence to one logit. The bi-GRU and Transformer encode that sequence and pool to one logit. These three are not temporally blind, but none can emit a localized output. For every arm, the scalar is replicated over the frames of the corresponding video before evaluation. Table 6: Video-constant learners reach up to 70 .73 AP on XD-Violence, above chance but below the 86 .75 label-derived reference. Values are mean ± sample SD over three seeds. The AP chance level is 23 .08% , and the reference is an achieved lower bound on video-constant capacity.             
+
+> Features mean-pool sequence-linear bi-GRU Transformer CLIP 65 .36 ±0.09 70 .73 ±0.04 69 .76 ±0.47 57 .03 ±6.44
+> I3D 67 .24 ±0.04 65 .92 ±0.48 69 .68 ±2.23 56 .47 ±7.29
+
+Main-paper Table 2 reports Micro-AUROC and its exact decomposition. Table 6 keeps XD-Violence’s official AP separate because AP does not admit the pair decomposition. Bold values are selected only within a fixed representation. 
+
+# D SENSITIVITY TO THE REPLACEMENT VALUE 
+
+The main intervention is fixed to the video mean. For sensitivity analysis we additionally compute the median, maximum, and top-5/10 /20 /50% means. Choosing among these using the test score would be test-set selection, so the main text never reports the per-run maximum as its estimate. Table 7: Choosing the best of seven replacement values raises the Micro-AUROC retention envelope from 98 .6% to 99 .2% . The best summary is selected separately for each run using its test score. It is a family envelope and not an unbiased estimate.                    
+
+> Summary nMedian Minimum Replaced >original Chance-margin retention ≥90%
+> Pre-specified mean 72 98.6% 78 .1% 24/72 69/72 Best of 7 72 99.2% 92 .4% 29 /72 72/72
+
+Table 8: AP retains a median 94.1% of its chance margin after video-mean replacement on XD-Violence’s official AP axis. The replacement uses the pre-specified video mean. Chance-margin retention uses frame prevalence ( 23 .08% ) as chance, and AP remains separate from every AUROC table.                 
+
+> Population Summary nMedian Minimum Replaced >original Chance-margin retention ≥90%
+> XD-Violence AP mean 24 94.1% 82 .6% 3/24 16 /24
+
+16 Main-paper Table 3 gives the benchmark-level results for video-mean replacement. Table 7 separates that estimate from the best-of-seven family envelope. The 99.2%, 72/72, and 29 /72 values cannot be substituted for the pre-specified video-mean replacement result. On the separate official XD-Violence AP axis, Table 8 shows median AP chance-margin retention of 94.1%. AP chance-margin retention is lower than Micro-AUROC chance-margin retention but remains at least 82 .6% across the controlled runs. Chance-margin retention is Rmean (M ) in Equation 4. AUROC uses chance 0.5. XD-Violence AP uses the frame prevalence, 0.2308 . Micro-AUROC values and those after video-mean replacement are plotted on a common 20–100 scale in Figure 3. Chance-margin retention ratios remain in the tables because their denominators become unstable near chance. 
+
+# E DOES THE RESULT SURVIVE WITHIN -VIDEO PERMUTATION ?
+
+Video-mean replacement removes all within-video score variation. As a complementary interven-tion, we assign each video’s score multiset uniformly at random to that video’s frame positions. This preserves the complete per-video score histogram while randomizing its alignment with the tempo-ral labels. The expected Within-AUROC is exactly 0.5. We compute the expected Micro-AUROC analytically rather than by Monte Carlo. Each score in video i receives positive weight ai/T i and negative weight ni/T i, followed by one tie-aware weighted rank computation. Across the 14 official frame-score outputs, the median exact expected chance-margin retention is 
+
+89 .5% , with a range of 81 .7–96 .0% (Table 9). This retention is lower than under video-mean re-placement. It supports the same qualitative conclusion under an intervention that preserves every video’s score histogram rather than collapsing it. Table 9: Every official output has at least 81 .7% chance-margin retention under within-video permutation. The expected Micro-AUROC is computed exactly under uniform reassignment of each video’s persisted score multiset. The intervention preserves the score histogram, uses no Monte Carlo samples, and reports chance-margin retention.                                                           
+
+> Method Benchmark Micro-AUROC Expected Micro-AUROC after within-video permutation Chance-margin retention S3R ShanghaiTech 97 .395 95 .508 96 .0%
+> DSANet XD-Violence 95 .403 90 .701 89 .6%
+> BN-WVAD XD-Violence 94 .715 90 .844 91 .3%
+> VadCLIP XD-Violence 94 .684 90 .801 91 .3%
+> UR-DMU XD-Violence 94 .018 88 .180 86 .7%
+> MGFN XD-Violence 92 .885 88 .432 89 .6%
+> VADTree XD-Violence 90 .491 86 .162 89 .3%
+> LAVAD XD-Violence 85 .404 82 .832 92 .7%
+> DSANet UCF-Crime 89 .437 82 .228 81 .7%
+> VadCLIP UCF-Crime 88 .013 83 .232 87 .4%
+> UR-DMU UCF-Crime 86 .961 80 .416 82 .3%
+> S3R UCF-Crime 85 .989 80 .834 85 .7%
+> VADTree UCF-Crime 84 .742 80 .273 87 .1%
+> LAVAD UCF-Crime 80 .284 77 .218 89 .9%
+
+# F PAIR -MASS CONCENTRATION AND COMPLETE MICRO -AUROC RECORDS 
+
+Equation 1 requires pair weights aini. Let αi = aini/W for i ∈ M and define 
+
+Neff = 1
+
+P 
+
+> i∈M
+
+α2
+
+> i
+
+. (5) This inverse-concentration count is the number of equally contributing videos that would produce the same pair-mass concentration. It is not a count of statistically independent videos and does not estimate the variance of Within-AUROC. 17 Table 10: The pair mass underlying Within-AUROC is concentrated in fewer videos than Vmix 
+
+suggests. Vmix is the number of mixed-label videos. The final column reports the equivalent equally weighted count as a fraction of that population.              
+
+> Benchmark Vmix Neff Neff /V mix
+> ShanghaiTech 43 28 .365 .8%
+> XD-Violence 475 43 .79.2%
+> UCF-Crime 140 18 .713 .4%
+
+Macro-AUROC gives each mixed-label video one vote. Within-AUROC instead weights video i by 
+
+aini and is the term required by Equation 1. Across the controlled 72-run grid, the two summaries differ by 3.34 points on average and by as much as 10 .88 points. Main-paper Table 4 gives both values for every official frame-score output. These differences show why the summaries should be reported separately. They do not change which weighting closes the exact Micro-AUROC decom-position. 
+
+# G DOES ANNOTATION UNCERTAINTY CLOSE THE CAPACITY GAP ?
+
+The paired analysis is supplementary to Table 11. Each draw perturbs anomaly endpoints and re-computes both the method Micro-AUROC and the video-constant Micro-AUROC optimum on that same ground truth. The reported variable is their difference, not a confidence interval for Micro-AUROC at either protocol stage, Cross-AUROC, or Within-AUROC. UCF-Crime and XD-Violence use measured, asymmetric per-endpoint disagreements. ShanghaiTech has no re-annotation study and therefore uses a weaker uniform ±1s instrument. Each combination uses 400 draws. The analysis covers 38 intervals: 24 controlled cells use one shared perturbation draw for all three seed score vectors, average the three method Micro-AUROC values, and then subtract the video-constant Micro-AUROC optimum. The 14 official rows use their single persisted score vector. All 14 intervals for official outputs exclude zero (Table 12). The tightest such interval is DSANet on XD-Violence, with mean gap 0.108 points and interval [0 .044 , 0.175] . This supports the claim for recomputed official outputs. It does not extend to reported-only points, for which no frame-score vector is available. 
+
+# H WHAT TRANSFERS TO AVERAGE PRECISION ?
+
+Average precision does not admit the AUROC pair decomposition or anomaly-fraction sorting theo-rem. We optimize over video orderings by adjacent-swap descent from three deterministic candidate orderings (likelihood ratio, video precision, and positive-frame count). The achieved video-constant AP is 86 .75% against the AP chance level of 23 .08% . Because this is a feasible ordering rather than a proof of global optimality, it is a certified lower bound on the best video-constant AP, not an exact ceiling. The video-constant family AP results are in Table 6. The audit of official outputs compares original AP with AP after video-mean replacement in Table 13. Six of seven official outputs are below the achieved bound. DSANet recomputes to 86 .96% , 0.21 points above it, which is unresolved rather than a violation. No endpoint-perturbation distribution is currently available for this AP lower bound. 
+
+# I CONTROLLED POPULATION AND SEED DISCLOSURE 
+
+The controlled 72-run Micro-AUROC grid contains four training objectives (Sultani, RTFM, CLIP-TSA, BN-WVAD), two representations (CLIP and I3D), three benchmarks, and three seeds per cell. Two deterministic collapses were each replaced once by the next unused seed under a pre-specified rule. We allowed no rerolls or test-performance-based seed selection. 18 Table 11: Micro-AUROC after video-mean replacement and Cross-AUROC remain close to the Micro-AUROC, while Within-AUROC separates systems with similar Micro-AUROC values. 
+
+Video-mean replacement maps every score in a video to that video’s mean. Cross-AUROC and Within-AUROC are computed before replacement. Cross-AUROC is the complementary term in Equation 1. Rows marked † are controlled means over three seeds. Other rows are official outputs. All values are percentages. 
+
+Method Benchmark Features Micro-AUROC Micro-AUROC after video-mean replacement Cross-AUROC Within-AUROC Sultani †
+
+ShanghaiTech CLIP 97 .24 96 .87 97 .29 66 .24 
+
+Sultani † I3D 85 .00 86 .16 85 .01 78 .43 
+
+RTFM † CLIP 96 .05 96 .32 96 .13 44 .99 
+
+RTFM † I3D 93 .14 94 .01 93 .17 75 .45 
+
+CLIP-TSA † CLIP 97 .74 95 .93 97 .76 82 .59 
+
+CLIP-TSA † I3D 89 .63 93 .78 89 .65 77 .03 
+
+BN-WVAD † CLIP 96 .61 96 .27 96 .66 61 .37 
+
+BN-WVAD † I3D 92 .74 92 .27 92 .77 70 .90 
+
+S3R I3D 97 .39 95 .75 97 .42 82 .38 
+
+Sultani †
+
+XD-Violence CLIP 89 .72 90 .68 89 .73 78 .58 
+
+Sultani † I3D 87 .58 89 .79 87 .58 79 .11 
+
+RTFM † CLIP 90 .21 89 .86 90 .22 76 .97 
+
+RTFM † I3D 88 .56 89 .65 88 .57 79 .33 
+
+CLIP-TSA † CLIP 89 .59 89 .46 89 .60 74 .15 
+
+CLIP-TSA † I3D 88 .82 88 .83 88 .82 79 .33 
+
+BN-WVAD † CLIP 90 .60 88 .84 90 .61 82 .84 
+
+BN-WVAD † I3D 88 .65 86 .99 88 .65 79 .52 
+
+DSANet CLIP 95 .40 92 .29 95 .41 85 .48 
+
+VadCLIP CLIP 94 .68 90 .84 94 .69 84 .26 
+
+BN-WVAD I3D 94 .71 92 .24 94 .72 86 .36 
+
+UR-DMU I3D 94 .02 91 .67 94 .02 85 .44 
+
+MGFN I3D 92 .88 90 .85 92 .89 81 .84 
+
+VADTree VLM 90 .49 88 .62 90 .50 80 .80 
+
+LAVAD VLM 85 .40 85 .32 85 .42 64 .78 
+
+Sultani †
+
+UCF-Crime CLIP 82 .98 80 .08 83 .04 68 .11 
+
+Sultani † I3D 80 .08 78 .89 80 .17 57 .30 
+
+RTFM † CLIP 79 .91 75 .63 79 .97 64 .33 
+
+RTFM † I3D 81 .39 79 .48 81 .48 58 .83 
+
+CLIP-TSA † CLIP 84 .03 80 .77 84 .10 65 .60 
+
+CLIP-TSA † I3D 79 .94 79 .58 80 .05 52 .30 
+
+BN-WVAD † CLIP 82 .84 80 .04 82 .89 70 .45 
+
+BN-WVAD † I3D 80 .19 78 .16 80 .27 59 .51 
+
+DSANet CLIP 89 .44 85 .34 89 .50 73 .72 
+
+VadCLIP CLIP 88 .01 84 .44 88 .07 72 .93 
+
+UR-DMU I3D 86 .96 83 .14 87 .03 68 .30 
+
+S3R I3D 85 .99 82 .20 86 .08 62 .97 
+
+VADTree VLM 84 .74 82 .10 84 .78 74 .17 
+
+LAVAD VLM 80 .28 79 .66 80 .36 61 .75 
+
+The ShanghaiTech replacement improves Micro-AUROC relative to the collapsed seed while reduc-ing its Within-AUROC. Including it therefore does not favor the localization result or change the direction of the Within-AUROC comparison. 
+
+# J METRIC REPORTING IN WSVAD METHODS 
+
+We survey 42 WSVAD methods that report results on UCF-Crime, XD-Violence, or the weakly supervised ShanghaiTech split and were published at peer-reviewed venues between 2018 and 2026. 19 Table 12: All 14 official frame-score outputs remain below the video-constant Micro-AUROC optimum under paired annotation perturbation. Each of 400 draws recomputes the optimum and method Micro-AUROC on the same perturbed ground truth. The gap is optimum minus method in percentage points. UCF-Crime and XD-Violence use measured asymmetric endpoint disagreement. ShanghaiTech uses a weaker uniform ±1s instrument.                                                            
+
+> Method Benchmark Mean gap (pp) 95% interval (pp) S3R ShanghaiTech 1.001 [0 .719 ,1.280]
+> DSANet XD-Violence 0.108 [0 .044 ,0.175]
+> BN-WVAD XD-Violence 0.815 [0 .743 ,0.882]
+> VadCLIP XD-Violence 0.851 [0 .783 ,0.914]
+> UR-DMU XD-Violence 1.565 [1 .474 ,1.656]
+> MGFN XD-Violence 2.595 [2 .511 ,2.674]
+> VADTree XD-Violence 5.177 [5 .069 ,5.270]
+> LAVAD XD-Violence 10 .078 [9 .938 ,10 .222]
+> DSANet UCF-Crime 4.467 [3 .855 ,5.264]
+> VadCLIP UCF-Crime 5.788 [5 .139 ,6.647]
+> UR-DMU UCF-Crime 7.271 [6 .390 ,8.186]
+> S3R UCF-Crime 8.055 [7 .246 ,8.873]
+> VADTree UCF-Crime 9.097 [8 .113 ,10 .378]
+> LAVAD UCF-Crime 13 .505 [12 .378 ,14 .837]
+
+Table 13: All seven official XD-Violence outputs have at least 81 .9% AP chance-margin reten-tion after video-mean replacement. The last column subtracts the original AP from an achieved video-constant AP lower bound. It is not a certified ceiling gap, so a negative value remains unre-solved. The AP chance level is frame prevalence ( 23 .08% ).                                        
+
+> Method Features AP (%) Chance-margin retention Achieved lower bound −
+> original AP Original After video-mean replacement DSANet CLIP 86 .96 77 .43 85 .1% −0.21
+> BN-WVAD I3D 84 .93 76 .13 85 .8% +1 .82
+> VadCLIP CLIP 84 .52 73 .37 81 .9% +2 .23
+> UR-DMU I3D 81 .65 73 .21 85 .6% +5 .10
+> MGFN I3D 80 .12 73 .22 87 .9% +6 .63
+> VADTree VLM 67 .95 61 .92 86 .6% +18 .79
+> LAVAD VLM 62 .05 60 .15 95 .1% +24 .70
+
+A metric counts only when the paper reports numbers for its own method. The surveyed papers name the same statistics differently. We map frame-level AUC to Micro-AUROC, anomaly-subset variants such as AUC sub and AnoAUC to AUC A, and per-video averaging to Macro-AUROC. Table 14 reports how many surveyed methods report each metric family. The surveyed pool comprises the methods of Sultani et al. (2018); Zhong et al. (2019); Wu et al. (2020); Tian et al. (2021); Lv et al. (2021); Li et al. (2022); Wu et al. (2022a;b); Yu et al. (2022); Panariello et al. (2022); Zhou et al. (2023); Chen et al. (2022); Lv et al. (2023); Zhang et al. (2023); Joo et al. (2023); Pang et al. (2023); Zhou et al. (2024); Wu et al. (2024b); Chen et al. (2024); Karim et al. (2024); Tan et al. (2024); Ghadiya et al. (2024); Wu et al. (2024a); Jain et al. (2024); Cho et al. (2024); Leng et al. (2024); Sun et al. (2024); Amicantonio et al. (2025); Ye et al. (2025); Qiu et al. (2025); Jin et al. (2025); Li et al. (2025); Meng et al. (2025); Chu et al. (2025); Xu et al. (2026); Acharya et al. (2026); Zhao et al. (2026); Sun et al. (2026a); Zhang et al. (2026); Yin et al. (2026); Chu et al. (2026); Sun et al. (2026b). Video-level classification appears only as an ablation or tuning measurement (Lv et al., 2021; Panariello et al., 2022; Tan et al., 2024) and never as a headline benchmark result. 20 Table 14: None of the 42 surveyed WSVAD methods reports Macro-AUROC, while 41 report pooled Micro-AUROC or AP. Counts in parentheses are reports confined to ablation or analysis tables. FAR denotes a false-alarm rate on normal videos at a fixed operating threshold. Metric Reported Methods Pooled Micro-AUROC or AP 41 /42 All surveyed methods except Zhang et al. (2026) AUC A 7 (+3) Lv et al. (2021; 2023); Wu et al. (2024b); Amicantonio et al. (2025); Qiu et al. (2025); Xu et al. (2026); Chu et al. (2026); ablation only in Zhou et al. (2023; 2024); Acharya et al. (2026) Macro-AUROC 0 —Event-level mAP at temporal IoU 6 Wu et al. (2022b; 2024b); Li et al. (2025); Zhang et al. (2026); Yin et al. (2026); Chu et al. (2026) FAR at a fixed operating point 4 (+2) Sultani et al. (2018); Zhong et al. (2019); Wu et al. (2022b); Pang et al. (2023); ablation only in Zhou et al. (2023); Xu et al. (2026) Five reporting decisions deserve explicit notes. Zhang et al. (2026) report only event-level mAP and no pooled metric. Acharya et al. (2026) replace Micro-AUROC with AP and recall at fixed false-positive rates on both benchmarks. Ye et al. (2025) and Cho et al. (2024) report Micro-AUROC on XD-Violence instead of the official AP. Li et al. (2025) declare AUC A and Meng et al. (2025) declare Micro-AUROC without reporting a number, and both are counted as not reported. Wu et al. (2024a) report a spatial localization score under the name TIoU, which we do not count as temporal event-level evaluation. Two reporting practices moved over time. FAR appears in main comparisons only from 2018 to 2023 (Sultani et al., 2018; Zhong et al., 2019; Wu et al., 2022b; Pang et al., 2023), and later occurrences are ablation-only. Event-level mAP emerges in 2022 and expands from 2024 to 2026, and two of the seven CVPR 2026 entries in the pool abandon or demote pooled scoring (Zhang et al., 2026; Acharya et al., 2026). 21

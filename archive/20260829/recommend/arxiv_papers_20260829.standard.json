@@ -1,110 +1,53 @@
 {
   "mode": "standard",
-  "generated_at": "2026-08-29T03:05:39.907016+00:00",
+  "generated_at": "2026-08-29T22:21:51.696225+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
-    "deep_divecandidates": 1,
+    "deep_divecandidates": 0,
     "deep_cap": 6,
-    "deep_selected": 1,
+    "deep_selected": 0,
     "quick_candidates": 1,
     "quick_skim_target": 11,
     "quick_selected": 1
   },
-  "deep_dive": [
-    {
-      "id": "2608.27345v1",
-      "source": "arxiv",
-      "title": "PAWBench: How Far Are We from Probabilistically Aligned World Modeling?",
-      "abstract": "Recent video generation models are increasingly framed as world models. Many physical processes can unfold in more than one valid way. Therefore, a world model should reproduce not only a plausible trajectory, but also the distribution of possible behaviors under the same initial observation and action. We call this distribution-level requirement probabilistic alignment. However, existing evaluations largely assess individual-video plausibility and do not test whether repeated generations recover the correct distribution. This raises a central question: how far are current video generators from probabilistically aligned world modeling? To answer it, we formalize probabilistic alignment as a distributional criterion for world models and introduce PAWBench, a benchmark for evaluating video generators as stochastic samplers of world dynamics. We further introduce PAWEval, an outcome-level protocol that converts repeated video rollouts into empirical distributions over possible physical behaviors. Across 50 scenarios and eleven current systems, no model consistently matches the reference probabilities while recovering the range of valid behaviors. Having established this gap, we test whether language prompts, initial noise sampling, or model training can reshape the model's predictive distribution. We believe our work can serve as a foundation for future efforts to move towards probabilistically aligned world modeling.",
-      "authors": [
-        "Yuandong Pu",
-        "Le Zhuo",
-        "Sayak Paul",
-        "Gabriel Jorge Menezes",
-        "Avram Đorđević",
-        "Shiyang Li",
-        "Yifan Zhou",
-        "Bin Fu",
-        "Wenlong Zhang",
-        "Junjun He",
-        "Yu Qiao",
-        "Yihao Liu",
-        "Jingbo Xing",
-        "Xi Chen"
-      ],
-      "primary_category": "cs.CV",
-      "categories": [
-        "cs.CV",
-        "cs.AI"
-      ],
-      "published": "2026-08-27T16:46:38+00:00",
-      "link": "https://arxiv.org/pdf/2608.27345v1",
-      "tags": [
-        "keyword:vgen-metrics",
-        "query:vgen-metrics"
-      ],
-      "llm_score": 9.0,
-      "llm_evidence_en": "Proposes PAWBench benchmark for evaluating probabilistic alignment of video generation models",
-      "llm_evidence_cn": "提出PAWBench基准，评估视频生成模型的概率对齐能力",
-      "llm_evidence": "提出PAWBench基准，评估视频生成模型的概率对齐能力",
-      "canonical_evidence": "提出PAWBench基准，评估视频生成模型的概率对齐能力",
-      "llm_tldr_en": "PAWBench formalizes probabilistic alignment for world models and benchmarks video generators on distribution recovery, revealing major gaps in existing evaluation methods.",
-      "llm_tldr_cn": "现有视频生成评估只关注单个视频的合理性，无法检验重复生成是否恢复正确的行为分布。为回答当前视频生成模型离概率对齐世界建模还有多远，该文形式化概率对齐这一分布级标准，并构建PAWBench基准。实验显示现有模型在分布恢复上仍有明显差距，为视频生成作为世界模型的评估提供了分布级的新视角和工具。",
-      "llm_tldr": "现有视频生成评估只关注单个视频的合理性，无法检验重复生成是否恢复正确的行为分布。为回答当前视频生成模型离概率对齐世界建模还有多远，该文形式化概率对齐这一分布级标准，并构建PAWBench基准。实验显示现有模型在分布恢复上仍有明显差距，为视频生成作为世界模型的评估提供了分布级的新视角和工具。",
-      "llm_tags": [
-        "query:vgen-metrics"
-      ],
-      "matched_query_tag": "query:vgen-metrics",
-      "matched_query_text": "evaluation metrics for video generation models",
-      "matched_requirement_id": "req-9",
-      "selection_source": "fresh_fetch"
-    }
-  ],
+  "deep_dive": [],
   "quick_skim": [
     {
-      "id": "2608.27328v1",
+      "id": "2608.21854v1",
       "source": "arxiv",
-      "title": "R2M-Bench: Evaluating Revisit Memory via Relative Consistency in Interactive Video World Models",
-      "abstract": "High similarity between first-visit and return frames does not necessarily show that a video world model remembered the scene; the intervening rollout may simply have changed very little. This ambiguity makes absolute revisit scores sensitive to rendering stability, repetitive content, and failed motion. We introduce \\emph{R2M-Bench} (\\textbf{R}elative \\textbf{R}evisit \\textbf{M}emory Benchmark), a benchmark of observable revisit-selective consistency. For every detected return, R2M-Bench compares the revisit pair with two controls from the same rollout: a gap-matched non-revisit pair that measures generic temporal stability and a short-range pair that estimates short-horizon consistency. These comparisons produce \\emph{MemoryGain} (MG), the revisit advantage over the temporal baseline, and the \\emph{Normalized Memory Ratio} (NMR), which normalizes this advantage by the short-to-baseline dynamic range. R2M-Bench combines 100 reference scenes with three leave-and-return trajectories to form 300 instances and evaluates appearance fidelity, scene and object identity, local geometry, and persistent state. Across seven action-conditioned video world models, Overall NMR correlates with human consistency judgments at Spearman's $ρ=0.547$ (95\\% CI $[0.45,0.63]$). Its within-model correlation magnitude with generated motion is $0.072$, compared with $0.207$ for raw revisit similarity, indicating that relative calibration substantially reduces the slow-motion shortcut. DreamX-World-Memo achieves the highest Overall NMR among the evaluated video models. Together, these results support same-rollout relative calibration as a practical way to distinguish revisit-specific consistency from generic temporal stability.",
+      "title": "Frame-Level Evaluation in Weakly Supervised Video Anomaly Detection Mostly Measures Video-Level Ranking",
+      "abstract": "Weakly supervised video anomaly detectors are trained with video-level labels but are commonly evaluated as temporal localizers using Micro-AUROC or AP over pooled test frames. Because these metrics compare frames from different videos, a detector can score well by separating videos without accurately ordering moments within them. We exactly decompose Micro-AUROC by video identity into Within-AUROC for temporal ordering within videos and Cross-AUROC for comparisons across videos. Across ShanghaiTech, XD-Violence, and UCF-Crime, only 0.071-0.388% of comparisons between anomalous and normal frames occur within the same video. When both classes remain distributed across V videos, this share decreases as O(1/V), a benchmark property we call temporal dilution. We train anomaly video binary classifiers under the same video-level supervision and repeat each video score across all frames. These video-constant outputs reach 81.40-97.18 Micro-AUROC despite having no within-video variation. Across 72 controlled runs, replacing every frame score with its video mean preserves a median 98.6% of the Micro-AUROC margin above chance. The same empirical pattern holds for author-released outputs and for XD-Violence under its official AP evaluation. A detector can therefore achieve a high pooled score even when it assigns the same score to every moment within each video.",
       "authors": [
-        "Qiwen Gu",
-        "Bingjie Gao",
-        "Rui Chen",
-        "Geng Li",
-        "Jifan Li",
-        "Qishuai Wen",
-        "Li Niu",
-        "Jing Tang",
-        "Xiangxiang Chu",
-        "Junqiao Zhao"
+        "Inpyo Song",
+        "Jangwon Lee"
       ],
       "primary_category": "cs.CV",
       "categories": [
         "cs.CV"
       ],
-      "published": "2026-08-27T16:26:29+00:00",
-      "link": "https://arxiv.org/pdf/2608.27328v1",
+      "published": "2026-08-22T08:56:56+00:00",
+      "link": "https://arxiv.org/pdf/2608.21854v1",
       "tags": [
         "keyword:vgen-metrics",
         "query:vgen-metrics"
       ],
-      "llm_score": 7.0,
-      "llm_evidence_en": "Proposes relative consistency benchmark for evaluating video world models",
-      "llm_evidence_cn": "提出视频世界模型的相对一致性评估基准",
-      "llm_evidence": "提出视频世界模型的相对一致性评估基准",
-      "canonical_evidence": "提出视频世界模型的相对一致性评估基准",
-      "llm_tldr_en": "Proposes R2M-Bench, a relative consistency benchmark for evaluating revisit memory in interactive video world models, comparing revisit pairs with matched non-revisit controls to yield reliable memory scores.",
-      "llm_tldr_cn": "针对视频世界模型记忆评估不准确的问题，论文提出R2M-Bench基准。它通过相对一致性比较，将重访帧对与间隔匹配的非重访对和短程对进行对照，消除场景静止等干扰，得出更可靠的记忆指标。实验表明该基准能更好区分记忆保持与运动失败，为交互式视频生成模型的评估提供了新思路。",
-      "llm_tldr": "针对视频世界模型记忆评估不准确的问题，论文提出R2M-Bench基准。它通过相对一致性比较，将重访帧对与间隔匹配的非重访对和短程对进行对照，消除场景静止等干扰，得出更可靠的记忆指标。实验表明该基准能更好区分记忆保持与运动失败，为交互式视频生成模型的评估提供了新思路。",
+      "llm_score": 6.0,
+      "llm_evidence_en": "Decomposes frame-level video evaluation metrics into within/cross-video components",
+      "llm_evidence_cn": "将帧级视频评估指标分解为视频内与跨视频部分",
+      "llm_evidence": "将帧级视频评估指标分解为视频内与跨视频部分",
+      "canonical_evidence": "将帧级视频评估指标分解为视频内与跨视频部分",
+      "llm_tldr_en": "This paper analyzes frame-level evaluation in weakly supervised video anomaly detection, showing pooled metrics like Micro-AUROC mostly measure video-level ranking. It decomposes the metric into within-video and cross-video components across three benchmarks.",
+      "llm_tldr_cn": "弱监督视频异常检测常用帧级Micro-AUROC评估定位性能，但该指标主要衡量视频级排序而非帧内时序。本文按视频身份将Micro-AUROC分解为视频内AUROC与跨视频AUROC，并在ShanghaiTech、XD-Violence和UCF-Crime上验证同视频内异常-正常帧比较占比极低，且随视频数增加而递减。该方法为解释视频评估指标的含义提供了分析框架，对生成视频评估指标的设计也有借鉴意义。",
+      "llm_tldr": "弱监督视频异常检测常用帧级Micro-AUROC评估定位性能，但该指标主要衡量视频级排序而非帧内时序。本文按视频身份将Micro-AUROC分解为视频内AUROC与跨视频AUROC，并在ShanghaiTech、XD-Violence和UCF-Crime上验证同视频内异常-正常帧比较占比极低，且随视频数增加而递减。该方法为解释视频评估指标的含义提供了分析框架，对生成视频评估指标的设计也有借鉴意义。",
       "llm_tags": [
         "query:vgen-metrics"
       ],
       "matched_query_tag": "query:vgen-metrics",
-      "matched_query_text": "metrics for evaluating video generation models",
-      "matched_requirement_id": "req-4",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
       "selection_source": "fresh_fetch",
-      "quick_tier": "7"
+      "quick_tier": "6"
     }
   ]
 }
