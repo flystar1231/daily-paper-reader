@@ -1,0 +1,179 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-30T21:55:27.114734+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.27328v1",
+      "source": "arxiv",
+      "title": "R2M-Bench: Evaluating Revisit Memory via Relative Consistency in Interactive Video World Models",
+      "abstract": "High similarity between first-visit and return frames does not necessarily show that a video world model remembered the scene; the intervening rollout may simply have changed very little. This ambiguity makes absolute revisit scores sensitive to rendering stability, repetitive content, and failed motion. We introduce \\emph{R2M-Bench} (\\textbf{R}elative \\textbf{R}evisit \\textbf{M}emory Benchmark), a benchmark of observable revisit-selective consistency. For every detected return, R2M-Bench compares the revisit pair with two controls from the same rollout: a gap-matched non-revisit pair that measures generic temporal stability and a short-range pair that estimates short-horizon consistency. These comparisons produce \\emph{MemoryGain} (MG), the revisit advantage over the temporal baseline, and the \\emph{Normalized Memory Ratio} (NMR), which normalizes this advantage by the short-to-baseline dynamic range. R2M-Bench combines 100 reference scenes with three leave-and-return trajectories to form 300 instances and evaluates appearance fidelity, scene and object identity, local geometry, and persistent state. Across seven action-conditioned video world models, Overall NMR correlates with human consistency judgments at Spearman's $ρ=0.547$ (95\\% CI $[0.45,0.63]$). Its within-model correlation magnitude with generated motion is $0.072$, compared with $0.207$ for raw revisit similarity, indicating that relative calibration substantially reduces the slow-motion shortcut. DreamX-World-Memo achieves the highest Overall NMR among the evaluated video models. Together, these results support same-rollout relative calibration as a practical way to distinguish revisit-specific consistency from generic temporal stability.",
+      "authors": [
+        "Qiwen Gu",
+        "Bingjie Gao",
+        "Rui Chen",
+        "Geng Li",
+        "Jifan Li",
+        "Qishuai Wen",
+        "Li Niu",
+        "Jing Tang",
+        "Xiangxiang Chu",
+        "Junqiao Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T16:26:29+00:00",
+      "link": "https://arxiv.org/pdf/2608.27328v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "proposes a benchmark with relative consistency metrics for evaluating video world models",
+      "llm_evidence_cn": "提出基于相对一致性指标的基准来评估视频世界模型",
+      "llm_evidence": "提出基于相对一致性指标的基准来评估视频世界模型",
+      "canonical_evidence": "提出基于相对一致性指标的基准来评估视频世界模型",
+      "llm_tldr_en": "R2M-Bench introduces a benchmark that measures revisit memory in video world models via relative consistency, overcoming ambiguity in absolute revisit scores.",
+      "llm_tldr_cn": "R2M-Bench 针对视频世界模型中重访记忆评估的模糊性问题，提出了基于相对一致性的基准。该方法通过与被试视频片段内部的两组对照比较，生成可观察的重访选择性一致性指标，避免绝对重访分数受渲染稳定性和重复内容干扰。该基准为视频生成模型的长期记忆能力提供了更可靠、细粒度的评价手段。",
+      "llm_tldr": "R2M-Bench 针对视频世界模型中重访记忆评估的模糊性问题，提出了基于相对一致性的基准。该方法通过与被试视频片段内部的两组对照比较，生成可观察的重访选择性一致性指标，避免绝对重访分数受渲染稳定性和重复内容干扰。该基准为视频生成模型的长期记忆能力提供了更可靠、细粒度的评价手段。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.22819v1",
+      "source": "arxiv",
+      "title": "Direct, Parallel, or Sequential? A Comparative Study of Training-Free Multi-Subject Image-to-Video Generation",
+      "abstract": "Text-conditioned image-to-video (I2V) generation has advanced rapidly, yet generating videos with multiple subjects remains challenging. A model must simultaneously preserve the appearance of each subject, assign distinct motions, and maintain coherent spatial and temporal interactions. This paper presents a systematic study of three representative paradigms for training-free multi-subject I2V generation: direct, parallel, and sequential generation. Direct generation applies a pretrained I2V model to the complete reference image and prompt, requiring all subjects and motions to be synthesized jointly. Parallel and sequential generation instead decompose the reference image and prompt into subject-specific visual and textual conditions. Parallel generation synthesizes each subject independently and subsequently composes the resulting videos, reducing the complexity of each generation step at the cost of weaker inter-subject context. Sequential generation first synthesizes a background video and then progressively introduces individual subjects. This preserves accumulated scene context but introduces sensitivity to subject ordering and error propagation. We empirically evaluate the three paradigms across diverse multi-subject scenes, comparing appearance preservation, motion fidelity, temporal consistency, and inter-subject coherence, while also characterizing their distinct failure modes. Our findings reveal the strengths and limitations of each paradigm and offer practical insights for designing controllable multi-subject video generation systems.",
+      "authors": [
+        "Yanliang Qi",
+        "Kexi Chen",
+        "Muchao Ye",
+        "Haomiao Ni"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T05:30:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.22819v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Systematically compares three video generation paradigms on generation quality criteria",
+      "llm_evidence_cn": "系统比较三种视频生成范式的生成质量标准",
+      "llm_evidence": "系统比较三种视频生成范式的生成质量标准",
+      "canonical_evidence": "系统比较三种视频生成范式的生成质量标准",
+      "llm_tldr_en": "A systematic comparison of direct, parallel, and sequential training-free multi-subject image-to-video generation, analyzing how decomposition affects appearance preservation, motion assignment, and spatial-temporal interactions.",
+      "llm_tldr_cn": "文本条件图像到视频生成虽发展迅速，但多主体场景下需要保持外观、分配不同运动并维持时空交互。本文系统比较了直接、并行和串行三种免训练范式：直接生成对完整图像与提示联合生成；并行和串行则将参考图与提示分解为各主体特定的视觉和文本成分。研究分析了三种范式在主体保真度、运动多样性和时空一致性上的权衡。",
+      "llm_tldr": "文本条件图像到视频生成虽发展迅速，但多主体场景下需要保持外观、分配不同运动并维持时空交互。本文系统比较了直接、并行和串行三种免训练范式：直接生成对完整图像与提示联合生成；并行和串行则将参考图与提示分解为各主体特定的视觉和文本成分。研究分析了三种范式在主体保真度、运动多样性和时空一致性上的权衡。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.24372v1",
+      "source": "arxiv",
+      "title": "Bridging Adversarial and Collaborative Learning for AI-Generated Image Quality Assessment",
+      "abstract": "AI-generated image quality assessment (AIGIQA) requires jointly reasoning about perceptual fidelity and prompt alignment, two quality dimensions that are often treated as independent in existing AIGIQA models. However, by re-examining human ratings, we uncover a previously overlooked phenomenon: the two dimensions are interdependent and exhibit both competitive and cooperative interactions during human rating. This observation suggests that a unified model should neither collapse the two dimensions nor rigidly separate them, but rather adaptively negotiate their interplay. Motivated by this insight, we introduce an interaction-aware learning framework that models perception-alignment relations through adversarial and collaborative inference pathways. Instead of designing a rigid dual-branch architecture, our method employs a gated interaction module that dynamically routes features according to the inferred relationship between the two dimensions. Task-aware prompts further modulate the gating behaviour, enabling the model to switch between competition and cooperation when necessary. Experiments across multiple AIGIQA benchmarks demonstrate that our approach not only achieves state-of-the-art accuracy but also yields interpretable interaction patterns, offering a more faithful approximation of human judgment. The codes are available at https://github.com/LQAMEI/ACL-IQA.",
+      "authors": [
+        "Baoliang Chen",
+        "Qing Lin",
+        "Sijie Mai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-25T10:31:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.24372v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "interaction-aware framework for AI-generated image quality assessment, applicable to video quality assessment of generated content",
+      "llm_evidence_cn": "提出交互感知的AI生成图像质量评估框架，可适用于生成视频的质量评估",
+      "llm_evidence": "提出交互感知的AI生成图像质量评估框架，可适用于生成视频的质量评估",
+      "canonical_evidence": "提出交互感知的AI生成图像质量评估框架，可适用于生成视频的质量评估",
+      "llm_tldr_en": "This paper proposes an interaction-aware learning framework for AIGIQA that bridges adversarial and collaborative learning to jointly model perceptual fidelity and prompt alignment, improving quality prediction.",
+      "llm_tldr_cn": "针对现有AIGIQA模型将感知保真度与提示对齐作为独立维度、忽略两者在人类评分中的相互作用的问题，该工作提出一种交互感知学习框架，通过对抗与协作学习动态建模这两个维度的折中。它在AI生成图像质量评估任务上验证了联合建模的有效性，为生成视觉内容的统一质量评估提供了方法论支撑，也可扩展到生成视频评估。",
+      "llm_tldr": "针对现有AIGIQA模型将感知保真度与提示对齐作为独立维度、忽略两者在人类评分中的相互作用的问题，该工作提出一种交互感知学习框架，通过对抗与协作学习动态建模这两个维度的折中。它在AI生成图像质量评估任务上验证了联合建模的有效性，为生成视觉内容的统一质量评估提供了方法论支撑，也可扩展到生成视频评估。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.26956v1",
+      "source": "arxiv",
+      "title": "RubricRM: Generative Reward Modeling via Dynamic Rubrics for Image Generation and Editing",
+      "abstract": "Reward models play an essential role in aligning visual generative models, yet most existing visual reward models use a single scalar score or rely on fixed criteria that cannot adapt to different instructions. This limits both interpretability and task sensitivity, especially for text-to-image generation and instruction-based image editing, where different inputs require different evaluation dimensions. We propose RubricRM, a pairwise generative reward modeling framework that first produces an input-specific rubric with evaluation dimensions, weights, and scoring criteria, and then applies the rubric to score candidate images. We train dedicated RubricRM models for text-to-image generation and image editing using a two-stage training pipeline: supervised fine-tuning teaches the model the rubric-based scoring paradigm, while GRPO further improves scoring through fine-grained dimension-level rewards. Experiments on multiple generation and editing benchmarks show that RubricRM outperforms existing specialized reward models and remains competitive with strong proprietary MLLM judges despite using smaller backbones. Our models, data, and code are available at https://github.com/zijiankan/RubricRM.",
+      "authors": [
+        "Zijian Kan",
+        "Wei Wang",
+        "Long Luo",
+        "Bing Zhao",
+        "Xuan Ren",
+        "Weixu Qiao",
+        "Wenbo Li",
+        "Hu Wei",
+        "Lin Qu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T10:56:47+00:00",
+      "link": "https://arxiv.org/pdf/2608.26956v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generative reward modeling that dynamically creates rubrics to score generated images, transferable to evaluating generated videos",
+      "llm_evidence_cn": "通过动态生成评分准则来评估生成图像质量，可迁移至生成视频评估",
+      "llm_evidence": "通过动态生成评分准则来评估生成图像质量，可迁移至生成视频评估",
+      "canonical_evidence": "通过动态生成评分准则来评估生成图像质量，可迁移至生成视频评估",
+      "llm_tldr_en": "RubricRM introduces a pairwise generative reward model that creates input-specific rubrics to evaluate generated images, improving interpretability and task sensitivity over fixed scalar scores.",
+      "llm_tldr_cn": "针对现有视觉奖励模型使用单一标量或固定准则、难以适应不同指令的问题，RubricRM 提出一种成对生成式奖励建模框架。它首先生成包含评估维度、权重和评分标准的动态评分准则，再据此对候选生成图像进行打分，并针对文生图与图像编辑训练专用模型。实验表明该方法在评估对齐性和可解释性上优于固定评分模型，为生成视觉内容质量评估提供了新思路。",
+      "llm_tldr": "针对现有视觉奖励模型使用单一标量或固定准则、难以适应不同指令的问题，RubricRM 提出一种成对生成式奖励建模框架。它首先生成包含评估维度、权重和评分标准的动态评分准则，再据此对候选生成图像进行打分，并针对文生图与图像编辑训练专用模型。实验表明该方法在评估对齐性和可解释性上优于固定评分模型，为生成视觉内容质量评估提供了新思路。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -6,28 +6,33 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-29
-- 运行时间：2026-08-29 22:22:49 UTC
+- 最新运行日期：2026-08-30
+- 运行时间：2026-08-30 21:57:38 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：4
 - 精读区：0
-- 速读区：1
+- 速读区：4
 
 ### 今日简报（AI）
-今日精选1篇速读论文，主题聚焦弱监督视频异常检测的评估方法。
-
-值得关注：文章指出帧级评估指标实际更多反映视频级排序能力，提醒研究者谨慎解读帧级性能。
-
-建议普通读者优先关注该论文中的评估偏差结论，后续可搭配精读深入理解实验细节。
-- 详情：[/202608/29/README](/202608/29/README)
+今日共速读4篇论文，聚焦视频世界模型与图像视频生成评估。最值得关注的是R2M-Bench（7.0分）对交互式视频记忆一致性的评测，以及无需训练的多主体图像转视频生成方法对比（6.0分）。建议优先翻阅前两篇，快速把握当前视频模型在“记忆保持”与“多主体一致性”上的核心瓶颈。
+- 详情：[/202608/30/README](/202608/30/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Frame-Level Evaluation in Weakly Supervised Video Anomaly Detection Mostly Measures Video-Level Ranking](/202608/29/2608.21854v1-frame-level-evaluation-in-weakly-supervised-video-anomaly-detection-mostly-measures-video-level-ranking)  
+1. [R2M-Bench: Evaluating Revisit Memory via Relative Consistency in Interactive Video World Models](/202608/30/2608.27328v1-r2m-bench-evaluating-revisit-memory-via-relative-consistency-in-interactive-video-world-models)  
+   标签：评分：7.0/10、query:vgen-metrics
+   evidence：提出基于相对一致性指标的基准来评估视频世界模型
+2. [Direct, Parallel, or Sequential? A Comparative Study of Training-Free Multi-Subject Image-to-Video Generation](/202608/30/2608.22819v1-direct-parallel-or-sequential-a-comparative-study-of-training-free-multi-subject-image-to-video-generation)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：将帧级视频评估指标分解为视频内与跨视频部分
+   evidence：系统比较三种视频生成范式的生成质量标准
+3. [Bridging Adversarial and Collaborative Learning for AI-Generated Image Quality Assessment](/202608/30/2608.24372v1-bridging-adversarial-and-collaborative-learning-for-ai-generated-image-quality-assessment)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：提出交互感知的AI生成图像质量评估框架，可适用于生成视频的质量评估
+4. [RubricRM: Generative Reward Modeling via Dynamic Rubrics for Image Generation and Editing](/202608/30/2608.26956v1-rubricrm-generative-reward-modeling-via-dynamic-rubrics-for-image-generation-and-editing)  
+   标签：评分：6.0/10、query:vgen-metrics
+   evidence：通过动态生成评分准则来评估生成图像质量，可迁移至生成视频评估
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,69 @@
+{
+  "label": "2026-08-30",
+  "date": "2026-08-30",
+  "generated_at": "2026-08-30T21:57:43",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/30/2608.27328v1-r2m-bench-evaluating-revisit-memory-via-relative-consistency-in-interactive-video-world-models",
+      "section": "quick",
+      "title_en": "R2M-Bench: Evaluating Revisit Memory via Relative Consistency in Interactive Video World Models",
+      "authors": "Qiwen Gu, Bingjie Gao, Rui Chen, Geng Li, Jifan Li, Qishuai Wen, Li Niu, Jing Tang, Xiangxiang Chu, Junqiao Zhao",
+      "date": "2026-08-27",
+      "pdf": "https://arxiv.org/pdf/2608.27328v1",
+      "score": "7.0",
+      "evidence": "提出基于相对一致性指标的基准来评估视频世界模型",
+      "tldr": "视频世界模型中，返回帧相似可能仅因生成变化极小，绝对重访分数无法反映真实记忆。R2M-Bench在每条轨迹引入两类对照：间隔匹配非重访对度量时间稳定性，短距对度量短时一致性，从而计算MemoryGain和NMR。在7个视频模型上，NMR与人类判断相关为0.547，且与生成运动相关仅0.072，远低于原始相似度的0.207。相对校准能有效分离重访记忆与通用稳定性的影响，为交互式世界模型记忆评估提供了新基准。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "High similarity between first-visit and return frames does not necessarily show that a video world model remembered the scene; the intervening rollout may simply have changed very little. This ambiguity makes absolute revisit scores sensitive to rendering stability, repetitive content, and failed motion. We introduce \\emph{R2M-Bench} (\\textbf{R}elative \\textbf{R}evisit \\textbf{M}emory Benchmark), a benchmark of observable revisit-selective consistency. For every detected return, R2M-Bench compares the revisit pair with two controls from the same rollout: a gap-matched non-revisit pair that measures generic temporal stability and a short-range pair that estimates short-horizon consistency. These comparisons produce \\emph{MemoryGain} (MG), the revisit advantage over the temporal baseline, and the \\emph{Normalized Memory Ratio} (NMR), which normalizes this advantage by the short-to-baseline dynamic range. R2M-Bench combines 100 reference scenes with three leave-and-return trajectories to form 300 instances and evaluates appearance fidelity, scene and object identity, local geometry, and persistent state. Across seven action-conditioned video world models, Overall NMR correlates with human consistency judgments at Spearman's $ρ=0.547$ (95\\% CI $[0.45,0.63]$). Its within-model correlation magnitude with generated motion is $0.072$, compared with $0.207$ for raw revisit similarity, indicating that relative calibration substantially reduces the slow-motion shortcut. DreamX-World-Memo achieves the highest Overall NMR among the evaluated video models. Together, these results support same-rollout relative calibration as a practical way to distinguish revisit-specific consistency from generic temporal stability.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/30/2608.22819v1-direct-parallel-or-sequential-a-comparative-study-of-training-free-multi-subject-image-to-video-generation",
+      "section": "quick",
+      "title_en": "Direct, Parallel, or Sequential? A Comparative Study of Training-Free Multi-Subject Image-to-Video Generation",
+      "authors": "Yanliang Qi, Kexi Chen, Muchao Ye, Haomiao Ni",
+      "date": "2026-08-24",
+      "pdf": "https://arxiv.org/pdf/2608.22819v1",
+      "score": "6.0",
+      "evidence": "系统比较三种视频生成范式的生成质量标准",
+      "tldr": "多主体图像生成视频任务要求同时保持各主体外观、分配不同运动并维持时空一致性。本文系统比较了三种免训练范式：直接法联合生成全部主体；并行法独立生成后拼接，降低单步复杂度但弱化主体间交互；序贯法先背景后逐步引入主体，保留场景上下文但受顺序影响。实验揭示各范式在保真度、运动、一致性上的权衡与失败模式，为可控多主体视频生成提供设计启示。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Text-conditioned image-to-video (I2V) generation has advanced rapidly, yet generating videos with multiple subjects remains challenging. A model must simultaneously preserve the appearance of each subject, assign distinct motions, and maintain coherent spatial and temporal interactions. This paper presents a systematic study of three representative paradigms for training-free multi-subject I2V generation: direct, parallel, and sequential generation. Direct generation applies a pretrained I2V model to the complete reference image and prompt, requiring all subjects and motions to be synthesized jointly. Parallel and sequential generation instead decompose the reference image and prompt into subject-specific visual and textual conditions. Parallel generation synthesizes each subject independently and subsequently composes the resulting videos, reducing the complexity of each generation step at the cost of weaker inter-subject context. Sequential generation first synthesizes a background video and then progressively introduces individual subjects. This preserves accumulated scene context but introduces sensitivity to subject ordering and error propagation. We empirically evaluate the three paradigms across diverse multi-subject scenes, comparing appearance preservation, motion fidelity, temporal consistency, and inter-subject coherence, while also characterizing their distinct failure modes. Our findings reveal the strengths and limitations of each paradigm and offer practical insights for designing controllable multi-subject video generation systems.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/30/2608.24372v1-bridging-adversarial-and-collaborative-learning-for-ai-generated-image-quality-assessment",
+      "section": "quick",
+      "title_en": "Bridging Adversarial and Collaborative Learning for AI-Generated Image Quality Assessment",
+      "authors": "Baoliang Chen, Qing Lin, Sijie Mai",
+      "date": "2026-08-25",
+      "pdf": "https://arxiv.org/pdf/2608.24372v1",
+      "score": "6.0",
+      "evidence": "提出交互感知的AI生成图像质量评估框架，可适用于生成视频的质量评估",
+      "tldr": "现有AIGIQA模型将感知质量与提示对齐独立处理，但人类评分显示二者存在竞争与合作的动态交互。本文提出交互感知学习框架ACL，通过对抗和协作双路径推理，利用门控交互模块按需路由特征，并由任务感知提示调控门控，实现竞争与合作自适应切换。在多个基准上达到SOTA，且交互模式可解释，更贴近人类判断，为统一质量评估提供了新思路。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "AI-generated image quality assessment (AIGIQA) requires jointly reasoning about perceptual fidelity and prompt alignment, two quality dimensions that are often treated as independent in existing AIGIQA models. However, by re-examining human ratings, we uncover a previously overlooked phenomenon: the two dimensions are interdependent and exhibit both competitive and cooperative interactions during human rating. This observation suggests that a unified model should neither collapse the two dimensions nor rigidly separate them, but rather adaptively negotiate their interplay. Motivated by this insight, we introduce an interaction-aware learning framework that models perception-alignment relations through adversarial and collaborative inference pathways. Instead of designing a rigid dual-branch architecture, our method employs a gated interaction module that dynamically routes features according to the inferred relationship between the two dimensions. Task-aware prompts further modulate the gating behaviour, enabling the model to switch between competition and cooperation when necessary. Experiments across multiple AIGIQA benchmarks demonstrate that our approach not only achieves state-of-the-art accuracy but also yields interpretable interaction patterns, offering a more faithful approximation of human judgment. The codes are available at https://github.com/LQAMEI/ACL-IQA.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/30/2608.26956v1-rubricrm-generative-reward-modeling-via-dynamic-rubrics-for-image-generation-and-editing",
+      "section": "quick",
+      "title_en": "RubricRM: Generative Reward Modeling via Dynamic Rubrics for Image Generation and Editing",
+      "authors": "Zijian Kan, Wei Wang, Long Luo, Bing Zhao, Xuan Ren, Weixu Qiao, Wenbo Li, Hu Wei, Lin Qu",
+      "date": "2026-08-27",
+      "pdf": "https://arxiv.org/pdf/2608.26956v1",
+      "score": "6.0",
+      "evidence": "通过动态生成评分准则来评估生成图像质量，可迁移至生成视频评估",
+      "tldr": "现有视觉奖励模型多以单一标量或固定标准评估，难以适配复杂指令。RubricRM提出成对生成式奖励建模，首先生成包含维度、权重与细则的专属rubric，再据此对候选图像评分。采用SFT与GRPO两阶段训练强化细粒度评分，在文生图与图像编辑基准上超越专用模型，并以较小骨干匹敌强MLLM裁判。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Reward models play an essential role in aligning visual generative models, yet most existing visual reward models use a single scalar score or rely on fixed criteria that cannot adapt to different instructions. This limits both interpretability and task sensitivity, especially for text-to-image generation and instruction-based image editing, where different inputs require different evaluation dimensions. We propose RubricRM, a pairwise generative reward modeling framework that first produces an input-specific rubric with evaluation dimensions, weights, and scoring criteria, and then applies the rubric to score candidate images. We train dedicated RubricRM models for text-to-image generation and image editing using a two-stage training pipeline: supervised fine-tuning teaches the model the rubric-based scoring paradigm, while GRPO further improves scoring through fine-grained dimension-level rewards. Experiments on multiple generation and editing benchmarks show that RubricRM outperforms existing specialized reward models and remains competitive with strong proprietary MLLM judges despite using smaller backbones. Our models, data, and code are available at https://github.com/zijiankan/RubricRM.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
