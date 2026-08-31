@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-31",
+  "date": "2026-08-31",
+  "generated_at": "2026-08-31T23:59:57",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/31/2608.28080v1-cyc3d-evaluating-cyclic-structural-stability-and-asset-usability-in-image-to-3d-generation",
+      "section": "quick",
+      "title_en": "Cyc3D: Evaluating Cyclic Structural Stability and Asset Usability in Image-to-3D Generation",
+      "authors": "Liwen Zhang",
+      "date": "2026-08-28",
+      "pdf": "https://arxiv.org/pdf/2608.28080v1",
+      "score": "6.0",
+      "evidence": "面向生成模型的评测方案，可迁移至视频生成质量评估",
+      "tldr": "现有图像到3D生成评估多关注渲染视图的语义对齐，忽视3D结构稳定性与资产可用性。为此提出Cyc3D多维基准，从跨视图对象一致性和表示质量两个互补轴评估，并引入视图循环结构一致性协议，通过渲染-再生成-对齐量化几何、感知与语义漂移。实验表明，闭源前馈模型在几何保真度、网格质量和循环稳定性上优于开源优化基线，但最强方法循环稳定性得分仍低于48。Cyc3D能揭示单一感知分数掩盖的失败，为模型不稳定性和表示缺陷提供可解释证据。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Image-conditioned 3D generation has advanced rapidly, yet existing evaluation protocols largely judge rendered-view plausibility and semantic alignment, overlooking whether a generator forms a stable 3D interpretation and produces assets usable in graphics pipelines. We introduce Cyc3D, a multidimensional benchmark that evaluates image-to-3D generation along two complementary axes: Cross-View Object Consistency and Representation Quality. At the asset level, Cyc3D measures whether object identity remains semantically coherent across rendered viewpoints. At the model level, we propose View-Cycle Structural Consistency, a closed-loop render-regenerate-align protocol that repeatedly re-observes a generated asset from novel views and quantifies geometric, perceptual, and semantic drift across generations. To assess native asset usability beyond rendered appearance, Cyc3D further evaluates geometric structure, reference-image fidelity, mesh discretization and efficiency, and UV parameterization quality. Together, these diagnostics expose failures obscured by a single perceptual score and provide interpretable evidence of both model instability and representation defects. Experiments on five representative image-to-3D systems show that closed-source feed-forward models consistently outperform open-source optimization-based baselines in geometric fidelity, mesh quality, and cycle stability. Nevertheless, even the strongest methods achieve cycle-stability scores below 48, revealing a persistent gap between visually plausible generation and robust 3D object understanding.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

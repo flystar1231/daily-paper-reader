@@ -6,33 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-30
-- 运行时间：2026-08-30 21:57:38 UTC
+- 最新运行日期：2026-08-31
+- 运行时间：2026-08-31 23:59:53 UTC
 - 运行状态：成功
-- 本次总论文数：4
+- 本次总论文数：1
 - 精读区：0
-- 速读区：4
+- 速读区：1
 
 ### 今日简报（AI）
-今日共速读4篇论文，聚焦视频世界模型与图像视频生成评估。最值得关注的是R2M-Bench（7.0分）对交互式视频记忆一致性的评测，以及无需训练的多主体图像转视频生成方法对比（6.0分）。建议优先翻阅前两篇，快速把握当前视频模型在“记忆保持”与“多主体一致性”上的核心瓶颈。
-- 详情：[/202608/30/README](/202608/30/README)
+今日速读1篇论文，聚焦图像到3D生成的评估方法。值得关注的方向是循环结构稳定性与资产可用性，论文《Cyc3D》给出了6.0/10的参考评分。建议普通读者可进一步查阅该文，了解其评估指标的具体设计。
+- 详情：[/202608/31/README](/202608/31/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [R2M-Bench: Evaluating Revisit Memory via Relative Consistency in Interactive Video World Models](/202608/30/2608.27328v1-r2m-bench-evaluating-revisit-memory-via-relative-consistency-in-interactive-video-world-models)  
-   标签：评分：7.0/10、query:vgen-metrics
-   evidence：提出基于相对一致性指标的基准来评估视频世界模型
-2. [Direct, Parallel, or Sequential? A Comparative Study of Training-Free Multi-Subject Image-to-Video Generation](/202608/30/2608.22819v1-direct-parallel-or-sequential-a-comparative-study-of-training-free-multi-subject-image-to-video-generation)  
+1. [Cyc3D: Evaluating Cyclic Structural Stability and Asset Usability in Image-to-3D Generation](/202608/31/2608.28080v1-cyc3d-evaluating-cyclic-structural-stability-and-asset-usability-in-image-to-3d-generation)  
    标签：评分：6.0/10、query:vgen-metrics
-   evidence：系统比较三种视频生成范式的生成质量标准
-3. [Bridging Adversarial and Collaborative Learning for AI-Generated Image Quality Assessment](/202608/30/2608.24372v1-bridging-adversarial-and-collaborative-learning-for-ai-generated-image-quality-assessment)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：提出交互感知的AI生成图像质量评估框架，可适用于生成视频的质量评估
-4. [RubricRM: Generative Reward Modeling via Dynamic Rubrics for Image Generation and Editing](/202608/30/2608.26956v1-rubricrm-generative-reward-modeling-via-dynamic-rubrics-for-image-generation-and-editing)  
-   标签：评分：6.0/10、query:vgen-metrics
-   evidence：通过动态生成评分准则来评估生成图像质量，可迁移至生成视频评估
+   evidence：面向生成模型的评测方案，可迁移至视频生成质量评估
 
 
 <div class="dpr-home-promo-card">
