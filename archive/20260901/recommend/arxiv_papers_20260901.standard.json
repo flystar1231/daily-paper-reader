@@ -1,0 +1,431 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-01T21:22:16.961062+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2608.27345v2",
+      "source": "arxiv",
+      "title": "PAWBench: How Far Are We from Probabilistically Aligned World Modeling?",
+      "abstract": "Recent video generation models are increasingly framed as world models. Many physical processes can unfold in more than one valid way. Therefore, a world model should reproduce not only a plausible trajectory, but also the distribution of possible behaviors under the same initial observation and action. We call this distribution-level requirement probabilistic alignment. However, existing evaluations largely assess individual-video plausibility and do not test whether repeated generations recover the correct distribution. This raises a central question: how far are current video generators from probabilistically aligned world modeling? To answer it, we formalize probabilistic alignment as a distributional criterion for world models and introduce PAWBench, a benchmark for evaluating video generators as stochastic samplers of world dynamics. We further introduce PAWEval, an outcome-level protocol that converts repeated video rollouts into empirical distributions over possible physical behaviors. Across 50 scenarios and eleven current systems, no model consistently matches the reference probabilities while recovering the range of valid behaviors. Having established this gap, we test whether language prompts, initial noise sampling, or model training can reshape the model's predictive distribution. We believe our work can serve as a foundation for future efforts to move towards probabilistically aligned world modeling.",
+      "authors": [
+        "Yuandong Pu",
+        "Le Zhuo",
+        "Sayak Paul",
+        "Gabriel Jorge Menezes",
+        "Avram Đorđević",
+        "Shiyang Li",
+        "Yifan Zhou",
+        "Bin Fu",
+        "Wenlong Zhang",
+        "Junjun He",
+        "Yu Qiao",
+        "Yihao Liu",
+        "Jinbo Xing",
+        "Xi Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-27T16:46:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.27345v2",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Introduces a benchmark and formal criterion for evaluating whether video generation models recover the distribution of possible outcomes, a direct video generation model evaluation method.",
+      "llm_evidence_cn": "提出了评估视频生成模型是否恢复可能结果分布的新基准与形式化准则，属于视频生成模型的直接评估方法。",
+      "llm_evidence": "提出了评估视频生成模型是否恢复可能结果分布的新基准与形式化准则，属于视频生成模型的直接评估方法。",
+      "canonical_evidence": "提出了评估视频生成模型是否恢复可能结果分布的新基准与形式化准则，属于视频生成模型的直接评估方法。",
+      "llm_tldr_en": "PAWBench formalizes probabilistic alignment as a distributional criterion for world models and benchmarks whether repeated video generations recover the correct behavior distribution, moving beyond individual-video plausibility.",
+      "llm_tldr_cn": "现有视频生成评估主要关注单条视频的合理性，忽略重复生成是否恢复正确的行为分布。本文形式化定义了世界模型的概率对齐准则，并构建基准PAWBench，通过系统化评测回答当前视频生成器离概率对齐还有多远。该工作为视频生成模型提供了分布层面的新评估维度，弥补了个体视频合理性评估的不足，推动视频生成模型向世界模型方向发展的可评测性。",
+      "llm_tldr": "现有视频生成评估主要关注单条视频的合理性，忽略重复生成是否恢复正确的行为分布。本文形式化定义了世界模型的概率对齐准则，并构建基准PAWBench，通过系统化评测回答当前视频生成器离概率对齐还有多远。该工作为视频生成模型提供了分布层面的新评估维度，弥补了个体视频合理性评估的不足，推动视频生成模型向世界模型方向发展的可评测性。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.28694v1",
+      "source": "arxiv",
+      "title": "SNF-Bench: Separating Static Drift from Natural Flow in Long-Horizon Fixed-Camera Video Generation",
+      "abstract": "Long-horizon video generation is evaluated with whole-frame metrics that reward motion and temporal consistency. For fixed-camera nature scenes this creates an ambiguity: motion of water, fire, smoke, or rain is desirable, whereas motion of the background is an error. A system can therefore score well on motion while its scene drifts, or on consistency while its flow stagnates. We introduce SNF-Bench, an evaluation framework for long-horizon fixed-camera generation that partitions each scene into static support and dynamic flow and reports static fidelity, flow persistence with absolute magnitude, and drift leakage separately, never as one score. Drift leakage is interpretive context rather than a headline measurement. Each factor is validated mechanistically rather than by correlation with preference: we inject global translation, rotation, and scale drift and progressive late freezing at known severity into real generations, and require each factor to respond in its stated direction and to remain selective against corruptions it does not target. Auditing publicly released long-horizon text-conditioned checkpoints under one recorded common inference configuration, plus an image-conditioned track with released-pipeline references and a deployment-sensitivity panel, we find that whole-frame motion and static-region drift induce near-opposite orderings of the same outputs. At maximum controlled translation, fBD and NBF rise to $1.86\\times$ and $1.32\\times$ baseline, but whole-frame Dynamic Degree reaches only $1.07\\times$---rewarding the corruption. SNF-Bench measures where motion occurs and whether it persists; it does not measure physical realism. Project page: https://minar09.github.io/snfbench/.",
+      "authors": [
+        "Matiur Rahman Minar",
+        "Seunghun Oh",
+        "Ganghyeon Jeong",
+        "Unsang Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T05:17:42+00:00",
+      "link": "https://arxiv.org/pdf/2608.28694v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "evaluation framework for video generation separating static and dynamic quality",
+      "llm_evidence_cn": "将静态与动态质量分离的视频生成评估框架",
+      "llm_evidence": "将静态与动态质量分离的视频生成评估框架",
+      "canonical_evidence": "将静态与动态质量分离的视频生成评估框架",
+      "llm_tldr_en": "Long-horizon fixed-camera video generation is poorly served by whole-frame metrics that conflate desirable flow with background drift. SNF-Bench partitions scenes into static support and dynamic flow and reports static fidelity, flow persistence with absolute magnitude, and drift leakage separately, enabling fine-grained evaluation of video generation quality.",
+      "llm_tldr_cn": "针对长时程固定相机视频生成中整帧指标混淆自然流动与背景漂移的问题，提出 SNF-Bench 评估框架，将场景划分为静态支撑与动态流动，并分别报告静态保真度、流动持续性与漂移泄漏，而不是合成单一分数。该框架为长时间视频生成提供了更细粒度、可解释的评估维度。",
+      "llm_tldr": "针对长时程固定相机视频生成中整帧指标混淆自然流动与背景漂移的问题，提出 SNF-Bench 评估框架，将场景划分为静态支撑与动态流动，并分别报告静态保真度、流动持续性与漂移泄漏，而不是合成单一分数。该框架为长时间视频生成提供了更细粒度、可解释的评估维度。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.29123v1",
+      "source": "arxiv",
+      "title": "Dancing Stick Figures: An Introductory Dataset for Training Video Generation Models",
+      "abstract": "Training a video-generation model from scratch is hard for reasons that precede model design. The feedback loop is long: a failure that appears only after a training run can make each attempted fix another run. The data are hard to reach: the corpora and recipes behind strong models are large, heterogeneous, and often unreleased. And scoring is blunt: open-ended generation has no single correct output, and an aggregate score does not by itself establish whether a sample succeeds or which property failed. Dancing Stick Figures is a synthetic video dataset built against these three obstacles. For iteration speed, its 64x64, 64-frame reference task is sized for practical repeated training on a single workstation GPU. For accessibility, the release is a 0.79-GB training tier of 4,020 video clips--1,340 six-second source motions, each rendered from three cameras by a deterministic dataset-generation harness--with checkpoints and a Colab workflow that reruns the reference training pipeline at reduced budget on a 16 GB Tesla T4. For scoring, every frame retains its generating state (ARDY cskel27 joint positions, camera, body parameters, and source motion) and per-pixel depth, surface normals, and part labels. These annotations support dataset-specific metrics for visible topology and part-wise motion; corruptions expose their sensitivities and blind spots.",
+      "authors": [
+        "Jin Hyuk Cho"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-29T08:03:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.29123v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "discusses blunt scoring in video generation and provides a dataset with a reference task to improve per-sample evaluation",
+      "llm_evidence_cn": "针对视频生成评估粗糙问题，提供带参考任务的数据集以改善样本级评估",
+      "llm_evidence": "针对视频生成评估粗糙问题，提供带参考任务的数据集以改善样本级评估",
+      "canonical_evidence": "针对视频生成评估粗糙问题，提供带参考任务的数据集以改善样本级评估",
+      "llm_tldr_en": "Dancing Stick Figures introduces a synthetic video dataset and a 64x64, 64-frame reference task sized for single-GPU training, explicitly tackling the blunt scoring problem in open-ended video generation by enabling clearer per-sample feedback.",
+      "llm_tldr_cn": "论文指出训练视频生成模型面临反馈周期长、数据难获取、评估指标粗糙三个障碍。为此提出Dancing Stick Figures，一个64x64、64帧的合成视频数据集，可在单张工作站GPU上快速迭代训练。该数据集为开放式的视频生成提供了明确的参考任务，使样本级成功或失败原因更易诊断。其意义在于为视频生成模型的迭代训练与评估提供了可复现的入门基准。",
+      "llm_tldr": "论文指出训练视频生成模型面临反馈周期长、数据难获取、评估指标粗糙三个障碍。为此提出Dancing Stick Figures，一个64x64、64帧的合成视频数据集，可在单张工作站GPU上快速迭代训练。该数据集为开放式的视频生成提供了明确的参考任务，使样本级成功或失败原因更易诊断。其意义在于为视频生成模型的迭代训练与评估提供了可复现的入门基准。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.30704v1",
+      "source": "arxiv",
+      "title": "TUE-Detector: A Tool-Using Expert MLLM-Based Detector for AI-Generated Videos",
+      "abstract": "AI-generated video detection, which aims to distinguish AI-generated videos from real ones, has recently received increasing research attention. To perform this task reliably, a key challenge lies in accurately identifying subtle-yet-measurable unnatural artifacts. In this work, we address this challenge from a novel perspective of tool-mediated evidence discovery and propose Tool-Using Expert MLLM-based AI-generated Video Detector (TUE-Detector), a novel framework for AI-generated video detection. TUE-Detector trains a general MLLM into a task-tailored tool-using expert detector that learns to invoke suitable tools, collect concrete evidence of unnaturalness, and reason over the evidence for reliable detection. Meanwhile, TUE-Detector further introduces novel designs to equip the expert detector with high-quality and suitable tools. Extensive experiments demonstrate the effectiveness of our framework.",
+      "authors": [
+        "Yichen Wu",
+        "Haoxuan Qu",
+        "Yongxing Dai",
+        "Yan Bai",
+        "Yihang Lou",
+        "Yuqi Lin",
+        "Hossein Rahmani",
+        "Jun Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-31T12:42:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.30704v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Detects AI-generated videos by identifying unnatural artifacts, serving as a generated-video quality assessment method.",
+      "llm_evidence_cn": "通过识别不自然伪影来检测AI生成视频，可作为生成视频的质量评估方法。",
+      "llm_evidence": "通过识别不自然伪影来检测AI生成视频，可作为生成视频的质量评估方法。",
+      "canonical_evidence": "通过识别不自然伪影来检测AI生成视频，可作为生成视频的质量评估方法。",
+      "llm_tldr_en": "TUE-Detector trains an MLLM to invoke tools and gather evidence of unnatural artifacts, reliably distinguishing AI-generated videos from real ones.",
+      "llm_tldr_cn": "针对AI生成视频检测中细微伪影难以识别的问题，提出TUE-Detector框架，将通用MLLM训练成工具使用专家，主动调用合适工具收集具体的不自然证据并进行推理，以可靠区分AI生成与真实视频。实验表明，该方法能有效捕捉细微的生成痕迹，性能优于现有检测器，并为生成视频质量评估提供新的工具化范式。",
+      "llm_tldr": "针对AI生成视频检测中细微伪影难以识别的问题，提出TUE-Detector框架，将通用MLLM训练成工具使用专家，主动调用合适工具收集具体的不自然证据并进行推理，以可靠区分AI生成与真实视频。实验表明，该方法能有效捕捉细微的生成痕迹，性能优于现有检测器，并为生成视频质量评估提供新的工具化范式。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.23070v1",
+      "source": "arxiv",
+      "title": "From Generation to Simulation: How Far Are World Models from Being True Simulators?",
+      "abstract": "With the rapid progress of diffusion models and large-scale video generation, generative world models are increasingly expected to replace traditional simulators, including physics engines, game engines, and reinforcement-learning environments. Yet the remaining distance from generation to simulation lacks a systematic assessment. We present a capability-based study using an external yardstick: eight capabilities of a traditional simulator, namely asset construction, physics engine, interaction, controllability, stability, state feedback, diversity, and evaluation metrics. We trace three main technical routes--latent dynamics, video generation, and joint-embedding prediction--and map exactly 200 representative works published from 2018 to June 2026 onto these capabilities. Our analysis shows that world models have achieved functional substitution in interaction and controllability for specific scenarios, but remain short of traditional simulators in formal guarantees of physical laws, structured state feedback, and reproducible long-horizon evolution. State feedback is the most neglected cross-route shortcoming: only 6 of 163 implementation papers expose a runtime interface for querying entity states or physical parameters. We identify six research directions: formalized physics, a unified action interface, first-class state feedback, long-horizon stability, downstream-utility evaluation, and cross-route hybridization. Project page: https://github.com/AtongWang/world-model-simulators",
+      "authors": [
+        "Tong Wang",
+        "Huan Deng",
+        "Mucheng Yang",
+        "Yang He",
+        "Xiaohui Kuang",
+        "Gang Zhao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-08-24T10:16:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.23070v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "systematically assesses world models across eight simulator capabilities, including evaluation metrics, with a review of 200 works",
+      "llm_evidence_cn": "以八项模拟器能力系统评估世界模型，其中包含评估指标维度，并梳理200项工作",
+      "llm_evidence": "以八项模拟器能力系统评估世界模型，其中包含评估指标维度，并梳理200项工作",
+      "canonical_evidence": "以八项模拟器能力系统评估世界模型，其中包含评估指标维度，并梳理200项工作",
+      "llm_tldr_en": "This work provides a capability-based assessment of how far generative world models are from true simulators, using eight axes including evaluation metrics, and maps 200 representative works across three technical routes. It identifies gaps in current evaluation metrics and serves as a reference for improving video world model assessment.",
+      "llm_tldr_cn": "论文以传统模拟器的八项能力为标尺，系统评估生成式世界模型与真正模拟器之间的距离，涵盖资产生成、物理引擎、交互、可控性、稳定性、状态反馈、多样性和评估指标。作者追踪了隐空间动力学、视频生成和联合嵌入预测三条技术路线，并梳理了2018年以来200篇代表性工作。该工作为视频生成模型的评估指标与能力建设提供了系统性的参照框架。",
+      "llm_tldr": "论文以传统模拟器的八项能力为标尺，系统评估生成式世界模型与真正模拟器之间的距离，涵盖资产生成、物理引擎、交互、可控性、稳定性、状态反馈、多样性和评估指标。作者追踪了隐空间动力学、视频生成和联合嵌入预测三条技术路线，并梳理了2018年以来200篇代表性工作。该工作为视频生成模型的评估指标与能力建设提供了系统性的参照框架。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "metrics for evaluating video generation models",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.29331v1",
+      "source": "arxiv",
+      "title": "Neural video codecs quality assessment dataset and benchmark",
+      "abstract": "Video traffic constitutes a significant share of global web traffic. To reduce its volume, video codecs have been developed and continuously improved. While the industry has achieved substantial progress in traditional video coding, neural video codecs (NVCs) have recently emerged as a new approach that applies deep learning to video compression. This creates new challenges for compression quality assessment, which is essential for the further development and improvement of such codecs. In particular, it is important to evaluate the novel temporal compression paradigms introduced by NVCs. In this work, we present a large-scale subjective dataset of videos compressed with both neural and traditional video codecs. The subjective scores were collected through crowd-sourced pairwise comparisons. The proposed dataset provides a valuable resource for the development and benchmarking of video quality metrics tailored to neural video codecs. The dataset is available at the following link: https://videoprocessing.github.io/nvc-dataset-benchmark",
+      "authors": [
+        "Nikolay Safonov",
+        "Nikita Gornostaev",
+        "Alexandra Dubonos",
+        "Dmitriy Vatolin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-29T15:30:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.29331v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Provides large-scale subjective video quality assessment dataset and benchmark for neural codecs, transferable to evaluating generated videos",
+      "llm_evidence_cn": "提供神经编解码器大规模主观视频质量评估数据集与基准，可迁移到生成视频质量评估",
+      "llm_evidence": "提供神经编解码器大规模主观视频质量评估数据集与基准，可迁移到生成视频质量评估",
+      "canonical_evidence": "提供神经编解码器大规模主观视频质量评估数据集与基准，可迁移到生成视频质量评估",
+      "llm_tldr_en": "Large-scale subjective dataset and benchmark for neural video codecs, offering transferable methodology for evaluating video quality, applicable to generated videos.",
+      "llm_tldr_cn": "神经视频编解码器的压缩质量评估面临新挑战，传统指标难以捕捉时域压缩伪影，缺乏针对性的数据集与基准。本文构建了包含神经与传统编解码器压缩视频的大规模主观质量数据集，并通过众包方式收集主观分数。该基准可用于开发和验证视频质量评估方法，其评估方案与数据集设计可直接为生成视频的主观与客观评测提供借鉴。这是视频质量评估领域的重要基础资源。",
+      "llm_tldr": "神经视频编解码器的压缩质量评估面临新挑战，传统指标难以捕捉时域压缩伪影，缺乏针对性的数据集与基准。本文构建了包含神经与传统编解码器压缩视频的大规模主观质量数据集，并通过众包方式收集主观分数。该基准可用于开发和验证视频质量评估方法，其评估方案与数据集设计可直接为生成视频的主观与客观评测提供借鉴。这是视频质量评估领域的重要基础资源。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "video quality assessment methods for generated videos",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.26517v1",
+      "source": "arxiv",
+      "title": "HUG-VIS: A Multimodal Benchmark for Human-centered Understanding and Generation in Visual Intelligence",
+      "abstract": "Visual intelligence seeks to perceive, interpret, and synthesize the visual world and is central to modern computer vision. Human-centered visual intelligence is especially demanding because it studies people as expressive, socially situated subjects whose meaning is rarely conveyed by appearance alone. It couples vision with audio and language across four representative tasks: human emotion recognition, human video generation, human voice cloning, and human video matting. Yet existing resources remain task-specific, providing modalities and annotations for individual problems rather than a shared foundation coordinating understanding and generation. This limits multimodal signal use and broader research. We address this gap with HUG-VIS, a unified benchmark for Human-centered Understanding and Generation in Visual Intelligence. It contains 8,400 seated half-body videos of 30 professional actors, each performing the same 280 emotion-action-prompt assignments under a controlled Mandarin studio protocol, with synchronized video, audio, text, and alpha mattes. We evaluate diverse open- and closed-source models across the four tasks under a unified zero-shot protocol using automatic metrics, criterion-specific mean opinion scores, and multiple cross-task analyses. Results show that (i) linguistic content dominates current emotion recognition, while purely visual affect recognition is weakest; (ii) in video generation and voice cloning, automatic metrics and human judgment agree overall but differ in their top rankings, requiring joint reporting; (iii) boundary fidelity under motion is the main remaining obstacle for human matting; and (iv) task difficulty varies across emotions, models, and metrics, with notable cross-task correlations. The dataset and results are available at https://github.com/GML-MMGroup/HUG-VIS.",
+      "authors": [
+        "Fei Ma",
+        "Zebang Cheng",
+        "Minghui Li",
+        "Hongbo Xu",
+        "Yuyong Tan",
+        "Yihua Shao",
+        "Hanling Wang",
+        "Zhou Liu",
+        "Yuqing Gao",
+        "Dong Wang",
+        "Long Ma",
+        "Laizhong Cui",
+        "Nicu Sebe",
+        "Qi Tian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T01:43:47+00:00",
+      "link": "https://arxiv.org/pdf/2608.26517v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multimodal benchmark covering human video matting (alpha channel)",
+      "llm_evidence_cn": "涵盖人类视频抠像（alpha 通道）的多模态基准",
+      "llm_evidence": "涵盖人类视频抠像（alpha 通道）的多模态基准",
+      "canonical_evidence": "涵盖人类视频抠像（alpha 通道）的多模态基准",
+      "llm_tldr_en": "HUG-VIS is a multimodal benchmark unifying human emotion recognition, human video generation, human voice cloning, and human video matting under a shared vision-audio-language foundation. It provides coordinated data and annotations, enabling evaluation of human-centered visual intelligence including alpha/transparent video.",
+      "llm_tldr_cn": "针对以人为中心的视觉智能中任务割裂、多模态共享基础缺乏的问题，提出 HUG-VIS 多模态基准，涵盖人类情感识别、人类视频生成、人声克隆和人类视频抠像四项任务，联合视觉、音频与语言。该基准为视频生成与视频抠像等任务提供了统一的多模态数据和评估基础，有助于推进透明/alpha 视频相关研究。",
+      "llm_tldr": "针对以人为中心的视觉智能中任务割裂、多模态共享基础缺乏的问题，提出 HUG-VIS 多模态基准，涵盖人类情感识别、人类视频生成、人声克隆和人类视频抠像四项任务，联合视觉、音频与语言。该基准为视频生成与视频抠像等任务提供了统一的多模态数据和评估基础，有助于推进透明/alpha 视频相关研究。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "How to measure the quality of alpha channels in generated videos?",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.30125v1",
+      "source": "arxiv",
+      "title": "VIBE: Video Instruction-aligned Background music gEneration",
+      "abstract": "Current video-to-music (V2M) models lack semantic control and fail to penalize instruction violations, largely due to their reliance on reconstruction objectives and the representational bottleneck of static cross-modal conditioning in Diffusion Autoregressive (DAR) architectures. To resolve this, we introduce VIBE, a novel text-and-video-to-music (T+V2M) generation model that leverages: (1) Conditioning Connection, a depth-wise cross-layer conditioning mechanism that dynamically bridges the planning and diffusion refinement heads and (2) a comprehensive reward modeling taxonomy, optimizing for both hard, verifiable constraints (e.g., tempo, key) and soft, subjective qualities (e.g., musicality, multimodal alignment) with a structured 5-stage training curriculum. Upon evaluation using audio-visual alignment, instruction following, and audio quality metrics, along with a subjective human evaluation study, we observe that VIBE demonstrates enhanced controllability and instruction adherence while performing comparably to most evaluated baselines on generation fidelity and multimodal alignment.",
+      "authors": [
+        "Aryan Vijay Bhosale",
+        "Vaibhavi Lokegaonkar",
+        "Vishnu Raj",
+        "Gouthaman KV",
+        "Sreyan Ghosh",
+        "Ramani Duraiswami",
+        "Lie Lu",
+        "Dinesh Manocha"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD",
+        "cs.AI",
+        "cs.CL",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-31T01:19:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.30125v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Proposes reward modeling taxonomy with hard constraints and soft subjective qualities, directly applicable to evaluating generated video-music alignment.",
+      "llm_evidence_cn": "提出包含硬约束和软主观质量的奖励建模分类法，可直接用于评估生成视频与音乐的匹配度。",
+      "llm_evidence": "提出包含硬约束和软主观质量的奖励建模分类法，可直接用于评估生成视频与音乐的匹配度。",
+      "canonical_evidence": "提出包含硬约束和软主观质量的奖励建模分类法，可直接用于评估生成视频与音乐的匹配度。",
+      "llm_tldr_en": "VIBE introduces a text-and-video-to-music generation model with depth-wise cross-layer conditioning and a comprehensive reward modeling taxonomy that optimizes hard constraints and soft qualities.",
+      "llm_tldr_cn": "当前视频到音乐生成模型缺乏语义控制，且难以惩罚指令违规。VIBE提出一种文本-视频到音乐的生成模型，利用深度跨层条件连接动态桥接规划与扩散精炼头，并建立全面奖励建模分类法，同时优化节奏、调性等硬约束和音乐性、多模态对齐等软质量，通过结构化五阶段训练课程提升生成质量。",
+      "llm_tldr": "当前视频到音乐生成模型缺乏语义控制，且难以惩罚指令违规。VIBE提出一种文本-视频到音乐的生成模型，利用深度跨层条件连接动态桥接规划与扩散精炼头，并建立全面奖励建模分类法，同时优化节奏、调性等硬约束和音乐性、多模态对齐等软质量，通过结构化五阶段训练课程提升生成质量。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.26902v1",
+      "source": "arxiv",
+      "title": "Tether the Subject, Release the Scene: Query-Aware Memory Routing for Long-Horizon Autoregressive Video Generation",
+      "abstract": "Streaming autoregressive video models generate long videos chunk by chunk, using historical memory to maintain consistency. Existing methods typically expose subject and scene queries to history through similar policies. This stabilizes the subject, but can also lock backgrounds, viewpoints, and scene structure to previously generated states even when local motion continues. We call this failure memory-anchored scene under-progression; consistency and motion metrics alone can miss it. We introduce TetherMem, a training-free, query-aware spatiotemporal memory router for frozen video generators. TetherMem separates subject and scene queries and modulates historical access with region- and age-conditioned priors: subject queries retain identity-bearing history, while scene queries reduce reliance on subject history and stale backgrounds. Across 2,400 blinded pairwise judgments from 10 annotators, TetherMem achieves the highest estimated expected preference among eight streaming long-video baselines for overall quality (0.780) and scene progression (0.769). On complete 30-second videos, it sustains changes in background, viewpoint, and scene state while preserving subject recognizability and temporal continuity.",
+      "authors": [
+        "Chen Li",
+        "Peng Zhang",
+        "Hanyu Zhou",
+        "Jialong Zuo",
+        "Fei Wang",
+        "Daiguo Zhou",
+        "Nong Sang",
+        "Changxin Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T10:05:17+00:00",
+      "link": "https://arxiv.org/pdf/2608.26902v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Critiques existing consistency and motion metrics for missing scene under-progression in long video generation, motivating better evaluation.",
+      "llm_evidence_cn": "指出现有一致性和运动指标无法捕捉长视频生成中的场景停滞问题，推动更全面的评估设计。",
+      "llm_evidence": "指出现有一致性和运动指标无法捕捉长视频生成中的场景停滞问题，推动更全面的评估设计。",
+      "canonical_evidence": "指出现有一致性和运动指标无法捕捉长视频生成中的场景停滞问题，推动更全面的评估设计。",
+      "llm_tldr_en": "TetherMem is a training-free query-aware memory router that separates subject and scene queries to avoid scene under-progression in long video generation, highlighting limitations of existing metrics.",
+      "llm_tldr_cn": "长视频自回归生成中，现有方法对主体和场景查询采用相似策略，导致场景结构被历史锁定的场景停滞问题，且传统一致性和运动指标无法捕捉。为此提出TetherMem，一种免训练、查询感知的内存路由器，分离主体与场景访问并调节区域和时序先验，改善长视频生成质量，并揭示现有评估指标的盲区。",
+      "llm_tldr": "长视频自回归生成中，现有方法对主体和场景查询采用相似策略，导致场景结构被历史锁定的场景停滞问题，且传统一致性和运动指标无法捕捉。为此提出TetherMem，一种免训练、查询感知的内存路由器，分离主体与场景访问并调节区域和时序先验，改善长视频生成质量，并揭示现有评估指标的盲区。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.30692v1",
+      "source": "arxiv",
+      "title": "Can Video World Models Track Unobserved World States?",
+      "abstract": "Video world models are increasingly used as simulators, yet visual fidelity alone does not show that a model maintains the hidden state of the world. We examine this gap with an action-conditioned video Shell Game, a visual analog of $S_5$ state tracking that decouples visual rendering from compositing the hidden state underneath. Bidirectional and autoregressive Transformers, Mamba, and linear attention restricted to nonnegative transition eigenvalues all fit the training horizon of 5 swaps and then fall toward chance on longer swap chains (extrapolation) while still rendering plausible video with additional denoising steps providing no benefit. The pixel-based diffusion target never supervises the unseen hidden state, so the generated frames cannot carry it and the state has to live inside the architecture rather than in the tokens. For a Transformer, that architectural state is only an append-only KV cache, so the model has to re-derive the hidden arrangement from the whole history at every chunk. We find two mechanisms that do extrapolate, and both carry a state across chunks and revise it in place. Linear attention succeeds once its transition eigenvalues may be negative, and TTT with a nonlinear fast weight succeeds by updating the feature map through which it reads its own state. We further examine harder cases in dynamic world exploration tasks, and discuss the broader implications for building stateful video world models.",
+      "authors": [
+        "Joonghyuk Shin",
+        "Yicong Hong",
+        "Jaesik Park",
+        "Xun Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-31T12:29:24+00:00",
+      "link": "https://arxiv.org/pdf/2608.30692v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "evaluation benchmark for video generation models to test hidden state tracking, beyond visual fidelity",
+      "llm_evidence_cn": "提出评测视频生成模型状态追踪能力的基准，超越仅看视觉保真度",
+      "llm_evidence": "提出评测视频生成模型状态追踪能力的基准，超越仅看视觉保真度",
+      "canonical_evidence": "提出评测视频生成模型状态追踪能力的基准，超越仅看视觉保真度",
+      "llm_tldr_en": "Introduces an action-conditioned video Shell Game to test whether video world models track hidden world states; models fit the training horizon but fall to chance on longer swap chains despite plausible video.",
+      "llm_tldr_cn": "视觉保真度难以反映视频世界模型是否真正维护世界隐藏状态。基于动作条件的视频Shell Game将视觉渲染与隐藏状态合成解耦，系统评测多种视频生成模型。结果显示双向与自回归Transformer、Mamba等模型在训练长度内可拟合，但在更长交换链上退化至随机水平，同时仍能生成看似合理的视频。这表明像素级扩散训练目标无法监督未观测的隐藏状态，为生成视频模型的评估提出了新的挑战。",
+      "llm_tldr": "视觉保真度难以反映视频世界模型是否真正维护世界隐藏状态。基于动作条件的视频Shell Game将视觉渲染与隐藏状态合成解耦，系统评测多种视频生成模型。结果显示双向与自回归Transformer、Mamba等模型在训练长度内可拟合，但在更长交换链上退化至随机水平，同时仍能生成看似合理的视频。这表明像素级扩散训练目标无法监督未观测的隐藏状态，为生成视频模型的评估提出了新的挑战。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluation metrics for video generation models",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
