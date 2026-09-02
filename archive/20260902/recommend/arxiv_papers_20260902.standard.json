@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-02T22:08:13.375758+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.29598v1",
+      "source": "arxiv",
+      "title": "On the Resilience of Text-to-Video Diffusion Models to Hardware Faults",
+      "abstract": "We present the first systematic study of the resilience of text-to-video (T2V) diffusion models under random hardware-level faults. While T2V models are widely used for automated video generation due to their ability to produce high-quality, temporally coherent, and realistic videos, their iterative denoising process and spatiotemporal dependencies introduce unique failure modes. We perform an extensive fault-injection study covering both computational and memory faults across three T2V models and a representative benchmark. Our results show that (1) a single fault can degrade overall performance by up to 3.7\\%, with semantic correctness more affected than perceptual quality; (2) memory faults are more damaging than computational faults, high-order exponent bits are particularly vulnerable, and the widely-used bfloat16 is more susceptible than alternative formats; and (3) 7-28\\% of faults cause visible artifacts, including semantic changes such as added objects, suggesting that single faults are sufficient to alter output semantics. Our findings reveal reliability risks in deployed T2V systems and motivate further research on improving fault resilience. Code: \\href{https://github.com/ztcoalson/T2V-Resilience}{https://github.com/ztcoalson/T2V-Resilience}.",
+      "authors": [
+        "Zachary Coalson",
+        "A M Aahad",
+        "Stella Doehring",
+        "Zane Ma",
+        "Sanghyun Hong"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-30T06:41:51+00:00",
+      "link": "https://arxiv.org/pdf/2608.29598v1",
+      "tags": [
+        "keyword:vgen-metrics",
+        "query:vgen-metrics"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Fault-injection evaluation of text-to-video diffusion models measuring semantic and perceptual quality degradation of generated videos.",
+      "llm_evidence_cn": "通过故障注入系统评估文本到视频生成模型的语义与感知质量退化，贴合生成视频质量评价需求。",
+      "llm_evidence": "通过故障注入系统评估文本到视频生成模型的语义与感知质量退化，贴合生成视频质量评价需求。",
+      "canonical_evidence": "通过故障注入系统评估文本到视频生成模型的语义与感知质量退化，贴合生成视频质量评价需求。",
+      "llm_tldr_en": "First fault-injection study on text-to-video diffusion models reveals single faults can degrade performance by up to 3.7%, affecting semantic correctness more than perceptual quality; memory faults are more harmful than computational faults, providing robustness-aware quality evaluation.",
+      "llm_tldr_cn": "针对文本到视频扩散模型的硬件故障鲁棒性研究尚属空白，论文提出首个系统性故障注入研究，覆盖计算与存储单元故障。基于三项T2V模型和基准测试，发现单个故障即可显著影响整体性能，语义正确性受损比感知质量更严重，存储故障危害大于计算故障。该工作为评估生成视频质量鲁棒性提供了量化方法。",
+      "llm_tldr": "针对文本到视频扩散模型的硬件故障鲁棒性研究尚属空白，论文提出首个系统性故障注入研究，覆盖计算与存储单元故障。基于三项T2V模型和基准测试，发现单个故障即可显著影响整体性能，语义正确性受损比感知质量更严重，存储故障危害大于计算故障。该工作为评估生成视频质量鲁棒性提供了量化方法。",
+      "llm_tags": [
+        "query:vgen-metrics"
+      ],
+      "matched_query_tag": "query:vgen-metrics",
+      "matched_query_text": "evaluating quality of generated videos",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

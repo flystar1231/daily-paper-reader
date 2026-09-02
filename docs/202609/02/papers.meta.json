@@ -1,0 +1,24 @@
+{
+  "label": "2026-09-02",
+  "date": "2026-09-02",
+  "generated_at": "2026-09-02T22:08:47",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/02/2608.29598v1-on-the-resilience-of-text-to-video-diffusion-models-to-hardware-faults",
+      "section": "quick",
+      "title_en": "On the Resilience of Text-to-Video Diffusion Models to Hardware Faults",
+      "authors": "Zachary Coalson, A M Aahad, Stella Doehring, Zane Ma, Sanghyun Hong",
+      "date": "2026-08-30",
+      "pdf": "https://arxiv.org/pdf/2608.29598v1",
+      "score": "6.0",
+      "evidence": "通过故障注入系统评估文本到视频生成模型的语义与感知质量退化，贴合生成视频质量评价需求。",
+      "tldr": "文本到视频扩散模型在硬件故障下的韧性首次被系统研究。通过在三类模型和基准上注入计算与内存故障，发现单个故障可导致性能下降3.7%，内存故障比计算故障更危险，bfloat16格式尤其脆弱，并可能引发语义变化（如物体添加）。研究揭示了部署系统的可靠性风险，为提升故障韧性提供方向。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "We present the first systematic study of the resilience of text-to-video (T2V) diffusion models under random hardware-level faults. While T2V models are widely used for automated video generation due to their ability to produce high-quality, temporally coherent, and realistic videos, their iterative denoising process and spatiotemporal dependencies introduce unique failure modes. We perform an extensive fault-injection study covering both computational and memory faults across three T2V models and a representative benchmark. Our results show that (1) a single fault can degrade overall performance by up to 3.7\\%, with semantic correctness more affected than perceptual quality; (2) memory faults are more damaging than computational faults, high-order exponent bits are particularly vulnerable, and the widely-used bfloat16 is more susceptible than alternative formats; and (3) 7-28\\% of faults cause visible artifacts, including semantic changes such as added objects, suggesting that single faults are sufficient to alter output semantics. Our findings reveal reliability risks in deployed T2V systems and motivate further research on improving fault resilience. Code: \\href{https://github.com/ztcoalson/T2V-Resilience}{https://github.com/ztcoalson/T2V-Resilience}.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
