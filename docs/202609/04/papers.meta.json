@@ -1,0 +1,39 @@
+{
+  "label": "2026-09-04",
+  "date": "2026-09-04",
+  "generated_at": "2026-09-04T22:49:01",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/04/2608.26809v1-thinking-on-shots-consistent-multi-shot-video-editing-with-agentic-reasoning",
+      "section": "quick",
+      "title_en": "Thinking on Shots: Consistent Multi-Shot Video Editing with Agentic Reasoning",
+      "authors": "Chenyang Wu, Fuchen Long, Binyuan Huang, Xinlong Sun, Xi Chen, Chun-Le Guo, Chongyi Li",
+      "date": "2026-08-27",
+      "pdf": "https://arxiv.org/pdf/2608.26809v1",
+      "score": "6.0",
+      "evidence": "提出面向长视频编辑的一致性等质量目标，与生成/编辑视频质量评估相关",
+      "tldr": "现有视频编辑方法主要面向单镜头或短视频，面对包含多条指令的长视频编辑，简单固定时长切块会导致实体不连续、编辑幻觉严重以及时空过渡断裂。针对这些问题，本文提出多指令多镜头长视频编辑（MMLVE）新任务，并设计了一种代理式编辑框架，利用大型语言模型与视觉语言模型的协同，实现镜头级视频解耦和指令精确解析。为系统评估，构建了包含复杂动态、高密度异构指令与稀疏实体分布的 MMLVE-Bench 基准，并设计三项专门指标。实验证明，该框架在跨镜头一致性、幻觉消除及时空平滑过渡上显著优于 Seedance 2.0 等现有最强闭源方法，为该领域提供了新基准与有效方案。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "While generative AI has significantly advanced video editing, existing methods primarily focus on single-shot or short video clips. Editing long videos with multiple instructions remains a formidable challenge. Naive chunking strategies, e.g., fixed-duration segmentation, often lead to entity fragmentation, severe editing hallucinations, and disrupted temporal continuity. To bridge this gap, we introduce the Multi-Instruction Multi-Shot Long-Video Editing (MMLVE) task, which is structured around three core objectives: Cross-Shot Editing Consistency (CSEC), Multi-Instruction Decoupling (MID), and Zero-Destruction on Spatiotemporal Structure (ZDSS). To tackle these three unique challenges, we introduce an agentic editing framework that leverages the synergy of Large Language Models (LLMs) and Vision-Language Models (VLMs) to achieve shot-level video decoupling and precise instruction parsing. Furthermore, to comprehensively evaluate this task, we construct MMLVE-Bench, which is an MMLVE-focused dataset characterized by complex real-world spatiotemporal dynamics, high-density heterogeneous instructions, and sparse, random entity distributions. Three MMLVE-focused evaluation metrics are further exploited to assess the quality of the editing results. Extensive experiments demonstrate that our MMLVE-Agent outperforms existing closed-source SOTA approaches (e.g., Seedance 2.0), successfully eliminating editing hallucinations, preserving cross-shot editing consistency, and attaining seamless spatiotemporal transitions.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/04/2609.03498v1-capq-fast-content-adaptive-perceived-quality-assessment-for-faster-audiovisual-playback",
+      "section": "quick",
+      "title_en": "CAPQ-FAST: Content-Adaptive Perceived Quality Assessment for Faster Audiovisual Playback",
+      "authors": "Jiarun Song, Yuxin Song, Fuzheng Yang, Weisi Lin",
+      "date": "2026-09-03",
+      "pdf": "https://arxiv.org/pdf/2609.03498v1",
+      "score": "6.0",
+      "evidence": "提出内容自适应的视听感知质量评估方法，其主观实验与质量建模可迁移到生成视频质量评价",
+      "tldr": "在线音视频服务中，加速播放已成为常见功能，但不同内容类型下的感知质量变化尚未被充分研究。为此，作者开展了一系列主观实验，探究视频、语音及音乐在加速播放下的感知质量，并提取视频时间信息、语音每分钟词数和音乐每分钟节拍数等固有特征，分别构建各类内容的预测模型，最终融合成统一的内容自适应评估模型CAPQ-FAST。实验结果显示，模型能有效预测不同播放速度下的感知质量，从而帮助服务商理解用户意图，实现更个性化的适应性推荐与播放控制。",
+      "tags": "query:vgen-metrics",
+      "abstract_en": "Faster playback has become a common feature in modern online audiovisual services, allowing users to consume content in less time while still maintaining a coherent viewing experience. However, different modalities of media content, such as video, audio (including speech and music), and audiovisual, exhibit varying requirements for understandability and information integrity under faster playback. These differences lead to noticeable variations in perceived quality depending on the content type. Nevertheless, users' perceived quality at different playback speeds remains insufficiently investigated. To address this gap, this paper conducts a series of subjective experiments to analyze the relationship between playback speed and perceived quality for video, audio, and audiovisual content. Content-specific intrinsic features are extracted to capture temporal dynamics, including temporal information (TI) for video, words per minute (WPM) for speech, and beats per minute (BPM) for music. Predictive models of perceived quality under faster playback are then developed separately for video, speech, and music. By integrating these models, a unified content-adaptive perceived quality assessment model (CAPQ-FAST) is proposed for faster audiovisual playback. Experimental results demonstrate that the proposed model effectively predicts perceived quality under different playback speeds. This model can help service providers better understand users' viewing intentions and perceptual experiences under faster playback, thereby enabling more adaptive personalized recommendations and playback control to enhance user experience adaptability.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
